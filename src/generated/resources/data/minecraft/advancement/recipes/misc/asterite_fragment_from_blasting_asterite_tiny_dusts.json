@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_asterite_tiny_dusts": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:asterite_tiny_dusts"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:asterite_fragment_from_blasting_asterite_tiny_dusts"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_asterite_tiny_dusts"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:asterite_fragment_from_blasting_asterite_tiny_dusts"
+    ]
+  }
+}

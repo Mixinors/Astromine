@@ -28,42 +28,42 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.entity.RocketEntityModel;
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory.Context;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 
 public class RocketEntityRenderer extends EntityRenderer<RocketEntity> {
-	public static final Identifier ID = AMCommon.id("textures/entity/rocket/rocket.png");
+	public static final ResourceLocation ID = AMCommon.id("textures/entity/rocket/rocket.png");
 	
 	private final RocketEntityModel model;
 	
 	public RocketEntityRenderer(Context context) {
 		super(context);
 		
-		this.model = new RocketEntityModel(context.getPart(AMEntityModelLayers.ROCKET));
+		this.model = new RocketEntityModel(context.bakeLayer(AMEntityModelLayers.ROCKET));
 	}
 	
 	@Override
-	public void render(RocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
-		matrices.push();
+	public void render(RocketEntity rocket, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource provider, int light) {
+		matrices.pushPose();
 		
 		matrices.scale(-1.0F, -1.0F, 1.0F);
 		matrices.scale(2.0F, 2.0F, 2.0F);
 
-		var vertexConsumer = provider.getBuffer(model.getLayer(getTexture(rocket)));
+		var vertexConsumer = provider.getBuffer(model.renderType(getTextureLocation(rocket)));
 		
-		model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		
-		matrices.pop();
+		matrices.popPose();
 		
 		super.render(rocket, yaw, tickDelta, matrices, provider, light);
 	}
 	
 	@Override
-	public Identifier getTexture(RocketEntity entity) {
+	public ResourceLocation getTextureLocation(RocketEntity entity) {
 		return ID;
 	}
 }

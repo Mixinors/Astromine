@@ -1,0 +1,11 @@
+{
+  "values": [
+    "minecraft:cake",
+    "minecraft:spore_blossom",
+    "#c:metal_apples",
+    {
+      "id": "#minecraft:fishes",
+      "required": false
+    }
+  ]
+}

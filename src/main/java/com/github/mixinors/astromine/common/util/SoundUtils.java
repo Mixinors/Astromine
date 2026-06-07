@@ -24,38 +24,17 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.registry.common.AMRegistries;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.mixinors.astromine.common.manager.BodyManager;
+import net.minecraft.world.entity.player.Player;
 
 public class SoundUtils {
-	public static float getSoundMufflingMultiplier(PlayerEntity player) {
-		if (player.world == null) {
+	public static float getSoundMufflingMultiplier(Player player) {
+		if (player.level() == null) {
 			return 1.0F;
 		}
 		
-		// TODO: Optimize!
-		for (var body : AMRegistries.BODY.getValues()) {
-			var surfaceDimension = body.surfaceDimension();
-			
-			if (surfaceDimension != null && surfaceDimension.worldKey().equals(player.getWorld().getRegistryKey())) {
-				var surfaceEnvironment = surfaceDimension.environment();
-				
-				if (surfaceEnvironment != null) {
-					return surfaceEnvironment.sound();
-				}
-			}
-			
-			var orbitDimension = body.orbitDimension();
-			
-			if (orbitDimension != null && orbitDimension.worldKey().equals(player.getWorld().getRegistryKey())) {
-				var orbitEnvironment = orbitDimension.environment();
-				
-				if (orbitEnvironment != null) {
-					return orbitEnvironment.sound();
-				}
-			}
-		}
+		var dimension = BodyManager.getBodyDimensionOfWorld(player.level().dimension());
 		
-		return 1.0F;
+		return dimension != null && dimension.environment() != null ? dimension.environment().sound() : 1.0F;
 	}
 }

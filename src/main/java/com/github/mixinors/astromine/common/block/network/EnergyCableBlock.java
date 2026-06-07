@@ -28,12 +28,12 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
 
 public abstract class EnergyCableBlock extends CableBlock {
-	public EnergyCableBlock(Settings settings) {
+	public EnergyCableBlock(Properties settings) {
 		super(settings);
 	}
 	
 	public static final class Primitive extends EnergyCableBlock {
-		public Primitive(Settings settings) {
+		public Primitive(Properties settings) {
 			super(settings);
 		}
 		
@@ -44,7 +44,7 @@ public abstract class EnergyCableBlock extends CableBlock {
 	}
 	
 	public static final class Basic extends EnergyCableBlock {
-		public Basic(Settings settings) {
+		public Basic(Properties settings) {
 			super(settings);
 		}
 		
@@ -55,7 +55,7 @@ public abstract class EnergyCableBlock extends CableBlock {
 	}
 	
 	public static final class Advanced extends EnergyCableBlock {
-		public Advanced(Settings settings) {
+		public Advanced(Properties settings) {
 			super(settings);
 		}
 		
@@ -66,7 +66,7 @@ public abstract class EnergyCableBlock extends CableBlock {
 	}
 	
 	public static final class Elite extends EnergyCableBlock {
-		public Elite(Settings settings) {
+		public Elite(Properties settings) {
 			super(settings);
 		}
 		

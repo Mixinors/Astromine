@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:gold_dusts"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:gold_tiny_dust"
+  }
+}

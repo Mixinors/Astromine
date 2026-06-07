@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.5,
+  "ingredient": {
+    "tag": "c:stellum_clusters"
+  },
+  "result": {
+    "count": 1,
+    "id": "astromine:stellum_ingot"
+  }
+}

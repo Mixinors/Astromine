@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 4576,
+  "input": {
+    "count": 1,
+    "tag": "c:meteoric_steel_hoes"
+  },
+  "output": {
+    "amount": 48,
+    "fluid": "astromine:molten_meteoric_steel"
+  },
+  "time": 572
+}

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 3520,
+  "input": {
+    "count": 1,
+    "tag": "c:netherite_pickaxes"
+  },
+  "output": {
+    "amount": 72,
+    "fluid": "astromine:molten_netherite"
+  },
+  "time": 440
+}

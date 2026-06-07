@@ -5,6 +5,7 @@
     "bottom": "astromine:block/elite_electric_furnace_bottom",
     "front": "astromine:block/elite_electric_furnace_front",
     "left": "astromine:block/elite_electric_furnace_left",
+    "particle": "astromine:block/elite_electric_furnace_top",
     "right": "astromine:block/elite_electric_furnace_right",
     "top": "astromine:block/elite_electric_furnace_top"
   }

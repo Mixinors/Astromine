@@ -1,7 +1,7 @@
 package com.github.mixinors.astromine.mixin.client;
 
 import com.github.mixinors.astromine.client.accessor.BakedQuadAccessor;
-import net.minecraft.client.render.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(BakedQuad.class)
 public class BakedQuadMixin implements BakedQuadAccessor {
 	@Mutable
-	@Shadow
+	@Shadow(remap = false)
 	@Final
-	protected int colorIndex;
+	protected int tintIndex;
 	
 	@Override
 	public void setColorIndex(int colorIndex) {
-		this.colorIndex = colorIndex;
+		this.tintIndex = colorIndex;
 	}
 }

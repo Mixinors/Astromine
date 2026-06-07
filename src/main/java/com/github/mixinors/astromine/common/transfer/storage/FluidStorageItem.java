@@ -24,6 +24,36 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.neoforged.neoforge.fluids.FluidStack;
+
 public interface FluidStorageItem {
+	String FLUID_KEY = "Fluid";
+	String AMOUNT_KEY = "Amount";
+	
 	long getFluidCapacity();
+	
+	default FluidStack getStoredFluid(ItemStack stack) {
+		var tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+		
+		return SimpleFluidItemStorage.readFluid(tag.getCompound(FLUID_KEY));
+	}
+	
+	default void setStoredFluid(ItemStack stack, FluidStack fluid) {
+		var tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+		
+		if (fluid.isEmpty()) {
+			tag.remove(FLUID_KEY);
+		} else {
+			tag.put(FLUID_KEY, SimpleFluidItemStorage.writeFluid(fluid.copyWithAmount((int) Math.min(fluid.getAmount(), getFluidCapacity()))));
+		}
+		
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+	}
+	
+	default SimpleFluidItemStorage createFluidStorage(ItemStack stack) {
+		return new SimpleFluidItemStorage(stack, this);
+	}
 }

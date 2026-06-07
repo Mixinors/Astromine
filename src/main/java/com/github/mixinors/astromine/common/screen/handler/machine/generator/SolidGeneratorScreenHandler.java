@@ -24,53 +24,30 @@
 
 package com.github.mixinors.astromine.common.screen.handler.machine.generator;
 
+import static com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityMenuLayout.*;
+
 import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.architectury.registry.fuel.FuelRegistry;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 
 public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final SolidGeneratorBlockEntity generator;
 	
-	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public SolidGeneratorScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.SOLID_GENERATOR, syncId, player, position);
 		
 		generator = (SolidGeneratorBlockEntity) blockEntity;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
 		
-		var input = new SlotWidget(SolidGeneratorBlockEntity.INPUT_SLOT, generator.getItemStorage(), (inventory, id, x, y) -> {
-			var slot = new FilterSlot(inventory, id, x, y);
-			
-			slot.setInsertPredicate((stack) -> {
-				return FuelRegistry.get(stack) > 0;
-			});
-			
-			return slot;
-		});
-		input.setPosition(new Position(tab, TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + BAR_WIDTH) / 2.0F, PAD_11 + (BAR_HEIGHT / 2.0F) - (SLOT_HEIGHT / 2.0F)));
-		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		var inputX = (int) (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + BAR_WIDTH) / 2.0F);
+		var inputY = (int) (PAD_25 + PAD_7 + PAD_11 + (BAR_HEIGHT / 2.0F) - (SLOT_HEIGHT / 2.0F));
+		var arrowX = inputX + (int) (SLOT_WIDTH + PAD_7);
+		var arrowY = inputY + (int) ((SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F);
 		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F));
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) generator.limit);
-		arrow.setCurrent(() -> (float) generator.progress);
-		
-		energyBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
-		
-		tab.add(input);
-		tab.add(arrow);
+		addBlockEntitySlot(SolidGeneratorBlockEntity.INPUT_SLOT, inputX, inputY, AbstractFurnaceBlockEntity::isFuel);
+		setEnergyBarPosition(processOutputX(arrowX), ENERGY_BAR_Y);
+		addProgressArrow(arrowX, arrowY);
 	}
 }

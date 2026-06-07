@@ -29,13 +29,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
-import net.minecraft.util.math.random.Random;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+import net.minecraft.util.RandomSource;
 
 public class WeightedList<U> {
 	private static final String DATA_KEY = "data";
@@ -60,7 +59,7 @@ public class WeightedList<U> {
 		return this;
 	}
 	
-	public WeightedList<U> shuffle(Random random) {
+	public WeightedList<U> shuffle(RandomSource random) {
 		this.entries.forEach((entry) -> entry.setShuffledOrder(random.nextFloat()));
 		this.entries.sort(Comparator.comparingDouble(WeightedList.Entry::getShuffledOrder));
 		return this;

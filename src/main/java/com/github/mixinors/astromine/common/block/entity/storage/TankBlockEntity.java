@@ -32,17 +32,18 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -68,17 +69,17 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 	
 	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_BUFFER_SLOT, ITEM_OUTPUT_SLOT };
 	
-	private FluidVariant filter = FluidVariant.blank();
+	private FluidStack filter = FluidStack.EMPTY;
 	
 	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).insertPredicate((variant, slot) ->
-				slot == FLUID_INPUT_SLOT && (filter.isBlank() || variant.equals(filter))
+				slot == FLUID_INPUT_SLOT && (filter.isEmpty() || FluidStack.isSameFluidSameComponents(variant, filter))
 		).extractPredicate((variant, slot) ->
 				slot == FLUID_OUTPUT_SLOT
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		itemStorage = new SimpleItemStorage(3).extractPredicate((variant, slot) -> {
@@ -88,17 +89,17 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 				return false;
 			}
 			
-			return FluidStorage.ITEM.getProvider(variant.getItem()) != null;
+			return FluidUtil.getFluidHandler(variant).isPresent();
 		}).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
-	public FluidVariant getFilter() {
+	public FluidStack getFilter() {
 		return filter;
 	}
 	
-	public void setFilter(FluidVariant filter) {
+	public void setFilter(FluidStack filter) {
 		this.filter = filter;
 	}
 	
@@ -106,52 +107,29 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
-		var wildItemStorage = itemStorage.getWildProxy();
-		var wildFluidStorage = fluidStorage.getWildProxy();
-		
-		var itemInputStorage = wildItemStorage.getStorage(ITEM_INPUT_SLOT);
-		
-		var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_SLOT);
-		
-		var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT);
-		
-		var fluidInputStorage = wildFluidStorage.getStorage(FLUID_INPUT_SLOT);
-		
-		var fluidOutputStorage = wildFluidStorage.getStorage(FLUID_OUTPUT_SLOT);
-		
-		var unloadFluidStorages = FluidStorage.ITEM.find(itemInputStorage.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage));
-		
-		var loadFluidStorages = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
-		
-		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(unloadFluidStorages, fluidInputStorage, fluidVariant -> !fluidVariant.isBlank() && (filter.isBlank() || fluidVariant.equals(filter)), FluidConstants.BUCKET, transaction);
-			StorageUtil.move(fluidOutputStorage, loadFluidStorages, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
-			
-			StorageUtil.move(itemInputStorage, itemBufferStorage, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorages);
-				return stored == null || stored.isBlank();
-			}, 1, transaction);
-			
-			transaction.commit();
+		unloadInputFluidItem();
+		loadOutputFluidItem();
+		moveEmptyInputItemToBuffer();
+	}
+	
+	@Override
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		if (!filter.isEmpty()) {
+			nbt.put(FILTER_KEY, filter.save(registries));
 		}
+		
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
-		nbt.put(FILTER_KEY, filter.toNbt());
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
+		filter = nbt.contains(FILTER_KEY) ? FluidStack.parseOptional(registries, nbt.getCompound(FILTER_KEY)) : FluidStack.EMPTY;
 		
-		super.writeNbt(nbt);
-	}
-	
-	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
-		filter = FluidVariant.fromNbt(nbt.getCompound(FILTER_KEY));
-		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override
@@ -218,12 +196,121 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 			super.tick();
 			
 			if (fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource().getFluid() != Fluids.EMPTY) {
-				try (var transaction = Transaction.openOuter()) {
-					fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), getFluidStorageSize(), transaction);
-					
-					transaction.commit();
-				}
+				fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), getFluidStorageSize(), true, false);
 			}
 		}
+	}
+	
+	private void unloadInputFluidItem() {
+		var inputStack = itemStorage.getItem(ITEM_INPUT_SLOT);
+		
+		if (inputStack.isEmpty()) {
+			return;
+		}
+		
+		var handler = FluidUtil.getFluidHandler(inputStack).orElse(null);
+		
+		if (handler == null) {
+			return;
+		}
+		
+		var drained = handler.drain(FluidType.BUCKET_VOLUME, IFluidHandler.FluidAction.SIMULATE);
+		
+		if (drained.isEmpty() || (!filter.isEmpty() && !FluidStack.isSameFluidSameComponents(drained, filter))) {
+			return;
+		}
+		
+		var accepted = fluidStorage.fill(drained, IFluidHandler.FluidAction.SIMULATE);
+		
+		if (accepted <= 0) {
+			return;
+		}
+		
+		var moved = handler.drain(drained.copyWithAmount(accepted), IFluidHandler.FluidAction.EXECUTE);
+		
+		fluidStorage.fill(moved, IFluidHandler.FluidAction.EXECUTE);
+		itemStorage.setItem(ITEM_INPUT_SLOT, getContainer(handler));
+	}
+	
+	private void loadOutputFluidItem() {
+		var outputStack = itemStorage.getItem(ITEM_OUTPUT_SLOT);
+		
+		if (outputStack.isEmpty()) {
+			return;
+		}
+		
+		var handler = FluidUtil.getFluidHandler(outputStack).orElse(null);
+		
+		if (handler == null) {
+			return;
+		}
+		
+		var stored = fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource();
+		
+		if (stored.isEmpty()) {
+			return;
+		}
+		
+		var accepted = handler.fill(stored.copyWithAmount(Math.min(stored.getAmount(), FluidType.BUCKET_VOLUME)), IFluidHandler.FluidAction.SIMULATE);
+		
+		if (accepted <= 0) {
+			return;
+		}
+		
+		var drained = fluidStorage.drain(stored.copyWithAmount(accepted), IFluidHandler.FluidAction.EXECUTE);
+		
+		handler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+		itemStorage.setItem(ITEM_OUTPUT_SLOT, getContainer(handler));
+	}
+	
+	private void moveEmptyInputItemToBuffer() {
+		var inputStack = itemStorage.getItem(ITEM_INPUT_SLOT);
+		
+		if (inputStack.isEmpty() || !isEmptyFluidContainer(inputStack)) {
+			return;
+		}
+		
+		var bufferStack = itemStorage.getItem(ITEM_BUFFER_SLOT);
+		
+		if (!bufferStack.isEmpty() && !ItemStack.isSameItemSameComponents(inputStack, bufferStack)) {
+			return;
+		}
+		
+		if (bufferStack.getCount() >= bufferStack.getMaxStackSize()) {
+			return;
+		}
+		
+		var moved = inputStack.copyWithCount(1);
+		
+		inputStack.shrink(1);
+		
+		if (bufferStack.isEmpty()) {
+			itemStorage.setItem(ITEM_BUFFER_SLOT, moved);
+		} else {
+			bufferStack.grow(1);
+			itemStorage.setItem(ITEM_BUFFER_SLOT, bufferStack);
+		}
+		
+		itemStorage.setItem(ITEM_INPUT_SLOT, inputStack);
+	}
+	
+	private static boolean isEmptyFluidContainer(ItemStack stack) {
+		var handler = FluidUtil.getFluidHandler(stack).orElse(null);
+		
+		if (handler == null) {
+			return false;
+		}
+		
+		for (var tank = 0; tank < handler.getTanks(); ++tank) {
+			if (!handler.getFluidInTank(tank).isEmpty()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	private static ItemStack getContainer(IFluidHandler handler) {
+		return handler instanceof IFluidHandlerItem itemHandler ? itemHandler.getContainer() : ItemStack.EMPTY;
 	}
 }

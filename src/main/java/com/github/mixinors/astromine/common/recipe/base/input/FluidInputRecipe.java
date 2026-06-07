@@ -26,14 +26,14 @@ package com.github.mixinors.astromine.common.recipe.base.input;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public interface FluidInputRecipe extends AMRecipe {
 	FluidIngredient getInput();
 	
-	default boolean allows(FluidVariant... variants) {
-		var inputVariant = variants[0];
+	default boolean allows(FluidStack... stacks) {
+		var inputStack = stacks[0];
 		
-		return getInput().test(inputVariant, Long.MAX_VALUE);
+		return getInput().test(inputStack, Long.MAX_VALUE);
 	}
 }

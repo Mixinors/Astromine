@@ -25,17 +25,11 @@
 package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
-import com.google.gson.JsonObject;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.material.Fluid;
 
 public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
-	private static final String FLUID_KEY = "fluid";
-	private static final String AMOUNT_KEY = "amount";
-	private static final String OUTPUT_KEY = "output";
-	
 	protected final Fluid output;
 	
 	protected final long outputAmount;
@@ -58,32 +52,7 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputR
 	}
 	
 	@Override
-	public Identifier getOutputId() {
+	public ResourceLocation getOutputId() {
 		return getFluidId(getOutputFluid());
-	}
-	
-	public abstract static class FluidOutputMachineRecipeJsonProvider<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
-		private final Fluid output;
-		
-		private final long outputAmount;
-		
-		public FluidOutputMachineRecipeJsonProvider(Identifier recipeId, Fluid output, long outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
-			super(recipeId, processingTime, energy, serializer);
-			
-			this.output = output;
-			this.outputAmount = outputAmount;
-		}
-		
-		@Override
-		public void serialize(JsonObject json) {
-			var outputJson = new JsonObject();
-			
-			outputJson.addProperty(FLUID_KEY, Registry.FLUID.getId(this.output).toString());
-			outputJson.addProperty(AMOUNT_KEY, outputAmount);
-			
-			json.add(OUTPUT_KEY, outputJson);
-			
-			super.serialize(json);
-		}
 	}
 }

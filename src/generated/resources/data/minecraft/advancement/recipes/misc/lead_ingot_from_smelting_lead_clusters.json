@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lead_clusters": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:lead_clusters"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:lead_ingot_from_smelting_lead_clusters"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lead_clusters"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:lead_ingot_from_smelting_lead_clusters"
+    ]
+  }
+}

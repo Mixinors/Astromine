@@ -28,20 +28,18 @@ import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntit
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.utility.UtilityConfig;
 import com.github.mixinors.astromine.common.provider.config.UtilityConfigProvider;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements UtilityConfigProvider<UtilityConfig> {
 	public static final String COOLDOWN_KEY = "Cooldown";
@@ -57,14 +55,14 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 	public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_BREAKER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
 				slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
 				false
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -72,7 +70,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
@@ -84,91 +82,73 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 				
 				active = false;
 			} else {
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+				if (energyStorage.amount >= consumed) {
+					var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+					
+					var direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+					
+					var targetPos = getBlockPos().relative(direction);
+					
+					var targetState = level.getBlockState(targetPos);
+					
+					if (!targetState.isAir() && targetState.getDestroySpeed(level, worldPosition) <= Blocks.OBSIDIAN.defaultDestroyTime()) {
+						++cooldown;
 						
-						var stored = outputStorage.getStack();
-						
-						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-						
-						var targetPos = getPos().offset(direction);
-						
-						var targetState = world.getBlockState(targetPos);
-						
-						if (!targetState.isAir() && targetState.getHardness(world, pos) <= Blocks.OBSIDIAN.getHardness()) {
-							++cooldown;
+						if (cooldown >= getSpeed()) {
+							cooldown = 0;
 							
-							if (cooldown >= getSpeed()) {
-								cooldown = 0;
-								
-								active = true;
-								
-								var targetEntity = world.getBlockEntity(targetPos);
-								
-								var drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
-								
-								var storedCopy = stored.copy();
-								
-								var matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() >= stack.getCount())).findFirst();
-								
-								matching.ifPresent(match -> {
-									drops.remove(match);
-									match.decrement((int) outputStorage.insert(ItemVariant.of(match), match.getCount(), transaction, true));
-									drops.add(match);
-								});
-								
-								var finished = true;
-								
+							active = true;
+							
+							var targetEntity = level.getBlockEntity(targetPos);
+							
+							var drops = Block.getDrops(targetState, (ServerLevel) level, targetPos, targetEntity);
+							
+							var finished = true;
+							
+							for (var stack : drops) {
+								if (!stack.isEmpty() && outputStorage.insert(stack, stack.getCount(), true, true) != stack.getCount()) {
+									finished = false;
+									
+									break;
+								}
+							}
+							
+							if (finished) {
 								for (var stack : drops) {
-									if (!stack.isEmpty()) {
-										finished = false;
-										
-										break;
-									}
+									outputStorage.insert(stack, stack.getCount(), true, false);
 								}
 								
-								if (finished) {
-									world.breakBlock(targetPos, false);
-									
-									energyStorage.amount -= consumed;
-									
-									transaction.commit();
-								} else {
-									transaction.abort();
-								}
-							} else {
-								++cooldown;
+								level.destroyBlock(targetPos, false);
 								
-								active = true;
+								energyStorage.amount -= consumed;
 							}
 						} else {
-							active = false;
+							++cooldown;
 							
-							transaction.abort();
+							active = true;
 						}
 					} else {
 						active = false;
-						
-						transaction.abort();
 					}
+				} else {
+					active = false;
 				}
 			}
 		}
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		nbt.putLong(COOLDOWN_KEY, cooldown);
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		cooldown = nbt.getLong(COOLDOWN_KEY);
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override

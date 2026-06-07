@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:electrum_blocks"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:electrum_ingot"
+  }
+}

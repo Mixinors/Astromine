@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "dynamic=false": {
       "model": "astromine:block/dark_moon_diamond_ore"
+    },
+    "dynamic=true": {
+      "model": "astromine:block/dark_moon_diamond_ore_dynamic"
     }
   }
 }

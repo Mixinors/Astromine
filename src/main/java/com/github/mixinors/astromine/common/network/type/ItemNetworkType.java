@@ -1,100 +1,96 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 - 2022 Mixinors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.TransferNetworkType;
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@SuppressWarnings("UnstableApiUsage")
-public class ItemNetworkType extends TransferNetworkType<ItemVariant> {
+public class ItemNetworkType extends TransferNetworkType<IItemHandler> {
 	@Override
-	public Storage<ItemVariant> find(World world, BlockPos pos, @Nullable Direction direction) {
-		return ItemStorage.SIDED.find(world, pos, direction);
+	public IItemHandler find(Level world, BlockPos pos, @Nullable Direction direction) {
+		return world.getCapability(Capabilities.ItemHandler.BLOCK, pos, direction);
 	}
 	
 	@Override
-	public void tick(Network<Storage<ItemVariant>> network) {
+	public void tick(Network<IItemHandler> network) {
+		var extractableStorages = new ArrayList<IItemHandler>();
+		var bufferStorages = new ArrayList<IItemHandler>();
+		var insertableStorages = new ArrayList<IItemHandler>();
 		var world = network.getWorld();
-		
-		var extractableStorages = new Long2ObjectLinkedOpenHashMap<Storage<ItemVariant>>();
-		var bufferStorages = new Long2ObjectLinkedOpenHashMap<Storage<ItemVariant>>();
-		var insertableStorages = new Long2ObjectLinkedOpenHashMap<Storage<ItemVariant>>();
-		
-		var toRemove = new ArrayList<Network.Member>();
 		
 		for (var member : network.getMembers()) {
 			var storage = find(world, member.blockPos(), member.direction());
 			
 			if (storage == null) {
-				toRemove.add(member);
-				
-				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+				continue;
 			} else {
 				switch (member.siding()) {
-					case INSERT -> {
-						if (storage.supportsInsertion()) {
-							insertableStorages.put(member.blockPos().asLong(), storage);
-						}
-					}
-					
-					case EXTRACT -> {
-						if (storage.supportsExtraction()) {
-							extractableStorages.put(member.blockPos().asLong(), storage);
-						}
-					}
-					
-					case INSERT_EXTRACT -> {
-						if (storage.supportsInsertion() && storage.supportsExtraction()) {
-							bufferStorages.put(member.blockPos().asLong(), storage);
-						} else if (storage.supportsInsertion()) {
-							insertableStorages.put(member.blockPos().asLong(), storage);
-						} else if (storage.supportsExtraction()) {
-							extractableStorages.put(member.blockPos().asLong(), storage);
-						}
-					}
+					case INSERT -> insertableStorages.add(storage);
+					case EXTRACT -> extractableStorages.add(storage);
+					case INSERT_EXTRACT -> bufferStorages.add(storage);
 				}
 			}
 		}
 		
-		network.getMembers().removeAll(toRemove);
+		move(extractableStorages, insertableStorages);
+		move(extractableStorages, bufferStorages);
+		move(bufferStorages, insertableStorages);
+		move(bufferStorages, bufferStorages);
+	}
+	
+	private void move(List<IItemHandler> sources, List<IItemHandler> destinations) {
+		for (var source : sources) {
+			var moved = 0L;
+			
+			for (var sourceSlot = 0; sourceSlot < source.getSlots() && moved < getTransferRate(); ++sourceSlot) {
+				var extracted = source.extractItem(sourceSlot, (int) Math.min(getTransferRate() - moved, Integer.MAX_VALUE), true);
+				
+				if (extracted.isEmpty()) {
+					continue;
+				}
+				
+				for (var destination : destinations) {
+					if (source == destination) {
+						continue;
+					}
+					
+					var remainder = insert(destination, extracted, true);
+					var accepted = extracted.getCount() - remainder.getCount();
+					
+					if (accepted <= 0) {
+						continue;
+					}
+					
+					var actuallyExtracted = source.extractItem(sourceSlot, accepted, false);
+					
+					if (!actuallyExtracted.isEmpty()) {
+						insert(destination, actuallyExtracted, false);
+						moved += actuallyExtracted.getCount();
+					}
+					
+					break;
+				}
+			}
+		}
+	}
+	
+	private static ItemStack insert(IItemHandler destination, ItemStack stack, boolean simulate) {
+		var remainder = stack.copy();
 		
-		move(network, extractableStorages, insertableStorages);
-		move(network, extractableStorages, bufferStorages);
-		move(network, bufferStorages, insertableStorages);
-		move(network, bufferStorages, bufferStorages);
+		for (var slot = 0; slot < destination.getSlots() && !remainder.isEmpty(); ++slot) {
+			remainder = destination.insertItem(slot, remainder, simulate);
+		}
+		
+		return remainder;
 	}
 	
 	@Override

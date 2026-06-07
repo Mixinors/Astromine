@@ -1,0 +1,13 @@
+{
+  "type": "astromine:pressing",
+  "energy_input": 340,
+  "input": {
+    "count": 1,
+    "tag": "c:stellum_ingots"
+  },
+  "output": {
+    "count": 1,
+    "item": "astromine:stellum_plate"
+  },
+  "time": 80
+}

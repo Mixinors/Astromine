@@ -26,58 +26,63 @@ package com.github.mixinors.astromine.common.block.ore.base;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ExtendedOreBlock extends Block {
-	public ExtendedOreBlock(AbstractBlock.Settings settings) {
+	public ExtendedOreBlock(BlockBehaviour.Properties settings) {
 		super(settings);
 	}
 	
 	@Override
-	public void onStacksDropped(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack, boolean dropExperience) {
-		super.onStacksDropped(state, world, pos, stack, dropExperience);
+	public void spawnAfterBreak(BlockState state, ServerLevel world, BlockPos pos, ItemStack stack, boolean dropExperience) {
+		super.spawnAfterBreak(state, world, pos, stack, dropExperience);
 		
-		if (EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) == 0) {
+		var silkTouch = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH);
+		
+		if (EnchantmentHelper.getItemEnchantmentLevel(silkTouch, stack) == 0) {
 			var i = getExperienceWhenMined(world.random);
 			if (i > 0) {
-				this.dropExperience(world, pos, i);
+				this.popExperience(world, pos, i);
 			}
 		}
 		
 	}
 	
-	protected int getExperienceWhenMined(Random random) {
+	protected int getExperienceWhenMined(RandomSource random) {
 		if (this == AMBlocks.METEOR_METITE_ORE.get()) {
-			return MathHelper.nextInt(random, 2, 3);
+			return Mth.nextInt(random, 2, 3);
 		} else {
 			return 0;
 		}
 	}
 	
 	@Override
-	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBreak(world, pos, state, player);
+	public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+		var destroyedState = super.playerWillDestroy(world, pos, state, player);
 		
-		if (this == AMBlocks.METEOR_METITE_ORE.get() && player instanceof ServerPlayerEntity) {
-			var stack = player.getStackInHand(Hand.MAIN_HAND);
+		if (this == AMBlocks.METEOR_METITE_ORE.get() && player instanceof ServerPlayer) {
+			var stack = player.getItemInHand(InteractionHand.MAIN_HAND);
 			
-			if (!stack.isSuitableFor(state) && stack.isSuitableFor(Blocks.STONE.getDefaultState())) {
-				AMCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayerEntity) player);
+			if (!stack.isCorrectToolForDrops(state) && stack.isCorrectToolForDrops(Blocks.STONE.defaultBlockState())) {
+				AMCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayer) player);
 			}
 		}
+		
+		return destroyedState;
 	}
 }

@@ -30,18 +30,21 @@ import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 import java.util.ArrayDeque;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class NetworkUtils {
-	public static void trace(NetworkType<?> type, World world, BlockPos startPos) {
+	public static void trace(NetworkType<?> type, Level world, BlockPos startPos) {
 		var network = NetworksComponent.get(world);
 		
-		// Starting position already exists.
-		if (network.contains(type, startPos)) {
-			return;
+		// Rebuild an existing network when tracing is requested after side or connection changes.
+		var existingNetwork = network.get(type, startPos);
+		
+		if (existingNetwork != null) {
+			existingNetwork.getNodes().clear();
+			existingNetwork.getMembers().clear();
+			network.remove(existingNetwork);
 		}
 		
 		var startNode = new Network.Node(startPos);
@@ -77,7 +80,7 @@ public class NetworkUtils {
 			}
 			
 			for (var directions : DirectionUtils.VALUES) {
-				var offsetPos = pos.offset(directions);
+				var offsetPos = pos.relative(directions);
 				var offsetPosLong = offsetPos.asLong();
 				
 				if (tracedPos.contains(offsetPosLong)) {
@@ -85,6 +88,7 @@ public class NetworkUtils {
 				}
 				
 				var offsetStorage = type.find(world, offsetPos, directions.getOpposite());
+				var offsetStoragePresent = offsetStorage != null;
 				
 				var existingInstance = network.get(type, offsetPos);
 				
@@ -104,7 +108,7 @@ public class NetworkUtils {
 				
 				// Add a member if a storage is present.
 				// Otherwise, it must be a cable block.
-				if (offsetStorage != null) {
+				if (offsetStoragePresent) {
 					var siding = StorageSiding.NONE;
 					
 					if (connections.isInsert(directions)) {

@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
 
 public final class ItemConduitBlock extends CableBlock {
-	public ItemConduitBlock(Settings settings) {
+	public ItemConduitBlock(Properties settings) {
 		super(settings);
 	}
 	

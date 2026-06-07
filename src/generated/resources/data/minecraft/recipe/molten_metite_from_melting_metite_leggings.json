@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 5600,
+  "input": {
+    "count": 1,
+    "tag": "c:metite_leggings"
+  },
+  "output": {
+    "amount": 168,
+    "fluid": "astromine:molten_metite"
+  },
+  "time": 700
+}

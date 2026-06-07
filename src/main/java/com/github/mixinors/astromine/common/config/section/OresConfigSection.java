@@ -27,108 +27,32 @@ package com.github.mixinors.astromine.common.config.section;
 import com.github.mixinors.astromine.common.config.entry.ore.AsteroidOreConfig;
 import com.github.mixinors.astromine.common.config.entry.ore.DarkMoonOreConfig;
 import com.github.mixinors.astromine.common.config.entry.ore.MoonOreConfig;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 public class OresConfigSection {
-	@Comment("Settings for Moon Lunum Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public MoonOreConfig moonLunumOre = new MoonOreConfig(12);
-	
-	@Comment("Settings for Moon Iron Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public MoonOreConfig moonIronOre = new MoonOreConfig(6);
-	
-	@Comment("Settings for Moon Redstone Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public MoonOreConfig moonRedstoneOre = new MoonOreConfig(6);
-	
-	@Comment("Settings for Moon Lapis Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public MoonOreConfig moonLapisOre = new MoonOreConfig(6);
-	
-	@Comment("Settings for Dark Moon Lunum Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonLunumOre = new DarkMoonOreConfig(12);
-	
-	@Comment("Settings for Dark Moon Iron Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonIronOre = new DarkMoonOreConfig(6);
-	
-	@Comment("Settings for Dark Moon Redstone Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonRedstoneOre = new DarkMoonOreConfig(6);
-	
-	@Comment("Settings for Dark Moon Lapis Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonLapisOre = new DarkMoonOreConfig(6);
-	
-	@Comment("Settings for Asteroid Coal Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidCoalOre = new AsteroidOreConfig(0, 100, 8, 48);
-	
-	@Comment("Settings for Asteroid Iron Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidIronOre = new AsteroidOreConfig(0, 100, 8, 48);
-	
-	@Comment("Settings for Asteroid Gold Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidGoldOre = new AsteroidOreConfig(0, 100, 8, 48);
-	
-	@Comment("Settings for Asteroid Copper Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidCopperOre = new AsteroidOreConfig(0, 100, 8, 48);
-	
-	@Comment("Settings for Asteroid Tin Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidTinOre = new AsteroidOreConfig(0, 100, 8, 48);
-	
-	@Comment("Settings for Asteroid Silver Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidSilverOre = new AsteroidOreConfig(0, 100, 8, 48);
-	
-	@Comment("Settings for Asteroid Lead Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidLeadOre = new AsteroidOreConfig(0, 100, 8, 48);
-	
-	@Comment("Settings for Asteroid Redstone Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidRedstoneOre = new AsteroidOreConfig(0, 40, 8, 48);
-	
-	@Comment("Settings for Asteroid Lapis Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidLapisOre = new AsteroidOreConfig(0, 40, 8, 48);
-	
-	@Comment("Settings for Asteroid Diamond Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidDiamondOre = new AsteroidOreConfig(0, 50, 8, 48);
-	
-	@Comment("Settings for Asteroid Emerald Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidEmeraldOre = new AsteroidOreConfig(0, 50, 8, 48);
-	
-	@Comment("Settings for Asteroid Metite Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidMetiteOre = new AsteroidOreConfig(0, 50, 8, 48);
-	
-	@Comment("Settings for Asteroid Asterite Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidAsteriteOre = new AsteroidOreConfig(0, 40, 8, 48);
-	
-	@Comment("Settings for Asteroid Stellum Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidStellumOre = new AsteroidOreConfig(0, 30, 8, 48);
-	
-	@Comment("Settings for Asteroid Galaxium Ore")
-	@ConfigEntry.Gui.CollapsibleObject
 	public AsteroidOreConfig asteroidGalaxiumOre = new AsteroidOreConfig(0, 20, 8, 48);
-	
-	@Comment("Whether generation of Overworld Tin Ore is enabled or not")
 	public boolean overworldTinOre = true;
-	
-	@Comment("Whether generation of Overworld Silver Ore is enabled or not")
 	public boolean overworldSilverOre = true;
-	
-	@Comment("Whether generation of Overworld Lead Ore is enabled or not")
 	public boolean overworldLeadOre = true;
 }

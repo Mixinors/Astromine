@@ -1,109 +1,57 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 - 2022 Mixinors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.github.mixinors.astromine.common.criterion;
 
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-import com.google.gson.JsonObject;
-import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
-import net.minecraft.advancement.criterion.Criterion;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+
+import java.util.Optional;
 
 /**
- * A {@link Criterion} for tricking piglins by giving them a gold-like substance, which is not, in fact, gold.
+ * A {@link CriterionTrigger} for tricking piglins by giving them a gold-like substance, which is not, in fact, gold.
  */
-public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCriterion.Conditions> {
-	public final Identifier id;
+public class TrickedPiglinCriterion extends SimpleCriterionTrigger<TrickedPiglinCriterion.Conditions> implements IdentifiedCriterion {
+	private final ResourceLocation id;
 	
-	/** Instantiates a {@link TrickedPiglinCriterion}. */
-	public TrickedPiglinCriterion(Identifier id) {
+	public TrickedPiglinCriterion(ResourceLocation id) {
 		this.id = id;
 	}
 	
-	/** Reads {@link Conditions} from a {@link JsonObject}. */
 	@Override
-	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-		if (obj.has("successful")) {
-			return new Conditions(this.id, playerPredicate, obj.get("successful").getAsBoolean());
-		} else {
-			return new Conditions(this.id, playerPredicate);
-		}
+	public Codec<Conditions> codec() {
+		return Conditions.CODEC;
 	}
 	
-	/** Returns this {@link Criterion}'s ID. */
-	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
-	/** Triggers this {@link Criterion} for the given player with the given parameter. */
-	public void trigger(ServerPlayerEntity player, boolean successful) {
+	public void trigger(ServerPlayer player, boolean successful) {
 		this.trigger(player, conditions -> conditions.matches(successful));
 	}
 	
-	/**
-	 * Conditions for {@link #trigger(ServerPlayerEntity, boolean)}.
-	 */
-	public static class Conditions extends AbstractCriterionConditions {
-		private final Boolean successful;
+	public record Conditions(Optional<ContextAwarePredicate> player, Optional<Boolean> successful) implements SimpleInstance {
+		public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Conditions::player),
+				Codec.BOOL.optionalFieldOf("successful").forGetter(Conditions::successful)
+		).apply(instance, Conditions::new));
 		
-		/** Instantiates {@link Conditions}. */
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean successful) {
-			super(id, playerPredicate);
-			
-			this.successful = successful;
-		}
-		
-		/** Instantiates {@link Conditions}. */
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
-			super(id, playerPredicate);
-			
-			this.successful = null;
-		}
-		
-		/** Returns whether the Piglin was successfully tricked. */
-		public Boolean successful() {
-			return successful;
-		}
-		
-		/** Returns whether this condition should be fulfilled by the given parameter. */
 		public boolean matches(boolean successful) {
-			return successful() == null || successful == successful();
+			return this.successful.isEmpty() || this.successful.get() == successful;
 		}
 		
-		/** Instantiates {@link Conditions}. */
-		public static Conditions create(boolean successful) {
-			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY, successful);
+		public static Criterion<Conditions> create(boolean successful) {
+			return AMCriteria.TRICKED_PIGLIN.createCriterion(new Conditions(Optional.empty(), Optional.of(successful)));
 		}
 		
-		/** Instantiates {@link Conditions}. */
-		public static Conditions create() {
-			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY);
+		public static Criterion<Conditions> create() {
+			return AMCriteria.TRICKED_PIGLIN.createCriterion(new Conditions(Optional.empty(), Optional.empty()));
 		}
 	}
 }

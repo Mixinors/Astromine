@@ -27,25 +27,24 @@ package com.github.mixinors.astromine.common.component.world;
 import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.google.common.collect.Sets;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtLongArray;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.LongArrayTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public final class HoloBridgesComponent implements Component {
+public final class HoloBridgesComponent {
 	private static final String POSITION_KEY = "Positions";
 	private static final String VECTORS_KEY = "Vectors";
 	private static final String DATA_KEY = "Data";
@@ -54,22 +53,18 @@ public final class HoloBridgesComponent implements Component {
 	
 	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();
 	
-	private final World world;
+	private final Level world;
 
 	@Nullable
 	public static <V> HoloBridgesComponent get(V v) {
-		try {
-			return AMComponents.HOLO_BRIDGES.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		return v instanceof Level level ? level.getData(AMComponents.HOLO_BRIDGES) : null;
 	}
 	
-	public HoloBridgesComponent(World world) {
+	public HoloBridgesComponent(Level world) {
 		this.world = world;
 	}
 	
-	public World getWorld() {
+	public Level getWorld() {
 		return world;
 	}
 	
@@ -111,7 +106,7 @@ public final class HoloBridgesComponent implements Component {
 		var vectors = get(pos);
 		
 		if (vectors == null) {
-			return VoxelShapes.fullCube();
+			return Shapes.block();
 		}
 		
 		if (cache.containsKey(pos)) {
@@ -126,7 +121,7 @@ public final class HoloBridgesComponent implements Component {
 	}
 	
 	private VoxelShape getShape(Set<Vec3i> vecs) {
-		var shape = VoxelShapes.empty();
+		var shape = Shapes.empty();
 		
 		var isX = vecs.stream().allMatch(vec -> vec.getX() == 0);
 		var isZ = vecs.stream().allMatch(vec -> vec.getZ() == 0);
@@ -169,7 +164,7 @@ public final class HoloBridgesComponent implements Component {
 				endZ = copy;
 			}
 			
-			shape = VoxelShapes.union(shape, Block.createCuboidShape(startX, startY, startZ, endX, endY, endZ));
+			shape = Shapes.or(shape, Block.box(startX, startY, startZ, endX, endY, endZ));
 		}
 		
 		if (isNegativeX || isNegativeZ) {
@@ -179,12 +174,11 @@ public final class HoloBridgesComponent implements Component {
 		return shape;
 	}
 	
-	@Override
-	public void writeToNbt(@NotNull NbtCompound nbt) {
-		var dataList = new NbtList();
+	public void writeToNbt(@NotNull CompoundTag nbt) {
+		var dataList = new ListTag();
 		
 		for (var entry : entries.long2ObjectEntrySet()) {
-			var pointData = new NbtCompound();
+			var pointData = new CompoundTag();
 			
 			var vecs = new long[entry.getValue().size()];
 			
@@ -195,7 +189,7 @@ public final class HoloBridgesComponent implements Component {
 			}
 			
 			pointData.putLong(POSITION_KEY, entry.getLongKey());
-			pointData.put(VECTORS_KEY, new NbtLongArray(vecs));
+			pointData.put(VECTORS_KEY, new LongArrayTag(vecs));
 			
 			dataList.add(pointData);
 		}
@@ -203,17 +197,16 @@ public final class HoloBridgesComponent implements Component {
 		nbt.put(DATA_KEY, dataList);
 	}
 	
-	@Override
-	public void readFromNbt(NbtCompound nbt) {
-		var dataTag = nbt.getList(DATA_KEY, NbtElement.COMPOUND_TYPE);
+	public void readFromNbt(CompoundTag nbt) {
+		var dataTag = nbt.getList(DATA_KEY, Tag.TAG_COMPOUND);
 		
 		for (var pointTag : dataTag) {
-			var vecs = ((NbtCompound) pointTag).getLongArray(VECTORS_KEY);
+			var vecs = ((CompoundTag) pointTag).getLongArray(VECTORS_KEY);
 			
-			var pos = ((NbtCompound) pointTag).getLong(POSITION_KEY);
+			var pos = ((CompoundTag) pointTag).getLong(POSITION_KEY);
 			
 			for (var vec : vecs) {
-				add(pos, BlockPos.fromLong(vec));
+				add(pos, BlockPos.of(vec));
 			}
 		}
 	}

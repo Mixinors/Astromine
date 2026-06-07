@@ -24,17 +24,22 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.minecraft.util.CuboidBlockIterator;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Heightmap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Cursor3D;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
 public class AMColorProviders {
-	public static void init() {
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+	public static void init(IEventBus modBus) {
+		modBus.addListener(AMColorProviders::registerBlockColors);
+		modBus.addListener(AMColorProviders::registerItemColors);
+	}
+	
+	private static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+		event.register((state, world, pos, tintIndex) -> {
 			// Average out the colors based on nearby biomes, and based
 			// on biome blend.
 			
@@ -46,11 +51,15 @@ public class AMColorProviders {
 				return 0x242424;
 			}
 			
-			var client = InstanceUtil.getClient();
+			var client = Minecraft.getInstance();
+			
+			if (client.level == null) {
+				return 0x242424;
+			}
 			
 			var gameOptions = client.options;
 			
-			var radius = gameOptions.getBiomeBlendRadius().getValue() * 2;
+			var radius = gameOptions.biomeBlendRadius().get() * 2;
 			
 			var blocks = (radius * 2 + 1) * (radius * 2 + 1);
 			
@@ -58,15 +67,15 @@ public class AMColorProviders {
 			var g = 0;
 			var b = 0;
 			
-			var iterator = new CuboidBlockIterator(pos.getX() - radius, pos.getY(), pos.getZ() - radius, pos.getX() + radius, pos.getY(), pos.getZ() + radius);
-			var mutable = new BlockPos.Mutable();
+			var iterator = new Cursor3D(pos.getX() - radius, pos.getY(), pos.getZ() - radius, pos.getX() + radius, pos.getY(), pos.getZ() + radius);
+			var mutable = new BlockPos.MutableBlockPos();
 			
-			while (iterator.step()) {
-				mutable.set(iterator.getX(), iterator.getY(), iterator.getZ());
+			while (iterator.advance()) {
+				mutable.set(iterator.nextX(), iterator.nextY(), iterator.nextZ());
 				
-				var top = client.world.getTopPosition(Heightmap.Type.WORLD_SURFACE, mutable);
+				var top = client.level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, mutable);
 				
-				mutable.set(iterator.getX(), top.getY() - 1, iterator.getZ());
+				mutable.set(iterator.nextX(), top.getY() - 1, iterator.nextZ());
 				
 				int color;
 				
@@ -160,7 +169,10 @@ public class AMColorProviders {
 				AMBlocks.DARK_MOON_STONE_BRICK_WALL.get()
 		);
 		
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+	}
+	
+	private static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+		event.register((stack, tintIndex) -> {
 			return 0x7E7E7E;
 		},
 				AMBlocks.DARK_MOON_LUNUM_ORE.get().asItem(),
@@ -197,9 +209,5 @@ public class AMColorProviders {
 				AMBlocks.DARK_MOON_STONE_BRICK_STAIRS.get().asItem(),
 				AMBlocks.DARK_MOON_STONE_BRICK_WALL.get().asItem()
 		);
-		
-		for (var fluid : AMDatagenLists.FluidLists.FLUIDS) {
-			ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> fluid.getTintColor(), fluid.getCauldron());
-		}
 	}
 }

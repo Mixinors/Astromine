@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 17920,
+  "input": {
+    "count": 1,
+    "tag": "c:stellum_boots"
+  },
+  "output": {
+    "amount": 96,
+    "fluid": "astromine:molten_stellum"
+  },
+  "time": 2240
+}

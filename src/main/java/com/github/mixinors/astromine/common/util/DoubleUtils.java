@@ -27,14 +27,14 @@ package com.github.mixinors.astromine.common.util;
 import com.github.mixinors.astromine.AMCommon;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class DoubleUtils {
-	public static void toPacket(PacketByteBuf buffer, double number) {
+	public static void toPacket(FriendlyByteBuf buffer, double number) {
 		buffer.writeDouble(number);
 	}
 	
-	public static double fromPacket(PacketByteBuf buffer) {
+	public static double fromPacket(FriendlyByteBuf buffer) {
 		return buffer.readDouble();
 	}
 	

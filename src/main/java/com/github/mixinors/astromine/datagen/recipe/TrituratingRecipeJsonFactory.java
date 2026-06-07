@@ -25,16 +25,22 @@
 package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 
 public class TrituratingRecipeJsonFactory extends SimpleMachineRecipeJsonFactory<TrituratingRecipe> {
-	protected TrituratingRecipeJsonFactory(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
+	protected TrituratingRecipeJsonFactory(Ingredient input, ItemLike output, int outputCount, int processingTime, int energy) {
 		super(input, output, outputCount, processingTime, energy, TrituratingRecipe.Serializer.INSTANCE);
 	}
 	
 	@Override
 	public String getName() {
 		return "triturating";
+	}
+	
+	@Override
+	protected TrituratingRecipe createRecipe(ResourceLocation recipeId) {
+		return new TrituratingRecipe(recipeId, input(), output(), this.energy, this.processingTime);
 	}
 }

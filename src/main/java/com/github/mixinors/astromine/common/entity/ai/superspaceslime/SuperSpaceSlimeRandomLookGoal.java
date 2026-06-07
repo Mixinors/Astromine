@@ -25,10 +25,9 @@
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.effect.StatusEffects;
-
 import java.util.EnumSet;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 public class SuperSpaceSlimeRandomLookGoal extends Goal {
 	private final SuperSpaceSlimeEntity slime;
@@ -40,14 +39,14 @@ public class SuperSpaceSlimeRandomLookGoal extends Goal {
 	public SuperSpaceSlimeRandomLookGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
 		
-		this.setControls(EnumSet.of(Goal.Control.LOOK));
+		this.setFlags(EnumSet.of(Goal.Flag.LOOK));
 	}
 	
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		var validTarget = slime.getTarget() == null;
 		
-		var validState = slime.isOnGround() || slime.isTouchingWater() || slime.isInLava() || slime.hasStatusEffect(StatusEffects.LEVITATION);
+		var validState = slime.onGround() || slime.isInWater() || slime.isInLava() || slime.hasEffect(MobEffects.LEVITATION);
 		
 		var hasSlimeMoveControls = slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 		

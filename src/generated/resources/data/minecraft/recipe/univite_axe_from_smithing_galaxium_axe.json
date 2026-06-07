@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "astromine:univite_ingot"
+  },
+  "base": {
+    "item": "astromine:galaxium_axe"
+  },
+  "result": {
+    "count": 1,
+    "id": "astromine:univite_axe"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

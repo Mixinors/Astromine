@@ -2,8 +2,8 @@ package com.github.mixinors.astromine.common.registry;
 
 import com.github.mixinors.astromine.common.util.WeightedList;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Block;
 
 public class DarkMoonOreRegistry {
 	public static final DarkMoonOreRegistry INSTANCE = new DarkMoonOreRegistry();
@@ -18,7 +18,7 @@ public class DarkMoonOreRegistry {
 		entries.add(block, weight);
 	}
 	
-	public Block getRandom(Random random) {
+	public Block getRandom(RandomSource random) {
 		return entries.shuffle(random).stream().findFirst().orElseGet(AMBlocks.MOON_STONE);
 	}
 }

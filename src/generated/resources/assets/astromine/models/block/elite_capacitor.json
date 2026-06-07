@@ -5,6 +5,7 @@
     "bottom": "astromine:block/elite_capacitor_bottom",
     "front": "astromine:block/elite_capacitor_front",
     "left": "astromine:block/elite_capacitor_left",
+    "particle": "astromine:block/elite_capacitor_top",
     "right": "astromine:block/elite_capacitor_right",
     "top": "astromine:block/elite_capacitor_top"
   }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "tag": "c:meteoric_steel_salvageables"
+  },
+  "result": {
+    "count": 1,
+    "id": "astromine:meteoric_steel_nugget"
+  }
+}

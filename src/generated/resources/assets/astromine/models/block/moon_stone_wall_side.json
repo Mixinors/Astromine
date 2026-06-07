@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_wall_side",
   "textures": {
-    "wall": "astromine:block/moon_stone"
+    "wall": "astromine:block/static_moon_stone"
   }
 }

@@ -26,35 +26,37 @@ package com.github.mixinors.astromine.client.render.entity;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.entity.SuperSpaceSlimeEntityModel;
+import com.github.mixinors.astromine.client.render.entity.layer.SpaceSlimeGlassLayer;
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.feature.SlimeOverlayFeatureRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.SlimeOuterLayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
-public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
-	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
-	private static final Identifier EXPLODING_TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime_exploding.png");
+public class SuperSpaceSlimeEntityRenderer extends MobRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
+	private static final ResourceLocation TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
+	private static final ResourceLocation EXPLODING_TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime_exploding.png");
 	
-	public SuperSpaceSlimeEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new SuperSpaceSlimeEntityModel(context.getPart(EntityModelLayers.SLIME)), 0.25F);
+	public SuperSpaceSlimeEntityRenderer(EntityRendererProvider.Context context) {
+		super(context, new SuperSpaceSlimeEntityModel(context.bakeLayer(ModelLayers.SLIME)), 0.25F);
 		
-		this.addFeature(new SlimeOverlayFeatureRenderer(this, context.getModelLoader()));
+		this.addLayer(new SlimeOuterLayer(this, context.getModelSet()));
+		this.addLayer(new SpaceSlimeGlassLayer<>(this, context.getItemRenderer()));
 	}
 	
 	@Override
-	public void render(SuperSpaceSlimeEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
+	public void render(SuperSpaceSlimeEntity entity, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource provider, int light) {
 		this.shadowRadius = 2.5F;
 		
 		super.render(entity, yaw, tickDelta, matrices, provider, light);
 	}
 	
 	@Override
-	public void scale(SuperSpaceSlimeEntity slimeEntity, MatrixStack matrices, float tickDelta) {
+	public void scale(SuperSpaceSlimeEntity slimeEntity, PoseStack matrices, float tickDelta) {
 		var scale = 0.999F;
 		
 		matrices.scale(scale, scale, scale);
@@ -63,7 +65,7 @@ public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceS
 		
 		var slimeSize = 10.0F;
 		
-		var stretch = MathHelper.lerp(tickDelta, slimeEntity.prevStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
+		var stretch = Mth.lerp(tickDelta, slimeEntity.prevStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
 		
 		var multiplier = 1.0F / (stretch + 1.0F);
 		
@@ -77,7 +79,7 @@ public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceS
 	}
 	
 	@Override
-	public Identifier getTexture(SuperSpaceSlimeEntity slimeEntity) {
+	public ResourceLocation getTextureLocation(SuperSpaceSlimeEntity slimeEntity) {
 		return slimeEntity.isExploding() ? EXPLODING_TEXTURE : TEXTURE;
 	}
 }

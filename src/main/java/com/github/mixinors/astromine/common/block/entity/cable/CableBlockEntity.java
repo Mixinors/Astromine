@@ -25,22 +25,26 @@
 package com.github.mixinors.astromine.common.block.entity.cable;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.BitSet;
 
-public class CableBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
+public class CableBlockEntity extends BlockEntity {
 	public static final String DATA_KEY = "Data";
+	public static final ModelProperty<Connections> CONNECTIONS = new ModelProperty<>();
 	
 	private Connections connections = new Connections();
 	
@@ -63,41 +67,51 @@ public class CableBlockEntity extends BlockEntity implements RenderAttachmentBlo
 	}
 	
 	@Override
-	public @Nullable Object getRenderAttachmentData() {
-		return connections;
+	public ModelData getModelData() {
+		return ModelData.of(CONNECTIONS, connections);
 	}
 	
 	@Override
-	protected void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
+	protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		super.saveAdditional(nbt, registries);
 		
 		nbt.putLongArray(DATA_KEY, connections.data.toLongArray());
 	}
 	
 	@Override
-	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
+	protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		super.loadAdditional(nbt, registries);
 		
 		connections = new Connections(BitSet.valueOf(nbt.getLongArray(DATA_KEY)));
 		
-		if (world != null && world.isClient) {
-			world.scheduleBlockRerenderIfNeeded(getPos(), Blocks.AIR.getDefaultState(), Blocks.BEDROCK.getDefaultState());
+		if (level != null && level.isClientSide) {
+			requestModelDataUpdate();
+			level.setBlocksDirty(getBlockPos(), Blocks.AIR.defaultBlockState(), Blocks.BEDROCK.defaultBlockState());
 		}
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		var nbt = new NbtCompound();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		var nbt = new CompoundTag();
 		
-		writeNbt(nbt);
+		saveAdditional(nbt, registries);
 		
 		return nbt;
 	}
 	
 	@Nullable
 	@Override
-	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
+	public Packet<ClientGamePacketListener> getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+	
+	public void syncData() {
+		setChanged();
+		
+		if (level != null) {
+			requestModelDataUpdate();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+		}
 	}
 	
 	public static class Connections {

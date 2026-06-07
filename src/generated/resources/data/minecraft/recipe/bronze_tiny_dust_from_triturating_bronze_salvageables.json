@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 200,
+  "input": {
+    "count": 1,
+    "tag": "c:bronze_salvageables"
+  },
+  "output": {
+    "count": 2,
+    "item": "astromine:bronze_tiny_dust"
+  },
+  "time": 30
+}

@@ -5,6 +5,7 @@
     "bottom": "astromine:block/elite_buffer_bottom",
     "front": "astromine:block/elite_buffer_front",
     "left": "astromine:block/elite_buffer_left",
+    "particle": "astromine:block/elite_buffer_top",
     "right": "astromine:block/elite_buffer_right",
     "top": "astromine:block/elite_buffer_top"
   }

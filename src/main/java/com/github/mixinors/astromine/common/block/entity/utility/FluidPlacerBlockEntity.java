@@ -30,16 +30,16 @@ import com.github.mixinors.astromine.common.config.entry.utility.FluidStorageUti
 import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 
 public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements FluidStorageUtilityConfigProvider {
 	public static final String COOLDOWN_KEY = "Cooldown";
@@ -55,14 +55,14 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 	public FluidPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_PLACER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				false
 		).insertPredicate((variant, slot) ->
 				slot == INPUT_SLOT
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -70,7 +70,7 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
@@ -82,69 +82,54 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 				
 				active = false;
 			} else {
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+				var direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+				var targetPos = worldPosition.relative(direction);
+				var targetState = level.getBlockState(targetPos);
+				var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+				
+				if (inputStorage.getAmount() >= FluidType.BUCKET_VOLUME && targetState.isAir()) {
+					if (cooldown >= getSpeed()) {
+						var inputVariant = inputStorage.getResource();
 						
-						var targetPos = pos.offset(direction);
-						
-						var targetState = world.getBlockState(targetPos);
-						
-						var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
-						
-						if (inputStorage.getAmount() >= FluidConstants.BUCKET && targetState.isAir()) {
-							if (cooldown >= getSpeed()) {
-								var inputVariant = inputStorage.getResource();
-								
-								if (inputStorage.extract(inputStorage.getResource(), FluidConstants.BUCKET, transaction, true) == FluidConstants.BUCKET) {
-									var state = inputVariant.getFluid().getDefaultState().getBlockState();
-									
-									world.setBlockState(targetPos, state);
-									
-									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
-									
-									energyStorage.amount -= consumed;
-									
-									cooldown = 0L;
-									
-									transaction.commit();
-								} else {
-									active = false;
-									
-									transaction.abort();
-								}
-							} else {
-								++cooldown;
-								
-								active = true;
-							}
+						if (inputStorage.extract(inputStorage.getResource(), FluidType.BUCKET_VOLUME, true, true) == FluidType.BUCKET_VOLUME) {
+							inputStorage.extract(inputStorage.getResource(), FluidType.BUCKET_VOLUME, true, false);
+							
+							var state = inputVariant.getFluid().defaultFluidState().createLegacyBlock();
+							
+							level.setBlockAndUpdate(targetPos, state);
+							
+							level.playSound(null, worldPosition, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1, 1);
+							
+							energyStorage.amount -= consumed;
+							
+							cooldown = 0L;
 						} else {
 							active = false;
-							
-							transaction.abort();
 						}
 					} else {
-						active = false;
+						++cooldown;
 						
-						transaction.abort();
+						active = true;
 					}
+				} else {
+					active = false;
 				}
 			}
 		}
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		nbt.putLong(COOLDOWN_KEY, cooldown);
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		cooldown = nbt.getLong(COOLDOWN_KEY);
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override

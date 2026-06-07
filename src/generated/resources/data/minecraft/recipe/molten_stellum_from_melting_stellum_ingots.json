@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 12800,
+  "input": {
+    "count": 1,
+    "tag": "c:stellum_ingots"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_stellum"
+  },
+  "time": 1600
+}

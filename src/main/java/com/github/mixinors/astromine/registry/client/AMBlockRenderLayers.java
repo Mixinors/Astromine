@@ -1,11 +1,17 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class AMBlockRenderLayers {
-	public static void init() {
-		BlockRenderLayerMap.INSTANCE.putBlock(AMBlocks.ROCKET_WINDOW.get(), RenderLayer.getTranslucent());
+	public static void init(IEventBus modBus) {
+		modBus.addListener(AMBlockRenderLayers::register);
+	}
+	
+	private static void register(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> ItemBlockRenderTypes.setRenderLayer(AMBlocks.ROCKET_WINDOW.get(), RenderType.translucent()));
 	}
 }

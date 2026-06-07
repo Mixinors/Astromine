@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:primitive_energy_cable",
-    "astromine:basic_energy_cable",
-    "astromine:advanced_energy_cable",
-    "astromine:elite_energy_cable"
-  ]
-}

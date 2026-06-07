@@ -32,64 +32,75 @@ import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
 import com.github.mixinors.astromine.common.util.NetworkUtils;
 import com.google.common.collect.ImmutableMap;
-import dev.architectury.hooks.block.BlockEntityHooks;
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static net.minecraft.state.property.Properties.WATERLOGGED;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
-public abstract class CableBlock extends BlockWithEntity implements Waterloggable {
-	public static final Map<Direction, VoxelShape> SIDE_SHAPE_MAP = ImmutableMap.of(Direction.UP, Block.createCuboidShape(6D, 10D, 6D, 10D, 16D, 10D),
-																		   			Direction.DOWN, Block.createCuboidShape(6D, 0D, 6D, 10D, 6D, 10D),
-																		   			Direction.NORTH, Block.createCuboidShape(6D, 6D, 0D, 10D, 10D, 6D),
-																		   			Direction.SOUTH, Block.createCuboidShape(6D, 6D, 10D, 10D, 10D, 16D),
-																		   			Direction.EAST, Block.createCuboidShape(10D, 6D, 6D, 16D, 10D, 10D),
-																		   			Direction.WEST, Block.createCuboidShape(0D, 6D, 6D, 6D, 10D, 10D));
+public abstract class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+	public static final Map<Direction, VoxelShape> SIDE_SHAPE_MAP = ImmutableMap.of(Direction.UP, Block.box(6D, 10D, 6D, 10D, 16D, 10D),
+																		   			Direction.DOWN, Block.box(6D, 0D, 6D, 10D, 6D, 10D),
+																		   			Direction.NORTH, Block.box(6D, 6D, 0D, 10D, 10D, 6D),
+																		   			Direction.SOUTH, Block.box(6D, 6D, 10D, 10D, 10D, 16D),
+																		   			Direction.EAST, Block.box(10D, 6D, 6D, 16D, 10D, 10D),
+																		   			Direction.WEST, Block.box(0D, 6D, 6D, 6D, 10D, 10D));
 	
-	public static final Map<Direction, VoxelShape> CONNECTOR_SHAPE_MAP = ImmutableMap.of(Direction.UP, VoxelShapes.cuboid(0.375D, 0.875D, 0.3125D, 0.75D, 1.0625D, 0.6875D),
-																						 Direction.DOWN, VoxelShapes.cuboid(0.3125D, -0.0625D, 0.3125D, 0.6875D, 0.125D, 0.6875D),
-																						 Direction.NORTH, VoxelShapes.cuboid(0.3125D, 0.3125D, -0.0625D, 0.6875D, 0.6875D, 0.125D),
-																						 Direction.SOUTH, VoxelShapes.cuboid(0.3125D, 0.3125D, 0.875D, 0.6875D, 0.6875D, 1.0625D),
-																						 Direction.EAST, VoxelShapes.cuboid(0.875D, 0.3125D, 0.3125D, 1.0625D, 0.6875D, 0.6875D),
-																						 Direction.WEST, VoxelShapes.cuboid(-0.0625D, 0.3125D, 0.3125D, 0.125D, 0.6875D, 0.6875D));
+	public static final Map<Direction, VoxelShape> CONNECTOR_SHAPE_MAP = ImmutableMap.of(Direction.UP, Shapes.box(0.375D, 0.875D, 0.3125D, 0.75D, 1.0625D, 0.6875D),
+																						 Direction.DOWN, Shapes.box(0.3125D, -0.0625D, 0.3125D, 0.6875D, 0.125D, 0.6875D),
+																						 Direction.NORTH, Shapes.box(0.3125D, 0.3125D, -0.0625D, 0.6875D, 0.6875D, 0.125D),
+																						 Direction.SOUTH, Shapes.box(0.3125D, 0.3125D, 0.875D, 0.6875D, 0.6875D, 1.0625D),
+																						 Direction.EAST, Shapes.box(0.875D, 0.3125D, 0.3125D, 1.0625D, 0.6875D, 0.6875D),
+																						 Direction.WEST, Shapes.box(-0.0625D, 0.3125D, 0.3125D, 0.125D, 0.6875D, 0.6875D));
 	
-	public static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
+	public static final VoxelShape CENTER_SHAPE = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 	
 	protected static final Int2ObjectArrayMap<VoxelShape> SHAPE_CACHE = new Int2ObjectArrayMap<>();
 	
-	public CableBlock(Settings settings) {
+	public CableBlock(Properties settings) {
 		super(settings);
 		
-		setDefaultState(getDefaultState().with(WATERLOGGED, false));
+		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 	
-	public CableBlockEntity getBlockEntity(World world, BlockPos pos) {
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return MapCodec.unit(this);
+	}
+	
+	public CableBlockEntity getBlockEntity(Level world, BlockPos pos) {
 		return (CableBlockEntity) world.getBlockEntity(pos);
 	}
 	
-	public void updateConnections(CableBlockEntity blockEntity, World world, BlockPos pos) {
+	public void updateConnections(CableBlockEntity blockEntity, Level world, BlockPos pos) {
 		if (blockEntity == null) {
 			return;
 		}
@@ -104,14 +115,14 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 			connections.setSide(direction, false);
 			connections.setConnection(direction, false);
 			
-			var offsetState = world.getBlockState(pos.offset(direction));
+			var offsetState = world.getBlockState(pos.relative(direction));
 			var offsetBlock = offsetState.getBlock();
 			
 			if (offsetBlock == this) {
 				connections.setSide(direction, true);
 			}
 			
-			var offsetStorage = getNetworkType().find(world, pos.offset(direction), direction.getOpposite());
+			var offsetStorage = getNetworkType().find(world, pos.relative(direction), direction.getOpposite());
 			
 			if (offsetStorage != null) {
 				connections.setSide(direction, true);
@@ -119,15 +130,15 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 			}
 		}
 		
-		BlockEntityHooks.syncData(blockEntity);
+		blockEntity.syncData();
 	}
 	
-	public void updateConnections(World world, BlockPos pos) {
+	public void updateConnections(Level world, BlockPos pos) {
 		updateConnections((CableBlockEntity) world.getBlockEntity(pos), world, pos);
 	}
 	
-	public void toggleConnectionType(World world, BlockPos pos, Direction direction) {
-		if (!world.isClient) {
+	public void toggleConnectionType(Level world, BlockPos pos, Direction direction) {
+		if (!world.isClientSide) {
 			var blockEntity = (CableBlockEntity) world.getBlockEntity(pos);
 			
 			if (blockEntity == null) {
@@ -163,7 +174,7 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 			for (var member : network.getMembers()) {
 				var newMember = (Network.Member) member;
 				
-				if (newMember.blockPos().equals(pos.offset(direction))) {
+				if (newMember.blockPos().equals(pos.relative(direction))) {
 					foundMember = newMember;
 				}
 			}
@@ -206,40 +217,40 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 				network.getMembers().add(new Network.Member(foundMember.blockPos(), foundMember.direction(), StorageSiding.INSERT));
 			}
 			
-			BlockEntityHooks.syncData(blockEntity);
+			blockEntity.syncData();
 		}
 	}
 	
 	public abstract <T extends NetworkType> T getNetworkType();
 	
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (getNetworkType().hasSiding()) {
-			if (!world.isClient) {
+			if (!world.isClientSide) {
 				// Hit position is relative to the world.
-				var hitPos = hit.getPos();
+				var hitPos = hit.getLocation();
 				
 				// Make it local.
 				hitPos = hitPos.subtract(pos.getX(), pos.getY(), pos.getZ());
 				
 				for (var direction : DirectionUtils.VALUES) {
-					if (CONNECTOR_SHAPE_MAP.get(direction).getBoundingBox().expand(0.01F).contains(hitPos)) {
+					if (CONNECTOR_SHAPE_MAP.get(direction).bounds().inflate(0.01F).contains(hitPos)) {
 						toggleConnectionType(world, pos, direction);
 						
-						return ActionResult.SUCCESS;
+						return ItemInteractionResult.SUCCESS;
 					}
 				}
 			}
 		}
 		
-		return super.onUse(state, world, pos, player, hand, hit);
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		super.onPlaced(world, pos, state, placer, stack);
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(world, pos, state, placer, stack);
 		
-		if (!world.isClient) {
+		if (!world.isClientSide) {
 			NetworkUtils.trace(getNetworkType(), world, pos);
 			
 			updateConnections(world, pos);
@@ -247,10 +258,10 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		super.onStateReplaced(state, world, pos, newState, moved);
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+		super.onRemove(state, world, pos, newState, moved);
 		
-		if (!world.isClient) {
+		if (!world.isClientSide) {
 			if (state.getBlock() == newState.getBlock()) {
 				return;
 			}
@@ -267,7 +278,7 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 			}
 			
 			for (var direction : DirectionUtils.VALUES) {
-				var offsetPos = pos.offset(direction);
+				var offsetPos = pos.relative(direction);
 				var offsetBlock = world.getBlockState(offsetPos).getBlock();
 				
 				if (!(offsetBlock instanceof CableBlock)) {
@@ -285,10 +296,10 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 	}
 	
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPosition, boolean moved) {
-		super.neighborUpdate(state, world, pos, block, neighborPosition, moved);
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos neighborPosition, boolean moved) {
+		super.neighborChanged(state, world, pos, block, neighborPosition, moved);
 		
-		if (!world.isClient) {
+		if (!world.isClientSide) {
 			var networkComponent = NetworksComponent.get(world);
 			
 			var network = networkComponent.get(getNetworkType(), pos);
@@ -307,29 +318,29 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED);
 	}
 	
 	@Override
-	public VoxelShape getOutlineShape(BlockState blockState, BlockView world, BlockPos pos, ShapeContext entityContext) {
-		if (!(world instanceof World)) {
-			return VoxelShapes.empty();
+	public VoxelShape getShape(BlockState blockState, BlockGetter world, BlockPos pos, CollisionContext entityContext) {
+		if (!(world instanceof Level)) {
+			return Shapes.empty();
 		}
 		
 		var sideDirections = new HashSet<Direction>();
 		var connectorDirections = new HashSet<Direction>();
 		
-		var blockEntity = getBlockEntity((World) world, pos);
+		var blockEntity = getBlockEntity((Level) world, pos);
 		
 		if (blockEntity == null) {
-			return VoxelShapes.empty();
+			return Shapes.empty();
 		}
 		
 		var connections = blockEntity.getConnections();
 		
 		if (connections == null) {
-			return VoxelShapes.empty();
+			return Shapes.empty();
 		}
 		
 		for (var direction : DirectionUtils.VALUES) {
@@ -347,12 +358,12 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 	
 	private static VoxelShape toVoxelShape(int directions, VoxelShape shape) {
 		for (var direction : DirectionUtils.VALUES) {
-			if ((directions & (0x1 << direction.getId())) != 0) {
-				shape = VoxelShapes.union(shape, CableBlock.SIDE_SHAPE_MAP.get(direction));
+			if ((directions & (0x1 << direction.get3DDataValue())) != 0) {
+				shape = Shapes.or(shape, CableBlock.SIDE_SHAPE_MAP.get(direction));
 			}
 			
-			if ((directions & (0x1 << (direction.getId() + 6))) != 0) {
-				shape = VoxelShapes.union(shape, CableBlock.CONNECTOR_SHAPE_MAP.get(direction));
+			if ((directions & (0x1 << (direction.get3DDataValue() + 6))) != 0) {
+				shape = Shapes.or(shape, CableBlock.CONNECTOR_SHAPE_MAP.get(direction));
 			}
 		}
 		return shape;
@@ -362,11 +373,11 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 		var i = 0;
 		
 		for (var direction : sideDirections) {
-			i |= 1 << direction.getId();
+			i |= 1 << direction.get3DDataValue();
 		}
 		
 		for (var direction : connectorDirections) {
-			i |= 1 << (direction.getId() + 6);
+			i |= 1 << (direction.get3DDataValue() + 6);
 		}
 		
 		return getVoxelShape(i);
@@ -386,23 +397,23 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 	
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return (state.contains(WATERLOGGED) && state.get(WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
+		return (state.hasProperty(WATERLOGGED) && state.getValue(WATERLOGGED)) ? Fluids.WATER.defaultFluidState() : super.getFluidState(state);
 	}
 	
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return super.getPlacementState(context).with(WATERLOGGED, false);
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, false);
 	}
 	
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.MODEL;
+	public RenderShape getRenderShape(BlockState state) {
+		return RenderShape.MODEL;
 	}
 	
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new CableBlockEntity(pos, state);
 	}
 }

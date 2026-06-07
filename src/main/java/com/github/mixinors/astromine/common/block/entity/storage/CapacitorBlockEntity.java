@@ -28,17 +28,17 @@ import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntit
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
+import com.github.mixinors.astromine.common.transfer.storage.EnergyStorageItem;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.EnergyStorageUtil;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.function.Supplier;
 
@@ -54,14 +54,14 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMachineTier() == Tier.CREATIVE ? 0L : getMaxTransferRate(), getMaxTransferRate());
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMachineTier() == Tier.CREATIVE ? 0L : getMaxTransferRate(), getMaxTransferRate());
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) ->
 				slot == INPUT_SLOT
 		).extractPredicate((stack, slot) ->
 				slot == OUTPUT_SLOT
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -69,24 +69,38 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		var wildItemStorage = itemStorage.getWildProxy();
 		
-		var inputStack = wildItemStorage.getStack(INPUT_SLOT);
-		var inputEnergyStorage = EnergyStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(wildItemStorage.getStorage(INPUT_SLOT)));
+		var inputStack = wildItemStorage.getItem(INPUT_SLOT);
+		var inputEnergyStorage = findEnergyStorage(inputStack);
 		
-		var outputStack = wildItemStorage.getStack(OUTPUT_SLOT);
-		var outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(wildItemStorage.getStorage(OUTPUT_SLOT)));
+		var outputStack = wildItemStorage.getItem(OUTPUT_SLOT);
+		var outputEnergyStorage = findEnergyStorage(outputStack);
 		
-		try (var transaction = Transaction.openOuter()) {
-			EnergyStorageUtil.move(inputEnergyStorage, energyStorage, getMaxTransferRate(), transaction);
-			EnergyStorageUtil.move(energyStorage, outputEnergyStorage, getMaxTransferRate(), transaction);
-			
-			transaction.commit();
+		LongEnergyStorage.move(inputEnergyStorage, energyStorage, getMaxTransferRate());
+		LongEnergyStorage.move(energyStorage, outputEnergyStorage, getMaxTransferRate());
+	}
+	
+	private static IEnergyStorage findEnergyStorage(ItemStack stack) {
+		if (stack.isEmpty()) {
+			return null;
 		}
+		
+		var capabilityStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+		
+		if (capabilityStorage != null) {
+			return capabilityStorage;
+		}
+		
+		if (stack.getItem() instanceof EnergyStorageItem energyStorageItem) {
+			return energyStorageItem.createEnergyStorage(stack);
+		}
+		
+		return null;
 	}
 	
 	@Override

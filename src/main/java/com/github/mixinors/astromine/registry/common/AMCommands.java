@@ -26,64 +26,28 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.registry.menu.ExtendedMenuProvider;
-import dev.architectury.registry.menu.MenuRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.SimpleMenuProvider;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 public class AMCommands {
 	public static void init() {
-		CommandRegistrationEvent.EVENT.register((dispatcher, environment, $) -> {
-			dispatcher.register(
-					LiteralArgumentBuilder.<ServerCommandSource>literal("body_selector").executes(context -> {
-						MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
-							@Override
-							public void saveExtraData(PacketByteBuf packetByteBuf) {
-							
-							}
-							
-							@Override
-							public Text getDisplayName() {
-								return Text.literal("Recipe Creator");
-							}
-							
-							@Override
-							public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-								return new BodySelectorScreenHandler(syncId, player);
-							}
-						});
-						
-						return 1;
-					})
-			);
-			
-			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource>literal("creator").executes((context) -> {
-				MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
-					@Override
-					public void saveExtraData(PacketByteBuf packetByteBuf) {
-						
-					}
-					
-					@Override
-					public Text getDisplayName() {
-						return Text.literal("Recipe Creator");
-					}
-					
-					@Override
-					public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-						return new RecipeCreatorScreenHandler(syncId, player);
-					}
-				});
-				
-				return 1;
-			})));
-		});
+		NeoForge.EVENT_BUS.addListener(AMCommands::registerCommands);
+	}
+	
+	private static void registerCommands(RegisterCommandsEvent event) {
+		event.getDispatcher().register(Commands.literal("body_selector").executes(context -> {
+			var player = context.getSource().getPlayerOrException();
+			player.openMenu(new SimpleMenuProvider((syncId, inventory, ignored) -> new BodySelectorScreenHandler(syncId, player), Component.literal("Body Selector")));
+			return 1;
+		}));
+		
+		event.getDispatcher().register(Commands.literal("recipe").then(Commands.literal("creator").executes(context -> {
+			var player = context.getSource().getPlayerOrException();
+			player.openMenu(new SimpleMenuProvider((syncId, inventory, ignored) -> new RecipeCreatorScreenHandler(syncId, player), Component.literal("Recipe Creator")));
+			return 1;
+		})));
 	}
 }

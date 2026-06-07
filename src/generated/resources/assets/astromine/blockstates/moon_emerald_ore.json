@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "dynamic=false": {
       "model": "astromine:block/moon_emerald_ore"
+    },
+    "dynamic=true": {
+      "model": "astromine:block/moon_emerald_ore_dynamic"
     }
   }
 }

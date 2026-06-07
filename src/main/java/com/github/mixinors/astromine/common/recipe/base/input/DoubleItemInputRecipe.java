@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.recipe.base.input;
 
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.minecraft.world.item.ItemStack;
 
 public interface DoubleItemInputRecipe extends ItemInputRecipe {
 	@Override
@@ -38,14 +38,22 @@ public interface DoubleItemInputRecipe extends ItemInputRecipe {
 	ItemIngredient getSecondInput();
 	
 	@Override
-	default boolean allows(ItemVariant... variants) {
-		var firstInputVariant = variants[0];
-		var secondInputVariant = variants[1];
+	default boolean allows(ItemStack... stacks) {
+		var firstInputStack = stacks[0];
+		var secondInputStack = stacks[1];
 		
-		if (!getFirstInput().test(firstInputVariant, Long.MAX_VALUE) && !getSecondInput().test(firstInputVariant, Long.MAX_VALUE)) {
-			return false;
+		var firstMatchesAnyInput = getFirstInput().test(firstInputStack, Long.MAX_VALUE) || getSecondInput().test(firstInputStack, Long.MAX_VALUE);
+		var secondMatchesAnyInput = getFirstInput().test(secondInputStack, Long.MAX_VALUE) || getSecondInput().test(secondInputStack, Long.MAX_VALUE);
+		
+		if (firstInputStack.isEmpty()) {
+			return secondMatchesAnyInput;
 		}
 		
-		return getSecondInput().test(secondInputVariant, Long.MAX_VALUE) || getFirstInput().test(secondInputVariant, Long.MAX_VALUE);
+		if (secondInputStack.isEmpty()) {
+			return firstMatchesAnyInput;
+		}
+		
+		return (getFirstInput().test(firstInputStack, Long.MAX_VALUE) && getSecondInput().test(secondInputStack, Long.MAX_VALUE))
+				|| (getFirstInput().test(secondInputStack, Long.MAX_VALUE) && getSecondInput().test(firstInputStack, Long.MAX_VALUE));
 	}
 }

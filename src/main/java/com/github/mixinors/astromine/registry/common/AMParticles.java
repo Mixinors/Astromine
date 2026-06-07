@@ -25,23 +25,31 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.Registries;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMParticles {
-	public static final RegistrySupplier<DefaultParticleType> SPACE_SLIME = register("space_slime", false);
-	public static final RegistrySupplier<DefaultParticleType> ROCKET_FLAME = register("rocket_flame", true);
+	private static final DeferredRegister<ParticleType<?>> REGISTRY = DeferredRegister.create(Registries.PARTICLE_TYPE, AMCommon.MOD_ID);
+	
+	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SPACE_SLIME = register("space_slime", false);
+	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ROCKET_FLAME = register("rocket_flame", true);
+	
+	public static void init() {
+		REGISTRY.register(AMCommon.modEventBus());
+	}
 	
 	/**
-	 * Registers a new {@link DefaultParticleType} instance under the given name.
+	 * Registers a new {@link SimpleParticleType} instance under the given name.
 	 *
-	 * @param name       Name of {@link DefaultParticleType} to register
+	 * @param name       Name of {@link SimpleParticleType} to register
 	 * @param alwaysShow Whether the particle should always appear visible
 	 *
-	 * @return Registered {@link DefaultParticleType}
+	 * @return Registered {@link SimpleParticleType}
 	 */
-	public static RegistrySupplier<DefaultParticleType> register(String name, boolean alwaysShow) {
-		return AMCommon.registry(Registry.PARTICLE_TYPE_KEY).register(AMCommon.id(name), () -> new DefaultParticleType(alwaysShow));
+	public static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name, boolean alwaysShow) {
+		return REGISTRY.register(name, () -> new SimpleParticleType(alwaysShow));
 	}
 }

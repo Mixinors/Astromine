@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "cookingtime": 100,
-  "experience": 0.0,
-  "ingredient": {
-    "tag": "c:lead_dusts"
-  },
-  "result": "astromine:lead_ingot"
-}

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 300,
+  "input": {
+    "count": 1,
+    "tag": "c:tin_clusters"
+  },
+  "output": {
+    "count": 2,
+    "item": "astromine:raw_tin"
+  },
+  "time": 90
+}

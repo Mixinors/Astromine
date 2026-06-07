@@ -28,16 +28,14 @@ import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntit
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
-import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -56,14 +54,14 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	public WireMillBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
 				return false;
 			}
 			
-			return TrituratingRecipe.allows(world, variant);
+			return WireMillingRecipe.allows(level, variant);
 		}).extractPredicate((variant, slot) ->
 				slot == OUTPUT_SLOT
 		).listener(() -> {
@@ -71,7 +69,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 				optionalRecipe = Optional.empty();
 			}
 			
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -79,13 +77,13 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	public void tick() {
 		super.tick();
 		
-		if (!hasWorld() || world.isClient || !shouldRun()) {
+		if (!hasLevel() || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		if (itemStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
-				optionalRecipe = WireMillingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
+				optionalRecipe = WireMillingRecipe.matching(level, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 			}
 			
 			if (optionalRecipe.isPresent()) {
@@ -96,32 +94,28 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						energyStorage.amount -= consumed;
+				if (energyStorage.amount >= consumed) {
+					energyStorage.amount -= consumed;
+					
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 						
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
-							
-							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-							
-							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction, true);
-							
-							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
-							
-							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction, true);
-							
-							transaction.commit();
-							
-							progress = 0.0D;
-						} else {
-							progress += speed;
-						}
+						var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 						
-						active = true;
+						inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), true, false);
+						
+						var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+						
+						outputStorage.insert(recipe.output().toStack(), recipe.output().count(), true, false);
+						
+						progress = 0.0D;
 					} else {
-						active = false;
+						progress += speed;
 					}
+					
+					active = true;
+				} else {
+					active = false;
 				}
 			} else {
 				progress = 0.0D;

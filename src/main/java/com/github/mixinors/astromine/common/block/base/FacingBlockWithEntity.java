@@ -24,59 +24,59 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class FacingBlockWithEntity extends BlockWithEntity {
-	protected FacingBlockWithEntity(Settings settings) {
+	protected FacingBlockWithEntity(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		var directionProperty = getDirectionProperty();
 		
 		if (directionProperty != null) {
 			builder.add(directionProperty);
 		}
 		
-		super.appendProperties(builder);
+		super.createBlockStateDefinition(builder);
 	}
 	
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		var directionProperty = getDirectionProperty();
 		
 		if (directionProperty != null) {
-			return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerFacing().getOpposite());
+			return super.getStateForPlacement(context).setValue(getDirectionProperty(), context.getHorizontalDirection().getOpposite());
 		}
 		
-		return super.getPlacementState(context);
+		return super.getStateForPlacement(context);
 	}
 	
 	@Override
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
+	public BlockState rotate(BlockState state, Rotation rotation) {
 		var directionProperty = getDirectionProperty();
 		
 		if (directionProperty != null) {
-			return state.with(getDirectionProperty(), rotation.rotate(state.get(getDirectionProperty())));
+			return state.setValue(getDirectionProperty(), rotation.rotate(state.getValue(getDirectionProperty())));
 		}
 		
 		return super.rotate(state, rotation);
 	}
 	
 	@Override
-	public BlockState mirror(BlockState state, BlockMirror mirror) {
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		var directionProperty = getDirectionProperty();
 		
 		if (directionProperty != null) {
-			return state.rotate(mirror.getRotation(state.get(getDirectionProperty())));
+			return state.rotate(mirror.getRotation(state.getValue(getDirectionProperty())));
 		}
 		
 		return super.mirror(state, mirror);

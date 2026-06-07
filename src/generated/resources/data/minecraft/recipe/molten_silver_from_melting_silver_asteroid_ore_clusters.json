@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 2816,
+  "input": {
+    "count": 1,
+    "tag": "c:silver_asteroid_ore_clusters"
+  },
+  "output": {
+    "amount": 180,
+    "fluid": "astromine:molten_silver"
+  },
+  "time": 352
+}

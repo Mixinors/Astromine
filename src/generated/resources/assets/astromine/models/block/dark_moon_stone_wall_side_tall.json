@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_wall_side_tall",
   "textures": {
-    "wall": "astromine:block/dark_moon_stone"
+    "wall": "astromine:block/static_dark_moon_stone"
   }
 }

@@ -5,6 +5,7 @@
     "bottom": "astromine:block/advanced_fluid_mixer_bottom",
     "front": "astromine:block/advanced_fluid_mixer_front",
     "left": "astromine:block/advanced_fluid_mixer_left",
+    "particle": "astromine:block/advanced_fluid_mixer_top",
     "right": "astromine:block/advanced_fluid_mixer_right",
     "top": "astromine:block/advanced_fluid_mixer_top"
   }

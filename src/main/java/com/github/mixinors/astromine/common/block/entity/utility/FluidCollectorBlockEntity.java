@@ -30,18 +30,18 @@ import com.github.mixinors.astromine.common.config.entry.utility.FluidStorageUti
 import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidDrainable;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 
 public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements FluidStorageUtilityConfigProvider {
 	public static final String COOLDOWN_KEY = "Cooldown";
@@ -57,24 +57,23 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 	public FluidCollectorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_COLLECTOR, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
 				false
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
-		fluidStorage.getStorage(OUTPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
@@ -86,72 +85,57 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 				
 				active = false;
 			} else {
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+				var direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+				var targetPos = worldPosition.relative(direction);
+				var targetBlockState = level.getBlockState(targetPos);
+				var targetFluidState = level.getFluidState(targetPos);
+				var targetBlock = targetBlockState.getBlock();
+				
+				if (targetBlock instanceof BucketPickup && targetFluidState.isSource()) {
+					if (cooldown >= getSpeed()) {
+						cooldown = 0L;
 						
-						var targetPos = pos.offset(direction);
+						var targetFluid = targetFluidState.getType();
+						var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
+						var collectedStack = new FluidStack(targetFluid, FluidType.BUCKET_VOLUME);
 						
-						var targetBlockState = world.getBlockState(targetPos);
-						var targetFluidState = world.getFluidState(targetPos);
-						
-						var targetBlock = targetBlockState.getBlock();
-						
-						if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
-							if (cooldown >= getSpeed()) {
-								cooldown = 0L;
-								
-								var targetFluid = targetFluidState.getFluid();
-								
-								var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
-								
-								if (outputStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction, true) == FluidConstants.BUCKET) {
-									((FluidDrainable) targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
-									
-									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-									
-									energyStorage.amount -= consumed;
-									
-									cooldown = 0L;
-									
-									transaction.commit();
-								} else {
-									active = false;
-									
-									transaction.abort();
-								}
-							} else {
-								++cooldown;
-								
-								active = true;
-							}
+						if (outputStorage.insert(collectedStack, FluidType.BUCKET_VOLUME, true, true) == FluidType.BUCKET_VOLUME) {
+							outputStorage.insert(collectedStack, FluidType.BUCKET_VOLUME, true, false);
+							
+							((BucketPickup) targetBlock).pickupBlock(null, level, targetPos, targetBlockState);
+							
+							level.playSound(null, worldPosition, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1, 1);
+							
+							energyStorage.amount -= consumed;
+							
+							cooldown = 0L;
 						} else {
 							active = false;
-							
-							transaction.abort();
 						}
 					} else {
-						active = false;
+						++cooldown;
 						
-						transaction.abort();
+						active = true;
 					}
+				} else {
+					active = false;
 				}
 			}
 		}
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		nbt.putLong(COOLDOWN_KEY, cooldown);
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		cooldown = nbt.getLong(COOLDOWN_KEY);
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override

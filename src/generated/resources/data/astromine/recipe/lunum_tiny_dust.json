@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:lunum_dusts"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:lunum_tiny_dust"
+  }
+}

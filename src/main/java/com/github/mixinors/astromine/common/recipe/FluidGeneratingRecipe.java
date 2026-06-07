@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.base.input.FluidInputRecipe;
 import com.github.mixinors.astromine.common.recipe.base.output.EnergyOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
@@ -36,34 +37,27 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import com.github.mixinors.astromine.common.recipe.base.AstromineRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
 import java.util.Optional;
 
 public record FluidGeneratingRecipe(
-		Identifier id,
+		ResourceLocation id,
 		FluidIngredient input,
 		long energyOutput,
 		int time
 ) implements FluidInputRecipe, EnergyOutputRecipe {
-	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
-	
-	public static boolean allows(World world, FluidVariant... variants) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
-		}
-		
-		for (var recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(variants)) {
+	public static boolean allows(Level world, FluidStack... stacks) {
+		for (var holder : world.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+			var recipe = holder.value();
+			
+			if (recipe.allows(stacks)) {
 				return true;
 			}
 		}
@@ -71,12 +65,10 @@ public record FluidGeneratingRecipe(
 		return false;
 	}
 	
-	public static Optional<FluidGeneratingRecipe> matching(World world, SingleSlotStorage<FluidVariant>... storages) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
-		}
-		
-		for (var recipe : RECIPE_CACHE.get(world)) {
+	public static Optional<FluidGeneratingRecipe> matching(Level world, SimpleFluidVariantStorage... storages) {
+		for (var holder : world.getRecipeManager().getAllRecipesFor(Type.INSTANCE)) {
+			var recipe = holder.value();
+			
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
@@ -85,14 +77,14 @@ public record FluidGeneratingRecipe(
 		return Optional.empty();
 	}
 	
-	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
+	public boolean matches(SimpleFluidVariantStorage... storages) {
 		var inputStorage = storages[0];
 		
 		return input.test(inputStorage);
 	}
 	
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
@@ -107,7 +99,7 @@ public record FluidGeneratingRecipe(
 	}
 	
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AMBlocks.ADVANCED_FLUID_GENERATOR.get());
 	}
 	
@@ -125,8 +117,8 @@ public record FluidGeneratingRecipe(
 		return input;
 	}
 	
-	public static final class Serializer implements RecipeSerializer<FluidGeneratingRecipe> {
-		public static final Identifier ID = AMCommon.id("fluid_generating");
+	public static final class Serializer implements AstromineRecipeSerializer<FluidGeneratingRecipe> {
+		public static final ResourceLocation ID = AMCommon.id("fluid_generating");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
@@ -134,7 +126,7 @@ public record FluidGeneratingRecipe(
 		}
 		
 		@Override
-		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
+		public FluidGeneratingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 			
 			return new FluidGeneratingRecipe(
@@ -146,7 +138,7 @@ public record FluidGeneratingRecipe(
 		}
 		
 		@Override
-		public FluidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public FluidGeneratingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new FluidGeneratingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -156,7 +148,7 @@ public record FluidGeneratingRecipe(
 		}
 		
 		@Override
-		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
+		public void write(FriendlyByteBuf buffer, FluidGeneratingRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.input);
 			LongUtils.toPacket(buffer, recipe.energyOutput);
 			IntegerUtils.toPacket(buffer, recipe.time);

@@ -26,77 +26,80 @@ package com.github.mixinors.astromine.common.world.generation.space;
 
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.minecraft.util.dynamic.RegistryOps;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
-import net.minecraft.world.gen.densityfunction.DensityFunction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
+import java.util.stream.Stream;
 
 public class MoonBiomeSource extends BiomeSource {
-	private static final ThreadLocal<OpenSimplexNoise> SIMPLEX = ThreadLocal.withInitial(() -> null);
+	public static final MapCodec<MoonBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			RegistryOps.retrieveElement(AMBiomes.MOON_LIGHT_SIDE_KEY),
+			RegistryOps.retrieveElement(AMBiomes.MOON_DARK_SIDE_KEY),
+			RegistryOps.retrieveElement(AMBiomes.MOON_CRATER_FIELD_KEY),
+			Codec.LONG.optionalFieldOf("seed", 0L).forGetter(MoonBiomeSource::seed)
+	).apply(instance, instance.stable(MoonBiomeSource::new)));
 	
-	public static final Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
-			instance.group(
-					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
-			).apply(instance, instance.stable(MoonBiomeSource::new)));
-	
-	private final Registry<Biome> registry;
+	private final Holder<Biome> lightSide;
+	private final Holder<Biome> darkSide;
+	private final Holder<Biome> craterField;
+	private final long seed;
+	private final OpenSimplexNoise simplex;
 	
 	public MoonBiomeSource(Registry<Biome> registry) {
-		super(ImmutableList.of(
-				registry.getOrCreateEntry(AMBiomes.MOON_LIGHT_SIDE_KEY),
-				registry.getOrCreateEntry(AMBiomes.MOON_DARK_SIDE_KEY),
-				registry.getOrCreateEntry(AMBiomes.MOON_CRATER_FIELD_KEY)
-		));
-		
-		this.registry = registry;
+		this(
+				registry.getHolder(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow(),
+				registry.getHolder(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow(),
+				registry.getHolder(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow(),
+				0L
+		);
+	}
+	
+	public MoonBiomeSource(Holder<Biome> lightSide, Holder<Biome> darkSide, Holder<Biome> craterField) {
+		this(lightSide, darkSide, craterField, 0L);
+	}
+	
+	public MoonBiomeSource(Holder<Biome> lightSide, Holder<Biome> darkSide, Holder<Biome> craterField, long seed) {
+		this.lightSide = lightSide;
+		this.darkSide = darkSide;
+		this.craterField = craterField;
+		this.seed = seed;
+		this.simplex = new OpenSimplexNoise(seed);
 	}
 	
 	@Override
-	protected Codec<? extends BiomeSource> getCodec() {
+	protected MapCodec<? extends BiomeSource> codec() {
 		return CODEC;
 	}
 	
-	// TODO: Add 3D biomes and caves!
-	// TODO: Add caves to the moon, and clamp their top and bottoms to not hit bedrock!
 	@Override
-	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
+	protected Stream<Holder<Biome>> collectPossibleBiomes() {
+		return Stream.of(this.lightSide, this.darkSide, this.craterField);
+	}
+	
+	@Override
+	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler noise) {
 		// Roughly 50% of the moon's surface should be light side,
 		// 30% crater fields, and 20% dark side.
 		
 		// The noise range is [0.0 .. 1.0], but I've seen it go negative.
-		
-		// TODO: Fix this. What the FUCK was Mojang thinking?
-		
-		var simplex = SIMPLEX.get();
-		
-		if (simplex == null) {
-			var server = InstanceUtil.getServer();
-			if (server == null) return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
-			
-			var world = server.getWorld(World.OVERWORLD);
-			if (world == null) return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
-			
-			simplex = new OpenSimplexNoise(world.getSeed());
-			
-			SIMPLEX.set(simplex);
-		}
-		
 		var sample = simplex.sample(x / 512.0F, z / 512.0F);
 		
 		if (sample > 0.5F) {
-			return registry.getEntry(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow();
+			return this.lightSide;
 		} else if (sample > 0.2F) {
-			return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
+			return this.craterField;
 		} else {
-			return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
+			return this.darkSide;
 		}
+	}
+	
+	public long seed() {
+		return seed;
 	}
 }

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 18240,
+  "input": {
+    "count": 1,
+    "tag": "c:diamond_deepslate_ores"
+  },
+  "output": {
+    "amount": 144,
+    "fluid": "astromine:molten_diamond"
+  },
+  "time": 2280
+}

@@ -31,8 +31,9 @@
       "content": "minecraft:empty"
     },
     "environment": {
-      "temperature": 0.0,
-      "humidity": 0.0,
+      "danger": "high",
+      "temperature": "cold",
+      "humidity": "extremely_low",
       "sound": 0.2,
       "gravity": 0.02
     },

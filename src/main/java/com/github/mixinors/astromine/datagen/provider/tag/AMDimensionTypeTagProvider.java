@@ -1,17 +1,28 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.dimension.DimensionType;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
+import com.github.mixinors.astromine.registry.common.AMWorlds;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class AMDimensionTypeTagProvider extends FabricTagProvider.DynamicRegistryTagProvider<DimensionType> {
-	public AMDimensionTypeTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator, Registry.DIMENSION_TYPE_KEY);
+import java.util.concurrent.CompletableFuture;
+
+public class AMDimensionTypeTagProvider extends TagsProvider<DimensionType> {
+	public AMDimensionTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+		super(output, Registries.DIMENSION_TYPE, lookupProvider, AMCommon.MOD_ID, existingFileHelper);
 	}
 	
 	@Override
-	protected void generateTags() {
-
+	protected void addTags(HolderLookup.Provider provider) {
+		tag(AMTagKeys.DimensionTypeTags.IS_VACUUM)
+				.add(AMWorlds.EARTH_ORBIT_DIMENSION_TYPE_KEY)
+				.add(AMWorlds.MOON_DIMENSION_TYPE_KEY)
+				.add(AMWorlds.MOON_ORBIT_DIMENSION_TYPE_KEY)
+				.add(AMWorlds.ROCKET_INTERIORS_DIMENSION_TYPE_KEY);
 	}
 }

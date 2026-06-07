@@ -25,20 +25,50 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import dev.architectury.registry.fabric.CreativeTabRegistryImpl;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class AMItemGroups {
-	public static final ItemGroup ASTROMINE = register("astromine", AMItems.ITEM);
+	private static final DeferredRegister<CreativeModeTab> REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, AMCommon.MOD_ID);
+	
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ASTROMINE = register("astromine", AMItems.ITEM);
 	
 	public static void init() {
+		REGISTRY.register(AMCommon.modEventBus());
+		AMCommon.modEventBus().addListener(AMItemGroups::buildContents);
 	}
 	
-	public static ItemGroup register(String id, Supplier<? extends ItemConvertible> icon) {
-		return CreativeTabRegistryImpl.create(AMCommon.id(id), () -> new ItemStack(icon.get()));
+	public static DeferredHolder<CreativeModeTab, CreativeModeTab> register(String id, Supplier<? extends ItemLike> icon) {
+		return REGISTRY.register(id, () -> CreativeModeTab.builder()
+				.title(Component.translatable("itemGroup." + AMCommon.MOD_ID + "." + id))
+				.icon(() -> new ItemStack(icon.get()))
+				.build());
+	}
+	
+	private static void buildContents(BuildCreativeModeTabContentsEvent event) {
+		if (event.getTabKey() != ASTROMINE.getKey()) {
+			return;
+		}
+		
+		AMBlocks.BLOCKS.getEntries().forEach(block -> acceptIfPresent(event, new ItemStack(block.get().asItem())));
+		AMItems.REGISTRY.getEntries().forEach(item -> acceptIfPresent(event, new ItemStack(item.get())));
+	}
+	
+	private static void acceptIfPresent(BuildCreativeModeTabContentsEvent event, ItemStack stack) {
+		if (isDisplayable(stack)) {
+			event.accept(stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+		}
+	}
+	
+	public static boolean isDisplayable(ItemStack stack) {
+		return !stack.isEmpty() && stack.getItem() != Items.AIR && stack.getCount() == 1;
 	}
 }

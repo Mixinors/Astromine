@@ -1,121 +1,131 @@
 package com.github.mixinors.astromine.client.util;
 
-import dev.vini2003.hammer.core.api.client.color.Color;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3f;
-
-import static dev.vini2003.hammer.core.api.client.util.DrawingUtil.DEFAULT_LIGHT;
-import static dev.vini2003.hammer.core.api.client.util.DrawingUtil.DEFAULT_OVERLAY;
+import com.github.mixinors.astromine.common.util.Color;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 
 public class DrawingUtil {
-	public static void drawLine(
-			MatrixStack matrices,
-			VertexConsumerProvider provider,
-			float x1, float y1, float z1,
-			float x2, float y2, float z2,
-			Color color,
-			RenderLayer layer
-	) {
+	public static final int DEFAULT_LIGHT = LightTexture.FULL_BRIGHT;
+	public static final int DEFAULT_OVERLAY = OverlayTexture.NO_OVERLAY;
+	
+	public static net.minecraft.client.renderer.entity.ItemRenderer getItemRenderer() {
+		return Minecraft.getInstance().getItemRenderer();
+	}
+	
+	public static net.minecraft.client.renderer.texture.TextureManager getTextureManager() {
+		return Minecraft.getInstance().getTextureManager();
+	}
+	
+	public static void drawLine(PoseStack matrices, MultiBufferSource provider, float x1, float y1, float z1, float x2, float y2, float z2, Color color, RenderType layer) {
 		var consumer = provider.getBuffer(layer);
+		var pose = matrices.last();
 		
-		consumer.vertex(x1, y1, z1).color(color.getR(), color.getG(), color.getB(), color.getA()).normal(0.0F, 1.0F, 0.0F).next();
-		consumer.vertex(x2, y2, z1).color(color.getR(), color.getG(), color.getB(), color.getA()).normal(0.0F, 1.0F, 0.0F).next();
+		consumer.addVertex(pose, x1, y1, z1)
+				.setColor(color.getR(), color.getG(), color.getB(), color.getA())
+				.setNormal(pose, 0.0F, 1.0F, 0.0F);
+		consumer.addVertex(pose, x2, y2, z2)
+				.setColor(color.getR(), color.getG(), color.getB(), color.getA())
+				.setNormal(pose, 0.0F, 1.0F, 0.0F);
 		
-		consumer.vertex(x1, y1, z1).color(color.getR(), color.getG(), color.getB(), color.getA()).normal(1.0F, 0.0F, 0.0F).next();
-		consumer.vertex(x2, y2, z1).color(color.getR(), color.getG(), color.getB(), color.getA()).normal(1.0F, 0.0F, 0.0F).next();
+		consumer.addVertex(pose, x1, y1, z1)
+				.setColor(color.getR(), color.getG(), color.getB(), color.getA())
+				.setNormal(pose, 1.0F, 0.0F, 0.0F);
+		consumer.addVertex(pose, x2, y2, z2)
+				.setColor(color.getR(), color.getG(), color.getB(), color.getA())
+				.setNormal(pose, 1.0F, 0.0F, 0.0F);
 	}
 	
-	public static void drawSquare(
-			MatrixStack matrices,
-			VertexConsumerProvider provider,
-			float x, float y, float z,
-			float width, float height,
-			Color color,
-			RenderLayer layer
-	) {
-		DrawingUtil.drawLine(matrices, provider, x, y, z, x + width, y, z, color, layer);
-		DrawingUtil.drawLine(matrices, provider, x, y + height, z, x + width, y + height, z, color, layer);
-		DrawingUtil.drawLine(matrices, provider, x, y, z, x, y + height, z, color, layer);
-		DrawingUtil.drawLine(matrices, provider, x + width, y, z, x + width, y + height, z, color, layer);
+	public static void drawSquare(PoseStack matrices, MultiBufferSource provider, float x, float y, float z, float width, float height, Color color, RenderType layer) {
+		drawLine(matrices, provider, x, y, z, x + width, y, z, color, layer);
+		drawLine(matrices, provider, x, y + height, z, x + width, y + height, z, color, layer);
+		drawLine(matrices, provider, x, y, z, x, y + height, z, color, layer);
+		drawLine(matrices, provider, x + width, y, z, x + width, y + height, z, color, layer);
 	}
 	
-	public static void drawBody(
-			VertexConsumerProvider provider,
-			float x, float y, float z,
-			float width, float height, float depth,
-			float angle,
-			boolean tidalLocked,
-			Color color,
-			RenderLayer layerUp,
-			RenderLayer layerDown,
-			RenderLayer layerNorth,
-			RenderLayer layerSouth,
-			RenderLayer layerEast,
-			RenderLayer layerWest
-	) {
-		var consumer = provider.getBuffer(layerDown);
-		
-		var stack = new MatrixStack();
-		
-		stack.translate(x, y, z);
-		
-		stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45.0F));
+	public static void drawBody(MultiBufferSource provider, float x, float y, float z, float width, float height, float depth, float angle, boolean tidalLocked, Color color, RenderType layerUp, RenderType layerDown, RenderType layerNorth, RenderType layerSouth, RenderType layerEast, RenderType layerWest) {
+		drawBody(new PoseStack(), provider, x, y, z, width, height, depth, angle, tidalLocked, color, layerUp, layerDown, layerNorth, layerSouth, layerEast, layerWest);
+	}
+	
+	public static void drawBody(PoseStack matrices, MultiBufferSource provider, float x, float y, float z, float width, float height, float depth, float angle, boolean tidalLocked, Color color, RenderType layerUp, RenderType layerDown, RenderType layerNorth, RenderType layerSouth, RenderType layerEast, RenderType layerWest) {
+		matrices.pushPose();
+		matrices.translate(x, y, z);
+		matrices.mulPose(Axis.XP.rotationDegrees(45.0F));
 		
 		if (tidalLocked) {
-			stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - 360.0F + (float) Math.toDegrees(angle)));
+			matrices.mulPose(Axis.ZP.rotationDegrees(45.0F - 360.0F + (float) Math.toDegrees(angle)));
 		} else {
-			stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - (float) Math.toDegrees(angle)));
+			matrices.mulPose(Axis.ZP.rotationDegrees(45.0F - (float) Math.toDegrees(angle)));
 		}
 		
-		var peek = stack.peek();
+		var pose = matrices.last();
+		var halfWidth = width / 2.0F;
+		var halfHeight = height / 2.0F;
+		var halfDepth = depth / 2.0F;
 		
-		// Down
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F), -(height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F), -(height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F), -(height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F), -(height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
+		face(provider.getBuffer(layerDown), pose, color,
+				halfWidth, -halfHeight, halfDepth, 0.0F, 0.0F,
+				-halfWidth, -halfHeight, halfDepth, 1.0F, 0.0F,
+				-halfWidth, -halfHeight, -halfDepth, 1.0F, 1.0F,
+				halfWidth, -halfHeight, -halfDepth, 0.0F, 1.0F,
+				0.0F, -1.0F, 0.0F);
 		
-		consumer = provider.getBuffer(layerUp);
+		face(provider.getBuffer(layerUp), pose, color,
+				-halfWidth, halfHeight, -halfDepth, 0.0F, 0.0F,
+				-halfWidth, halfHeight, halfDepth, 1.0F, 0.0F,
+				halfWidth, halfHeight, halfDepth, 1.0F, 1.0F,
+				halfWidth, halfHeight, -halfDepth, 0.0F, 1.0F,
+				0.0F, 1.0F, 0.0F);
 		
-		// Up
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F),  (height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F),  (height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F),  (height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F),  (height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
+		face(provider.getBuffer(layerNorth), pose, color,
+				-halfWidth, -halfHeight, -halfDepth, 0.0F, 0.0F,
+				-halfWidth, halfHeight, -halfDepth, 1.0F, 0.0F,
+				halfWidth, halfHeight, -halfDepth, 1.0F, 1.0F,
+				halfWidth, -halfHeight, -halfDepth, 0.0F, 1.0F,
+				0.0F, 0.0F, -1.0F);
 		
-		consumer = provider.getBuffer(layerNorth);
+		face(provider.getBuffer(layerSouth), pose, color,
+				-halfWidth, -halfHeight, halfDepth, 0.0F, 0.0F,
+				halfWidth, -halfHeight, halfDepth, 1.0F, 0.0F,
+				halfWidth, halfHeight, halfDepth, 1.0F, 1.0F,
+				-halfWidth, halfHeight, halfDepth, 0.0F, 1.0F,
+				0.0F, 0.0F, 1.0F);
 		
-		// North
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F), -(height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F),  (height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F),  (height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F), -(height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
+		face(provider.getBuffer(layerWest), pose, color,
+				-halfWidth, halfHeight, halfDepth, 0.0F, 0.0F,
+				-halfWidth, halfHeight, -halfDepth, 1.0F, 0.0F,
+				-halfWidth, -halfHeight, -halfDepth, 1.0F, 1.0F,
+				-halfWidth, -halfHeight, halfDepth, 0.0F, 1.0F,
+				-1.0F, 0.0F, 0.0F);
 		
-		consumer = provider.getBuffer(layerSouth);
+		face(provider.getBuffer(layerEast), pose, color,
+				halfWidth, -halfHeight, -halfDepth, 0.0F, 0.0F,
+				halfWidth, halfHeight, -halfDepth, 1.0F, 0.0F,
+				halfWidth, halfHeight, halfDepth, 1.0F, 1.0F,
+				halfWidth, -halfHeight, halfDepth, 0.0F, 1.0F,
+				1.0F, 0.0F, 0.0F);
 		
-		// South
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F), -(height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F), -(height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F),  (height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F),  (height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		
-		consumer = provider.getBuffer(layerWest);
-		
-		// West
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F),  (height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F),  (height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F), -(height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(), -(width / 2.0F), -(height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		
-		consumer = provider.getBuffer(layerEast);
-		
-		// East
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F), -(height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F),  (height / 2.0F), -(depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F),  (height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
-		consumer.vertex(peek.getPositionMatrix(),  (width / 2.0F), -(height / 2.0F),  (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
+		matrices.popPose();
+	}
+	
+	private static void face(VertexConsumer consumer, PoseStack.Pose pose, Color color, float x1, float y1, float z1, float u1, float v1, float x2, float y2, float z2, float u2, float v2, float x3, float y3, float z3, float u3, float v3, float x4, float y4, float z4, float u4, float v4, float normalX, float normalY, float normalZ) {
+		vertex(consumer, pose, color, x1, y1, z1, u1, v1, normalX, normalY, normalZ);
+		vertex(consumer, pose, color, x2, y2, z2, u2, v2, normalX, normalY, normalZ);
+		vertex(consumer, pose, color, x3, y3, z3, u3, v3, normalX, normalY, normalZ);
+		vertex(consumer, pose, color, x4, y4, z4, u4, v4, normalX, normalY, normalZ);
+	}
+	
+	private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, Color color, float x, float y, float z, float u, float v, float normalX, float normalY, float normalZ) {
+		consumer.addVertex(pose, x, y, z)
+				.setColor(color.getR(), color.getG(), color.getB(), color.getA())
+				.setUv(u, v)
+				.setOverlay(DEFAULT_OVERLAY)
+				.setLight(DEFAULT_LIGHT)
+				.setNormal(pose, normalX, normalY, normalZ);
 	}
 }
-

@@ -27,60 +27,57 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.feature.AsteroidOreFeature;
 import com.github.mixinors.astromine.common.world.feature.OilWellFeature;
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
-import net.minecraft.world.gen.placementmodifier.PlacementModifier;
-import net.minecraft.world.gen.placementmodifier.RarityFilterPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
-
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.Arrays;
 import java.util.List;
 
 public class AMFeatures {
-	public static final Identifier ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");
+	private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, AMCommon.MOD_ID);
 	
-	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES_FEATURE = registerFeature(ASTEROID_ORES_ID, new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
-	public static final RegistryEntry<ConfiguredFeature<DefaultFeatureConfig, ?>> ASTEROID_ORES_CONFIGURED_FEATURE = registerConfiguredFeature(ASTEROID_ORES_ID, ASTEROID_ORES_FEATURE, DefaultFeatureConfig.INSTANCE);
-	public static final RegistryEntry<PlacedFeature> ASTEROID_ORES_PLACED_FEATURE = registerPlacedFeature(ASTEROID_ORES_ID, ASTEROID_ORES_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(20), SquarePlacementModifier.of(), BiomePlacementModifier.of());
+	public static final ResourceLocation ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");
 	
-	public static final Identifier OIL_WELL_ID = AMCommon.id("oil_well");
+	public static final Feature<NoneFeatureConfiguration> ASTEROID_ORES_FEATURE = registerFeature(ASTEROID_ORES_ID, new AsteroidOreFeature(NoneFeatureConfiguration.CODEC));
+	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> ASTEROID_ORES_CONFIGURED_FEATURE = registerConfiguredFeature(ASTEROID_ORES_ID, ASTEROID_ORES_FEATURE, NoneFeatureConfiguration.INSTANCE);
+	public static final Holder<PlacedFeature> ASTEROID_ORES_PLACED_FEATURE = registerPlacedFeature(ASTEROID_ORES_ID, ASTEROID_ORES_CONFIGURED_FEATURE, RarityFilter.onAverageOnceEvery(20), InSquarePlacement.spread(), BiomeFilter.biome());
 	
-	public static final Feature<DefaultFeatureConfig> OIL_WELL_FEATURE = registerFeature(OIL_WELL_ID, new OilWellFeature(DefaultFeatureConfig.CODEC));
-	public static final RegistryEntry<ConfiguredFeature<DefaultFeatureConfig, ?>> OIL_WELL_CONFIGURED_FEATURE = registerConfiguredFeature(OIL_WELL_ID, OIL_WELL_FEATURE, DefaultFeatureConfig.INSTANCE);
-	public static final RegistryEntry<PlacedFeature> OIL_WELL_PLACED_FEATURE = registerPlacedFeature(OIL_WELL_ID, OIL_WELL_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(100), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
+	public static final ResourceLocation OIL_WELL_ID = AMCommon.id("oil_well");
+	
+	public static final Feature<NoneFeatureConfiguration> OIL_WELL_FEATURE = registerFeature(OIL_WELL_ID, new OilWellFeature(NoneFeatureConfiguration.CODEC));
+	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> OIL_WELL_CONFIGURED_FEATURE = registerConfiguredFeature(OIL_WELL_ID, OIL_WELL_FEATURE, NoneFeatureConfiguration.INSTANCE);
+	public static final Holder<PlacedFeature> OIL_WELL_PLACED_FEATURE = registerPlacedFeature(OIL_WELL_ID, OIL_WELL_CONFIGURED_FEATURE, RarityFilter.onAverageOnceEvery(100), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
 	
 	public static void init() {
-		BiomeModifications.create(OIL_WELL_ID).add(ModificationPhase.ADDITIONS, (biomeSelectionContext) -> {
-			var entry = biomeSelectionContext.getBiomeRegistryEntry();
-			
-			return entry.isIn(ConventionalBiomeTags.OCEAN) || entry.isIn(ConventionalBiomeTags.DESERT) || entry.isIn(ConventionalBiomeTags.SNOWY_PLAINS) || entry.isIn(ConventionalBiomeTags.TAIGA);
-		}, ((biomeSelectionContext, biomeModificationContext) -> {
-			biomeModificationContext.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.SURFACE_STRUCTURES, OIL_WELL_PLACED_FEATURE.value());
-		}));
+		FEATURES.register(AMCommon.modEventBus());
 	}
 	
-	public static <T extends FeatureConfig> Feature<T> registerFeature(Identifier id, Feature<T> feature) {
-		return Registry.register(Registry.FEATURE, id, feature);
+	public static <T extends FeatureConfiguration> Feature<T> registerFeature(ResourceLocation id, Feature<T> feature) {
+		FEATURES.register(id.getPath(), () -> feature);
+		return feature;
 	}
 	
-	public static <T extends FeatureConfig, F extends Feature<T>> RegistryEntry<ConfiguredFeature<T, ?>> registerConfiguredFeature(Identifier id, F feature, T config) {
-		return BuiltinRegistries.addCasted(BuiltinRegistries.CONFIGURED_FEATURE, id.toString(), new ConfiguredFeature<>(feature, config));
+	public static <T extends FeatureConfiguration, F extends Feature<T>> Holder<ConfiguredFeature<T, ?>> registerConfiguredFeature(ResourceLocation id, F feature, T config) {
+		return Holder.direct(new ConfiguredFeature<>(feature, config));
 	}
 	
-	public static <T extends FeatureConfig> RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, RegistryEntry<ConfiguredFeature<T, ?>> feature, PlacementModifier... mods) {
-		return BuiltinRegistries.add(BuiltinRegistries.PLACED_FEATURE, id, new PlacedFeature(RegistryEntry.upcast(feature), Arrays.asList(mods)));
+	public static <T extends FeatureConfiguration> Holder<PlacedFeature> registerPlacedFeature(ResourceLocation id, Holder<ConfiguredFeature<T, ?>> feature, PlacementModifier... mods) {
+		return Holder.direct(new PlacedFeature((Holder<ConfiguredFeature<?, ?>>) (Holder<?>) feature, Arrays.asList(mods)));
 	}
 	
-	public static <T extends FeatureConfig> RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, RegistryEntry<ConfiguredFeature<T, ?>> feature, List<PlacementModifier> mods) {
-		return BuiltinRegistries.add(BuiltinRegistries.PLACED_FEATURE, id, new PlacedFeature(RegistryEntry.upcast(feature), List.copyOf(mods)));
+	public static <T extends FeatureConfiguration> Holder<PlacedFeature> registerPlacedFeature(ResourceLocation id, Holder<ConfiguredFeature<T, ?>> feature, List<PlacementModifier> mods) {
+		return Holder.direct(new PlacedFeature((Holder<ConfiguredFeature<?, ?>>) (Holder<?>) feature, List.copyOf(mods)));
 	}
 	
 }

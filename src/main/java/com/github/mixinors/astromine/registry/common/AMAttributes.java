@@ -25,19 +25,21 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
 import java.util.function.Supplier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMAttributes {
-	public static void init() {
+	private static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(Registries.ATTRIBUTE, AMCommon.MOD_ID);
 	
+	public static void init() {
+		REGISTRY.register(AMCommon.modEventBus());
 	}
 	
-	public static RegistrySupplier<EntityAttribute> register(Identifier id, Supplier<EntityAttribute> supplier) {
-		return AMCommon.registry(Registry.ATTRIBUTE_KEY).register(id, supplier);
+	public static DeferredHolder<Attribute, Attribute> register(ResourceLocation id, Supplier<Attribute> supplier) {
+		return REGISTRY.register(id.getPath(), supplier);
 	}
 }

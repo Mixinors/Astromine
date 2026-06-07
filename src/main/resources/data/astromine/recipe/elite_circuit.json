@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "878",
+    "555",
+    "878"
+  ],
+  "key": {
+    "5": {
+      "tag": "c:gold_wires"
+    },
+    "7": {
+      "item": "minecraft:diamond"
+    },
+    "8": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "result": {
+    "count": 2,
+    "id": "astromine:elite_circuit"
+  }
+}

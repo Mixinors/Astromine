@@ -1,0 +1,13 @@
+{
+  "type": "astromine:pressing",
+  "energy_input": 2900,
+  "input": {
+    "count": 1,
+    "tag": "c:lead_blocks"
+  },
+  "output": {
+    "count": 9,
+    "item": "astromine:lead_plate"
+  },
+  "time": 680
+}

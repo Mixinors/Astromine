@@ -27,18 +27,18 @@ package com.github.mixinors.astromine.common.block.utility;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.utility.BlockBreakerBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.utility.BlockBreakerScreenHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockBreakerBlock extends HorizontalFacingBlockWithEntity {
-	public BlockBreakerBlock(Settings settings) {
+	public BlockBreakerBlock(Properties settings) {
 		super(settings);
 	}
 	
@@ -48,7 +48,7 @@ public class BlockBreakerBlock extends HorizontalFacingBlockWithEntity {
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new BlockBreakerBlockEntity(pos, state);
 	}
 	
@@ -58,12 +58,12 @@ public class BlockBreakerBlock extends HorizontalFacingBlockWithEntity {
 	}
 	
 	@Override
-	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+	public AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player) {
 		return new BlockBreakerScreenHandler(syncId, playerInventory.player, pos);
 	}
 	
 	@Override
-	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+	public void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
 }

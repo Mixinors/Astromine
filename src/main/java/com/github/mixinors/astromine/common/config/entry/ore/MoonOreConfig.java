@@ -25,10 +25,8 @@
 package com.github.mixinors.astromine.common.config.entry.ore;
 
 import com.github.mixinors.astromine.common.config.entry.AMConfigEntry;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 public class MoonOreConfig implements AMConfigEntry {
-	@Comment("This ore's weight")
 	public int weight;
 	
 	public MoonOreConfig(int weight) {

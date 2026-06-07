@@ -1,23 +1,23 @@
 package com.github.mixinors.astromine.mixin.client;
 
 import com.mojang.datafixers.util.Either;
-import net.minecraft.client.render.model.json.JsonUnbakedModel;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Map;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.resources.ResourceLocation;
 
-@Mixin(JsonUnbakedModel.class)
+@Mixin(BlockModel.class)
 public interface JsonUnbakedModelAccessor {
-	@Accessor
-	JsonUnbakedModel getParent();
+	@Accessor(value = "parent", remap = false)
+	BlockModel getParent();
 	
-	@Accessor
-	Identifier getParentId();
+	@Accessor(value = "parentLocation", remap = false)
+	ResourceLocation getParentLocation();
 	
-	@Accessor
-	Map<String, Either<SpriteIdentifier, String>> getTextureMap();
+	@Accessor(value = "textureMap", remap = false)
+	Map<String, Either<Material, String>> getTextureMap();
 	
 }

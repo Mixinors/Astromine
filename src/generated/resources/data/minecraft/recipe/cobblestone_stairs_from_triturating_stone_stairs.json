@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 300,
+  "input": {
+    "count": 1,
+    "item": "minecraft:stone_stairs"
+  },
+  "output": {
+    "count": 1,
+    "item": "minecraft:cobblestone_stairs"
+  },
+  "time": 80
+}

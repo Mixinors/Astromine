@@ -29,15 +29,14 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageMachineConfigProvider;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -60,7 +59,7 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 	public MelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				slot == FLUID_OUTPUT_SLOT
@@ -71,11 +70,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 				optionalRecipe = Optional.empty();
 			}
 			
-			markDirty();
+			setChanged();
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
-		
-		fluidStorage.getStorage(FLUID_OUTPUT_SLOT).setCapacity(getFluidStorageSize());
-		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
 				false
 		).insertPredicate((variant, slot) -> {
@@ -83,13 +79,13 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 				return false;
 			}
 			
-			return MeltingRecipe.allows(world, variant);
+			return MeltingRecipe.allows(level, variant);
 		}).listener(() -> {
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
 			
-			markDirty();
+			setChanged();
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
@@ -97,13 +93,13 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		if (itemStorage != null && fluidStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
-				optionalRecipe = MeltingRecipe.matching(world, itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT));
+				optionalRecipe = MeltingRecipe.matching(level, itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT));
 			}
 			
 			if (optionalRecipe.isPresent()) {
@@ -114,32 +110,28 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						energyStorage.amount -= consumed;
+				if (energyStorage.amount >= consumed) {
+					energyStorage.amount -= consumed;
+					
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 						
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
-							
-							var inputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
-							
-							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction, true);
-							
-							var outputStorage = fluidStorage.getStorage(FLUID_OUTPUT_SLOT);
-							
-							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction, true);
-							
-							transaction.commit();
-							
-							progress = 0.0D;
-						} else {
-							progress += speed;
-						}
+						var inputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
 						
-						active = true;
+						inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), true, false);
+						
+						var outputStorage = fluidStorage.getStorage(FLUID_OUTPUT_SLOT);
+						
+						outputStorage.insert(recipe.output().toStack(), recipe.output().amount(), true, false);
+						
+						progress = 0.0D;
 					} else {
-						active = false;
+						progress += speed;
 					}
+					
+					active = true;
+				} else {
+					active = false;
 				}
 			} else {
 				progress = 0.0D;

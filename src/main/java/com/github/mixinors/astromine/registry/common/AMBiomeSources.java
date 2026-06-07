@@ -27,13 +27,21 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.MoonBiomeSource;
+import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.RocketInteriorsBiomeSource;
-import net.minecraft.util.registry.Registry;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMBiomeSources {
+	private static final DeferredRegister<MapCodec<? extends BiomeSource>> REGISTRY = DeferredRegister.create(Registries.BIOME_SOURCE, AMCommon.MOD_ID);
+	
 	public static void init() {
-		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("earth_orbit"), () -> EarthOrbitBiomeSource.CODEC);
-		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("moon"), () -> MoonBiomeSource.CODEC);
-		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("rocket_interiors"), () -> RocketInteriorsBiomeSource.CODEC);
+		REGISTRY.register("earth_orbit", () -> EarthOrbitBiomeSource.CODEC);
+		REGISTRY.register("moon", () -> MoonBiomeSource.CODEC);
+		REGISTRY.register("moon_orbit", () -> MoonOrbitBiomeSource.CODEC);
+		REGISTRY.register("rocket_interiors", () -> RocketInteriorsBiomeSource.CODEC);
+		REGISTRY.register(AMCommon.modEventBus());
 	}
 }

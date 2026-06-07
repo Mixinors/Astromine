@@ -26,14 +26,13 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.common.util.constant.fluid.ExtraFluidConstants;
+import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.Models;
-import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-
 import java.util.function.BiConsumer;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 
 public enum ItemVariant implements Variant<Item> {
 	INGOT("ingot"),
@@ -99,11 +98,11 @@ public enum ItemVariant implements Variant<Item> {
 	}
 	
 	@Override
-	public BiConsumer<ItemModelGenerator, Item> getModelRegistrar() {
+	public BiConsumer<AMModelProvider, Item> getModelRegistrar() {
 		return switch (this) {
-			case PICKAXE, AXE, SHOVEL, SWORD, HOE -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.HANDHELD);
+			case PICKAXE, AXE, SHOVEL, SWORD, HOE -> (provider, item) -> provider.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM);
 			
-			default -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.GENERATED);
+			default -> (provider, item) -> provider.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
 		};
 	}
 	
@@ -132,7 +131,7 @@ public enum ItemVariant implements Variant<Item> {
 	}
 	
 	@Override
-	public TagKey<Item> createTag(Identifier id) {
+	public TagKey<Item> createTag(ResourceLocation id) {
 		return AMTagKeys.createItemTag(id);
 	}
 	

@@ -26,28 +26,30 @@ package com.github.mixinors.astromine;
 
 import com.github.mixinors.astromine.registry.client.*;
 import com.github.mixinors.astromine.registry.common.AMKeyBinds;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 
-@Environment(EnvType.CLIENT)
-public class AMClient implements ClientModInitializer {
+@Mod(value = AMCommon.MOD_ID, dist = Dist.CLIENT)
+public class AMClient {
 	
-	@Override
-	public void onInitializeClient() {
-		AMEntityModelLayers.init();
-		AMEntityRenderers.init();
-		AMBlockEntityRenderers.init();
-		AMBlockRenderLayers.init();
-		AMModels.init();
-		AMEvents.init();
+	public AMClient(IEventBus modBus, ModContainer container) {
+		init(modBus);
+	}
+	
+	private static void init(IEventBus modBus) {
+		AMEntityModelLayers.init(modBus);
+		AMEntityRenderers.init(modBus);
+		AMBlockEntityRenderers.init(modBus);
+		AMBlockRenderLayers.init(modBus);
+		AMModels.init(modBus);
+		AMEvents.init(modBus);
 		AMNetworking.init();
-		AMParticleFactories.init();
-		AMScreens.init();
-		AMNetworking.init();
-		AMRenderLayers.init();
-		AMPatchouliPages.init();
+		AMParticleFactories.init(modBus);
+		AMScreens.init(modBus);
+		AMRenderLayers.init(modBus);
 		AMKeyBinds.init();
-		AMColorProviders.init();
+		AMColorProviders.init(modBus);
 	}
 }

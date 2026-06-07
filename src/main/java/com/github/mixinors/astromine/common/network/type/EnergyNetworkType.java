@@ -27,147 +27,193 @@ package com.github.mixinors.astromine.common.network.type;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.EnergyStorageUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 @SuppressWarnings("UnstableApiUsage")
-public abstract class EnergyNetworkType extends NetworkType<EnergyStorage> {
+public abstract class EnergyNetworkType extends NetworkType<IEnergyStorage> {
 	@Override
-	public EnergyStorage find(World world, BlockPos pos, @Nullable Direction direction) {
-		return EnergyStorage.SIDED.find(world, pos, direction);
+	public IEnergyStorage find(Level world, BlockPos pos, @Nullable Direction direction) {
+		return world.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction);
 	}
 	
-	private void move(Reference2LongMap<EnergyStorage> extractableStorages, Reference2LongMap<EnergyStorage> insertableStorages) {
+	private void move(Reference2LongMap<IEnergyStorage> extractableStorages, Reference2LongMap<IEnergyStorage> insertableStorages) {
 		record EnergyPair(
 				long maxAmount,
-				EnergyStorage their
+				IEnergyStorage their
 		) {}
 		
-		try (var transaction = Transaction.openOuter()) {
-			for (var extractableEntry : extractableStorages.reference2LongEntrySet()) {
-				var extractableStorage = extractableEntry.getKey();
-				var extractedAmount = extractableEntry.getLongValue();
+		for (var extractableEntry : extractableStorages.reference2LongEntrySet()) {
+			var extractableStorage = extractableEntry.getKey();
+			var extractedAmount = extractableEntry.getLongValue();
+			
+			var pairs = new ArrayList<EnergyPair>();
+			
+			var offering = 0L;
+			var requesting = 0L;
+			
+			for (var insertableEntry : insertableStorages.reference2LongEntrySet()) {
+				var insertableStorage = insertableEntry.getKey();
+				var insertedAmount = insertableEntry.getLongValue();
 				
-				var pairs = new ArrayList<EnergyPair>();
-				
-				var offering = 0L;
-				var requesting = 0L;
-				
-				for (var insertableEntry : insertableStorages.reference2LongEntrySet()) {
-					var insertableStorage = insertableEntry.getKey();
-					var insertedAmount = insertableEntry.getLongValue();
-					
-					var availableToExtract = Math.min(extractableStorage.getAmount(), getTransferRate() - extractedAmount);
-					var availableToInsert = Math.min(insertableStorage.getCapacity() - insertableStorage.getAmount(), getTransferRate() - insertedAmount);
-					
-					// Skip if nothing can be extracted or inserted.
-					if (availableToExtract == 0L || availableToInsert == 0L) {
-						continue;
-					}
-					
-					if (availableToExtract > 0L) {
-						try (var extractionTestTransaction = Transaction.openNested(transaction)) {
-							availableToExtract = extractableStorage.extract(availableToExtract, extractionTestTransaction);
-						}
-					}
-					
-					if (availableToInsert > 0L) {
-						try (var insertionTestTransaction = Transaction.openNested(transaction)) {
-							availableToInsert = insertableStorage.insert(availableToInsert, insertionTestTransaction);
-						}
-					}
-					
-					var availableToMove = Math.min(availableToExtract, availableToInsert);
-					
-					if (availableToMove > 0L) {
-						offering = Math.max(offering, extractableStorage.getAmount());
-						
-						requesting += availableToMove;
-						
-						pairs.add(new EnergyPair(availableToMove, insertableStorage));
-					}
+				if (extractableStorage == insertableStorage) {
+					continue;
 				}
 				
-				pairs.sort(Comparator.comparingLong(EnergyPair::maxAmount));
+				var availableToExtract = Math.min(LongEnergyStorage.getAmount(extractableStorage), getTransferRate() - extractedAmount);
+				var availableToInsert = Math.min(LongEnergyStorage.getCapacity(insertableStorage) - LongEnergyStorage.getAmount(insertableStorage), getTransferRate() - insertedAmount);
 				
-				for (var pair : pairs) {
-					var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0.0D ? 0.0D : (double) offering / Math.min(1.0D, requesting), 0.0D, 1.0D));
-					
-					var moved = EnergyStorageUtil.move(extractableStorage, pair.their, move, transaction);
-					
-					insertableStorages.put(pair.their, insertableStorages.getLong(pair.their) + moved);
-					
-					extractedAmount += moved;
-					
-					if (extractedAmount >= getTransferRate()) {
-						break;
-					}
+				// Skip if nothing can be extracted or inserted.
+				if (availableToExtract == 0L || availableToInsert == 0L) {
+					continue;
 				}
 				
-				extractableStorages.put(extractableStorage, extractedAmount);
+				if (availableToExtract > 0L) {
+					availableToExtract = LongEnergyStorage.extract(extractableStorage, availableToExtract, true);
+				}
+				
+				if (availableToInsert > 0L) {
+					availableToInsert = LongEnergyStorage.insert(insertableStorage, availableToInsert, true);
+				}
+				
+				var availableToMove = Math.min(availableToExtract, availableToInsert);
+				
+				if (availableToMove > 0L) {
+					offering = Math.max(offering, LongEnergyStorage.getAmount(extractableStorage));
+					
+					requesting += availableToMove;
+					
+					pairs.add(new EnergyPair(availableToMove, insertableStorage));
+				}
+			}
+			
+			pairs.sort(Comparator.comparingLong(EnergyPair::maxAmount));
+			
+			for (var pair : pairs) {
+				var move = (long) Math.ceil(pair.maxAmount * Mth.clamp(requesting <= 0.0D ? 0.0D : (double) offering / requesting, 0.0D, 1.0D));
+				
+				var moved = LongEnergyStorage.move(extractableStorage, pair.their, move);
+				
+				insertableStorages.put(pair.their, insertableStorages.getLong(pair.their) + moved);
+				
+				extractedAmount += moved;
 				
 				if (extractedAmount >= getTransferRate()) {
 					break;
 				}
 			}
 			
-			transaction.commit();
+			extractableStorages.put(extractableStorage, extractedAmount);
+			
+			if (extractedAmount >= getTransferRate()) {
+				break;
+			}
+		}
+	}
+	
+	private void moveBetweenBuffers(Reference2LongMap<IEnergyStorage> bufferStorages) {
+		var initialAmounts = new Reference2LongOpenHashMap<IEnergyStorage>();
+		var extractedAmounts = new Reference2LongOpenHashMap<IEnergyStorage>();
+		var insertedAmounts = new Reference2LongOpenHashMap<IEnergyStorage>();
+		
+		for (var entry : bufferStorages.reference2LongEntrySet()) {
+			initialAmounts.put(entry.getKey(), LongEnergyStorage.getAmount(entry.getKey()));
+			extractedAmounts.put(entry.getKey(), 0L);
+			insertedAmounts.put(entry.getKey(), entry.getLongValue());
+		}
+		
+		for (var sourceEntry : extractedAmounts.reference2LongEntrySet()) {
+			var source = sourceEntry.getKey();
+			var extractedAmount = sourceEntry.getLongValue();
+			
+			for (var destinationEntry : insertedAmounts.reference2LongEntrySet()) {
+				var destination = destinationEntry.getKey();
+				
+				if (source == destination) {
+					continue;
+				}
+				
+				var sourceAmount = initialAmounts.getLong(source);
+				var destinationAmount = initialAmounts.getLong(destination);
+				
+				if (sourceAmount <= destinationAmount) {
+					continue;
+				}
+				
+				var targetMove = Math.max(1L, (sourceAmount - destinationAmount) / 2L);
+				var availableToExtract = Math.min(Math.min(targetMove, LongEnergyStorage.getAmount(source)), getTransferRate() - extractedAmount);
+				var availableToInsert = Math.min(LongEnergyStorage.getCapacity(destination) - LongEnergyStorage.getAmount(destination), getTransferRate() - destinationEntry.getLongValue());
+				var availableToMove = Math.min(availableToExtract, availableToInsert);
+				
+				if (availableToMove <= 0L) {
+					continue;
+				}
+				
+				availableToMove = LongEnergyStorage.extract(source, availableToMove, true);
+				availableToMove = LongEnergyStorage.insert(destination, availableToMove, true);
+				
+				var moved = LongEnergyStorage.move(source, destination, availableToMove);
+				
+				extractedAmount += moved;
+				destinationEntry.setValue(destinationEntry.getLongValue() + moved);
+				
+				if (extractedAmount >= getTransferRate()) {
+					break;
+				}
+			}
+			
+			sourceEntry.setValue(extractedAmount);
 		}
 	}
 	
 	@Override
-	public void tick(Network<EnergyStorage> network) {
+	public void tick(Network<IEnergyStorage> network) {
 		var world = network.getWorld();
 		
-		var extractableStorages = new Reference2LongOpenHashMap<EnergyStorage>();
-		var bufferStorages = new Reference2LongOpenHashMap<EnergyStorage>();
-		var insertableStorages = new Reference2LongOpenHashMap<EnergyStorage>();
-
-		var toRemove = new ArrayList<Network.Member>();
+		var extractableStorages = new Reference2LongOpenHashMap<IEnergyStorage>();
+		var bufferStorages = new Reference2LongOpenHashMap<IEnergyStorage>();
+		var insertableStorages = new Reference2LongOpenHashMap<IEnergyStorage>();
 		
 		for (var member : network.getMembers()) {
 			var storage = find(world, member.blockPos(), member.direction());
 			
 			if (storage == null) {
-				toRemove.add(member);
-				
-				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+				continue;
 			} else {
-				if (storage.supportsInsertion() && storage.supportsExtraction()) {
+				if (storage.canReceive() && storage.canExtract()) {
 					bufferStorages.put(storage, 0L);
-				} else if (storage.supportsInsertion()) {
+				} else if (storage.canReceive()) {
 					insertableStorages.put(storage, 0L);
-				} else if (storage.supportsExtraction()) {
+				} else if (storage.canExtract()) {
 					extractableStorages.put(storage, 0L);
 				}
 			}
 		}
-		
-		network.getMembers().removeAll(toRemove);
 		
 		move(extractableStorages, insertableStorages);
 		move(extractableStorages, bufferStorages);
 		
 		// Clean the map as we are now using it to store the extracted
 		// amount rather than the inserted amount.
-		var cleanBufferStorages = new Reference2LongOpenHashMap<EnergyStorage>();
+		var cleanBufferStorages = new Reference2LongOpenHashMap<IEnergyStorage>();
 		
 		for (var entry : bufferStorages.reference2LongEntrySet()) {
 			cleanBufferStorages.put(entry.getKey(), 0L);
 		}
 		
 		move(cleanBufferStorages, insertableStorages);
+		moveBetweenBuffers(bufferStorages);
 	}
 	
 	@Override

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 23040,
+  "input": {
+    "count": 1,
+    "tag": "c:galaxium_dusts"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_galaxium"
+  },
+  "time": 2880
+}

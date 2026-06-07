@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 17920,
+  "input": {
+    "count": 1,
+    "tag": "c:stellum_helmets"
+  },
+  "output": {
+    "amount": 120,
+    "fluid": "astromine:molten_stellum"
+  },
+  "time": 2240
+}

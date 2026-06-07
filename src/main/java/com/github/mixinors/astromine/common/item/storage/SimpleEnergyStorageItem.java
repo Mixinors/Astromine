@@ -25,17 +25,13 @@
 package com.github.mixinors.astromine.common.item.storage;
 
 import com.github.mixinors.astromine.common.transfer.storage.EnergyStorageItem;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
-import team.reborn.energy.api.EnergyStorage;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
 	private final long capacity;
 	
-	public SimpleEnergyStorageItem(Item.Settings settings, long capacity) {
+	public SimpleEnergyStorageItem(Item.Properties settings, long capacity) {
 		super(settings);
 		
 		this.capacity = capacity;
@@ -47,36 +43,21 @@ public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
 	}
 	
 	@Override
-	public int getItemBarStep(ItemStack stack) {
+	public int getBarWidth(ItemStack stack) {
 		if (getEnergyCapacity() == 0L) {
 			return 0;
 		}
 		
-		var energyStorage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
-		
-		return (int) (13.0F * ((float) energyStorage.getAmount() / (float) getEnergyCapacity()));
+		return (int) (13.0F * ((float) getStoredEnergy(stack) / (float) getEnergyCapacity()));
 	}
 	
 	@Override
-	public boolean isItemBarVisible(ItemStack stack) {
+	public boolean isBarVisible(ItemStack stack) {
 		return true;
 	}
 	
 	@Override
-	public int getItemBarColor(ItemStack stack) {
+	public int getBarColor(ItemStack stack) {
 		return 0xACE379;
-	}
-	
-	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		super.appendStacks(group, stacks);
-		
-		if (this.isIn(group)) {
-			var stack = new ItemStack(this);
-			
-			setStoredEnergy(stack, getEnergyCapacity());
-			
-			stacks.add(stack);
-		}
 	}
 }

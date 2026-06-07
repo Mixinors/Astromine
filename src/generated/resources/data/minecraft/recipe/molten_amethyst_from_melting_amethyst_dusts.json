@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 2560,
+  "input": {
+    "count": 1,
+    "tag": "c:amethyst_dusts"
+  },
+  "output": {
+    "amount": 250,
+    "fluid": "astromine:molten_amethyst"
+  },
+  "time": 320
+}

@@ -24,95 +24,126 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantItemStorage;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-/**
- * A {@link SingleVariantItemStorage} implementation, backed by an {@link ItemStack}.
- */
-public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVariant> {
-	public static final String FLUID_KEY = "Fluid";
-	public static final String VARIANT_KEY = "Variant";
+public class SimpleFluidItemStorage implements IFluidHandlerItem {
+	public static final String FLUID_ID_KEY = "Id";
 	public static final String AMOUNT_KEY = "Amount";
 	
-	private final long capacity;
+	private final ItemStack stack;
+	private final FluidStorageItem item;
 	
-	public SimpleFluidItemStorage(ContainerItemContext context, long capacity) {
-		super(context);
-		
-		this.capacity = capacity;
+	public SimpleFluidItemStorage(ItemStack stack, FluidStorageItem item) {
+		this.stack = stack;
+		this.item = item;
 	}
 	
-	@Override
-	protected FluidVariant getBlankResource() {
-		return FluidVariant.blank();
-	}
-	
-	@Override
-	protected FluidVariant getResource(ItemVariant currentVariant) {
-		var stack = currentVariant.toStack();
+	public static CompoundTag writeFluid(FluidStack stack) {
+		var tag = new CompoundTag();
 		
-		var nbt = stack.getNbt();
-		
-		if (nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) {
-			return getBlankResource();
+		if (!stack.isEmpty()) {
+			tag.putString(FLUID_ID_KEY, BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString());
+			tag.putInt(AMOUNT_KEY, stack.getAmount());
 		}
 		
-		var fluidNbt = nbt.getCompound(FLUID_KEY);
-		
-		if (!fluidNbt.contains(VARIANT_KEY, NbtElement.COMPOUND_TYPE)) {
-			return getBlankResource();
+		return tag;
+	}
+	
+	public static FluidStack readFluid(CompoundTag tag) {
+		if (!tag.contains(FLUID_ID_KEY)) {
+			return FluidStack.EMPTY;
 		}
 		
-		return FluidVariant.fromNbt(fluidNbt.getCompound(VARIANT_KEY));
+		var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(tag.getString(FLUID_ID_KEY)));
+		
+		return fluid == Fluids.EMPTY ? FluidStack.EMPTY : new FluidStack(fluid, tag.getInt(AMOUNT_KEY));
+	}
+	
+	public FluidStack getResource() {
+		return item.getStoredFluid(stack);
 	}
 	
 	@Override
-	protected long getAmount(ItemVariant currentVariant) {
-		var stack = currentVariant.toStack();
+	public ItemStack getContainer() {
+		return stack;
+	}
+	
+	@Override
+	public int getTanks() {
+		return 1;
+	}
+	
+	@Override
+	public FluidStack getFluidInTank(int tank) {
+		return tank == 0 ? getResource() : FluidStack.EMPTY;
+	}
+	
+	@Override
+	public int getTankCapacity(int tank) {
+		return tank == 0 ? (int) Math.min(item.getFluidCapacity(), Integer.MAX_VALUE) : 0;
+	}
+	
+	@Override
+	public boolean isFluidValid(int tank, FluidStack stack) {
+		var stored = getResource();
 		
-		var nbt = stack.getNbt();
-		
-		if (nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) {
+		return tank == 0 && (stored.isEmpty() || FluidStack.isSameFluidSameComponents(stored, stack));
+	}
+	
+	@Override
+	public int fill(FluidStack resource, FluidAction action) {
+		if (resource.isEmpty() || !isFluidValid(0, resource)) {
 			return 0;
 		}
 		
-		var fluidNbt = nbt.getCompound(FLUID_KEY);
+		var stored = getResource();
+		var inserted = Math.min(resource.getAmount(), getTankCapacity(0) - stored.getAmount());
 		
-		if (!fluidNbt.contains(AMOUNT_KEY, NbtElement.LONG_TYPE)) {
+		if (inserted <= 0) {
 			return 0;
 		}
 		
-		return fluidNbt.getLong(AMOUNT_KEY);
-	}
-	
-	@Override
-	protected long getCapacity(FluidVariant variant) {
-		return capacity;
-	}
-	
-	@Override
-	protected ItemVariant getUpdatedVariant(ItemVariant currentVariant, FluidVariant newResource, long newAmount) {
-		var stack = currentVariant.toStack();
-		
-		var nbt = stack.getOrCreateNbt();
-		
-		var fluidNbt = new NbtCompound();
-		
-		if (newAmount == 0) {
-			newResource = getBlankResource();
+		if (action.execute()) {
+			var updated = stored.isEmpty() ? resource.copyWithAmount(inserted) : stored.copyWithAmount(stored.getAmount() + inserted);
+			item.setStoredFluid(stack, updated);
 		}
 		
-		fluidNbt.put(VARIANT_KEY, newResource.toNbt());
+		return inserted;
+	}
+	
+	@Override
+	public FluidStack drain(FluidStack resource, FluidAction action) {
+		var stored = getResource();
 		
-		fluidNbt.putLong(AMOUNT_KEY, newAmount);
+		if (resource.isEmpty() || stored.isEmpty() || !FluidStack.isSameFluidSameComponents(stored, resource)) {
+			return FluidStack.EMPTY;
+		}
 		
-		nbt.put(FLUID_KEY, fluidNbt);
+		return drain(resource.getAmount(), action);
+	}
+	
+	@Override
+	public FluidStack drain(int maxDrain, FluidAction action) {
+		var stored = getResource();
 		
-		return ItemVariant.of(stack);
+		if (stored.isEmpty() || maxDrain <= 0) {
+			return FluidStack.EMPTY;
+		}
+		
+		var drained = Math.min(maxDrain, stored.getAmount());
+		var result = stored.copyWithAmount(drained);
+		
+		if (action.execute()) {
+			var remaining = stored.getAmount() - drained;
+			item.setStoredFluid(stack, remaining <= 0 ? FluidStack.EMPTY : stored.copyWithAmount(remaining));
+		}
+		
+		return result;
 	}
 }

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 300,
+  "input": {
+    "count": 1,
+    "tag": "c:raw_diamonds"
+  },
+  "output": {
+    "count": 2,
+    "item": "astromine:diamond_dust"
+  },
+  "time": 90
+}

@@ -30,54 +30,78 @@ import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
-import dev.architectury.event.events.common.TickEvent;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.resource.ResourceType;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 public class AMEvents {
 	public static void init() {
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BodyManager.ReloadListener());
+		NeoForge.EVENT_BUS.addListener(AMEvents::addReloadListeners);
+		NeoForge.EVENT_BUS.addListener(AMEvents::onServerTick);
+		NeoForge.EVENT_BUS.addListener(AMEvents::onLevelTick);
+		NeoForge.EVENT_BUS.addListener(AMEvents::onLevelLoad);
+		NeoForge.EVENT_BUS.addListener(AMEvents::onLevelUnload);
+		NeoForge.EVENT_BUS.addListener(AMEvents::onServerStarting);
+		NeoForge.EVENT_BUS.addListener(AMEvents::onPlayerJoin);
+	}
+	
+	private static void addReloadListeners(AddReloadListenerEvent event) {
+		event.addListener(new BodyManager.ReloadListener());
+	}
+	
+	private static void onServerTick(ServerTickEvent.Pre event) {
+		BodyManager.flushPendingSync(event.getServer());
 		
-		TickEvent.SERVER_PRE.register((server) -> {
-			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {
-					if (screenHandler.getBlockEntity() != null) {
-						screenHandler.getBlockEntity().syncData();
-						break;
-					}
-				}
-				
-				if (playerEntity.currentScreenHandler instanceof ExtendedEntityScreenHandler screenHandler) {
-					if (screenHandler.getEntity() != null) {
-						screenHandler.getEntity().syncData();
-					}
-				}
+		for (var player : event.getServer().getPlayerList().getPlayers()) {
+			if (player.containerMenu instanceof ExtendedBlockEntityScreenHandler screenHandler && screenHandler.getBlockEntity() != null) {
+				screenHandler.getBlockEntity().syncData();
+				break;
 			}
-		});
-		
-		TickEvent.SERVER_LEVEL_PRE.register((world -> {
-			var component = NetworksComponent.get(world);
+			
+			if (player.containerMenu instanceof ExtendedEntityScreenHandler screenHandler && screenHandler.getEntity() != null) {
+				screenHandler.getEntity().syncData();
+			}
+		}
+	}
+	
+	private static void onLevelTick(LevelTickEvent.Pre event) {
+		if (event.getLevel() instanceof ServerLevel level) {
+			var component = NetworksComponent.get(level);
 			
 			if (component != null) {
 				component.tick();
 			}
-		}));
-		
-		ServerWorldEvents.LOAD.register(BodyManager::onWorldLoad);
-		ServerWorldEvents.UNLOAD.register(BodyManager::onWorldUnload);
-		
-		ServerLifecycleEvents.SERVER_STARTING.register(RocketManager::onServerStarting);
-		ServerLifecycleEvents.SERVER_STARTING.register(StationManager::onServerStarting);
-		
-		ServerLifecycleEvents.SERVER_STOPPING.register(RocketManager::onServerStopping);
-		ServerLifecycleEvents.SERVER_STOPPING.register(StationManager::onServerStopping);
-		
-		ServerPlayConnectionEvents.JOIN.register(RocketManager::onPlayerJoin);
-		ServerPlayConnectionEvents.JOIN.register(StationManager::onPlayerJoin);
-		
-		ServerPlayConnectionEvents.JOIN.register(BodyManager::onPlayerJoin);
+		}
+	}
+	
+	private static void onLevelLoad(LevelEvent.Load event) {
+		if (event.getLevel() instanceof ServerLevel level) {
+			BodyManager.onWorldLoad(level.getServer(), level);
+		}
+	}
+	
+	private static void onLevelUnload(LevelEvent.Unload event) {
+		if (event.getLevel() instanceof ServerLevel level) {
+			BodyManager.onWorldUnload(level.getServer(), level);
+		}
+	}
+	
+	private static void onServerStarting(ServerStartingEvent event) {
+		RocketManager.onServerStarting(event.getServer());
+		StationManager.onServerStarting(event.getServer());
+	}
+	
+	private static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player) {
+			RocketManager.onPlayerJoin(player.getServer());
+			StationManager.onPlayerJoin(player.getServer());
+			BodyManager.onPlayerJoin(player.getServer());
+		}
 	}
 }

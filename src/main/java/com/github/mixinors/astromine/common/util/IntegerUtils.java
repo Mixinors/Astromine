@@ -27,14 +27,14 @@ package com.github.mixinors.astromine.common.util;
 import com.github.mixinors.astromine.AMCommon;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class IntegerUtils {
-	public static void toPacket(PacketByteBuf buffer, int number) {
+	public static void toPacket(FriendlyByteBuf buffer, int number) {
 		buffer.writeInt(number);
 	}
 	
-	public static int fromPacket(PacketByteBuf buffer) {
+	public static int fromPacket(FriendlyByteBuf buffer) {
 		return buffer.readInt();
 	}
 	

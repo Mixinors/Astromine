@@ -26,14 +26,13 @@ package com.github.mixinors.astromine.common.util;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-
 import java.util.Collection;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * Originally from {@see https://www.youtube.com/watch?v=I9Qn_oIx6Oo}, adapted to Fabric.
+ * Originally from {@see https://www.youtube.com/watch?v=I9Qn_oIx6Oo}.
  */
 public class VoxelShapeUtils {
 	private static final double CENTER = 0.5;
@@ -47,31 +46,31 @@ public class VoxelShapeUtils {
 	}
 	
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
-		var collision = VoxelShapes.empty();
+		var collision = Shapes.empty();
 		
 		for (var shape : shapes) {
-			collision = VoxelShapes.union(shape, collision);
+			collision = Shapes.or(shape, collision);
 		}
 		
 		return collision;
 	}
 	
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape shape) {
-		var collision = VoxelShapes.empty();
+		var collision = Shapes.empty();
 		
-		for (var box : shape.getBoundingBoxes()) {
+		for (var box : shape.toAabbs()) {
 			var min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
 			var max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
 			
-			collision = VoxelShapes.union(collision, axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(), min.getSecond(), box.minZ, max.getFirst(), max.getSecond(), box.maxZ) : VoxelShapes.cuboid(Math.min(min.getFirst(), max.getFirst()), Math.min(box.minY, box.maxY), Math.min(min.getSecond(), max.getSecond()), Math.max(min.getFirst(), max.getFirst()), Math.max(box.minY, box.maxY), Math.max(min.getSecond(), max.getSecond()))));
+			collision = Shapes.or(collision, axis == Direction.Axis.X ? Shapes.box(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? Shapes.box(min.getFirst(), min.getSecond(), box.minZ, max.getFirst(), max.getSecond(), box.maxZ) : Shapes.box(Math.min(min.getFirst(), max.getFirst()), Math.min(box.minY, box.maxY), Math.min(min.getSecond(), max.getSecond()), Math.max(min.getFirst(), max.getFirst()), Math.max(box.minY, box.maxY), Math.max(min.getSecond(), max.getSecond()))));
 		}
 		return collision;
 	}
 	
 	public static VoxelShape rotate(Direction.Axis axis, double radians, Collection<VoxelShape> shapes) {
-		var collision = VoxelShapes.empty();
+		var collision = Shapes.empty();
 		for (var shape : shapes) {
-			collision = VoxelShapes.union(collision, rotate(axis, radians, shape));
+			collision = Shapes.or(collision, rotate(axis, radians, shape));
 		}
 		return collision;
 	}

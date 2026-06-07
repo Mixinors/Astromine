@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 6688,
+  "input": {
+    "count": 1,
+    "tag": "c:diamond_shovels"
+  },
+  "output": {
+    "amount": 24,
+    "fluid": "astromine:molten_diamond"
+  },
+  "time": 836
+}

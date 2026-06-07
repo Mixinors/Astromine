@@ -1,77 +1,48 @@
 package com.github.mixinors.astromine.common.block.dynamic;
 
 import com.github.mixinors.astromine.registry.common.AMProperties;
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.WallBlock;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-
 public class DynamicWallBlock extends WallBlock {
-	public DynamicWallBlock(Settings settings) {
+	public DynamicWallBlock(Properties settings) {
 		super(settings);
 		
-		setDefaultState(getDefaultState().with(AMProperties.DYNAMIC, true));
-		
-		this.shapeMap = this.getShapeMap(4.0F, 3.0F, 16.0F, 0.0F, 14.0F, 16.0F);
-		this.collisionShapeMap = this.getShapeMap(4.0F, 3.0F, 24.0F, 0.0F, 24.0F, 24.0F);
-		
-		var shapesToAddMap = new HashMap<BlockState, VoxelShape>();
-		var collisionShapesToAddMap = new HashMap<BlockState, VoxelShape>();
-		
-		for (var entry : shapeMap.entrySet()) {
-			shapesToAddMap.put(entry.getKey().with(AMProperties.DYNAMIC, false), entry.getValue());
-		}
-		
-		for (var entry : collisionShapeMap.entrySet()) {
-			collisionShapesToAddMap.put(entry.getKey().with(AMProperties.DYNAMIC, false), entry.getValue());
-		}
-		
-		this.shapeMap = ImmutableMap.<BlockState, VoxelShape>builder().putAll(shapeMap).putAll(shapesToAddMap).build();
-		this.collisionShapeMap = ImmutableMap.<BlockState, VoxelShape>builder().putAll(collisionShapeMap).putAll(collisionShapesToAddMap).build();
+		registerDefaultState(defaultBlockState().setValue(AMProperties.DYNAMIC, true));
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		
 		builder.add(AMProperties.DYNAMIC);
 	}
 	
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return super.getPlacementState(ctx).with(AMProperties.DYNAMIC, false);
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		return super.getStateForPlacement(ctx).setValue(AMProperties.DYNAMIC, false);
 	}
 	
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		var shape = this.shapeMap.get(state);
-		
-		if (shape == null) {
-			return VoxelShapes.empty();
-		} else {
-			return shape;
-		}
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return super.getShape(shapeState(state), world, pos, context);
 	}
 	
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		var shape = this.collisionShapeMap.get(state);
-		
-		if (shape == null) {
-			return VoxelShapes.empty();
-		} else {
-			return shape;
-		}
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return super.getCollisionShape(shapeState(state), world, pos, context);
+	}
+	
+	private static BlockState shapeState(BlockState state) {
+		return state.hasProperty(AMProperties.DYNAMIC) ? state.setValue(AMProperties.DYNAMIC, false) : state;
 	}
 }

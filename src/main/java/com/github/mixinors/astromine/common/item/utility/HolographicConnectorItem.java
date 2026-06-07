@@ -27,20 +27,20 @@ package com.github.mixinors.astromine.common.item.utility;
 import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
-import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
+import com.github.mixinors.astromine.common.util.ItemDataUtils;
+import com.github.mixinors.astromine.common.util.NbtUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 
 public class HolographicConnectorItem extends Item {
 	private static final String SELECTOR_CONNECTOR_BLOCK_KEY = "SelectedConnectorBlock";
@@ -48,107 +48,107 @@ public class HolographicConnectorItem extends Item {
 	private static final String WORLD_KEY = "World";
 	private static final String POSITION_KEY = "position";
 	
-	public HolographicConnectorItem(Settings settings) {
+	public HolographicConnectorItem(Properties settings) {
 		super(settings);
 	}
 	
 	public record Selection(
-			RegistryKey<World> registryKey,
+			ResourceKey<Level> registryKey,
 			BlockPos blockPos
 	) {}
 	
 	@Override
-	public ActionResult useOnBlock(ItemUsageContext context) {
+	public InteractionResult useOn(UseOnContext context) {
 
-		if (context.shouldCancelInteraction()) {
-			return super.useOnBlock(context);
+		if (context.isSecondaryUseActive()) {
+			return super.useOn(context);
 		}
 		
-		var world = context.getWorld();
+		var world = context.getLevel();
 		var player = context.getPlayer();
-		var stack = context.getStack();
+		var stack = context.getItemInHand();
 		var hand = context.getHand();
-		var pos = context.getBlockPos();
+		var pos = context.getClickedPos();
 		
 		if (world == null || player == null) {
-			return super.useOnBlock(context);
+			return super.useOn(context);
 		}
 		
 		if (world.getBlockState(pos).getBlock() instanceof HoloBridgeProjectorBlock && world.getBlockEntity(pos) instanceof HoloBridgeProjectorBlockEntity child) {
 			var pair = fromStack(stack);
 			
-			var childPos = child.getPos();
+			var childPos = child.getBlockPos();
 			
-			if (pair == null || !pair.registryKey().equals(world.getRegistryKey())) {
-				if (!world.isClient) {
-					player.setStackInHand(hand, select(stack, world.getRegistryKey(), childPos));
+			if (pair == null || !pair.registryKey().equals(world.dimension())) {
+				if (!world.isClientSide) {
+					player.setItemInHand(hand, select(stack, world.dimension(), childPos));
 				} else {
-					player.sendMessage(Text.translatable("text.astromine.message.holographic_connector_select", toShortString(child.getPos())).formatted(Formatting.BLUE), true);
+					player.displayClientMessage(Component.translatable("text.astromine.message.holographic_connector_select", toShortString(child.getBlockPos())).withStyle(ChatFormatting.BLUE), true);
 					
-					world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+					world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundSource.PLAYERS, 0.5F, 0.33F);
 				}
 			} else {
 				var blockEntity = world.getBlockEntity(pair.blockPos());
 				
 				if (!(blockEntity instanceof HoloBridgeProjectorBlockEntity parent)) {
-					if (!world.isClient) {
-						player.setStackInHand(hand, select(stack, world.getRegistryKey(), childPos));
+					if (!world.isClientSide) {
+						player.setItemInHand(hand, select(stack, world.dimension(), childPos));
 					} else {
-						player.sendMessage(Text.translatable("text.astromine.message.holographic_connector_select", toShortString(child.getPos())).formatted(Formatting.BLUE), true);
+						player.displayClientMessage(Component.translatable("text.astromine.message.holographic_connector_select", toShortString(child.getBlockPos())).withStyle(ChatFormatting.BLUE), true);
 						
-						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundSource.PLAYERS, 0.5F, 0.33F);
 					}
 					
-					return ActionResult.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 				
-				var parentPos = parent.getPos();
+				var parentPos = parent.getBlockPos();
 				
 				if (parentPos.getZ() < childPos.getZ() || parentPos.getX() < childPos.getX()) {
-					var temporary = parent;
+					var previousParent = parent;
 					
 					parent = child;
-					child = temporary;
+					child = previousParent;
 				}
 				
-				if ((parentPos.getX() != childPos.getX() && parentPos.getZ() != childPos.getZ()) || parentPos.getSquaredDistance(childPos) > 65536) {
-					if (!world.isClient) {
-						player.setStackInHand(hand, unselect(stack));
+				if ((parentPos.getX() != childPos.getX() && parentPos.getZ() != childPos.getZ()) || parentPos.distSqr(childPos) > 65536) {
+					if (!world.isClientSide) {
+						player.setItemInHand(hand, unselect(stack));
 					} else {
-						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
+						player.displayClientMessage(Component.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).withStyle(ChatFormatting.RED), true);
 						
-						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundSource.PLAYERS, 0.5F, 0.33F);
 					}
 					
-					return ActionResult.SUCCESS;
-				} else if (parent.getCachedState().get(HorizontalFacingBlock.FACING).getOpposite() != child.getCachedState().get(HorizontalFacingBlock.FACING)) {
-					if (!world.isClient) {
-						player.setStackInHand(hand, unselect(stack));
+					return InteractionResult.SUCCESS;
+				} else if (parent.getBlockState().getValue(HorizontalDirectionalBlock.FACING).getOpposite() != child.getBlockState().getValue(HorizontalDirectionalBlock.FACING)) {
+					if (!world.isClientSide) {
+						player.setItemInHand(hand, unselect(stack));
 					} else {
-						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
+						player.displayClientMessage(Component.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).withStyle(ChatFormatting.RED), true);
 						
-						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundSource.PLAYERS, 0.5F, 0.33F);
 					}
 					
-					return ActionResult.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 				
 				if (!parent.attemptToBuildBridge(child)) {
-					if (!world.isClient) {
-						player.setStackInHand(hand, unselect(stack));
+					if (!world.isClientSide) {
+						player.setItemInHand(hand, unselect(stack));
 					} else {
-						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
+						player.displayClientMessage(Component.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).withStyle(ChatFormatting.RED), true);
 						
-						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundSource.PLAYERS, 0.5F, 0.33F);
 					}
 					
-					return ActionResult.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 				
-				if (world.isClient) {
-					player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_successful", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.GREEN), true);
+				if (world.isClientSide) {
+					player.displayClientMessage(Component.translatable("text.astromine.message.holographic_connection_successful", toShortString(parentPos), toShortString(childPos)).withStyle(ChatFormatting.GREEN), true);
 					
-					world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+					world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundSource.PLAYERS, 0.5F, 0.33F);
 				} else {
 					parent.setChild(child);
 					child.setParent(parent);
@@ -159,52 +159,45 @@ public class HolographicConnectorItem extends Item {
 					
 					parent.buildBridge();
 					
-					BlockEntityHooks.syncData(parent);
+					parent.syncData();
 					
-					player.setStackInHand(hand, unselect(stack));
+					player.setItemInHand(hand, unselect(stack));
 				}
 			}
 		} else {
-			if (world.isClient) {
-				player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_clear").formatted(Formatting.YELLOW), true);
+			if (world.isClientSide) {
+				player.displayClientMessage(Component.translatable("text.astromine.message.holographic_connection_clear").withStyle(ChatFormatting.YELLOW), true);
 				
-				world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+				world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundSource.PLAYERS, 0.5F, 0.33F);
 			} else {
-				player.setStackInHand(hand, unselect(stack));
+				player.setItemInHand(hand, unselect(stack));
 			}
 		}
 		
-		return ActionResult.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 	
 	private ItemStack unselect(ItemStack stack) {
 		stack = stack.copy();
 		
-		var nbt = stack.getOrCreateNbt();
-		
-		nbt.remove(SELECTOR_CONNECTOR_BLOCK_KEY);
+		ItemDataUtils.update(stack, nbt -> nbt.remove(SELECTOR_CONNECTOR_BLOCK_KEY));
 		
 		return stack;
 	}
 	
-	private ItemStack select(ItemStack stack, RegistryKey<World> registryKey, BlockPos pos) {
+	private ItemStack select(ItemStack stack, ResourceKey<Level> registryKey, BlockPos pos) {
 		stack = stack.copy();
 		
-		var nbt = stack.getOrCreateNbt();
-		
-		nbt.remove(SELECTOR_CONNECTOR_BLOCK_KEY);
-		
-		nbt.put(SELECTOR_CONNECTOR_BLOCK_KEY, toNbt(registryKey, pos));
+		ItemDataUtils.update(stack, nbt -> {
+			nbt.remove(SELECTOR_CONNECTOR_BLOCK_KEY);
+			nbt.put(SELECTOR_CONNECTOR_BLOCK_KEY, toNbt(registryKey, pos));
+		});
 		
 		return stack;
 	}
 	
 	public Selection fromStack(ItemStack stack) {
-		var nbt = stack.getNbt();
-		
-		if (nbt == null) {
-			return null;
-		}
+		var nbt = ItemDataUtils.get(stack);
 		
 		if (!nbt.contains(SELECTOR_CONNECTOR_BLOCK_KEY)) {
 			return null;
@@ -213,18 +206,18 @@ public class HolographicConnectorItem extends Item {
 		return fromNbt(nbt.getCompound(SELECTOR_CONNECTOR_BLOCK_KEY));
 	}
 	
-	private NbtCompound toNbt(RegistryKey<World> registryKey, BlockPos pos) {
-		var nbt = new NbtCompound();
+	private CompoundTag toNbt(ResourceKey<Level> registryKey, BlockPos pos) {
+		var nbt = new CompoundTag();
 		
-		NbtUtil.putRegistryKey(nbt, WORLD_KEY, registryKey);
-		NbtUtil.putBlockPos(nbt, POSITION_KEY, pos);
+		NbtUtils.putRegistryKey(nbt, WORLD_KEY, registryKey);
+		NbtUtils.putBlockPos(nbt, POSITION_KEY, pos);
 		
 		return nbt;
 	}
 	
-	private Selection fromNbt(NbtCompound nbt) {
-		var registryKey = NbtUtil.<World>getRegistryKey(nbt, WORLD_KEY);
-		var pos = NbtUtil.getBlockPos(nbt, POSITION_KEY);
+	private Selection fromNbt(CompoundTag nbt) {
+		var registryKey = NbtUtils.<Level>getRegistryKey(nbt, WORLD_KEY);
+		var pos = NbtUtils.getBlockPos(nbt, POSITION_KEY);
 		
 		return new Selection(registryKey, pos);
 	}

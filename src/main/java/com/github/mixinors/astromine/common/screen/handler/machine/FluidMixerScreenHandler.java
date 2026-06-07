@@ -24,55 +24,36 @@
 
 package com.github.mixinors.astromine.common.screen.handler.machine;
 
+import static com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityMenuLayout.*;
+
 import com.github.mixinors.astromine.common.block.entity.machine.FluidMixerBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final FluidMixerBlockEntity mixer;
 	
-	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public FluidMixerScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.FLUID_MIXER, syncId, player, position);
 		
 		mixer = (FluidMixerBlockEntity) blockEntity;
+		
+		var firstX = defaultFluidBarX();
+		var firstY = defaultFluidBarY();
+		var secondX = firstX + (int) (BAR_WIDTH + PAD_7);
+		var arrowX = fluidArrowX(secondX);
+		var arrowY = fluidArrowY(firstY);
+		
+		addFluidBar(FluidMixerBlockEntity.INPUT_SLOT_1, firstX, firstY);
+		addFluidBar(FluidMixerBlockEntity.INPUT_SLOT_2, secondX, firstY);
+		addFluidBar(FluidMixerBlockEntity.OUTPUT_SLOT, processOutputX(arrowX), firstY);
+		addProgressArrow(arrowX, arrowY);
 	}
 	
 	@Override
 	public int getDefaultFluidSlotForBar() {
 		return FluidMixerBlockEntity.INPUT_SLOT_1;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
-		
-		var secondInputFluidBar = new FluidBarWidget();
-		secondInputFluidBar.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, 0.0F));
-		secondInputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		secondInputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.INPUT_SLOT_2));
-		secondInputFluidBar.setSmooth(false);
-		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(secondInputFluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) mixer.limit);
-		arrow.setCurrent(() -> (float) mixer.progress);
-		
-		var outputFluidBar = new FluidBarWidget();
-		outputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
-		outputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		outputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.OUTPUT_SLOT));
-		outputFluidBar.setSmooth(false);
-		
-		tab.add(secondInputFluidBar);
-		tab.add(arrow);
-		tab.add(outputFluidBar);
 	}
 }

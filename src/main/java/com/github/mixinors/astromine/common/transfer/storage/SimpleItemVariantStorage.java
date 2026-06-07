@@ -24,211 +24,113 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
-/**
- * <p>A {@link SingleVariantStorage} implementation for {@link ItemVariant}s, backed by an {@link Inventory}.</p>
- */
-public class SimpleItemVariantStorage extends SnapshotParticipant<ItemStack> implements SingleSlotStorage<ItemVariant> {
-	private final Inventory inventory;
+public class SimpleItemVariantStorage {
+	private final Container inventory;
 	private final int slot;
 	
 	private SimpleItemStorage outerStorage = null;
 	
-	public SimpleItemVariantStorage(Inventory inventory, int slot) {
+	public SimpleItemVariantStorage(Container inventory, int slot) {
 		this.inventory = inventory;
 		this.slot = slot;
 	}
 	
-	/**
-	 * Returns this storage's stack.
-	 */
 	public ItemStack getStack() {
-		return inventory.getStack(slot);
+		return inventory.getItem(slot);
 	}
 	
-	/**
-	 * Sets this storage's stack.
-	 *
-	 * @param stack the stack to be set.
-	 */
 	public void setStack(ItemStack stack) {
-		inventory.setStack(slot, stack);
+		inventory.setItem(slot, stack);
 	}
 	
-	/**
-	 * Returns this storage's capacity for the given variant.
-	 *
-	 * @param variant the variant.
-	 */
-	public int getCapacity(ItemVariant variant) {
-		return variant.getItem().getMaxCount();
+	public int getCapacity(ItemStack stack) {
+		return stack.isEmpty() ? inventory.getMaxStackSize() : Math.min(inventory.getMaxStackSize(), stack.getMaxStackSize());
 	}
 	
-	/**
-	 * Asserts whether this storage's variant is blank or not.
-	 */
-	@Override
 	public boolean isResourceBlank() {
-		return getResource().isBlank();
+		return getStack().isEmpty();
 	}
 	
-	/**
-	 * Returns this storage's variant.
-	 */
-	@Override
-	public ItemVariant getResource() {
-		return ItemVariant.of(getStack());
+	public ItemStack getResource() {
+		return getStack();
 	}
 	
-	/**
-	 * Returns this storage's amount.
-	 */
-	@Override
 	public long getAmount() {
 		return getStack().getCount();
 	}
 	
-	/**
-	 * Returns this storage's capacity.
-	 */
-	@Override
-	public final long getCapacity() {
-		return getCapacity(getResource());
+	public long getCapacity() {
+		return getCapacity(getStack());
 	}
 	
-	/**
-	 * Returns this storage's {@link #outerStorage}.
-	 */
 	public SimpleItemStorage getOuterStorage() {
 		return outerStorage;
 	}
 	
-	/**
-	 * Sets this storage's {@link #outerStorage}
-	 *
-	 * @param outerStorage the storage to be set.
-	 */
 	public void setOuterStorage(SimpleItemStorage outerStorage) {
 		this.outerStorage = outerStorage;
 	}
 	
-	/**
-	 * <p>An implementation of {@link #insert(ItemVariant, long, TransactionContext)}
-	 * which allows insertion to ignore this storage's {@link #outerStorage}'s insertion predicate if
-	 * <b>force</b> is <code>true</code>.</p>
-	 *
-	 * <p>See original implementation for detailed documentation.</p>
-	 */
-	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
-		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
-		
-		transaction.addCloseCallback((($, result) -> {
-			if (outerStorage != null && result.wasCommitted()) {
-				outerStorage.notifyListeners();
-				
-				outerStorage.incrementVersion();
-			}
-		}));
-		
-		var stack = getStack();
-		
-		if (variant.matches(stack) || stack.isEmpty()) {
-			if (outerStorage != null && !outerStorage.canInsert(variant, slot) && !force) {
-				return 0;
-			}
-			
-			var amount = (int) Math.min(maxAmount, getCapacity(variant) - stack.getCount());
-			
-			if (amount > 0) {
-				updateSnapshots(transaction);
-				
-				stack = getStack();
-				
-				if (stack.isEmpty()) {
-					stack = variant.toStack(amount);
-				} else {
-					stack.increment(amount);
-				}
-				
-				setStack(stack);
-			}
-			
-			return amount;
+	public int getSlot() {
+		return slot;
+	}
+	
+	public int insert(ItemStack stack, int maxAmount, boolean force, boolean simulate) {
+		if (stack.isEmpty() || maxAmount <= 0) {
+			return 0;
 		}
 		
-		return 0;
-	}
-	
-	/**
-	 * <p>An implementation of {@link #extract(ItemVariant, long, TransactionContext)}
-	 * which allows extraction to ignore this storage's {@link #outerStorage}'s extraction predicate if
-	 * <b>force</b> is <code>true</code>.</p>
-	 *
-	 * <p>See original implementation for detailed documentation.</p>
-	 */
-	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
-		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
+		var existingStack = getStack();
 		
-		transaction.addCloseCallback((($, result) -> {
-			if (outerStorage != null && result.wasCommitted()) {
-				outerStorage.notifyListeners();
-				
-				outerStorage.incrementVersion();
-			}
-		}));
-		
-		var stack = getStack();
-		
-		if (variant.matches(stack)) {
-			if (outerStorage != null && !outerStorage.canExtract(variant, slot) && !force) {
-				return 0;
-			}
-			
-			var amount = (int) Math.min(stack.getCount(), maxAmount);
-			
-			if (amount > 0) {
-				this.updateSnapshots(transaction);
-				
-				stack = getStack();
-				
-				stack.decrement(amount);
-				
-				setStack(stack);
-			}
-			
-			return amount;
+		if (!existingStack.isEmpty() && !ItemStack.isSameItemSameComponents(existingStack, stack)) {
+			return 0;
 		}
 		
-		return 0;
-	}
-	
-	@Override
-	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction) {
-		return insert(variant, maxAmount, transaction, false);
-	}
-	
-	@Override
-	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction) {
-		return extract(variant, maxAmount, transaction, false);
-	}
-	
-	public final ItemStack createSnapshot() {
-		var original = getStack();
+		if (outerStorage != null && !outerStorage.canInsert(stack, slot) && !force) {
+			return 0;
+		}
 		
-		setStack(original.copy());
+		var inserted = Math.min(maxAmount, getCapacity(stack) - existingStack.getCount());
 		
-		return original;
+		if (inserted > 0 && !simulate) {
+			if (existingStack.isEmpty()) {
+				var insertedStack = stack.copy();
+				insertedStack.setCount(inserted);
+				setStack(insertedStack);
+			} else {
+				existingStack.grow(inserted);
+				setStack(existingStack);
+			}
+		}
+		
+		return inserted;
 	}
 	
-	public final void readSnapshot(ItemStack snapshot) {
-		setStack(snapshot);
+	public int extract(ItemStack stack, int maxAmount, boolean force, boolean simulate) {
+		if (stack.isEmpty() || maxAmount <= 0) {
+			return 0;
+		}
+		
+		var existingStack = getStack();
+		
+		if (existingStack.isEmpty() || !ItemStack.isSameItemSameComponents(existingStack, stack)) {
+			return 0;
+		}
+		
+		if (outerStorage != null && !outerStorage.canExtract(existingStack, slot) && !force) {
+			return 0;
+		}
+		
+		var extracted = Math.min(existingStack.getCount(), maxAmount);
+		
+		if (extracted > 0 && !simulate) {
+			existingStack.shrink(extracted);
+			setStack(existingStack);
+		}
+		
+		return extracted;
 	}
 }

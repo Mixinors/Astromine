@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 10240,
+  "input": {
+    "count": 1,
+    "tag": "c:stellum_dusts"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_stellum"
+  },
+  "time": 1280
+}

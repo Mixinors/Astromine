@@ -25,47 +25,40 @@
 package com.github.mixinors.astromine.client.render.effects;
 
 import com.github.mixinors.astromine.registry.common.AMBiomes;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.DimensionEffects;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.world.phys.Vec3;
 
-@Environment(EnvType.CLIENT)
-public class MoonDimensionEffects extends DimensionEffects {
+public class MoonDimensionEffects extends DimensionSpecialEffects {
 	public MoonDimensionEffects() {
 		super(Float.NaN, false, SkyType.NONE, true, true);
 	}
 	
 	@Override
-	public boolean isDarkened() {
-		var client = InstanceUtil.getClient();
+	public boolean constantAmbientLight() {
+		var client = Minecraft.getInstance();
 		
-		if (client.player != null) {
-			if (client.world != null) {
-				if (client.world.getBiome(client.player.getBlockPos()).equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-					return true;
-				}
+		if (client.player != null && client.level != null) {
+			if (client.level.getBiome(client.player.blockPosition()).unwrapKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+				return true;
 			}
 		}
 
-		return super.isDarkened();
+		return super.constantAmbientLight();
 	}
 	
 	@Override
-	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
-		return Vec3d.ZERO;
+	public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
+		return Vec3.ZERO;
 	}
 	
 	@Override
-	public boolean useThickFog(int camX, int camY) {
-		var client = InstanceUtil.getClient();
+	public boolean isFoggyAt(int camX, int camY) {
+		var client = Minecraft.getInstance();
 		
-		if (client.player != null) {
-			if (client.world != null) {
-				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-					return true;
-				}
+		if (client.player != null && client.level != null) {
+			if (client.level.getBiome(client.player.blockPosition()).unwrapKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+				return true;
 			}
 		}
 		

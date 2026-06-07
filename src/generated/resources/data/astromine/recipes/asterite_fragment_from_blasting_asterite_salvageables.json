@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "cookingtime": 100,
-  "experience": 0.1,
-  "ingredient": {
-    "tag": "c:asterite_salvageables"
-  },
-  "result": "astromine:asterite_fragment"
-}

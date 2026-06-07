@@ -5,6 +5,7 @@
     "bottom": "astromine:block/elite_electrolyzer_bottom",
     "front": "astromine:block/elite_electrolyzer_front",
     "left": "astromine:block/elite_electrolyzer_left",
+    "particle": "astromine:block/elite_electrolyzer_top",
     "right": "astromine:block/elite_electrolyzer_right",
     "top": "astromine:block/elite_electrolyzer_top"
   }

@@ -31,15 +31,14 @@ import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfig
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.BucketItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 
 import java.util.function.Supplier;
 
@@ -57,7 +56,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), 0L, getMaxTransferRate());
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), 0L, getMaxTransferRate());
 		
 		itemStorage = new SimpleItemStorage(1).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
@@ -68,11 +67,11 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				return false;
 			}
 			
-			return FuelRegistry.INSTANCE.get(variant.getItem()) != null;
+			return !(variant.getItem() instanceof BucketItem) && variant.getBurnTime(null) > 0;
 		}).extractPredicate((variant, slot) ->
 				false
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -80,91 +79,71 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		if (itemStorage != null && energyStorage != null) {
-			try (var transaction = Transaction.openOuter()) {
-				if (available > 0) {
-					progress = limit - available;
-					
-					var produced = 5;
-					
-					for (var i = 0; i < 3 * getSpeed(); ++i) {
-						if (progress < limit) {
-							var nestedTransaction = transaction.openNested();
+			if (available > 0) {
+				progress = limit - available;
+				
+				var produced = 5;
+				
+				for (var i = 0; i < 3 * getSpeed(); ++i) {
+					if (progress < limit) {
+						if (energyStorage.amount + produced <= energyStorage.capacity) {
+							energyStorage.amount += produced;
 							
-							if (energyStorage.amount + produced <= energyStorage.capacity) {
-								energyStorage.amount += produced;
-								
-								--available;
-								
-								++produced;
-								
-								active = true;
-								
-								nestedTransaction.commit();
-							} else {
-								nestedTransaction.abort();
-								
-								active = false;
-							}
+							--available;
 							
-							if (progress >= limit || available <= 0) {
-								progress = 0.0D;
-								limit = 0;
-								
-								active = false;
-							}
+							++produced;
+							
+							active = true;
+						} else {
+							active = false;
 						}
-					}
-				} else {
-					progress = 0.0D;
-					
-					var inputStack = itemStorage.getStack(INPUT_SLOT);
-					
-					var inputBurnTime = FuelRegistry.INSTANCE.get(inputStack.getItem());
-					
-					if (inputBurnTime != null) {
-						var isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
 						
-						if (isFuel) {
-							available = inputBurnTime;
-							limit = inputBurnTime;
-							
+						if (progress >= limit || available <= 0) {
 							progress = 0.0D;
+							limit = 0;
 							
-							var nestedTransaction = transaction.openNested();
-							
-							itemStorage.removeStack(INPUT_SLOT, 1);
-							
-							nestedTransaction.commit();
+							active = false;
 						}
-						
-						active = isFuel || progress != 0;
-					} else {
-						active = false;
 					}
 				}
+			} else {
+				progress = 0.0D;
 				
-				transaction.commit();
+				var inputStack = itemStorage.getItem(INPUT_SLOT);
+				var inputBurnTime = inputStack.getBurnTime(null);
+				var isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
+				
+				if (isFuel) {
+					available = inputBurnTime;
+					limit = inputBurnTime;
+					
+					progress = 0.0D;
+					
+					itemStorage.removeItem(INPUT_SLOT, 1);
+				}
+				
+				active = isFuel || progress != 0;
 			}
 		}
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		nbt.putDouble(AVAILABLE_KEY, available);
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		available = nbt.getDouble(AVAILABLE_KEY);
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override

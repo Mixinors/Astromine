@@ -25,37 +25,41 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.sounds.SoundEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMSoundEvents {
-	public static final RegistrySupplier<SoundEvent> SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
+	private static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(Registries.SOUND_EVENT, AMCommon.MOD_ID);
 	
-	public static final RegistrySupplier<SoundEvent> FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 	
-	public static final RegistrySupplier<SoundEvent> BRONZE_ARMOR_EQUIPPED = register("item.armor.equip_bronze");
-	public static final RegistrySupplier<SoundEvent> STEEL_ARMOR_EQUIPPED = register("item.armor.equip_steel");
-	public static final RegistrySupplier<SoundEvent> FOOLS_GOLD_ARMOR_EQUIPPED = register("item.armor.equip_fools_gold");
+	public static final DeferredHolder<SoundEvent, SoundEvent> FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
 	
-	public static final RegistrySupplier<SoundEvent> METITE_ARMOR_EQUIPPED = register("item.armor.equip_metite");
-	public static final RegistrySupplier<SoundEvent> ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
-	public static final RegistrySupplier<SoundEvent> STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
-	public static final RegistrySupplier<SoundEvent> GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
-	public static final RegistrySupplier<SoundEvent> UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
-	public static final RegistrySupplier<SoundEvent> LUNUM_ARMOR_EQUIPPED = register("item.armor.equip_lunum");
+	public static final DeferredHolder<SoundEvent, SoundEvent> BRONZE_ARMOR_EQUIPPED = register("item.armor.equip_bronze");
+	public static final DeferredHolder<SoundEvent, SoundEvent> STEEL_ARMOR_EQUIPPED = register("item.armor.equip_steel");
+	public static final DeferredHolder<SoundEvent, SoundEvent> FOOLS_GOLD_ARMOR_EQUIPPED = register("item.armor.equip_fools_gold");
 	
-	public static final RegistrySupplier<SoundEvent> METEORIC_STEEL_ARMOR_EQUIPPED = register("item.armor.equip_meteoric_steel");
+	public static final DeferredHolder<SoundEvent, SoundEvent> METITE_ARMOR_EQUIPPED = register("item.armor.equip_metite");
+	public static final DeferredHolder<SoundEvent, SoundEvent> ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
+	public static final DeferredHolder<SoundEvent, SoundEvent> STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
+	public static final DeferredHolder<SoundEvent, SoundEvent> GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
+	public static final DeferredHolder<SoundEvent, SoundEvent> UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
+	public static final DeferredHolder<SoundEvent, SoundEvent> LUNUM_ARMOR_EQUIPPED = register("item.armor.equip_lunum");
 	
-	public static final RegistrySupplier<SoundEvent> HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
+	public static final DeferredHolder<SoundEvent, SoundEvent> METEORIC_STEEL_ARMOR_EQUIPPED = register("item.armor.equip_meteoric_steel");
 	
-	public static final RegistrySupplier<SoundEvent> MACHINE_CLICK = register("block.machine.click");
-	public static final RegistrySupplier<SoundEvent> INCINERATE = register("block.shredder.shred");
+	public static final DeferredHolder<SoundEvent, SoundEvent> HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
+	
+	public static final DeferredHolder<SoundEvent, SoundEvent> MACHINE_CLICK = register("block.machine.click");
+	public static final DeferredHolder<SoundEvent, SoundEvent> INCINERATE = register("block.shredder.shred");
 	
 	public static void init() {
+		REGISTRY.register(AMCommon.modEventBus());
 	}
 	
-	public static RegistrySupplier<SoundEvent> register(String id) {
-		return AMCommon.registry(Registry.SOUND_EVENT_KEY).register(AMCommon.id(id), () -> new SoundEvent(AMCommon.id(id)));
+	public static DeferredHolder<SoundEvent, SoundEvent> register(String id) {
+		return REGISTRY.register(id, location -> SoundEvent.createVariableRangeEvent(location));
 	}
 }

@@ -1,13 +1,12 @@
 package com.github.mixinors.astromine.common.station;
 
 import com.github.mixinors.astromine.common.tick.Tickable;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-
+import com.github.mixinors.astromine.common.util.NbtUtils;
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 public final class Station implements Tickable {
 	private static final String WORLD_KEY_KEY = "World";
@@ -18,7 +17,7 @@ public final class Station implements Tickable {
 	
 	private static final String NAME_KEY = "Name";
 	
-	private final RegistryKey<World> worldKey;
+	private final ResourceKey<Level> worldKey;
 	
 	private final BlockPos pos;
 	
@@ -27,7 +26,7 @@ public final class Station implements Tickable {
 	
 	private final String name;
 	
-	public Station(RegistryKey<World> worldKey, BlockPos pos, UUID uuid, UUID ownerUuid, String name) {
+	public Station(ResourceKey<Level> worldKey, BlockPos pos, UUID uuid, UUID ownerUuid, String name) {
 		this.worldKey = worldKey;
 		
 		this.pos = pos;
@@ -38,22 +37,22 @@ public final class Station implements Tickable {
 		this.name = name;
 	}
 	
-	public Station(NbtCompound nbt) {
-		this.worldKey = NbtUtil.getRegistryKey(nbt, WORLD_KEY_KEY);
-		this.pos = NbtUtil.getBlockPos(nbt, POS_KEY);
+	public Station(CompoundTag nbt) {
+		this.worldKey = NbtUtils.getRegistryKey(nbt, WORLD_KEY_KEY);
+		this.pos = NbtUtils.getBlockPos(nbt, POS_KEY);
 		
-		this.uuid = nbt.getUuid(UUID_KEY);
-		this.ownerUuid = nbt.getUuid(OWNER_UUID_KEY);
+		this.uuid = nbt.getUUID(UUID_KEY);
+		this.ownerUuid = nbt.getUUID(OWNER_UUID_KEY);
 		
 		this.name = nbt.getString(NAME_KEY);
 	}
 	
-	public void writeToNbt(NbtCompound nbt) {
-		NbtUtil.putRegistryKey(nbt, WORLD_KEY_KEY, worldKey);
-		NbtUtil.putBlockPos(nbt, POS_KEY, pos);
+	public void writeToNbt(CompoundTag nbt) {
+		NbtUtils.putRegistryKey(nbt, WORLD_KEY_KEY, worldKey);
+		NbtUtils.putBlockPos(nbt, POS_KEY, pos);
 		
-		nbt.putUuid(UUID_KEY, uuid);
-		nbt.putUuid(OWNER_UUID_KEY, ownerUuid);
+		nbt.putUUID(UUID_KEY, uuid);
+		nbt.putUUID(OWNER_UUID_KEY, ownerUuid);
 		
 		nbt.putString(NAME_KEY, name);
 	}
@@ -63,7 +62,7 @@ public final class Station implements Tickable {
 	
 	}
 	
-	public RegistryKey<World> getWorldKey() {
+	public ResourceKey<Level> getWorldKey() {
 		return worldKey;
 	}
 	

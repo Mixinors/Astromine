@@ -30,13 +30,19 @@ import com.github.mixinors.astromine.common.config.entry.utility.UtilityConfig;
 import com.github.mixinors.astromine.common.provider.config.UtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.*;
-import net.minecraft.item.BlockItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.BannerBlock;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 
 public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements UtilityConfigProvider<UtilityConfig> {
 	public static final String COOLDOWN_KEY = "Cooldown";
@@ -52,7 +58,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
 				false
@@ -63,7 +69,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 			
 			return variant.getItem() instanceof BlockItem;
 		}).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -71,7 +77,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
@@ -83,55 +89,37 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 				
 				active = false;
 			} else {
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						var stored = itemStorage.getStack(0);
-						
-						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-						
-						var targetPos = pos.offset(direction);
-						
-						var targetState = world.getBlockState(targetPos);
-						
-						if (stored.getItem() instanceof BlockItem blockItem) {
-							var storedBlock = blockItem.getBlock();
+				var stored = itemStorage.getItem(0);
+				var direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+				var targetPos = worldPosition.relative(direction);
+				var targetState = level.getBlockState(targetPos);
+				
+				if (stored.getItem() instanceof BlockItem blockItem) {
+					var storedBlock = blockItem.getBlock();
+					var storedState = blockItem.getBlock().defaultBlockState();
+					
+					if (storedBlock instanceof DoorBlock || storedBlock instanceof SlabBlock || storedBlock instanceof BushBlock || storedBlock instanceof BedBlock || storedBlock instanceof BannerBlock) {
+						return;
+					}
+					
+					if (storedState.canSurvive(level, targetPos) && targetState.isAir()) {
+						if (cooldown >= getSpeed()) {
+							level.setBlockAndUpdate(targetPos, storedState);
 							
-							var storedState = blockItem.getBlock().getDefaultState();
+							blockItem.getBlock().setPlacedBy(level, targetPos, storedState, null, stored);
 							
-							if (storedBlock instanceof DoorBlock || storedBlock instanceof SlabBlock || storedBlock instanceof PlantBlock || storedBlock instanceof BedBlock || storedBlock instanceof BannerBlock) {
-								return;
-							}
+							itemStorage.removeItem(INPUT_SLOT, 1);
 							
-							if (storedState.canPlaceAt(world, targetPos) && targetState.isAir()) {
-								if (cooldown >= getSpeed()) {
-									world.setBlockState(targetPos, storedState);
-									
-									blockItem.getBlock().onPlaced(world, targetPos, storedState, null, stored);
-									
-									var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-									
-									inputStorage.extract(inputStorage.getResource(), 1, transaction, true);
-									
-									energyStorage.amount -= consumed;
-									
-									cooldown = 0;
-									
-									transaction.commit();
-								} else {
-									++cooldown;
-									
-									active = true;
-								}
-							} else {
-								active = false;
-								
-								transaction.abort();
-							}
+							energyStorage.amount -= consumed;
+							
+							cooldown = 0;
+						} else {
+							++cooldown;
+							
+							active = true;
 						}
 					} else {
 						active = false;
-						
-						transaction.abort();
 					}
 				}
 			}
@@ -139,17 +127,17 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		nbt.putLong(COOLDOWN_KEY, cooldown);
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		cooldown = nbt.getLong(COOLDOWN_KEY);
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override

@@ -5,6 +5,7 @@
     "bottom": "astromine:block/elite_alloy_smelter_bottom",
     "front": "astromine:block/elite_alloy_smelter_front",
     "left": "astromine:block/elite_alloy_smelter_left",
+    "particle": "astromine:block/elite_alloy_smelter_top",
     "right": "astromine:block/elite_alloy_smelter_right",
     "top": "astromine:block/elite_alloy_smelter_top"
   }

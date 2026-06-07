@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 1296,
+  "input": {
+    "count": 1,
+    "tag": "c:bronze_gears"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_bronze"
+  },
+  "time": 162
+}

@@ -24,241 +24,139 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import com.google.common.collect.ImmutableList;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.util.Mth;
+import net.neoforged.neoforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-
-/**
- * <p>A {@link SingleVariantStorage} implementation for {@link FluidVariant}s.</p>
- */
-public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant> {
-	private long capacity;
-	private int slot;
+public class SimpleFluidVariantStorage {
+	private final long capacity;
+	private final int slot;
+	private final SimpleFluidStorage outerStorage;
 	
-	public SimpleFluidVariantStorage(long capacity, int slot) {
-		this.capacity = capacity;
+	private FluidStack stack = FluidStack.EMPTY;
+	
+	public SimpleFluidVariantStorage(long capacity, int slot, SimpleFluidStorage outerStorage) {
+		this.capacity = Math.max(0L, capacity);
 		this.slot = slot;
+		this.outerStorage = outerStorage;
 	}
 	
-	/**
-	 * Sets this storage's amount.
-	 *
-	 * @param amount the amount to be set.
-	 */
 	public void setAmount(long amount) {
-		this.amount = amount;
+		if (stack.isEmpty()) {
+			return;
+		}
+		
+		var clampedAmount = clampAmount(amount);
+		
+		if (clampedAmount <= 0) {
+			stack = FluidStack.EMPTY;
+		} else {
+			stack = stack.copyWithAmount(clampedAmount);
+		}
+		
+		notifyOuterStorage();
 	}
 	
-	/**
-	 * Sets this storage's variant.
-	 *
-	 * @param variant the variant to be set.
-	 */
-	public void setResource(FluidVariant variant) {
-		this.variant = variant;
+	public void setResource(FluidStack stack) {
+		if (stack.isEmpty()) {
+			this.stack = FluidStack.EMPTY;
+			notifyOuterStorage();
+			return;
+		}
+		
+		this.stack = stack.copyWithAmount(clampAmount(stack.getAmount()));
+		notifyOuterStorage();
 	}
 	
-	/**
-	 * Returns this storage's slot.
-	 */
 	public int getSlot() {
 		return slot;
 	}
 	
-	/**
-	 * Returns this storage's capacity.
-	 */
-	@Override
 	public long getCapacity() {
 		return capacity;
 	}
 	
-	/**
-	 * Sets this storage's capacity.
-	 *
-	 * @param capacity the capacity to be set.
-	 */
-	public void setCapacity(long capacity) {
-		this.capacity = capacity;
+	public boolean isResourceBlank() {
+		return stack.isEmpty();
 	}
 	
-	/**
-	 * Returns this storage's default variant.
-	 */
-	@Override
-	protected FluidVariant getBlankVariant() {
-		return FluidVariant.blank();
+	public FluidStack getResource() {
+		return stack;
 	}
 	
-	/**
-	 * Returns this storage's capacity for the given variant.
-	 *
-	 * @param variant the variant.
-	 */
-	@Override
-	protected long getCapacity(FluidVariant variant) {
-		return capacity;
+	public long getAmount() {
+		return stack.getAmount();
 	}
 	
-	/**
-	 * A proxied {@link SimpleFluidVariantStorage} implementation, backed by a proxy {@link SimpleFluidStorage} and {@link SimpleFluidVariantStorage}.
-	 */
-	public static class Proxy extends SimpleFluidVariantStorage {
-		private final SimpleFluidStorage proxy;
-		
-		private final SimpleFluidVariantStorage proxyStorage;
-		
-		public Proxy(SimpleFluidStorage proxy, SimpleFluidVariantStorage proxiedStorage) {
-			super(proxiedStorage.getCapacity(), proxiedStorage.getSlot());
-			
-			this.proxy = proxy;
-			this.proxyStorage = proxiedStorage;
-			
-			this.amount = proxiedStorage.amount;
-			this.variant = proxiedStorage.variant;
+	public long insert(FluidStack insertedStack, long maxAmount, boolean force, boolean simulate) {
+		if (insertedStack.isEmpty() || maxAmount <= 0L) {
+			return 0L;
 		}
 		
-		/**
-		 * Returns this storage's proxy.
-		 */
-		public SimpleFluidStorage getProxy() {
-			return proxy;
+		if (outerStorage != null && !outerStorage.canInsert(insertedStack, slot) && !force) {
+			return 0L;
 		}
 		
-		/**
-		 * Returns this storage's proxy storage.
-		 */
-		public SimpleFluidVariantStorage getProxyStorage() {
-			return proxyStorage;
+		if (!stack.isEmpty() && !FluidStack.isSameFluidSameComponents(stack, insertedStack)) {
+			return 0L;
 		}
 		
-		@Override
-		protected void onFinalCommit() {
-			super.onFinalCommit();
-			
-			if (proxy != null) {
-				proxy.notifyListeners();
-				
-				proxy.incrementVersion();
-				
-				var proxies = new ArrayList<SimpleFluidStorage>();
-				
-				if (proxy.getProxy() != null) {
-					proxies.addAll(ImmutableList.copyOf(proxy.getProxy().getProxies()));
-					proxies.add(proxy.getProxy());
-				} else {
-					proxies.addAll(ImmutableList.copyOf(proxy.getProxies()));
-					proxies.add(proxy);
-				}
-				
-				for (var proxy : proxies) {
-					for (var i = 0; i < proxy.getSize(); ++i) {
-						var storage = proxy.getStorage(i);
-						
-						storage.setAmount(storage.getProxyStorage().getAmount());
-						storage.setResource(storage.getProxyStorage().getResource());
-					}
-				}
-			}
+		var inserted = Math.min(maxAmount, capacity - getAmount());
+		
+		if (inserted <= 0L) {
+			return 0L;
 		}
 		
-		@Override
-		public long insert(FluidVariant insertedVariant, long maxAmount, TransactionContext transaction) {
-			return insert(insertedVariant, maxAmount, transaction, false);
-		}
-		
-		public long insert(FluidVariant insertedVariant, long maxAmount, TransactionContext transaction, boolean force) {
-			StoragePreconditions.notBlankNotNegative(insertedVariant, maxAmount);
-			
-			if (proxy != null && !proxy.canInsert(insertedVariant, getSlot()) && !force) {
-				return 0;
+		if (!simulate) {
+			if (stack.isEmpty()) {
+				stack = insertedStack.copyWithAmount(clampAmount(inserted));
+			} else {
+				stack = stack.copyWithAmount(clampAmount(getAmount() + inserted));
 			}
 			
-			var inserted = proxyStorage.insert(insertedVariant, maxAmount, transaction);
+			notifyOuterStorage();
+		}
+		
+		return inserted;
+	}
+	
+	public long extract(FluidStack extractedStack, long maxAmount, boolean force, boolean simulate) {
+		if (extractedStack.isEmpty() || maxAmount <= 0L || stack.isEmpty()) {
+			return 0L;
+		}
+		
+		if (outerStorage != null && !outerStorage.canExtract(stack, slot) && !force) {
+			return 0L;
+		}
+		
+		if (!FluidStack.isSameFluidSameComponents(stack, extractedStack)) {
+			return 0L;
+		}
+		
+		var extracted = Math.min(maxAmount, getAmount());
+		
+		if (extracted <= 0L) {
+			return 0L;
+		}
+		
+		if (!simulate) {
+			var remaining = getAmount() - extracted;
 			
-			if (inserted > 0) {
-				updateSnapshots(transaction);
-			}
+			stack = remaining <= 0L ? FluidStack.EMPTY : stack.copyWithAmount(clampAmount(remaining));
 			
-			return inserted;
+			notifyOuterStorage();
 		}
 		
-		@Override
-		public long extract(FluidVariant extractedVariant, long maxAmount, TransactionContext transaction) {
-			return extract(extractedVariant, maxAmount, transaction, false);
+		return extracted;
+	}
+	
+	private void notifyOuterStorage() {
+		if (outerStorage != null) {
+			outerStorage.notifyListeners();
+			outerStorage.incrementVersion();
 		}
-		
-		public long extract(FluidVariant extractedVariant, long maxAmount, TransactionContext transaction, boolean force) {
-			StoragePreconditions.notBlankNotNegative(extractedVariant, maxAmount);
-			
-			if (proxy != null && !proxy.canExtract(extractedVariant, getSlot()) && !force) {
-				return 0;
-			}
-			
-			var extracted = proxyStorage.extract(extractedVariant, maxAmount, transaction);
-			
-			if (extracted > 0) {
-				updateSnapshots(transaction);
-			}
-			
-			return extracted;
-		}
-		
-		@Override
-		public long getAmount() {
-			return proxyStorage == null ? 0 : proxyStorage.getAmount();
-		}
-		
-		@Override
-		public void setAmount(long amount) {
-			this.amount = amount;
-			
-			if (proxyStorage != null) {
-				proxyStorage.setAmount(amount);
-			}
-		}
-		
-		@Override
-		public void setResource(FluidVariant variant) {
-			this.variant = variant;
-			
-			if (proxy != null) {
-				proxyStorage.setResource(variant);
-			}
-		}
-		
-		@Override
-		public int getSlot() {
-			return proxyStorage == null ? 0 : proxyStorage.getSlot();
-		}
-		
-		@Override
-		public long getVersion() {
-			return proxyStorage == null ? 0 : proxyStorage.getVersion();
-		}
-		
-		@Override
-		public long getCapacity() {
-			return proxyStorage == null ? 0 : proxyStorage.getCapacity();
-		}
-		
-		@Override
-		protected long getCapacity(FluidVariant variant) {
-			return proxyStorage == null ? 0 : proxyStorage.getCapacity();
-		}
-		
-		@Override
-		public FluidVariant getResource() {
-			return proxyStorage == null ? FluidVariant.blank() : proxyStorage.getResource();
-		}
-		
-		@Override
-		protected FluidVariant getBlankVariant() {
-			return proxyStorage == null ? FluidVariant.blank() : proxyStorage.getBlankVariant();
-		}
+	}
+	
+	private int clampAmount(long amount) {
+		return (int) Mth.clamp(amount, 0L, Math.min(capacity, Integer.MAX_VALUE));
 	}
 }

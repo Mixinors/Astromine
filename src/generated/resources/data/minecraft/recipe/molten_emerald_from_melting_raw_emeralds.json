@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 8064,
+  "input": {
+    "count": 1,
+    "tag": "c:raw_emeralds"
+  },
+  "output": {
+    "amount": 144,
+    "fluid": "astromine:molten_emerald"
+  },
+  "time": 1008
+}

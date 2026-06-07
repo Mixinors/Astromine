@@ -1,84 +1,96 @@
 package com.github.mixinors.astromine.common.block.rocket;
 
 import com.github.mixinors.astromine.common.manager.RocketManager;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 
-public class RocketDoorBlock extends HorizontalFacingBlock {
-	private static final BooleanProperty TOP = BooleanProperty.of("top");
+public class RocketDoorBlock extends HorizontalDirectionalBlock {
+	private static final BooleanProperty TOP = BooleanProperty.create("top");
 	
-	public RocketDoorBlock(Settings settings) {
+	public RocketDoorBlock(Properties settings) {
 		super(settings);
+	}
+	
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return MapCodec.unit(this);
 	}
 	
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		var blockPos = ctx.getBlockPos();
-		var world = ctx.getWorld();
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		var blockPos = ctx.getClickedPos();
+		var world = ctx.getLevel();
 		
-		if (blockPos.getY() < world.getTopY() - 1 && world.getBlockState(blockPos.up()).canReplace(ctx)) {
-			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(TOP, false);
+		if (blockPos.getY() < world.getMaxBuildHeight() - 1 && world.getBlockState(blockPos.above()).canBeReplaced(ctx)) {
+			return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(TOP, false);
 		} else {
 			return null;
 		}
 	}
 	
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		world.setBlockState(pos.up(), state.with(TOP, true).with(FACING, state.get(FACING)), 3);
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+		world.setBlock(pos.above(), state.setValue(TOP, true).setValue(FACING, state.getValue(FACING)), 3);
 	}
 	
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!(world instanceof ServerLevel serverLevel)) {
+			return ItemInteractionResult.sidedSuccess(world.isClientSide);
+		}
+		
 		var x = pos.getX();
 		x = x - (x % 32);
 		var z = pos.getZ();
 		z = z - (z % 32);
 		
-		var chunkPos = new ChunkPos(x,z);
+		var chunkPos = new ChunkPos(x, z);
 		
-		var rocket = RocketManager.get(chunkPos);
+		var rocket = RocketManager.get(serverLevel.getServer(), chunkPos);
 		
 		if (rocket == null) {
-			// TODO: Remove after debugging. Or leave, because it's useful if the Rocket is corrupted.
-			rocket = RocketManager.create(player.getUuid(), UUID.randomUUID());
+			// Recover an interior door if its persisted rocket record is missing.
+			rocket = RocketManager.create(serverLevel.getServer(), player.getUUID(), UUID.randomUUID());
 		}
 		
 		RocketManager.teleportToPlacer(player, rocket.getUuid());
 		
-		return super.onUse(state, world, pos, player, hand, hit);
+		return ItemInteractionResult.sidedSuccess(world.isClientSide);
 	}
 	
 	@Override
-	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		var downPos = pos.down();
+	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+		var downPos = pos.below();
 		var downState = world.getBlockState(downPos);
 		
-		return !state.get(TOP) ? downState.isSideSolidFullSquare(world, downPos, Direction.UP) : downState.isOf(this);
+		return !state.getValue(TOP) ? downState.isFaceSturdy(world, downPos, Direction.UP) : downState.is(this);
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		
 		builder.add(FACING).add(TOP);
 	}

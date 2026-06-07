@@ -29,16 +29,14 @@ import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMNetworking;
-import dev.architectury.networking.NetworkManager;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 
 public abstract class ExtendedEntity extends Entity implements FluidStorageSizeProvider, EnergyStorageSizeProvider {
 	public static final String AMOUNT_KEY = "Amount";
@@ -51,25 +49,25 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 	protected boolean syncItemStorage = true;
 	protected boolean syncFluidStorage = true;
 	
-	protected SimpleEnergyStorage energyStorage = null;
+	protected LongEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
 	protected SimpleFluidStorage fluidStorage = null;
 	
 	protected long lastItemStorageVersion = 0;
 	protected long lastFluidStorageVersion = 0;
 	
-	public ExtendedEntity(EntityType<?> type, World world) {
+	public ExtendedEntity(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 	
 	@Override
-	protected void writeCustomDataToNbt(NbtCompound nbt) {
+	protected void addAdditionalSaveData(CompoundTag nbt) {
 		writeToNbt(nbt);
 	}
 	
-	public void writeToNbt(NbtCompound nbt) {
+	public void writeToNbt(CompoundTag nbt) {
 		if (energyStorage != null) {
-			var energyStorageNbt = new NbtCompound();
+			var energyStorageNbt = new CompoundTag();
 			
 			energyStorageNbt.putLong(AMOUNT_KEY, energyStorage.amount);
 			
@@ -77,16 +75,16 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 		}
 		
 		if (itemStorage != null) {
-			var itemStorageNbt = new NbtCompound();
+			var itemStorageNbt = new CompoundTag();
 			itemStorageNbt.putInt(SIZE_KEY, itemStorage.getSize());
 			
-			itemStorage.writeToNbt(itemStorageNbt);
+			itemStorage.writeToNbt(itemStorageNbt, registryAccess());
 			
 			nbt.put(ITEM_STORAGE_KEY, itemStorageNbt);
 		}
 		
 		if (fluidStorage != null) {
-			var fluidStorageNbt = new NbtCompound();
+			var fluidStorageNbt = new CompoundTag();
 			fluidStorageNbt.putInt(SIZE_KEY, fluidStorage.getSize());
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
@@ -96,11 +94,11 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 	}
 	
 	@Override
-	protected void readCustomDataFromNbt(NbtCompound nbt) {
+	protected void readAdditionalSaveData(CompoundTag nbt) {
 		readFromNbt(nbt);
 	}
 	
-	public void readFromNbt(NbtCompound nbt) {
+	public void readFromNbt(CompoundTag nbt) {
 		if (nbt.contains(ENERGY_STORAGE_KEY)) {
 			var energyStorageNbt = nbt.getCompound(ENERGY_STORAGE_KEY);
 			
@@ -110,7 +108,7 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 		if (nbt.contains(ITEM_STORAGE_KEY)) {
 			var itemStorageNbt = nbt.getCompound(ITEM_STORAGE_KEY);
 			
-			itemStorage.readFromNbt(itemStorageNbt);
+			itemStorage.readFromNbt(itemStorageNbt, registryAccess());
 		}
 		
 		if (nbt.contains(FLUID_STORAGE_KEY)) {
@@ -121,10 +119,10 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 	}
 	
 	public void syncData() {
-		if (!world.isClient) {
+		if (!level().isClientSide) {
 			var id = getId();
 			
-			var nbt = new NbtCompound();
+			var nbt = new CompoundTag();
 			
 			writeToNbt(nbt);
 			
@@ -152,33 +150,21 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 				}
 			}
 			
-			var buf = PacketByteBufs.create();
-			
-			buf.writeInt(id);
-			buf.writeNbt(nbt);
-			
-			PlayerLookup.tracking(this).forEach(player -> {
-				NetworkManager.sendToPlayer(player, AMNetworking.SYNC_ENTITY, PacketByteBufs.duplicate(buf));
-			});
+			PacketDistributor.sendToPlayersTrackingEntity(this, new AMNetworking.SyncEntityPayload(id, nbt));
 		}
 	}
 	
 	@Override
-	public void onStartedTrackingBy(ServerPlayerEntity player) {
-		super.onStartedTrackingBy(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		
 		var id = getId();
 		
-		var nbt = new NbtCompound();
+		var nbt = new CompoundTag();
 		
 		writeToNbt(nbt);
 		
-		var buf = PacketByteBufs.create();
-		
-		buf.writeInt(id);
-		buf.writeNbt(nbt);
-		
-		NetworkManager.sendToPlayer(player, AMNetworking.SYNC_ENTITY, PacketByteBufs.duplicate(buf));
+		PacketDistributor.sendToPlayer(player, new AMNetworking.SyncEntityPayload(id, nbt));
 	}
 	
 	/**
@@ -208,7 +194,7 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 	}
 	
 	@Nullable
-	public SimpleEnergyStorage getEnergyStorage() {
+	public LongEnergyStorage getEnergyStorage() {
 		return energyStorage;
 	}
 	

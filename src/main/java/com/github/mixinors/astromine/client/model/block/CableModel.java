@@ -26,45 +26,49 @@ package com.github.mixinors.astromine.client.model.block;
 
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.model.*;
-import net.minecraft.client.render.model.json.ModelOverrideList;
-import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
+import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
+import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
-	private final Identifier centerModelId;
-	private final Identifier sideModelId;
-	private final Identifier connectorModelId;
-	private final Identifier insertConnectorModelId;
-	private final Identifier extractConnectorModelId;
-	private final Identifier insertExtractConnectorModelId;
+public class CableModel implements IDynamicBakedModel, IUnbakedGeometry<CableModel> {
+	private final ResourceLocation centerModelId;
+	private final ResourceLocation sideModelId;
+	private final ResourceLocation connectorModelId;
+	private final ResourceLocation insertConnectorModelId;
+	private final ResourceLocation extractConnectorModelId;
+	private final ResourceLocation insertExtractConnectorModelId;
 	
-	public CableModel(Identifier centerModelId, Identifier sideModelId, Identifier connectorModelId, Identifier insertConnectorModelId, Identifier extractConnectorModelId, Identifier insertConnectorExtractModelid) {
+	public CableModel(ResourceLocation centerModelId, ResourceLocation sideModelId, ResourceLocation connectorModelId, ResourceLocation insertConnectorModelId, ResourceLocation extractConnectorModelId, ResourceLocation insertConnectorExtractModelid) {
 		this.centerModelId = centerModelId;
 		this.sideModelId = sideModelId;
 		this.connectorModelId = connectorModelId;
@@ -74,119 +78,134 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	}
 	
 	@Override
-	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-		var client = InstanceUtil.getClient();
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, RandomSource random, ModelData modelData, @Nullable RenderType renderType) {
+		var quads = new ArrayList<BakedQuad>();
+		var connections = modelData.get(CableBlockEntity.CONNECTIONS);
 		
-		var centerModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), centerModelId);
-		var sideModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), sideModelId);
-		var connectorModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), connectorModelId);
-		var insertConnectorModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), insertConnectorModelId);
-		var extractConnectorModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), extractConnectorModelId);
-		var insertExtractConnectorModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), insertExtractConnectorModelId);
-		
-		var connections = (CableBlockEntity.Connections) ((RenderAttachedBlockView) blockView).getBlockEntityRenderAttachment(pos);
+		addQuads(quads, model(centerModelId), state, face, random, modelData, renderType);
 		
 		if (connections == null) {
-			return;
+			return quads;
 		}
-		
-		// Emit Center
-		centerModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);
 		
 		for (var direction : DirectionUtils.VALUES) {
 			var hasSide = connections.hasSide(direction);
 			var hasConnector = connections.hasConnector(direction);
 			
-			if (hasSide || hasConnector) {
-				pushTransform(direction, context);
+			if (!hasSide && !hasConnector) {
+				continue;
+			}
+			
+			if (hasSide) {
+				addRotatedQuads(quads, model(sideModelId), direction, state, face, random, modelData, renderType);
+			}
+			
+			if (hasConnector) {
+				var connectorModel = model(connectorModelId);
 				
-				// Emit Side
-				if (hasSide) {
-					sideModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);
+				if (connections.isInsert(direction)) {
+					connectorModel = model(insertConnectorModelId);
+				} else if (connections.isExtract(direction)) {
+					connectorModel = model(extractConnectorModelId);
+				} else if (connections.isInsertExtract(direction)) {
+					connectorModel = model(insertExtractConnectorModelId);
 				}
 				
-				// Emit Connector
-				if (hasConnector) {
-					if (connections.isInsert(direction)) {
-						insertConnectorModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);
-					} else if (connections.isExtract(direction)) {
-						extractConnectorModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);
-					} else if (connections.isInsertExtract(direction)) {
-						insertExtractConnectorModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);
-					} else {
-						connectorModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);
-					}
-				}
-				
-				context.popTransform();
+				addRotatedQuads(quads, connectorModel, direction, state, face, random, modelData, renderType);
+			}
+		}
+		
+		return quads;
+	}
+	
+	private static BakedModel model(ResourceLocation id) {
+		return Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(id));
+	}
+	
+	private static void addQuads(List<BakedQuad> out, BakedModel model, @Nullable BlockState state, @Nullable Direction face, RandomSource random, ModelData modelData, @Nullable RenderType renderType) {
+		out.addAll(model.getQuads(state, face, random, modelData, renderType));
+	}
+	
+	private static void addRotatedQuads(List<BakedQuad> out, BakedModel model, Direction direction, @Nullable BlockState state, @Nullable Direction face, RandomSource random, ModelData modelData, @Nullable RenderType renderType) {
+		for (var quad : model.getQuads(state, null, random, modelData, renderType)) {
+			var rotated = rotateQuad(quad, direction);
+			
+			if (face == null || rotated.getDirection() == face) {
+				out.add(rotated);
 			}
 		}
 	}
 	
-	private void pushTransform(Direction direction, RenderContext context) {
-		var angle = switch (direction) {
-			case SOUTH -> Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0F);
-			case WEST -> Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F);
-			case EAST -> Vec3f.POSITIVE_Y.getDegreesQuaternion(270.0F);
-			case UP -> Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F);
-			case DOWN -> Vec3f.POSITIVE_X.getDegreesQuaternion(270.0F);
+	private static BakedQuad rotateQuad(BakedQuad quad, Direction direction) {
+		var rotation = rotation(direction);
+		var vertices = quad.getVertices().clone();
+		var vertexSize = vertices.length / 4;
+		
+		for (var i = 0; i < 4; ++i) {
+			var offset = i * vertexSize;
+			var position = new Vector3f(
+					Float.intBitsToFloat(vertices[offset]),
+					Float.intBitsToFloat(vertices[offset + 1]),
+					Float.intBitsToFloat(vertices[offset + 2])
+			);
 			
-			default -> Vec3f.ZERO.getDegreesQuaternion(0.0F);
+			position.sub(0.5F, 0.5F, 0.5F).rotate(rotation).add(0.5F, 0.5F, 0.5F);
+			
+			vertices[offset] = Float.floatToRawIntBits(position.x());
+			vertices[offset + 1] = Float.floatToRawIntBits(position.y());
+			vertices[offset + 2] = Float.floatToRawIntBits(position.z());
+		}
+		
+		return new BakedQuad(vertices, quad.getTintIndex(), rotateDirection(quad.getDirection(), rotation), quad.getSprite(), quad.isShade(), quad.hasAmbientOcclusion());
+	}
+	
+	private static Direction rotateDirection(Direction direction, Quaternionf rotation) {
+		var normal = new Vector3f(direction.getStepX(), direction.getStepY(), direction.getStepZ()).rotate(rotation);
+		var nearest = direction;
+		var nearestDot = Float.NEGATIVE_INFINITY;
+		
+		for (var candidate : Direction.values()) {
+			var dot = normal.x() * candidate.getStepX() + normal.y() * candidate.getStepY() + normal.z() * candidate.getStepZ();
+			
+			if (dot > nearestDot) {
+				nearest = candidate;
+				nearestDot = dot;
+			}
+		}
+		
+		return nearest;
+	}
+	
+	private static Quaternionf rotation(Direction direction) {
+		return switch (direction) {
+			case SOUTH -> new Quaternionf().rotateY((float) Math.toRadians(180.0F));
+			case WEST -> new Quaternionf().rotateY((float) Math.toRadians(90.0F));
+			case EAST -> new Quaternionf().rotateY((float) Math.toRadians(270.0F));
+			case UP -> new Quaternionf().rotateX((float) Math.toRadians(90.0F));
+			case DOWN -> new Quaternionf().rotateX((float) Math.toRadians(270.0F));
+			default -> new Quaternionf();
 		};
-		
-		context.pushTransform(new RotationQuadTransform(angle));
 	}
 	
-	private static class RotationQuadTransform implements RenderContext.QuadTransform {
-		private final Quaternion rotation;
-		
-		public RotationQuadTransform(Quaternion rotation) {
-			this.rotation = rotation;
-		}
-		
-		@Override
-		public boolean transform(MutableQuadView quad) {
-			for (var i = 0; i < 4; ++i) {
-				var pos = quad.copyPos(i, null);
-				pos.subtract(new Vec3f(8.0F / 16.0F, 8.0F / 16.0F, 8.0F / 16.0F));
-				pos.rotate(rotation);
-				pos.add(new Vec3f(8.0F / 16.0F, 8.0F / 16.0F, 8.0F / 16.0F));
-				
-				quad.pos(i, pos);
-			}
+	@Override
+	public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context) {
+		for (var dependency : ImmutableList.of(centerModelId, sideModelId, connectorModelId, insertConnectorModelId, extractConnectorModelId, insertExtractConnectorModelId)) {
+			var model = modelGetter.apply(dependency);
 			
-			return true;
+			if (model instanceof BlockModel blockModel) {
+				blockModel.resolveParents(modelGetter);
+			}
 		}
 	}
 	
 	@Override
-	public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
-		var client = InstanceUtil.getClient();
-		
-		var centerModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), centerModelId);
-		
-		centerModel.emitItemQuads(stack, randomSupplier, context);
-	}
-	
-	@Override
-	public Collection<Identifier> getModelDependencies() {
-		return ImmutableList.of();
-	}
-	
-	@Override
-	public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-		return ImmutableList.of();
-	}
-	
-	@Nullable
-	@Override
-	public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
 		return this;
 	}
 	
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
-		return ImmutableList.of();
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, RandomSource random) {
+		return getQuads(state, face, random, ModelData.EMPTY, null);
 	}
 	
 	@Override
@@ -195,37 +214,55 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	}
 	
 	@Override
-	public boolean hasDepth() {
+	public boolean isGui3d() {
 		return false;
 	}
 	
 	@Override
-	public boolean isSideLit() {
+	public boolean usesBlockLight() {
 		return false;
 	}
 	
 	@Override
-	public boolean isBuiltin() {
+	public boolean isCustomRenderer() {
 		return false;
 	}
 	
 	@Override
-	public Sprite getParticleSprite() {
-		return BakedModelManagerHelper.getModel(InstanceUtil.getClient().getBakedModelManager(), centerModelId).getParticleSprite();
+	public TextureAtlasSprite getParticleIcon() {
+		return model(centerModelId).getParticleIcon();
 	}
 	
 	@Override
-	public ModelTransformation getTransformation() {
-		return ModelTransformation.NONE;
+	public ItemTransforms getTransforms() {
+		return ItemTransforms.NO_TRANSFORMS;
 	}
 	
 	@Override
-	public ModelOverrideList getOverrides() {
-		return ModelOverrideList.EMPTY;
+	public ItemOverrides getOverrides() {
+		return ItemOverrides.EMPTY;
 	}
 	
-	@Override
-	public boolean isVanillaAdapter() {
-		return false;
+	public static class Loader implements IGeometryLoader<CableModel> {
+		public static final Loader INSTANCE = new Loader();
+		
+		private Loader() {
+		}
+		
+		@Override
+		public CableModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) {
+			var center = ResourceLocation.parse(GsonHelper.getAsString(jsonObject, "center"));
+			var side = resource(jsonObject, "side", "block/cable_side");
+			var connector = resource(jsonObject, "connector", "block/cable_connector");
+			var insertConnector = resource(jsonObject, "insert_connector", "block/cable_connector_insert");
+			var extractConnector = resource(jsonObject, "extract_connector", "block/cable_connector_extract");
+			var insertExtractConnector = resource(jsonObject, "insert_extract_connector", "block/cable_connector_insert_extract");
+			
+			return new CableModel(center, side, connector, insertConnector, extractConnector, insertExtractConnector);
+		}
+		
+		private static ResourceLocation resource(JsonObject jsonObject, String key, String fallback) {
+			return jsonObject.has(key) ? ResourceLocation.parse(GsonHelper.getAsString(jsonObject, key)) : ResourceLocation.fromNamespaceAndPath("astromine", fallback);
+		}
 	}
 }

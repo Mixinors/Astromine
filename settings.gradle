@@ -1,30 +1,15 @@
 pluginManagement {
 	repositories {
-		// Fabric
-		maven {
-			name = "FabricMC"
-			url = "https://maven.fabricmc.net"
-		}
-
-		// Architectury
-		maven {
-			name = "Architectury"
-			url = "https://maven.architectury.dev"
-		}
-
-		// Forge
-		maven {
-			name = "Forge"
-			url = "https://files.minecraftforge.net/maven/"
-		}
-
-		// Plugin Portal
 		gradlePluginPortal()
-	}
-
-	plugins {
-		id "fabric-loom" version loomVersion
+		maven {
+			name = 'NeoForge'
+			url = 'https://maven.neoforged.net/releases'
+		}
 	}
 }
 
-rootProject.name = "Astromine"
+plugins {
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'Astromine'

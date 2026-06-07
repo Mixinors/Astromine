@@ -27,48 +27,48 @@ package com.github.mixinors.astromine.common.block.ore;
 import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.Nullable;
 
 public class DarkMoonStoneOreBlock extends ExtendedOreBlock {
-	public DarkMoonStoneOreBlock(Settings settings) {
+	public DarkMoonStoneOreBlock(Properties settings) {
 		super(settings);
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(AMProperties.DYNAMIC);
 		
-		super.appendProperties(builder);
+		super.createBlockStateDefinition(builder);
 	}
 	
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return super.getPlacementState(ctx).with(AMProperties.DYNAMIC, false);
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		return super.getStateForPlacement(ctx).setValue(AMProperties.DYNAMIC, false);
 	}
 	
 	@Override
-	protected int getExperienceWhenMined(Random random) {
+	protected int getExperienceWhenMined(RandomSource random) {
 		if (this == AMBlocks.DARK_MOON_LUNUM_ORE.get()) {
-			return MathHelper.nextInt(random,  1, 3);
+			return Mth.nextInt(random,  1, 3);
 		} else if (this == AMBlocks.DARK_MOON_COAL_ORE.get()) {
-			return MathHelper.nextInt(random, 0, 2);
+			return Mth.nextInt(random, 0, 2);
 		} else if (this == AMBlocks.DARK_MOON_TIN_ORE.get() || this == AMBlocks.DARK_MOON_COPPER_ORE.get()) {
-			return MathHelper.nextInt(random, 1, 2);
+			return Mth.nextInt(random, 1, 2);
 		} else if (this == AMBlocks.DARK_MOON_IRON_ORE.get()) {
-			return MathHelper.nextInt(random, 1, 3);
+			return Mth.nextInt(random, 1, 3);
 		} else if (this == AMBlocks.DARK_MOON_GOLD_ORE.get()) {
-			return MathHelper.nextInt(random, 2, 3);
+			return Mth.nextInt(random, 2, 3);
 		} else if (this == AMBlocks.DARK_MOON_DIAMOND_ORE.get() || this == AMBlocks.DARK_MOON_EMERALD_ORE.get()) {
-			return MathHelper.nextInt(random, 3, 7);
+			return Mth.nextInt(random, 3, 7);
 		} else if (this == AMBlocks.DARK_MOON_LAPIS_ORE.get() || this == AMBlocks.DARK_MOON_REDSTONE_ORE.get()) {
-			return MathHelper.nextInt(random, 2, 5);
+			return Mth.nextInt(random, 2, 5);
 		} else {
 			return 0;
 		}

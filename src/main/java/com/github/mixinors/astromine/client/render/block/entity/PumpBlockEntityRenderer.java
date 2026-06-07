@@ -1,94 +1,69 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 - 2022 Mixinors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.github.mixinors.astromine.client.render.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.utility.PumpBlockEntity;
 import com.github.mixinors.astromine.registry.client.AMRenderLayers;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.util.Mth;
 
 public class PumpBlockEntityRenderer implements BlockEntityRenderer<PumpBlockEntity> {
-	public PumpBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
+	public PumpBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 	}
 	
 	@Override
-	public void render(PumpBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
-		var lerpDepth = MathHelper.lerp(tickDelta / 100.0F, entity.prevDepth, entity.depth);
+	public void render(PumpBlockEntity entity, float tickDelta, PoseStack matrices, MultiBufferSource provider, int light, int overlay) {
+		var lerpDepth = Mth.lerp(tickDelta / 100.0F, entity.prevDepth, entity.depth);
 		entity.prevDepth = lerpDepth;
 		
-		var maxY = lerpDepth / 20.0D + 1.0F;
-		
-		var layer = AMRenderLayers.getPumpTube();
-		var consumer = provider.getBuffer(layer);
-		
+		var maxY = (float) (lerpDepth / 20.0D + 1.0D);
+		var consumer = provider.getBuffer(AMRenderLayers.getPumpTube());
+		var pose = matrices.last();
 		var prevY = 0.0F;
-		
-		var prevV = 1.0F - ((float) maxY - (int) maxY);
+		var prevV = 1.0F - (maxY - (int) maxY);
 		
 		for (var y = 1.0F; y < maxY; y += 1.0F) {
-			var v = prevV + (float) Math.min(maxY - y, 1.0F);
+			var v = prevV + Math.min(maxY - y, 1.0F);
+			var dY = Math.min(y, maxY - 1.0F);
 			
-			var posMatrix = matrices.peek().getPositionMatrix();
-			var normMatrix = matrices.peek().getNormalMatrix();
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -prevY, 5.0F / 16.0F, 0.0F, prevV, overlay, light, 0.0F, 0.0F, -1.0F);
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -prevY, 5.0F / 16.0F, 1.0F, prevV, overlay, light, 0.0F, 0.0F, -1.0F);
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -dY, 5.0F / 16.0F, 1.0F, v, overlay, light, 0.0F, 0.0F, -1.0F);
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -dY, 5.0F / 16.0F, 0.0F, v, overlay, light, 0.0F, 0.0F, -1.0F);
 			
-			var dY = y;
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -prevY, 10.0F / 16.0F, 0.0F, prevV, overlay, light, 0.0F, 0.0F, 1.0F);
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -dY, 10.0F / 16.0F, 0.0F, v, overlay, light, 0.0F, 0.0F, 1.0F);
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -dY, 10.0F / 16.0F, 1.0F, v, overlay, light, 0.0F, 0.0F, 1.0F);
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -prevY, 10.0F / 16.0F, 1.0F, prevV, overlay, light, 0.0F, 0.0F, 1.0F);
 			
-			if (dY > maxY - 1.0F) {
-				dY = (float) maxY - 1.0F;
-			}
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -prevY, 5.0F / 16.0F, 0.0F, prevV, overlay, light, -1.0F, 0.0F, 0.0F);
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -dY, 5.0F / 16.0F, 0.0F, v, overlay, light, -1.0F, 0.0F, 0.0F);
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -dY, 10.0F / 16.0F, 1.0F, v, overlay, light, -1.0F, 0.0F, 0.0F);
+			addPumpVertex(pose, consumer, 5.0F / 16.0F, -prevY, 10.0F / 16.0F, 1.0F, prevV, overlay, light, -1.0F, 0.0F, 0.0F);
 			
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -prevY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -prevY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -dY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -dY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -prevY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -dY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -dY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -prevY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -prevY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -dY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -dY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (5.0F / 16.0F), -prevY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -dY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -prevY, (5.0F / 16.0F)).color(0xFFFFFFFF).texture(0.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -prevY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, prevV).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
-			consumer.vertex(posMatrix, (10.0F / 16.0F), -dY, (10.0F / 16.0F)).color(0xFFFFFFFF).texture(1.0F, v).overlay(overlay).light(light).normal(normMatrix, 0.0F, 0.0F, 0.0F).next();
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -dY, 5.0F / 16.0F, 0.0F, v, overlay, light, 1.0F, 0.0F, 0.0F);
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -prevY, 5.0F / 16.0F, 0.0F, prevV, overlay, light, 1.0F, 0.0F, 0.0F);
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -prevY, 10.0F / 16.0F, 1.0F, prevV, overlay, light, 1.0F, 0.0F, 0.0F);
+			addPumpVertex(pose, consumer, 10.0F / 16.0F, -dY, 10.0F / 16.0F, 1.0F, v, overlay, light, 1.0F, 0.0F, 0.0F);
 			
 			prevY = y;
 			prevV = v;
 		}
 	}
 	
+	private static void addPumpVertex(PoseStack.Pose pose, VertexConsumer consumer, float x, float y, float z, float u, float v, int overlay, int light, float normalX, float normalY, float normalZ) {
+		consumer.addVertex(pose, x, y, z)
+				.setColor(0xFFFFFFFF)
+				.setUv(u, v)
+				.setOverlay(overlay)
+				.setLight(light)
+				.setNormal(pose, normalX, normalY, normalZ);
+	}
+	
 	@Override
-	public boolean rendersOutsideBoundingBox(PumpBlockEntity blockEntity) {
+	public boolean shouldRenderOffScreen(PumpBlockEntity blockEntity) {
 		return true;
 	}
 }

@@ -24,42 +24,45 @@
 
 package com.github.mixinors.astromine.datagen.provider.tag;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
-public class AMFluidTagProvider extends FabricTagProvider.FluidTagProvider {
+public class AMFluidTagProvider extends FluidTagsProvider {
 	
-	public AMFluidTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMFluidTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, AMCommon.MOD_ID, existingFileHelper);
 	}
 	
-	public static final Map<ExtendedFluid, TagKey<Fluid>> FLUID_TAGS = new HashMap<>();
+	public static final Map<ExtendedFluid.Entry, TagKey<Fluid>> FLUID_TAGS = new HashMap<>();
 	
 	@Override
-	protected void generateTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
-			var tag = AMTagKeys.createCommonFluidTag(Registry.FLUID.getId(fluid.getStill()).getPath());
+			var tag = AMTagKeys.createCommonFluidTag(BuiltInRegistries.FLUID.getKey(fluid.getSource()).getPath());
 			
 			FLUID_TAGS.put(fluid, tag);
 			
-			var tagBuilder = getOrCreateTagBuilder(tag);
-			tagBuilder.add(fluid.getStill(), fluid.getFlowing());
+			var tagBuilder = tag(tag);
+			tagBuilder.add(fluid.getSource(), fluid.getFlowing());
 		});
 		
-		var industrialFluidsTagBuilder = getOrCreateTagBuilder(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS);
+		var industrialFluidsTagBuilder = tag(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS);
 		
 		AMDatagenLists.FluidLists.INDUSTRIAL_FLUIDS.forEach((fluid) -> industrialFluidsTagBuilder.addTag(FLUID_TAGS.get(fluid)));
 		
-		var moltenFluidsTagBuilder = getOrCreateTagBuilder(AMTagKeys.FluidTags.MOLTEN_FLUIDS);
+		var moltenFluidsTagBuilder = tag(AMTagKeys.FluidTags.MOLTEN_FLUIDS);
 		
 		AMDatagenLists.FluidLists.MOLTEN_FLUIDS.forEach((fluid) -> moltenFluidsTagBuilder.addTag(FLUID_TAGS.get(fluid)));
 	}

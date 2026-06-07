@@ -30,14 +30,11 @@ import com.github.mixinors.astromine.datagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.minecraft.block.Block;
-import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import java.util.function.BiConsumer;
 
 public enum BlockVariant implements Variant<Block> {
@@ -81,12 +78,12 @@ public enum BlockVariant implements Variant<Block> {
 	}
 	
 	@Override
-	public BiConsumer<BlockStateModelGenerator, Block> getModelRegistrar() {
+	public BiConsumer<AMModelProvider, Block> getModelRegistrar() {
 		return switch (this) {
 			case METEOR_ORE -> AMModelProvider::registerMeteorOre;
 			case ASTEROID_ORE -> AMModelProvider::registerAsteroidOre;
 			
-			default -> BlockStateModelGenerator::registerSimpleCubeAll;
+			default -> AMModelProvider::registerSimpleCubeAll;
 		};
 	}
 	
@@ -122,7 +119,7 @@ public enum BlockVariant implements Variant<Block> {
 	}
 	
 	public TagKey<Block> getMineableTag() {
-		return BlockTags.PICKAXE_MINEABLE;
+		return BlockTags.MINEABLE_WITH_PICKAXE;
 	}
 	
 	public HarvestData getHarvestData() {
@@ -134,7 +131,7 @@ public enum BlockVariant implements Variant<Block> {
 	}
 	
 	@Override
-	public TagKey<Block> createTag(Identifier id) {
+	public TagKey<Block> createTag(ResourceLocation id) {
 		return AMTagKeys.createBlockTag(id);
 	}
 	
@@ -149,7 +146,7 @@ public enum BlockVariant implements Variant<Block> {
 	@Override
 	public long getMeltedFluidAmount(boolean block2x2) {
 		return switch (this) {
-			case BLOCK -> FluidConstants.BLOCK;
+			case BLOCK -> ExtraFluidConstants.BLOCK;
 			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE, MOON_ORE, DARK_MOON_ORE -> ExtraFluidConstants.nuggets(12, block2x2);
 			case RAW_ORE_BLOCK -> ExtraFluidConstants.ingots(12, block2x2);
 		};

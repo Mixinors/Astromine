@@ -191,7 +191,7 @@
     "sounds": [
       "mob/ghast/fireball4"
     ],
-    "subtitle": "subtitle.astromine.shredder.shred"
+    "subtitle": "subtitles.astromine.shredder.shred"
   },
   "block.machine.click": {
     "sounds": [
@@ -200,6 +200,6 @@
       "astromine:machine_click_3",
       "astromine:machine_click_4"
     ],
-    "subtitle": "subtitle.astromine.machine.click"
+    "subtitle": "subtitles.astromine.machine.click"
   }
 }

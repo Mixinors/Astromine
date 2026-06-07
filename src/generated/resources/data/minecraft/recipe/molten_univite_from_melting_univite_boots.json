@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 44800,
+  "input": {
+    "count": 1,
+    "tag": "c:univite_boots"
+  },
+  "output": {
+    "amount": 96,
+    "fluid": "astromine:molten_univite"
+  },
+  "time": 5600
+}

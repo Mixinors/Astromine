@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 32000,
+  "input": {
+    "count": 1,
+    "tag": "c:univite_ingots"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_univite"
+  },
+  "time": 4000
+}

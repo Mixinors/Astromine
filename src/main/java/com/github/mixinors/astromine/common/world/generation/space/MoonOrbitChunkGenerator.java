@@ -27,88 +27,87 @@ package com.github.mixinors.astromine.common.world.generation.space;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.util.NoiseUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.structure.StructureSet;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.ChunkRandom;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.HeightLimitView;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.Blender;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.noise.NoiseConfig;
-
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 public class MoonOrbitChunkGenerator extends ChunkGenerator {
-	public static final Codec<MoonOrbitChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
-		return createStructureSetRegistryGetter(instance).and(
-				BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
-		).apply(instance, MoonOrbitChunkGenerator::new);
-	});
+	public static final MapCodec<MoonOrbitChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
+	).apply(instance, MoonOrbitChunkGenerator::new));
+	
+	public MoonOrbitChunkGenerator(BiomeSource source) {
+		super(source);
+	}
 	
 	public MoonOrbitChunkGenerator(Registry<StructureSet> structureFeatureRegistry, BiomeSource source) {
-		super(structureFeatureRegistry, Optional.empty(), source);
+		this(source);
 	}
 	
 	@Override
-	protected Codec<? extends ChunkGenerator> getCodec() {
+	protected MapCodec<? extends ChunkGenerator> codec() {
 		return CODEC;
 	}
 	
 	@Override
-	public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+	public void applyCarvers(WorldGenRegion chunkRegion, long seed, RandomState noiseConfig, BiomeManager biomeAccess, StructureManager structureAccessor, ChunkAccess chunk, GenerationStep.Carving carverStep) {
 	
 	}
 	
 	@Override
-	public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
+	public void buildSurface(WorldGenRegion region, StructureManager structures, RandomState noiseConfig, ChunkAccess chunk) {
 	
 	}
 	
 	@Override
-	public void populateEntities(ChunkRegion region) {
+	public void spawnOriginalMobs(WorldGenRegion region) {
 		
 	}
 	
 	@Override
-	public int getWorldHeight() {
+	public int getGenDepth() {
 		return 512;
 	}
 	
 	@Override
-	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
+	public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState noiseConfig, StructureManager structureAccessor, ChunkAccess chunk) {
 		return CompletableFuture.supplyAsync(() -> {
-			var seed = noiseConfig.getLegacyWorldSeed();
+			var seed = 0L;
 			var sampler = NoiseUtils.getSampler(seed, 3, 200, 1.225F, 1.0F);
 			
-			var mutable = new BlockPos.Mutable();
-			var x1 = chunk.getPos().getStartX();
-			var z1 = chunk.getPos().getStartZ();
+			var mutable = new BlockPos.MutableBlockPos();
+			var x1 = chunk.getPos().getMinBlockX();
+			var z1 = chunk.getPos().getMinBlockZ();
 			var y1 = 0;
 			
-			var x2 = chunk.getPos().getEndX();
-			var z2 = chunk.getPos().getEndZ();
+			var x2 = chunk.getPos().getMaxBlockX();
+			var z2 = chunk.getPos().getMaxBlockZ();
 			var y2 = 256;
 			
-			var random = new ChunkRandom(Random.create(noiseConfig.getLegacyWorldSeed()));
-			random.setPopulationSeed(noiseConfig.getLegacyWorldSeed(), x1, z1);
+			var random = new WorldgenRandom(RandomSource.create(0L));
+			random.setDecorationSeed(0L, x1, z1);
 			
 			for (var x = x1; x <= x2; ++x) {
 				for (var z = z1; z <= z2; ++z) {
@@ -118,7 +117,7 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 						
 						if (noise > AMConfig.get().world.asteroidGenerationThreshold) {
 							if (random.nextInt(64) != 0) {
-								chunk.setBlockState(mutable.set(x, y, z), AMBlocks.ASTEROID_STONE.get().getDefaultState(), false);
+								chunk.setBlockState(mutable.set(x, y, z), AMBlocks.ASTEROID_STONE.get().defaultBlockState(), false);
 							}
 						}
 					}
@@ -126,7 +125,7 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 			}
 			
 			return Unit.INSTANCE;
-		}, executor).thenApply(unit -> chunk);
+		}).thenApply(unit -> chunk);
 	}
 	
 	@Override
@@ -135,7 +134,7 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	}
 	
 	@Override
-	public int getMinimumY() {
+	public int getMinY() {
 		return 0;
 	}
 	
@@ -146,19 +145,19 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	}
 	
 	@Override
-	public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView world, NoiseConfig noiseConfig) {
+	public int getBaseHeight(int x, int z, Heightmap.Types heightmap, LevelHeightAccessor world, RandomState noiseConfig) {
 		return 96;
 	}
 	
 	@Override
-	public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world, NoiseConfig noiseConfig) {
+	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor world, RandomState noiseConfig) {
 		var states = new BlockState[96];
-		Arrays.fill(states, Blocks.AIR.getDefaultState());
-		return new VerticalBlockSample(world.getBottomY(), states);
+		Arrays.fill(states, Blocks.AIR.defaultBlockState());
+		return new NoiseColumn(world.getMinBuildHeight(), states);
 	}
 	
 	@Override
-	public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
+	public void addDebugScreenInfo(List<String> text, RandomState noiseConfig, BlockPos pos) {
 		
 	}
 }

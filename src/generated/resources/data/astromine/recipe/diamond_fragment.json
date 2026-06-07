@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:diamonds"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:diamond_fragment"
+  }
+}

@@ -5,6 +5,7 @@
     "bottom": "astromine:block/advanced_wire_mill_bottom",
     "front": "astromine:block/advanced_wire_mill_front",
     "left": "astromine:block/advanced_wire_mill_left",
+    "particle": "astromine:block/advanced_wire_mill_top",
     "right": "astromine:block/advanced_wire_mill_right",
     "top": "astromine:block/advanced_wire_mill_top"
   }

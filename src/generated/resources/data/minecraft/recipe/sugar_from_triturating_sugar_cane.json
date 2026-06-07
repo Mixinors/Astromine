@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 270,
+  "input": {
+    "count": 1,
+    "item": "minecraft:sugar_cane"
+  },
+  "output": {
+    "count": 2,
+    "item": "minecraft:sugar"
+  },
+  "time": 60
+}

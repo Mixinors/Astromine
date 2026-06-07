@@ -26,49 +26,38 @@ package com.github.mixinors.astromine.common.item.weapon;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
+import com.github.mixinors.astromine.common.util.ItemDataUtils;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class GravityGauntletItem extends SimpleEnergyStorageItem {
 	private static final String CHARGED_KEY = "Charged";
 	
-	private static final Multimap<EntityAttribute, EntityAttributeModifier> ATTRIBUTE_MODIFIERS = HashMultimap.create();
-	
-	static {
-		ATTRIBUTE_MODIFIERS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
-	}
-	
-	public GravityGauntletItem(Settings settings, long capacity) {
+	public GravityGauntletItem(Properties settings, long capacity) {
 		super(settings, capacity);
 	}
 	
 	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		var stack = user.getStackInHand(hand);
+	public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+		var stack = user.getItemInHand(hand);
 		
-		if (hand == Hand.OFF_HAND) {
-			return TypedActionResult.pass(stack);
+		if (hand == InteractionHand.OFF_HAND) {
+			return InteractionResultHolder.pass(stack);
 		}
 		
-		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		var offStack = user.getItemInHand(InteractionHand.OFF_HAND);
 		
-		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
+		if (offStack.is(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().items.gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().items.gravityGauntletConsumed) {
-				user.setCurrentHand(hand);
+				user.startUsingItem(hand);
 				
-				return TypedActionResult.success(stack);
+				return InteractionResultHolder.success(stack);
 			}
 		}
 		
@@ -76,74 +65,72 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 	}
 	
 	@Override
-	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		if (world.isClient) {
+	public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
+		if (world.isClientSide) {
 			return stack;
 		}
 		
-		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		var offStack = user.getItemInHand(InteractionHand.OFF_HAND);
 		
-		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
+		if (offStack.is(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().items.gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().items.gravityGauntletConsumed) {
 				tryUseEnergy(stack, AMConfig.get().items.gravityGauntletConsumed);
 				tryUseEnergy(offStack, AMConfig.get().items.gravityGauntletConsumed);
 				
-				stack.getOrCreateNbt().putBoolean(CHARGED_KEY, true);
-				
-				offStack.getOrCreateNbt().putBoolean(CHARGED_KEY, true);
+				setCharged(stack, true);
+				setCharged(offStack, true);
 				
 				return stack;
 			}
 		}
 		
-		return super.finishUsing(stack, world, user);
+		return super.finishUsingItem(stack, world, user);
 	}
 	
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnimation(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 	
 	@Override
-	public int getMaxUseTime(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 30;
 	}
 	
 	@Override
-	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (attacker.world.isClient) {
-			return super.postHit(stack, target, attacker);
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		if (attacker.level().isClientSide) {
+			return super.hurtEnemy(stack, target, attacker);
 		}
 		
-		var offStack = attacker.getStackInHand(Hand.OFF_HAND);
+		var offStack = attacker.getItemInHand(InteractionHand.OFF_HAND);
 		
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			if (stack.getOrCreateNbt().getBoolean(CHARGED_KEY) && offStack.getOrCreateNbt().getBoolean(CHARGED_KEY)) {
-				target.takeKnockback(1.0F, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
+			if (isCharged(stack) && isCharged(offStack)) {
+				target.knockback(1.0F, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
 				
-				target.addVelocity(0.0F, 0.5F, 0.0F);
+				target.push(0.0F, 0.5F, 0.0F);
 				
-				stack.getOrCreateNbt().putBoolean(CHARGED_KEY, false);
-				
-				offStack.getOrCreateNbt().putBoolean(CHARGED_KEY, false);
+				setCharged(stack, false);
+				setCharged(offStack, false);
 				
 				return true;
 			}
 		}
 		
-		return super.postHit(stack, target, attacker);
+		return super.hurtEnemy(stack, target, attacker);
 	}
 	
 	@Override
-	public boolean hasGlint(ItemStack stack) {
-		return stack.getOrCreateNbt().getBoolean(CHARGED_KEY);
+	public boolean isFoil(ItemStack stack) {
+		return isCharged(stack);
 	}
 	
-	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-		if (slot == EquipmentSlot.MAINHAND) {
-			return ATTRIBUTE_MODIFIERS;
-		}
-		
-		return super.getAttributeModifiers(slot);
+	private static boolean isCharged(ItemStack stack) {
+		return ItemDataUtils.get(stack).getBoolean(CHARGED_KEY);
+	}
+	
+	private static void setCharged(ItemStack stack, boolean charged) {
+		ItemDataUtils.update(stack, nbt -> nbt.putBoolean(CHARGED_KEY, charged));
 	}
 }

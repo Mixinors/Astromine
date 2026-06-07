@@ -26,15 +26,11 @@ package com.github.mixinors.astromine.common.screen.handler;
 
 import com.github.mixinors.astromine.common.screen.handler.base.block.BlockStateScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class NuclearWarheadScreenHandler extends BlockStateScreenHandler {
-	public NuclearWarheadScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public NuclearWarheadScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.NUCLEAR_WARHEAD, syncId, player, position);
-	}
-	
-	@Override
-	public void init(int width, int height) {
 	}
 }

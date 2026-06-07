@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 204,
+  "input": {
+    "count": 1,
+    "tag": "c:lapis_tiny_dusts"
+  },
+  "output": {
+    "amount": 12,
+    "fluid": "astromine:molten_lapis"
+  },
+  "time": 25
+}

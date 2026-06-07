@@ -27,28 +27,12 @@ package com.github.mixinors.astromine.common.config.entry.tiered;
 import com.github.mixinors.astromine.common.config.entry.AMConfigEntry;
 import com.github.mixinors.astromine.common.config.entry.tiered.tier.TierConfig;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 public abstract class TieredConfig<T extends TierConfig> implements AMConfigEntry {
-	@Comment("Settings for the primitive tier of this machine")
-	@ConfigEntry.Gui.CollapsibleObject
 	public T primitive = createTierConfig(Tier.PRIMITIVE);
-	
-	@Comment("Settings for the basic tier of this machine")
-	@ConfigEntry.Gui.CollapsibleObject
 	public T basic = createTierConfig(Tier.BASIC);
-	
-	@Comment("Settings for the advanced tier of this machine")
-	@ConfigEntry.Gui.CollapsibleObject
 	public T advanced = createTierConfig(Tier.ADVANCED);
-	
-	@Comment("Settings for the elite tier of this machine")
-	@ConfigEntry.Gui.CollapsibleObject
 	public T elite = createTierConfig(Tier.ELITE);
-	
-	@Comment("Settings for the creative tier of this machine if it exists")
-	@ConfigEntry.Gui.CollapsibleObject
 	public T creative = createTierConfig(Tier.CREATIVE);
 	
 	public T getTierConfig(Tier tier) {

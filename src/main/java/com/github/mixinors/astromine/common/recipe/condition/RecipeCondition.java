@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.recipe.condition;
 
-import dev.architectury.platform.Platform;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.ModList;
 
 public record RecipeCondition(
 		String modId,
@@ -34,11 +34,11 @@ public record RecipeCondition(
 ) {
 	public boolean isAllowed() {
 		if (!modId.isEmpty()) {
-			return Platform.isModLoaded(modId);
+			return ModList.get().isLoaded(modId);
 		}
 		
 		if (!itemId.isEmpty()) {
-			return Registry.ITEM.getIds().contains(new Identifier(itemId));
+			return BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(itemId));
 		}
 		
 		return false;

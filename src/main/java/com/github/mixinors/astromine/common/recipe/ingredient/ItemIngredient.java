@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.Item;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -50,25 +50,26 @@ public final class ItemIngredient {
 	private final Entry entry;
 	
 	@Nullable
-	private ItemVariant[] matchingVariants;
+	private ItemStack[] matchingStacks;
 	
 	public ItemIngredient(Entry entry) {
 		this.entry = entry;
 	}
 	
-	public ItemIngredient(ItemVariant variant, int amount) {
-		this.entry = new VariantEntry(variant, amount);
+	public ItemIngredient(ItemStack stack, int amount) {
+		this.entry = new StackEntry(stack, amount);
 	}
 	
-	public boolean test(SingleSlotStorage<ItemVariant> testStorage) {
+	public boolean test(SimpleItemVariantStorage testStorage) {
 		if (testStorage.isResourceBlank()) {
 			return false;
 		}
+		
 		return test(testStorage.getResource(), testStorage.getAmount());
 	}
 	
-	public boolean test(ItemVariant testVariant, Long testAmount) {
-		return entry.test(testVariant, testAmount);
+	public boolean test(ItemStack testStack, Long testAmount) {
+		return entry.test(testStack, testAmount);
 	}
 	
 	public Entry getEntry() {
@@ -80,65 +81,43 @@ public final class ItemIngredient {
 	}
 	
 	public Ingredient asIngredient() {
-		return Ingredient.ofStacks(entry.getVariants().stream().map(variant -> variant.toStack(entry.getAmount())));
+		return Ingredient.of(entry.getStacks().stream().map(stack -> stack.copyWithCount(entry.getAmount())));
 	}
 	
-	public ItemVariant[] getMatchingVariants() {
-		this.cacheMatchingVariants();
+	public ItemStack[] getMatchingStacks() {
+		this.cacheMatchingStacks();
 		
-		return this.matchingVariants;
+		return this.matchingStacks;
 	}
 	
-	private void cacheMatchingVariants() {
-		if (this.matchingVariants == null) {
-			this.matchingVariants = entry.getVariants().stream().distinct().toArray(ItemVariant[]::new);
+	private void cacheMatchingStacks() {
+		if (this.matchingStacks == null) {
+			this.matchingStacks = entry.getStacks().stream().distinct().toArray(ItemStack[]::new);
 		}
 	}
 	
 	public static ItemIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
-			var entryAsId = new Identifier(json.getAsString());
-			var entryAsItem = Registry.ITEM.get(entryAsId);
-			var entryAsItemVariant = ItemVariant.of(entryAsItem);
+			var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(json.getAsString()));
 			
-			return new ItemIngredient(new VariantEntry(entryAsItemVariant));
+			return new ItemIngredient(new StackEntry(new ItemStack(item)));
 		}
 		
 		if (json.isJsonObject()) {
 			var jsonObject = json.getAsJsonObject();
 			
 			if (jsonObject.has(ITEM_KEY)) {
-				if (jsonObject.has(COUNT_KEY)) {
-					var entryAsId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
-					var entryAsItem = Registry.ITEM.get(entryAsId);
-					var entryAsItemVariant = ItemVariant.of(entryAsItem);
-					
-					var entryAmount = jsonObject.get(COUNT_KEY).getAsInt();
-					
-					return new ItemIngredient(new VariantEntry(entryAsItemVariant, entryAmount));
-				} else {
-					var entryAsId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
-					var entryAsItem = Registry.ITEM.get(entryAsId);
-					var entryAsItemVariant = ItemVariant.of(entryAsItem);
-					
-					return new ItemIngredient(new VariantEntry(entryAsItemVariant));
-				}
+				var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(jsonObject.get(ITEM_KEY).getAsString()));
+				var amount = jsonObject.has(COUNT_KEY) ? jsonObject.get(COUNT_KEY).getAsInt() : 1;
+				
+				return new ItemIngredient(new StackEntry(new ItemStack(item), amount));
 			}
 			
 			if (jsonObject.has(TAG_KEY)) {
-				if (jsonObject.has(COUNT_KEY)) {
-					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
-					var entryAsTag = AMTagKeys.createItemTag(entryAsId);
-					
-					var entryAmount = jsonObject.get(COUNT_KEY).getAsInt();
-					
-					return new ItemIngredient(new TagEntry(entryAsTag, entryAmount));
-				} else {
-					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
-					var entryAsTag = AMTagKeys.createItemTag(entryAsId);
-					
-					return new ItemIngredient(new TagEntry(entryAsTag));
-				}
+				var tag = AMTagKeys.createItemTag(ResourceLocation.parse(jsonObject.get(TAG_KEY).getAsString()));
+				var amount = jsonObject.has(COUNT_KEY) ? jsonObject.get(COUNT_KEY).getAsInt() : 1;
+				
+				return new ItemIngredient(new TagEntry(tag, amount));
 			}
 		}
 		
@@ -148,83 +127,71 @@ public final class ItemIngredient {
 	public static JsonObject toJson(ItemIngredient ingredient) {
 		var jsonObject = new JsonObject();
 		
-		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			var entryJsonObject = new JsonObject();
-			
-			entryJsonObject.addProperty(ITEM_KEY, Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
-			entryJsonObject.addProperty(COUNT_KEY, variantEntry.requiredAmount);
+		if (ingredient.entry instanceof StackEntry stackEntry) {
+			jsonObject.addProperty(ITEM_KEY, BuiltInRegistries.ITEM.getKey(stackEntry.requiredStack.getItem()).toString());
+			jsonObject.addProperty(COUNT_KEY, stackEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			var entryJsonObject = new JsonObject();
-			
-			entryJsonObject.addProperty(TAG_KEY, tagEntry.requiredTag.id().toString());
-			entryJsonObject.addProperty(COUNT_KEY, tagEntry.requiredAmount);
+			jsonObject.addProperty(TAG_KEY, tagEntry.requiredTag.location().toString());
+			jsonObject.addProperty(COUNT_KEY, tagEntry.requiredAmount);
 		}
 		
 		return jsonObject;
 	}
 	
-	public static ItemIngredient fromPacket(PacketByteBuf buf) {
-		var entryType = buf.readString();
-		var entryTypeId = new Identifier(buf.readString());
-		
+	public static ItemIngredient fromPacket(FriendlyByteBuf buf) {
+		var entryType = buf.readUtf();
+		var entryTypeId = ResourceLocation.parse(buf.readUtf());
 		var entryAmount = buf.readInt();
 		
 		if (entryType.equals(ITEM_KEY)) {
-			var entryItem = Registry.ITEM.get(entryTypeId);
-			var entryVariant = ItemVariant.of(entryItem);
-			
-			return new ItemIngredient(new VariantEntry(entryVariant, entryAmount));
+			return new ItemIngredient(new StackEntry(new ItemStack(BuiltInRegistries.ITEM.get(entryTypeId)), entryAmount));
 		}
 		
 		if (entryType.equals(TAG_KEY)) {
-			var entryTag = AMTagKeys.createItemTag(entryTypeId);
-			
-			return new ItemIngredient(new TagEntry(entryTag, entryAmount));
+			return new ItemIngredient(new TagEntry(AMTagKeys.createItemTag(entryTypeId), entryAmount));
 		}
 		
 		return null;
 	}
 	
-	public static void toPacket(PacketByteBuf buf, ItemIngredient ingredient) {
-		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			buf.writeString(ITEM_KEY);
-			buf.writeString(Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
-			buf.writeInt(variantEntry.requiredAmount);
+	public static void toPacket(FriendlyByteBuf buf, ItemIngredient ingredient) {
+		if (ingredient.entry instanceof StackEntry stackEntry) {
+			buf.writeUtf(ITEM_KEY);
+			buf.writeUtf(BuiltInRegistries.ITEM.getKey(stackEntry.requiredStack.getItem()).toString());
+			buf.writeInt(stackEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			buf.writeString(TAG_KEY);
-			buf.writeString(tagEntry.requiredTag.id().toString());
+			buf.writeUtf(TAG_KEY);
+			buf.writeUtf(tagEntry.requiredTag.location().toString());
 			buf.writeInt(tagEntry.requiredAmount);
 		}
 	}
 	
-	public static abstract class Entry implements BiPredicate<ItemVariant, Long> {
+	public static abstract class Entry implements BiPredicate<ItemStack, Long> {
 		public abstract int getAmount();
 		
-		public abstract Collection<ItemVariant> getVariants();
+		public abstract Collection<ItemStack> getStacks();
 	}
 	
-	public static class VariantEntry extends Entry {
-		private final ItemVariant requiredVariant;
-		
+	public static class StackEntry extends Entry {
+		private final ItemStack requiredStack;
 		private final int requiredAmount;
 		
-		public VariantEntry(ItemVariant variant) {
-			this.requiredVariant = variant;
-			this.requiredAmount = 1;
+		public StackEntry(ItemStack stack) {
+			this(stack, 1);
 		}
 		
-		public VariantEntry(ItemVariant variant, int amount) {
-			this.requiredVariant = variant;
+		public StackEntry(ItemStack stack, int amount) {
+			this.requiredStack = stack.copyWithCount(1);
 			this.requiredAmount = amount;
 		}
 		
 		@Override
-		public boolean test(ItemVariant testVariant, Long testAmount) {
-			return testVariant.equals(requiredVariant) && testAmount >= requiredAmount;
+		public boolean test(ItemStack testStack, Long testAmount) {
+			return ItemStack.isSameItemSameComponents(testStack, requiredStack) && testAmount >= requiredAmount;
 		}
 		
 		@Override
@@ -233,21 +200,18 @@ public final class ItemIngredient {
 		}
 		
 		@Override
-		public Collection<ItemVariant> getVariants() {
-			return ImmutableList.of(requiredVariant);
+		public Collection<ItemStack> getStacks() {
+			return ImmutableList.of(requiredStack);
 		}
 	}
 	
 	public static class TagEntry extends Entry {
-		private List<ItemVariant> requiredVariants;
-		
+		private List<ItemStack> requiredStacks;
 		private final TagKey<Item> requiredTag;
-		
 		private final int requiredAmount;
 		
 		public TagEntry(TagKey<Item> tag) {
-			this.requiredTag = tag;
-			this.requiredAmount = 1;
+			this(tag, 1);
 		}
 		
 		public TagEntry(TagKey<Item> tag, int amount) {
@@ -256,14 +220,8 @@ public final class ItemIngredient {
 		}
 		
 		@Override
-		public boolean test(ItemVariant testVariant, Long testAmount) {
-			for (var requiredVariant : getVariants()) {
-				if (requiredVariant.equals(testVariant) && testAmount >= requiredAmount) {
-					return true;
-				}
-			}
-			
-			return false;
+		public boolean test(ItemStack testStack, Long testAmount) {
+			return testStack.is(requiredTag) && testAmount >= requiredAmount;
 		}
 		
 		@Override
@@ -272,18 +230,18 @@ public final class ItemIngredient {
 		}
 		
 		@Override
-		public Collection<ItemVariant> getVariants() {
-			if (requiredVariants == null) {
-				var builder = ImmutableList.<ItemVariant>builder();
+		public Collection<ItemStack> getStacks() {
+			if (requiredStacks == null) {
+				var builder = ImmutableList.<ItemStack>builder();
 				
-				for (var item : Registry.ITEM.iterateEntries(requiredTag)) {
-					builder.add(ItemVariant.of(item.value()));
+				for (var item : BuiltInRegistries.ITEM.getTagOrEmpty(requiredTag)) {
+					builder.add(new ItemStack(item.value()));
 				}
 				
-				requiredVariants = builder.build();
+				requiredStacks = builder.build();
 			}
 			
-			return requiredVariants;
+			return requiredStacks;
 		}
 	}
 }

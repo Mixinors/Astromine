@@ -29,52 +29,24 @@ import com.github.mixinors.astromine.common.screen.handler.base.block.entity.Ext
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class PresserScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final PresserBlockEntity presser;
 	
-	public PresserScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public PresserScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.PRESSER, syncId, player, position);
 		
 		presser = (PresserBlockEntity) blockEntity;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
 		
-		var input = new SlotWidget(PresserBlockEntity.INPUT_SLOT, presser.getItemStorage(), (inventory, id, x, y) -> {
-			var slot = new FilterSlot(inventory, id, x, y);
-			
-			slot.setInsertPredicate((stack) -> {
-				return presser.getItemStorage().canInsert(ItemVariant.of(stack), PresserBlockEntity.INPUT_SLOT);
-			});
-			
-			return slot;
-		});
-		input.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
-		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		var inputX = centeredProcessInputX();
+		var inputY = centeredProcessInputY();
+		var arrowX = processArrowX(inputX);
+		var arrowY = processArrowY(inputY);
 		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F - 0.5F)); // 0.5F centers the arrow against the input slot.
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) presser.limit);
-		arrow.setCurrent(() -> (float) presser.progress);
-		
-		var output = new SlotWidget(PresserBlockEntity.OUTPUT_SLOT, presser.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F)); // 1.0F centers the slot against the arrow.
-		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-		
-		tab.add(input);
-		tab.add(output);
-		tab.add(arrow);
+		addBlockEntitySlot(PresserBlockEntity.INPUT_SLOT, inputX, inputY);
+		addBlockEntityOutputSlot(PresserBlockEntity.OUTPUT_SLOT, processOutputX(arrowX), processOutputY(arrowY));
+		addProgressArrow(arrowX, arrowY);
 	}
 }

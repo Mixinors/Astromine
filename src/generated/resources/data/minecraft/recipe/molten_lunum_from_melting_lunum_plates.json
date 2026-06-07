@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 1440,
+  "input": {
+    "count": 1,
+    "tag": "c:lunum_plates"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_lunum"
+  },
+  "time": 180
+}

@@ -28,21 +28,20 @@ import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtLong;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import com.github.mixinors.astromine.common.util.NbtUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.LongTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.Level;
 
-public final class NetworksComponent implements Component {
+public final class NetworksComponent {
 	private static final String TYPE_KEY = "Type";
 	private static final String NODES_KEY = "Nodes";
 	private static final String MEMBERS_KEY = "Members";
@@ -50,22 +49,18 @@ public final class NetworksComponent implements Component {
 	
 	private final List<Network<?>> instances = new ArrayList<>();
 	
-	private final World world;
+	private final Level world;
 	
 	@Nullable
 	public static <V> NetworksComponent get(V v) {
-		try {
-			return AMComponents.NETWORKS.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		return v instanceof Level level ? level.getData(AMComponents.NETWORKS) : null;
 	}
 	
-	public NetworksComponent(World world) {
+	public NetworksComponent(Level world) {
 		this.world = world;
 	}
 	
-	public World getWorld() {
+	public Level getWorld() {
 		return world;
 	}
 	
@@ -92,18 +87,17 @@ public final class NetworksComponent implements Component {
 		instances.forEach(Network::tick);
 	}
 	
-	@Override
-	public void writeToNbt(@NotNull NbtCompound nbt) {
-		var instanceTags = new NbtList();
+	public void writeToNbt(@NotNull CompoundTag nbt) {
+		var instanceTags = new ListTag();
 		
 		for (var instance : instances) {
-			var nodeList = new NbtList();
+			var nodeList = new ListTag();
 			
 			for (var node : instance.getNodes()) {
 				nodeList.add(node.toNbt());
 			}
 			
-			var memberList = new NbtList();
+			var memberList = new ListTag();
 			
 			for (var member : instance.getMembers()) {
 				memberList.add(member.toNbt());
@@ -115,9 +109,9 @@ public final class NetworksComponent implements Component {
 				continue;
 			}
 			
-			var data = new NbtCompound();
+			var data = new CompoundTag();
 			
-			NbtUtil.putIdentifier(data, TYPE_KEY, AMRegistries.NETWORK_TYPE.getKey(type));
+			NbtUtils.putIdentifier(data, TYPE_KEY, AMRegistries.NETWORK_TYPE.getKey(type));
 			
 			data.put(NODES_KEY, nodeList);
 			data.put(MEMBERS_KEY, memberList);
@@ -128,17 +122,16 @@ public final class NetworksComponent implements Component {
 		nbt.put(INSTANCES, instanceTags);
 	}
 	
-	@Override
-	public void readFromNbt(NbtCompound nbt) {
-		var instanceTags = nbt.getList(INSTANCES, NbtElement.COMPOUND_TYPE);
+	public void readFromNbt(CompoundTag nbt) {
+		var instanceTags = nbt.getList(INSTANCES, Tag.TAG_COMPOUND);
 		
 		for (var instanceTag : instanceTags) {
-			var dataTag = (NbtCompound) instanceTag;
+			var dataTag = (CompoundTag) instanceTag;
 			
-			var nodeList = dataTag.getList(NODES_KEY, NbtElement.LONG_TYPE);
-			var memberList = dataTag.getList(MEMBERS_KEY, NbtElement.COMPOUND_TYPE);
+			var nodeList = dataTag.getList(NODES_KEY, Tag.TAG_LONG);
+			var memberList = dataTag.getList(MEMBERS_KEY, Tag.TAG_COMPOUND);
 			
-			var type = AMRegistries.NETWORK_TYPE.getEntry(NbtUtil.getIdentifier(dataTag, TYPE_KEY)).get();
+			var type = AMRegistries.NETWORK_TYPE.getEntry(NbtUtils.getIdentifier(dataTag, TYPE_KEY)).get();
 			
 			if (type == null) {
 				continue;
@@ -147,11 +140,11 @@ public final class NetworksComponent implements Component {
 			var instance = new Network<>(world, type);
 			
 			for (var nodeKey : nodeList) {
-				instance.getNodes().add(Network.Node.fromNbt((NbtLong) nodeKey));
+				instance.getNodes().add(Network.Node.fromNbt((LongTag) nodeKey));
 			}
 			
 			for (var memberTag : memberList) {
-				instance.getMembers().add(Network.Member.fromNbt((NbtCompound) memberTag));
+				instance.getMembers().add(Network.Member.fromNbt((CompoundTag) memberTag));
 			}
 			
 			add(instance);

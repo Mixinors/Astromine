@@ -4,13 +4,15 @@ import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntit
 import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.common.station.Station;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class StationControllerBlockEntity extends ExtendedBlockEntity {
 	private static final String OWNER_UUID_KEY = "OwnerUuid";
@@ -23,7 +25,7 @@ public class StationControllerBlockEntity extends ExtendedBlockEntity {
 	private UUID stationUuid = null;
 	
 	public StationControllerBlockEntity(BlockPos blockPos, BlockState blockState) {
-		super(AMBlockEntityTypes.ROCKET_CONTROLLER, blockPos, blockState);
+		super(AMBlockEntityTypes.STATION_CONTROLLER, blockPos, blockState);
 	}
 	
 	@Nullable
@@ -32,16 +34,16 @@ public class StationControllerBlockEntity extends ExtendedBlockEntity {
 		
 		if (stationUuid == null) {
 			// Expensive lookup.
-			var station = StationManager.get(pos);
+			var world = getLevel();
+			
+			if (!(world instanceof ServerLevel serverLevel)) return null;
+			
+			var station = StationManager.get(world, world.dimension(), worldPosition);
 			
 			if (station == null) {
-				// TODO: Remove after debugging. Or leave, because it's useful if the Rocket is corrupted.
-				var world = getWorld();
-				var pos = getPos();
+				var pos = getBlockPos();
 				
-				if (world == null) return null;
-				
-				station = StationManager.create(world.getRegistryKey(), pos, UUID.randomUUID(), ownerUuid, "Station");
+				station = StationManager.create(serverLevel.getServer(), world.dimension(), pos, UUID.randomUUID(), ownerUuid, "Station");
 			}
 			
 			stationUuid = station.getUuid();
@@ -49,7 +51,8 @@ public class StationControllerBlockEntity extends ExtendedBlockEntity {
 			return station;
 		} else {
 			// Cheap lookup.
-			return StationManager.get(stationUuid);
+			var world = getLevel();
+			return world == null ? null : StationManager.get(world, stationUuid);
 		}
 	}
 	
@@ -67,28 +70,28 @@ public class StationControllerBlockEntity extends ExtendedBlockEntity {
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		super.saveAdditional(nbt, registries);
 		
 		if (ownerUuid != null) {
-			nbt.putUuid(OWNER_UUID_KEY, ownerUuid);
+			nbt.putUUID(OWNER_UUID_KEY, ownerUuid);
 		}
 		
 		if (stationUuid != null) {
-			nbt.putUuid(STATION_UUID_KEY, stationUuid);
+			nbt.putUUID(STATION_UUID_KEY, stationUuid);
 		}
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
-		super.readNbt(nbt);
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
+		super.loadAdditional(nbt, registries);
 		
 		if (nbt.contains(OWNER_UUID_KEY)) {
-			ownerUuid = nbt.getUuid(OWNER_UUID_KEY);
+			ownerUuid = nbt.getUUID(OWNER_UUID_KEY);
 		}
 		
 		if (nbt.contains(STATION_UUID_KEY)) {
-			stationUuid = nbt.getUuid(STATION_UUID_KEY);
+			stationUuid = nbt.getUUID(STATION_UUID_KEY);
 		}
 	}
 }

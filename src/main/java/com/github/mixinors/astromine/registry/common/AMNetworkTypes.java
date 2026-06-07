@@ -43,7 +43,6 @@ public class AMNetworkTypes {
 	}
 	
 	public static <T extends NetworkType> T register(String name, T type) {
-		// FIXME
 		return (T) AMRegistries.NETWORK_TYPE.register(AMCommon.id(name), type).get();
 	}
 }

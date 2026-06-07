@@ -27,14 +27,14 @@ package com.github.mixinors.astromine.common.registry.base;
 import com.github.mixinors.astromine.AMCommon;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class Registry<V> {
 	public static <V> Codec<Registry<V>> createCodec(Registry<V> registry, Codec<V> valueCodec) {
 		return RecordCodecBuilder.create(
 				instance -> instance.group(
-						Codec.unboundedMap(Identifier.CODEC, valueCodec).fieldOf("values").forGetter(r -> r.values)
+						Codec.unboundedMap(ResourceLocation.CODEC, valueCodec).fieldOf("values").forGetter(r -> r.values)
 				).apply(instance, (values) -> {
 					registry.values.clear();
 					registry.values.putAll(values);
@@ -56,11 +56,15 @@ public class Registry<V> {
 		);
 	}
 	
-	private final Map<Identifier, RegistryEntry<V>> entries = new HashMap<>();
-	private final Map<Identifier, V> values = new HashMap<>();
+	private final Map<ResourceLocation, RegistryEntry<V>> entries = new HashMap<>();
+	private final Map<ResourceLocation, V> values = new HashMap<>();
 	
 	public Registry() {
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ReloadListener());
+		NeoForge.EVENT_BUS.addListener(this::addReloadListener);
+	}
+	
+	private void addReloadListener(AddReloadListenerEvent event) {
+		event.addListener(new ReloadListener());
 	}
 	
 	/**
@@ -76,7 +80,7 @@ public class Registry<V> {
 	 * @param k the key.
 	 * @return the entry.
 	 */
-	public RegistryEntry<V> getEntry(Identifier k) {
+	public RegistryEntry<V> getEntry(ResourceLocation k) {
 		entries.computeIfAbsent(k, $ -> new RegistryEntry<>(k, () -> values.get(k)));
 		return entries.get(k);
 	}
@@ -84,7 +88,7 @@ public class Registry<V> {
 	/**
 	 * Returns the given key's value.
 	 */
-	public V get(Identifier k) {
+	public V get(ResourceLocation k) {
 		return values.get(k);
 	}
 	
@@ -93,7 +97,7 @@ public class Registry<V> {
 	 * @param v the value.
 	 * @return the key.
 	 */
-	public Identifier getKey(V v) {
+	public ResourceLocation getKey(V v) {
 		var entry = entries.values().stream().filter(e -> e.getValue() == v).findFirst().orElse(null);
 		return entry == null ? null : entry.getKey();
 	}
@@ -104,7 +108,7 @@ public class Registry<V> {
 	 * @param v the value.
 	 * @return the entry.
 	 */
-	public RegistryEntry<V> register(Identifier k, V v) {
+	public RegistryEntry<V> register(ResourceLocation k, V v) {
 		values.put(k, v);
 		return getEntry(k);
 	}
@@ -115,7 +119,7 @@ public class Registry<V> {
 	  * @param v the value.
 	 * @return whether this registry contains the given key and value combination.
 	 */
-	public boolean contains(Identifier k, V v) {
+	public boolean contains(ResourceLocation k, V v) {
 		return containsKey(k) && getEntry(k) == v;
 	}
 	
@@ -124,7 +128,7 @@ public class Registry<V> {
 	 * @param k the key.
 	 * @return whether this registry contains the given key.
 	 */
-	public boolean containsKey(Identifier k) {
+	public boolean containsKey(ResourceLocation k) {
 		return entries.containsKey(k);
 	}
 	
@@ -140,7 +144,7 @@ public class Registry<V> {
 	/**
 	 * Returns a collection of this registry's keys.
 	 */
-	public Collection<Identifier> getKeys() {
+	public Collection<ResourceLocation> getKeys() {
 		return values.keySet();
 	}
 	
@@ -159,45 +163,34 @@ public class Registry<V> {
 	}
 	
 	/**
-	 * Serializes this registry to a {@link PacketByteBuf}.
+	 * Serializes this registry to a {@link FriendlyByteBuf}.
 	 * @param codec the codec to use.
 	 * @param buf the buffer to serialize to.
 	 */
-	public void writeToBuf(Codec<Registry<V>> codec, PacketByteBuf buf) {
+	public void writeToBuf(Codec<Registry<V>> codec, FriendlyByteBuf buf) {
 		var result = codec.encodeStart(NbtOps.INSTANCE, this);
 		
-		var nbt = new NbtCompound();
+		var nbt = new CompoundTag();
 		nbt.put(VALUES, result.result().get());
 		
 		buf.writeNbt(nbt);
 	}
 	
 	/**
-	 * Deserializes this registry from a {@link PacketByteBuf}.
+	 * Deserializes this registry from a {@link FriendlyByteBuf}.
 	 * @param codec the codec to use.
 	 * @param buf the buffer to deserialize from.
 	 */
-	public void readFromBuf(Codec<Registry<V>> codec, PacketByteBuf buf) {
+	public void readFromBuf(Codec<Registry<V>> codec, FriendlyByteBuf buf) {
 		var nbt = buf.readNbt();
 		var entriesNbt = nbt.get(VALUES);
 		
 		codec.decode(NbtOps.INSTANCE, entriesNbt).result();
 	}
 	
-	private class ReloadListener implements SimpleSynchronousResourceReloadListener {
-		private final Identifier id;
-		
-		public ReloadListener() {
-			this.id = AMCommon.id("registry_reload_listener_" + hashCode());
-		}
-		
+	private class ReloadListener implements ResourceManagerReloadListener {
 		@Override
-		public Identifier getFabricId() {
-			return id;
-		}
-		
-		@Override
-		public void reload(ResourceManager manager) {
+		public void onResourceManagerReload(ResourceManager manager) {
 			getEntries().forEach(RegistryEntry::invalidate);
 		}
 	}

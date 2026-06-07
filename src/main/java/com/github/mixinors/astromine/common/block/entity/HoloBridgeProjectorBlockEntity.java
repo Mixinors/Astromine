@@ -30,25 +30,25 @@ import com.github.mixinors.astromine.common.util.LineUtils;
 import com.github.mixinors.astromine.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.vini2003.hammer.core.api.client.color.Color;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.Vec3i;
+import com.github.mixinors.astromine.common.util.Color;
+import org.joml.Vector3f;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
 	public static final String CHILD_POSITION_KEY = "ChildPosition";
@@ -73,7 +73,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	private boolean shouldInitialize = false;
 	
-	public List<Vec3f> segments = null;
+	public List<Vector3f> segments = null;
 	
 	public Color color = DEFAULT_COLOR;
 	
@@ -87,12 +87,12 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	@Override
 	public void tick() {
-		if (world != null && world.isClient) {
+		if (level != null && level.isClientSide) {
 			if (shouldInitialize) {
 				this.destroyBridge();
 				
 				if (this.childPosition != null) {
-					this.child = (HoloBridgeProjectorBlockEntity) this.world.getBlockEntity(this.childPosition);
+					this.child = (HoloBridgeProjectorBlockEntity) this.level.getBlockEntity(this.childPosition);
 				}
 				
 				this.buildBridge();
@@ -101,12 +101,12 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			}
 		}
 		
-		if (this.world == null || this.world.isClient) {
+		if (this.level == null || this.level.isClientSide) {
 			return;
 		}
 		
 		if (!this.hasCheckedChild && this.childPosition != null) {
-			var childEntity = this.world.getBlockEntity(this.childPosition);
+			var childEntity = this.level.getBlockEntity(this.childPosition);
 			
 			if (childEntity instanceof HoloBridgeProjectorBlockEntity holoChildEntity) {
 				this.child = holoChildEntity;
@@ -119,7 +119,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 		
 		if (!this.hasCheckedParent && this.parentPosition != null) {
-			var parentEntity = this.world.getBlockEntity(parentPosition);
+			var parentEntity = this.level.getBlockEntity(parentPosition);
 			
 			if (parentEntity instanceof HoloBridgeProjectorBlockEntity holoParentEntity) {
 				this.parent = holoParentEntity;
@@ -133,32 +133,32 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 	
 	public boolean attemptToBuildBridge(HoloBridgeProjectorBlockEntity child) {
-		var childPos = child.getPos();
-		var pos = this.getPos();
+		var childPos = child.getBlockPos();
+		var pos = this.getBlockPos();
 		
 		var offsetChildPos = childPos;
 		
-		var childFacing = child.getCachedState().get(HorizontalFacingBlock.FACING);
+		var childFacing = child.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 		
 		if (childFacing == Direction.EAST) {
-			offsetChildPos = offsetChildPos.add(1, 0, 0);
+			offsetChildPos = offsetChildPos.offset(1, 0, 0);
 		} else if (childFacing == Direction.SOUTH) {
-			offsetChildPos = offsetChildPos.add(0, 0, 1);
+			offsetChildPos = offsetChildPos.offset(0, 0, 1);
 		}
 		
-		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
+		var distance = (int) Math.sqrt(this.getBlockPos().distSqr(child.getBlockPos()));
 		
 		if (distance == 0) {
 			return false;
 		}
 		
-		var segments = LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
+		var segments = LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.above()), VectorUtils.toVector3f(offsetChildPos.above()), 32);
 		
 		for (var segment : segments) {
-			var segmentPos = new BlockPos(segment.getX(), segment.getY(), segment.getZ());
+			var segmentPos = BlockPos.containing(segment.x(), segment.y(), segment.z());
 			
 			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
-				if (!this.world.getBlockState(segmentPos).isAir()) {
+				if (!this.level.getBlockState(segmentPos).isAir()) {
 					return false;
 				}
 			}
@@ -168,42 +168,42 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 	
 	public void buildBridge() {
-		if (this.child == null || this.world == null) {
+		if (this.child == null || this.level == null) {
 			return;
 		}
 		
-		var childPos = this.getChild().getPos();
-		var pos = this.getPos();
+		var childPos = this.getChild().getBlockPos();
+		var pos = this.getBlockPos();
 		
 		var offsetChildPos = childPos;
 		
-		var childFacing = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
+		var childFacing = this.getChild().getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 		
 		if (childFacing == Direction.EAST) {
-			offsetChildPos = offsetChildPos.add(1, 0, 0);
+			offsetChildPos = offsetChildPos.offset(1, 0, 0);
 		} else if (childFacing == Direction.SOUTH) {
-			offsetChildPos = offsetChildPos.add(0, 0, 1);
+			offsetChildPos = offsetChildPos.offset(0, 0, 1);
 		}
 		
-		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(this.getChild().getPos()));
+		var distance = (int) Math.sqrt(this.getBlockPos().distSqr(this.getChild().getBlockPos()));
 		
 		if (distance == 0) {
 			return;
 		}
 		
-		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
-		var bridgeComponent = HoloBridgesComponent.get(world);
+		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.above()), VectorUtils.toVector3f(offsetChildPos.above()), 32);
+		var bridgeComponent = HoloBridgesComponent.get(level);
 		
 		for (var segment : this.segments) {
-			var segmentPos = new BlockPos(segment.getX(), segment.getY(), segment.getZ());
+			var segmentPos = BlockPos.containing(segment.x(), segment.y(), segment.z());
 			
 			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
-				if (this.world.getBlockState(segmentPos).isAir()) {
-					this.world.setBlockState(segmentPos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
+				if (this.level.getBlockState(segmentPos).isAir()) {
+					this.level.setBlockAndUpdate(segmentPos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().defaultBlockState());
 				}
 			}
 			
-			bridgeComponent.add(segmentPos, new Vec3i((segment.getX() - (int) segment.getX()) * 16.0F, (segment.getY() - (int) segment.getY()) * 16.0F, (segment.getZ() - (int) segment.getZ()) * 16.0F));
+			bridgeComponent.add(segmentPos, new Vec3i((int) ((segment.x() - (int) segment.x()) * 16.0F), (int) ((segment.y() - (int) segment.y()) * 16.0F), (int) ((segment.z() - (int) segment.z()) * 16.0F)));
 		}
 	}
 	
@@ -219,7 +219,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			this.child.setChild(null);
 		}
 		
-		this.markDirty();
+		this.setChanged();
 	}
 	
 	public HoloBridgeProjectorBlockEntity getParent() {
@@ -230,18 +230,18 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		this.parent = parent;
 		this.setChild(null);
 		
-		this.markDirty();
+		this.setChanged();
 	}
 	
 	@Override
-	public void markRemoved() {
+	public void setRemoved() {
 		if (this.child != null) {
 			this.destroyBridge();
 			
 			this.setChild(null);
 			
-			if (!world.isClient) {
-				BlockEntityHooks.syncData(this);
+			if (!level.isClientSide) {
+				syncData();
 			}
 		}
 		
@@ -250,25 +250,25 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			
 			this.parent.setChild(null);
 			
-			if (!world.isClient) {
-				BlockEntityHooks.syncData(this.parent);
+			if (!level.isClientSide) {
+				this.parent.syncData();
 			}
 		}
 		
 		
-		super.markRemoved();
+		super.setRemoved();
 	}
 	
 	public void destroyBridge() {
-		if (this.segments != null && this.world != null) {
-			var bridgeComponent = HoloBridgesComponent.get(world);
+		if (this.segments != null && this.level != null) {
+			var bridgeComponent = HoloBridgesComponent.get(level);
 			
 			for (var vec : this.segments) {
-				var pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
+				var pos = BlockPos.containing(vec.x(), vec.y(), vec.z());
 				
 				bridgeComponent.remove(pos);
 				
-				this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				this.level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			}
 			
 			this.segments.clear();
@@ -276,13 +276,13 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		if (nbt.contains(CHILD_POSITION_KEY)) {
-			this.childPosition = BlockPos.fromLong(nbt.getLong(CHILD_POSITION_KEY));
+			this.childPosition = BlockPos.of(nbt.getLong(CHILD_POSITION_KEY));
 		}
 		
 		if (nbt.contains(PARENT_POSITION_KEY)) {
-			this.parentPosition = BlockPos.fromLong(nbt.getLong(PARENT_POSITION_KEY));
+			this.parentPosition = BlockPos.of(nbt.getLong(PARENT_POSITION_KEY));
 		}
 		
 		if (nbt.contains(COLOR_KEY)) {
@@ -298,24 +298,24 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		
 		shouldInitialize = true;
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		if (this.child != null) {
-			nbt.putLong(CHILD_POSITION_KEY, this.child.getPos().asLong());
+			nbt.putLong(CHILD_POSITION_KEY, this.child.getBlockPos().asLong());
 		} else if (this.childPosition != null) {
 			nbt.putLong(CHILD_POSITION_KEY, this.childPosition.asLong());
 		}
 		
 		if (this.parent != null) {
-			nbt.putLong(PARENT_POSITION_KEY, this.parent.getPos().asLong());
+			nbt.putLong(PARENT_POSITION_KEY, this.parent.getBlockPos().asLong());
 		} else if (this.parentPosition != null) {
 			nbt.putLong(PARENT_POSITION_KEY, this.parentPosition.asLong());
 		}
 		
-		var colorTag = new NbtCompound();
+		var colorTag = new CompoundTag();
 		colorTag.putFloat(R_KEY, color.getR());
 		colorTag.putFloat(G_KEY, color.getG());
 		colorTag.putFloat(B_KEY, color.getB());
@@ -323,17 +323,25 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		
 		nbt.put(COLOR_KEY, colorTag);
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return createNbt();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return saveWithoutMetadata(registries);
 	}
 	
 	@Nullable
 	@Override
-	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
+	public Packet<ClientGamePacketListener> getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+	
+	public void syncData() {
+		setChanged();
+		
+		if (level != null) {
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+		}
 	}
 }

@@ -28,21 +28,19 @@ import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntit
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,27 +58,23 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	
 	private Optional<SmeltingRecipe> optionalRecipe = Optional.empty();
 	
-	private static final Map<World, SmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, SmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public ElectricFurnaceBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
 				return false;
 			}
 			
-			var inputInventory = new SimpleInventory(variant.toStack());
+			var inputInventory = new SingleRecipeInput(variant);
 			
-			if (world != null) {
-				if (RECIPE_CACHE.get(world) == null) {
-					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
-				}
-				
-				for (var recipe : RECIPE_CACHE.get(world)) {
-					if (recipe.matches(inputInventory, world)) {
+			if (level != null) {
+				for (var recipe : getSmeltingRecipes(level)) {
+					if (recipe.matches(inputInventory, level)) {
 						return true;
 					}
 				}
@@ -90,58 +84,58 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		}).extractPredicate((variant, slot) ->
 				slot == OUTPUT_SLOT
 		).listener(() -> {
-			if (optionalRecipe.isPresent() && !recipeMatches(world, optionalRecipe.get(), itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
+			if (level != null && optionalRecipe.isPresent() && !recipeMatches(level, optionalRecipe.get(), itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
 			
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
-	public static boolean recipeMatches(World world, SmeltingRecipe recipe, SingleSlotStorage<ItemVariant>... storages) {
+	public static boolean recipeMatches(Level world, SmeltingRecipe recipe, SimpleItemVariantStorage... storages) {
 		var inputStorage = storages[INPUT_SLOT];
 		
 		var outputStorage = storages[OUTPUT_SLOT];
 		
-		var inputInventory = new SimpleInventory(inputStorage.getResource().toStack((int) inputStorage.getAmount()));
+		var inputInventory = new SingleRecipeInput(inputStorage.getResource().copyWithCount((int) inputStorage.getAmount()));
 		
 		if (!recipe.matches(inputInventory, world)) {
 			return false;
 		}
 		
-		var storageOutput = outputStorage.getResource().toStack((int) outputStorage.getAmount());
-		var output = recipe.getOutput();
+		var storageOutput = outputStorage.getResource().copyWithCount((int) outputStorage.getAmount());
+		var output = recipe.getResultItem(world.registryAccess());
 		
 		var isEmpty = outputStorage.isResourceBlank();
-		var isEqual = ItemStack.areItemsEqual(storageOutput, output) && ItemStack.areNbtEqual(storageOutput, output);
-		var canFit = storageOutput.getCount() + output.getCount() <= storageOutput.getMaxCount();
+		var isEqual = ItemStack.matches(storageOutput, output);
+		var canFit = storageOutput.getCount() + output.getCount() <= storageOutput.getMaxStackSize();
 		
 		return (isEmpty || isEqual) && canFit;
+	}
+	
+	private static SmeltingRecipe[] getSmeltingRecipes(Level world) {
+		return RECIPE_CACHE.computeIfAbsent(world, key -> key.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING).stream().map(holder -> holder.value()).toArray(SmeltingRecipe[]::new));
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		if (itemStorage != null && energyStorage != null) {
-			var inputInventory = new SimpleInventory(itemStorage.getStack(INPUT_SLOT));
+			var inputInventory = new SingleRecipeInput(itemStorage.getItem(INPUT_SLOT));
 			
 			if (optionalRecipe.isEmpty()) {
-				if (RECIPE_CACHE.get(world) == null) {
-					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
-				}
-				
-				for (var recipe : RECIPE_CACHE.get(world)) {
-					if (recipe.matches(inputInventory, world)) {
-						var output = recipe.getOutput().copy();
+				for (var recipe : getSmeltingRecipes(level)) {
+					if (recipe.matches(inputInventory, level)) {
+						var output = recipe.getResultItem(level.registryAccess()).copy();
 						
-						var isEmpty = itemStorage.getStack(OUTPUT_SLOT).isEmpty();
-						var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(OUTPUT_SLOT), output) && ItemStack.areNbtEqual(itemStorage.getStack(OUTPUT_SLOT), output);
-						var canFit = itemStorage.getStack(OUTPUT_SLOT).getCount() + output.getCount() <= itemStorage.getStack(OUTPUT_SLOT).getMaxCount();
+						var isEmpty = itemStorage.getItem(OUTPUT_SLOT).isEmpty();
+						var isEqual = ItemStack.isSameItemSameComponents(itemStorage.getItem(OUTPUT_SLOT), output);
+						var canFit = itemStorage.getItem(OUTPUT_SLOT).getCount() + output.getCount() <= itemStorage.getItem(OUTPUT_SLOT).getMaxStackSize();
 						
 						if ((isEmpty || isEqual) && canFit) {
 							optionalRecipe = Optional.of(recipe);
@@ -153,38 +147,35 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 				
-				if (recipe.matches(inputInventory, world)) {
-					limit = recipe.getCookTime();
+				if (recipe.matches(inputInventory, level)) {
+					limit = recipe.getCookingTime();
 					
 					var speed = Math.min(getSpeed() * 2, limit - progress);
 					var consumed = (long) (500.0D * speed / limit);
 					
-					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.amount >= consumed) {
-							energyStorage.amount -= consumed;
+					if (energyStorage.amount >= consumed) {
+						energyStorage.amount -= consumed;
+						
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
 							
-							if (progress + speed >= limit) {
-								optionalRecipe = Optional.empty();
-								
-								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-								
-								inputStorage.extract(inputStorage.getResource(), 1, transaction, true);
-								
-								var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
-								
-								outputStorage.insert(ItemVariant.of(recipe.getOutput()), recipe.getOutput().getCount(), transaction, true);
-								
-								transaction.commit();
-								
-								progress = 0.0D;
-							} else {
-								progress += speed;
-							}
+							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 							
-							active = true;
+							inputStorage.extract(inputStorage.getResource(), 1, true, false);
+							
+							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+							var output = recipe.getResultItem(level.registryAccess());
+							
+							outputStorage.insert(output, output.getCount(), true, false);
+							
+							progress = 0.0D;
 						} else {
-							active = false;
+							progress += speed;
 						}
+						
+						active = true;
+					} else {
+						active = false;
 					}
 				} else {
 					active = false;

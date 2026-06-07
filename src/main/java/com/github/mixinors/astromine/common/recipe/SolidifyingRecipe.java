@@ -30,6 +30,8 @@ import com.github.mixinors.astromine.common.recipe.base.input.FluidInputRecipe;
 import com.github.mixinors.astromine.common.recipe.base.output.ItemOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
@@ -37,37 +39,35 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
-
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import com.github.mixinors.astromine.common.recipe.base.AstromineRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record SolidifyingRecipe(Identifier id,
+public record SolidifyingRecipe(ResourceLocation id,
 		FluidIngredient input,
 		ItemResult output,
 		long energyInput,
 		int time
 ) implements FluidInputRecipe, ItemOutputRecipe {
-	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
-	public static boolean allows(World world, FluidVariant... variants) {
+	public static boolean allows(Level world, FluidStack... stacks) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(SolidifyingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(variants)) {
+			if (recipe.allows(stacks)) {
 				return true;
 			}
 		}
@@ -75,9 +75,9 @@ public record SolidifyingRecipe(Identifier id,
 		return false;
 	}
 	
-	public static Optional<SolidifyingRecipe> matching(World world, SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
+	public static Optional<SolidifyingRecipe> matching(Level world, SimpleItemVariantStorage[] itemStorages, SimpleFluidVariantStorage[] fluidStorages) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(SolidifyingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
@@ -89,7 +89,7 @@ public record SolidifyingRecipe(Identifier id,
 		return Optional.empty();
 	}
 	
-	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
+	public boolean matches(SimpleItemVariantStorage[] itemStorages, SimpleFluidVariantStorage[] fluidStorages) {
 		var fluidInputStorage = fluidStorages[0];
 		
 		var itemOutputStorage = itemStorages[0];
@@ -102,7 +102,7 @@ public record SolidifyingRecipe(Identifier id,
 	}
 	
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
@@ -117,12 +117,12 @@ public record SolidifyingRecipe(Identifier id,
 	}
 	
 	@Override
-	public DefaultedList<Ingredient> getIngredients() {
-		return DefaultedList.of();
+	public NonNullList<Ingredient> getIngredients() {
+		return NonNullList.create();
 	}
 	
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AMBlocks.ADVANCED_SOLIDIFIER.get());
 	}
 	
@@ -144,8 +144,8 @@ public record SolidifyingRecipe(Identifier id,
 		return output;
 	}
 	
-	public static final class Serializer implements RecipeSerializer<SolidifyingRecipe> {
-		public static final Identifier ID = AMCommon.id("solidifying");
+	public static final class Serializer implements AstromineRecipeSerializer<SolidifyingRecipe> {
+		public static final ResourceLocation ID = AMCommon.id("solidifying");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
@@ -153,7 +153,7 @@ public record SolidifyingRecipe(Identifier id,
 		}
 		
 		@Override
-		public SolidifyingRecipe read(Identifier identifier, JsonObject object) {
+		public SolidifyingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, SolidifyingRecipe.Format.class);
 			
 			return new SolidifyingRecipe(
@@ -166,7 +166,7 @@ public record SolidifyingRecipe(Identifier id,
 		}
 		
 		@Override
-		public SolidifyingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public SolidifyingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new SolidifyingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -177,7 +177,7 @@ public record SolidifyingRecipe(Identifier id,
 		}
 		
 		@Override
-		public void write(PacketByteBuf buffer, SolidifyingRecipe recipe) {
+		public void write(FriendlyByteBuf buffer, SolidifyingRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.input);
 			ItemResult.toPacket(buffer, recipe.output);
 			LongUtils.toPacket(buffer, recipe.energyInput);

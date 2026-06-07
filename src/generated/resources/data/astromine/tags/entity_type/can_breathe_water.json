@@ -1,0 +1,11 @@
+{
+  "values": [
+    "minecraft:axolotl",
+    "minecraft:dolphin",
+    "minecraft:turtle",
+    "#c:fish",
+    "#c:squids",
+    "#c:guardians",
+    "#c:zombies"
+  ]
+}

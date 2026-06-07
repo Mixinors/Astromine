@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 528,
+  "input": {
+    "count": 1,
+    "tag": "c:electrum_wires"
+  },
+  "output": {
+    "amount": 36,
+    "fluid": "astromine:molten_electrum"
+  },
+  "time": 66
+}

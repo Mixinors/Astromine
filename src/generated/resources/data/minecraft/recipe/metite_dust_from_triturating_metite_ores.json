@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 340,
+  "input": {
+    "count": 1,
+    "tag": "c:metite_ores"
+  },
+  "output": {
+    "count": 2,
+    "item": "astromine:metite_dust"
+  },
+  "time": 180
+}

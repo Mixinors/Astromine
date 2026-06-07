@@ -28,49 +28,41 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.*;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Heightmap;
-
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class AMEntityTypes {
-	public static final RegistrySupplier<EntityType<RocketEntity>> ROCKET = register("rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new).dimensions(EntityDimensions.changing(1.5F, 22.5F)).trackable(128, 4).build());
-	public static final RegistrySupplier<EntityType<SpaceSlimeEntity>> SPACE_SLIME = register("space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
-	public static final RegistrySupplier<EntityType<SuperSpaceSlimeEntity>> SUPER_SPACE_SLIME = register("super_space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.changing(6.125F, 6.125F)).trackable(128, 4).build());
+	private static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(Registries.ENTITY_TYPE, AMCommon.MOD_ID);
+	
+	public static final DeferredHolder<EntityType<?>, EntityType<RocketEntity>> ROCKET = registerBuilder("rocket", () -> EntityType.Builder.of(RocketEntity::new, MobCategory.MISC).sized(1.5F, 22.5F).clientTrackingRange(128).updateInterval(4));
+	public static final DeferredHolder<EntityType<?>, EntityType<SpaceSlimeEntity>> SPACE_SLIME = registerBuilder("space_slime", () -> EntityType.Builder.of(SpaceSlimeEntity::new, MobCategory.MONSTER).sized(2.04F, 2.04F).clientTrackingRange(128).updateInterval(4));
+	public static final DeferredHolder<EntityType<?>, EntityType<SuperSpaceSlimeEntity>> SUPER_SPACE_SLIME = registerBuilder("super_space_slime", () -> EntityType.Builder.of(SuperSpaceSlimeEntity::new, MobCategory.MONSTER).sized(6.125F, 6.125F).clientTrackingRange(128).updateInterval(4));
 	
 	public static void init() {
-		FabricDefaultAttributeRegistry.register(SPACE_SLIME.get(), HostileEntity.createHostileAttributes());
-		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntity.createAttributes());
-		
-		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
-			if (entity instanceof SuperSpaceSlimeEntity) {
-				if (world.random.nextInt(10) == 0) {
-					var spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.get().create(world);
-					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
-					
-					world.spawnEntity(spaceSlimeEntity);
-				}
-			}
-			
-			return ActionResult.PASS;
-		});
-		
-		SpawnRestriction.register(AMEntityTypes.SPACE_SLIME.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
+		REGISTRY.register(AMCommon.modEventBus());
+		AMCommon.modEventBus().addListener(AMEntityTypes::registerAttributes);
+		AMCommon.modEventBus().addListener(AMEntityTypes::registerSpawnPlacements);
+		NeoForge.EVENT_BUS.addListener(AMEntityTypes::onAttackEntity);
 	}
 	
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> registerBuilder(String id, Supplier<EntityType.Builder<T>> builder) {
+	public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerBuilder(String id, Supplier<EntityType.Builder<T>> builder) {
 		return registerBuilder(AMCommon.id(id), builder);
 	}
 	
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> registerBuilder(Identifier id, Supplier<EntityType.Builder<T>> builder) {
+	public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerBuilder(ResourceLocation id, Supplier<EntityType.Builder<T>> builder) {
 		return register(id, () -> builder.get().build(id.getPath()));
 	}
 	
@@ -80,11 +72,33 @@ public class AMEntityTypes {
 	 *
 	 * @return Registered EntityType
 	 */
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(String id, Supplier<EntityType<T>> type) {
+	public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String id, Supplier<EntityType<T>> type) {
 		return register(AMCommon.id(id), type);
 	}
 	
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(Identifier id, Supplier<EntityType<T>> type) {
-		return AMCommon.registry(Registry.ENTITY_TYPE_KEY).register(id, type);
+	public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(ResourceLocation id, Supplier<EntityType<T>> type) {
+		return REGISTRY.register(id.getPath(), type);
+	}
+	
+	private static void registerAttributes(EntityAttributeCreationEvent event) {
+		event.put(SPACE_SLIME.get(), Monster.createMonsterAttributes().build());
+		event.put(SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntity.createAttributes().build());
+	}
+	
+	private static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+		event.register(SPACE_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+	}
+	
+	private static void onAttackEntity(AttackEntityEvent event) {
+		var entity = event.getTarget();
+		if (!(entity instanceof SuperSpaceSlimeEntity) || entity.level().random.nextInt(10) != 0) {
+			return;
+		}
+		
+		var spaceSlimeEntity = SPACE_SLIME.get().create(entity.level());
+		if (spaceSlimeEntity != null) {
+			spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
+			entity.level().addFreshEntity(spaceSlimeEntity);
+		}
 	}
 }

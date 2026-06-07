@@ -24,26 +24,26 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
-import net.minecraft.server.world.ServerChunkManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.ChunkSectionPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 public class ExplosionUtils {
-	private static final BlockState AIR = Blocks.AIR.getDefaultState();
+	private static final BlockState AIR = Blocks.AIR.defaultBlockState();
 	
-	public static void attemptExplosion(World world, int x, int y, int z, int power) {
-		if (!world.isClient) {
+	public static void attemptExplosion(Level world, int x, int y, int z, int power) {
+		if (!world.isClientSide) {
 			explode(world, x, y, z, power);
 		}
 	}
 	
-	private static long explode(World access, int x, int y, int z, int radius) {
+	private static long explode(Level access, int x, int y, int z, int radius) {
 		var cr = radius >> 4;
 		var blocks = 0;
 		for (var cox = -cr; cox <= cr + 1; cox++) {
@@ -59,13 +59,13 @@ public class ExplosionUtils {
 					
 					blocks += forSubChunks(chunk, box, boz, x, y, z, radius);
 					
-					chunk.setNeedsSaving(true);
+					chunk.setUnsaved(true);
 					
-					var manager = (ServerChunkManager) access.getChunkManager();
+					var manager = (ServerChunkCache) access.getChunkSource();
 					
-					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(player ->
-							player.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, manager.getLightingProvider(), null, null, true)
-							));
+					manager.chunkMap.getPlayers(new ChunkPos(cx, cz), false).forEach(player ->
+							player.connection.send(new ClientboundLevelChunkWithLightPacket(chunk, manager.getLightEngine(), null, null))
+					);
 				}
 			}
 		}
@@ -104,14 +104,14 @@ public class ExplosionUtils {
 	/**
 	 * Explodes all sub chunks in the given sphere.
 	 */
-	private static long forSubChunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
+	private static long forSubChunks(LevelChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
 		var scr = radius >> 4;
 		
 		var sc = y >> 4;
 		
 		var destroyed = 0;
 		
-		var sections = chunk.getSectionArray();
+		var sections = chunk.getSections();
 		
 		for (var i = -scr; i <= scr; i++) {
 			var by = i * 16;
@@ -125,7 +125,7 @@ public class ExplosionUtils {
 						for (var oy = 0; oy < 16; oy++) {
 							for (var oz = 0; oz < 16; oz++) {
 								if (isIn(bx + ox, by + oy, bz + oz, radius)) {
-									if (section.getBlockState(ox, oy, oz).getHardness(chunk, BlockPos.ORIGIN) != -1) {
+									if (section.getBlockState(ox, oy, oz).getDestroySpeed(chunk, BlockPos.ZERO) != -1) {
 										section.setBlockState(ox, oy, oz, AIR);
 										
 										destroyed++;
@@ -135,7 +135,7 @@ public class ExplosionUtils {
 						}
 					}
 					
-					chunk.getWorld().getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
+					chunk.getLevel().getLightEngine().updateSectionStatus(SectionPos.of(bx >> 4, i, bz >> 4), false);
 				}
 			}
 		}

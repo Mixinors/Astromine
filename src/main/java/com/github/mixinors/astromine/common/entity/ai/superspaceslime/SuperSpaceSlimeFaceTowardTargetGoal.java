@@ -25,10 +25,9 @@
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-
 import java.util.EnumSet;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 
 public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 	private final SuperSpaceSlimeEntity slime;
@@ -38,11 +37,11 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 	public SuperSpaceSlimeFaceTowardTargetGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
 		
-		this.setControls(EnumSet.of(Goal.Control.LOOK));
+		this.setFlags(EnumSet.of(Goal.Flag.LOOK));
 	}
 	
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		var target = slime.getTarget();
 		
 		if (target == null) {
@@ -50,19 +49,19 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 		} else if (!target.isAlive()) {
 			return false;
 		} else {
-			return (!(target instanceof PlayerEntity player)) || !(player.getAbilities().invulnerable) && slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+			return (!(target instanceof Player player)) || !(player.getAbilities().invulnerable) && slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 		}
 	}
 	
 	@Override
-	public boolean shouldContinue() {
+	public boolean canContinueToUse() {
 		var target = slime.getTarget();
 		
 		if (target == null) {
 			return false;
 		} else if (!target.isAlive()) {
 			return false;
-		} else if (target instanceof PlayerEntity player && player.getAbilities().invulnerable) {
+		} else if (target instanceof Player player && player.getAbilities().invulnerable) {
 			return false;
 		} else {
 			return --this.ticksLeft > 0;
@@ -78,8 +77,8 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 	
 	@Override
 	public void tick() {
-		slime.lookAtEntity(slime.getTarget(), 10.0F, 10.0F);
+		slime.lookAt(slime.getTarget(), 10.0F, 10.0F);
 		
-		((SuperSpaceSlimeMoveControl) slime.getMoveControl()).look(slime.getYaw(), true);
+		((SuperSpaceSlimeMoveControl) slime.getMoveControl()).look(slime.getYRot(), true);
 	}
 }

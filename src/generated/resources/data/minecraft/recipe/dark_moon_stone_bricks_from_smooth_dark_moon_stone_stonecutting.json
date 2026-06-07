@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:smooth_dark_moon_stone"
+  },
+  "result": {
+    "count": 1,
+    "id": "astromine:dark_moon_stone_bricks"
+  }
+}

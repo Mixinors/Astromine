@@ -26,29 +26,32 @@ package com.github.mixinors.astromine.common.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class IngredientUtils {
 	private static final String COUNT_KEY = "count";
 	
 	public static Ingredient fromIngredientJson(JsonElement jsonElement) {
-		return Ingredient.fromJson(jsonElement);
+		return Ingredient.CODEC_NONEMPTY.parse(com.mojang.serialization.JsonOps.INSTANCE, jsonElement).getOrThrow();
 	}
 	
-	public static Ingredient fromIngredientPacket(PacketByteBuf buffer) {
-		return Ingredient.fromPacket(buffer);
+	public static Ingredient fromIngredientPacket(FriendlyByteBuf buffer) {
+		return Ingredient.CONTENTS_STREAM_CODEC.decode((RegistryFriendlyByteBuf) buffer);
 	}
 	
-	public static void toIngredientPacket(PacketByteBuf buffer, Ingredient ingredient) {
-		ingredient.write(buffer);
+	public static void toIngredientPacket(FriendlyByteBuf buffer, Ingredient ingredient) {
+		Ingredient.CONTENTS_STREAM_CODEC.encode((RegistryFriendlyByteBuf) buffer, ingredient);
 	}
 	
 	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
 		if (stack != null) {
-			if (input.matchingStacks.length != 0) {
-				for (var matching : input.matchingStacks) {
+			var matchingStacks = input.getItems();
+			
+			if (matchingStacks.length != 0) {
+				for (var matching : matchingStacks) {
 					if (matching.getItem() == stack.getItem()) {
 						return matching;
 					}
@@ -60,8 +63,10 @@ public class IngredientUtils {
 	}
 	
 	public static JsonElement toJsonWithCount(Ingredient ingredient, int count) {
-		if (ingredient.entries.length == 1) {
-			var entryObject = ingredient.entries[0].toJson();
+		var items = ingredient.getItems();
+		
+		if (items.length == 1) {
+			var entryObject = StackUtils.toJson(items[0]).getAsJsonObject();
 			entryObject.addProperty(COUNT_KEY, count);
 			
 			return entryObject;
@@ -69,8 +74,8 @@ public class IngredientUtils {
 		
 		var jsonArray = new JsonArray();
 		
-		for (var entry : ingredient.entries) {
-			var entryObject = entry.toJson();
+		for (var item : items) {
+			var entryObject = StackUtils.toJson(item).getAsJsonObject();
 			entryObject.addProperty(COUNT_KEY, count);
 			
 			jsonArray.add(entryObject);

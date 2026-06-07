@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "blocks",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "ingredient": {
+    "tag": "c:redstone_moon_ores"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:redstone"
+  }
+}

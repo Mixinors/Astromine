@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 1496,
+  "input": {
+    "count": 1,
+    "tag": "c:gold_shovels"
+  },
+  "output": {
+    "amount": 24,
+    "fluid": "astromine:molten_gold"
+  },
+  "time": 187
+}

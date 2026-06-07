@@ -1,109 +1,25 @@
 package com.github.mixinors.astromine.common.screen.handler.body;
 
-import com.github.mixinors.astromine.common.widget.BodySelectionWidget;
-import com.github.mixinors.astromine.common.widget.BodyWidget;
-import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
-import dev.vini2003.hammer.gui.api.common.event.type.EventType;
-import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.SlotActionType;
-import org.lwjgl.glfw.GLFW;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 
-public class BodySelectorScreenHandler extends BaseScreenHandler {
+public class BodySelectorScreenHandler extends AbstractContainerMenu {
 	public static final float SELECT_BUTTON_WIDTH = 18.0F;
 	public static final float SELECT_BUTTON_HEIGHT = 18.0F;
 	
-	public BodySelectorScreenHandler(int syncId, PlayerEntity player) {
-		super(AMScreenHandlers.BODY_SELECTOR.get(), syncId, player);
+	public BodySelectorScreenHandler(int syncId, Player player) {
+		super(AMScreenHandlers.BODY_SELECTOR.get(), syncId);
 	}
 	
 	@Override
-	public void init(int width, int height) {
-		if (isClient()) {
-			var panel = new PanelWidget();
-			panel.setPosition(width / 2.0F - 768.0F / 2.0F, height / 2.0F - 768.0F / 2.0F);
-			panel.setSize(1, 1);
-			
-			add(panel);
-			
-			var bodySelectionWidget = new BodySelectionWidget();
-			bodySelectionWidget.setSize(256.0F, 64.0F);
-			
-			bodySelectionWidget.setSelectListener((body) -> {
-				// TODO: Launch the player's rocket to this body.
-			});
-			
-			add(bodySelectionWidget);
-			
-			for (var body : AMRegistries.BODY.getValues()) {
-				var widget = new BodyWidget(body);
-				widget.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
-					var anyFocused = false;
-					
-					for (var otherWidget : panel.getRootCollection().getAllChildren()) {
-						if (otherWidget instanceof BodyWidget) {
-							if (otherWidget.isFocused()) {
-								anyFocused = true;
-								break;
-							}
-						}
-						
-						if (otherWidget instanceof BodySelectionWidget) {
-							if (otherWidget.isFocused()) {
-								anyFocused = true;
-								break;
-							}
-						}
-					}
-					
-					if (!anyFocused) {
-						bodySelectionWidget.setBody(null);
-						
-						return;
-					}
-					
-					if (!widget.isHovered()) return;
-					
-					if (event.button() == 0) {
-						bodySelectionWidget.setBody(body);
-					} else if (event.button() == 1) {
-						bodySelectionWidget.setBody(null);
-					}
-				});
-				
-				if (body.orbit() != null) {
-					var orbit = body.orbit();
-					
-					if (orbit.orbitedBodyId() != null) {
-						if (orbit.orbitedBodyOffset() != null) {
-							var orbitedBodyOffset = orbit.orbitedBodyOffset();
-							
-							widget.setPosition(orbitedBodyOffset.getX(), orbitedBodyOffset.getY());
-						}
-					}
-				} else {
-					widget.setPosition(width / 2.0F, height / 2.0F);
-				}
-				
-				widget.setSize(body.size());
-				
-				panel.add(widget);
-			}
-		}
-	}
-	
-	@Override
-	public boolean canUse(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return player.isAlive();
 	}
 	
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
-		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
+	public ItemStack quickMoveStack(Player player, int index) {
 		return ItemStack.EMPTY;
 	}
 }

@@ -10,6 +10,6 @@ public class NoiseUtils {
 	private static final Map<Long, OctaveNoiseSampler<?>> SAMPLERS = new ConcurrentHashMap<>();
 	
 	public static OctaveNoiseSampler<?> getSampler(long seed, int octaves, double frequency, double amplitudeHigh, double amplitudeLow) {
-		return SAMPLERS.computeIfAbsent(seed, s -> new OctaveNoiseSampler<>(OpenSimplexNoise.class, new java.util.Random(s), octaves, frequency, amplitudeHigh, amplitudeLow));
+		return SAMPLERS.computeIfAbsent(seed, s -> new OctaveNoiseSampler<>(OpenSimplexNoise::new, new java.util.Random(s), octaves, frequency, amplitudeHigh, amplitudeLow));
 	}
 }

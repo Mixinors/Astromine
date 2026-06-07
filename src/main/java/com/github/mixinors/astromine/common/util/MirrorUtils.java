@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.util.math.Direction;
+import static net.minecraft.core.Direction.*;
 
-import static net.minecraft.util.math.Direction.*;
+import net.minecraft.core.Direction;
 
 public class MirrorUtils {
 	public static Direction rotate(Direction origin, Direction rotation) {
@@ -67,9 +67,11 @@ public class MirrorUtils {
 					default -> origin;
 				};
 			}
-			default -> {
-				return origin; /* TODO: {@link Direction#UP} and {@link Direction#DOWN}. */
+			case UP, DOWN -> {
+				return origin;
 			}
 		}
+		
+		return origin;
 	}
 }

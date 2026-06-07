@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:univite_sword_from_smithing_galaxium_sword"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_univite_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "astromine:univite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_univite_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:univite_sword_from_smithing_galaxium_sword"
+    ]
+  }
+}

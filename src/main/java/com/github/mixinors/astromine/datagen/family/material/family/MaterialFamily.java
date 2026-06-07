@@ -32,16 +32,16 @@ import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.google.common.collect.Maps;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 
 public class MaterialFamily implements Comparable<MaterialFamily> {
 	public static final float DEFAULT_ORE_SMELTING_EXPERIENCE = 0.7F;
@@ -86,7 +86,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	private int miningLevel = 0;
 	
 	@Nullable
-	ExtendedFluid moltenFluid;
+	ExtendedFluid.Entry moltenFluid;
 	
 	int baseMeltingTime = DEFAULT_BASE_MELTING_TIME;
 	int baseMeltingEnergy = DEFAULT_BASE_MELTING_ENERGY;
@@ -154,11 +154,11 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	}
 	
 	public boolean isVariantOfNamespace(ItemVariant variant, String namespace) {
-		return hasVariant(variant) && Registry.ITEM.getId(getVariant(variant)).getNamespace().equals(namespace);
+		return hasVariant(variant) && BuiltInRegistries.ITEM.getKey(getVariant(variant)).getNamespace().equals(namespace);
 	}
 	
 	public boolean isVariantOfNamespace(BlockVariant variant, String namespace) {
-		return hasVariant(variant) && Registry.BLOCK.getId(getVariant(variant)).getNamespace().equals(namespace);
+		return hasVariant(variant) && BuiltInRegistries.BLOCK.getKey(getVariant(variant)).getNamespace().equals(namespace);
 	}
 	
 	public boolean areVariantsAstromine(ItemVariant... variants) {
@@ -315,31 +315,31 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return oreSmeltingExperience;
 	}
 	
-	public Identifier getTagId(Variant<?> variant) {
+	public ResourceLocation getTagId(Variant<?> variant) {
 		if (getBaseVariant().equals(variant) && baseTagPathOverride != null) {
-			return new Identifier("c", baseTagPathOverride);
+			return ResourceLocation.fromNamespaceAndPath("c", baseTagPathOverride);
 		} else {
 			return variant.getTagId(this);
 		}
 	}
 	
-	public Identifier getTagId(String variant) {
-		return new Identifier("c", name + "_" + variant);
+	public ResourceLocation getTagId(String variant) {
+		return ResourceLocation.fromNamespaceAndPath("c", name + "_" + variant);
 	}
 	
-	public Identifier getAliasTagId(Variant<?> variant) {
+	public ResourceLocation getAliasTagId(Variant<?> variant) {
 		return variant.getTagId(alias);
 	}
 	
-	public Identifier getAliasTagId(String variant) {
-		return new Identifier("c", alias + "_" + variant);
+	public ResourceLocation getAliasTagId(String variant) {
+		return ResourceLocation.fromNamespaceAndPath("c", alias + "_" + variant);
 	}
 	
-	public <T extends ItemConvertible> TagKey<T> getTag(Variant<T> variant) {
+	public <T extends ItemLike> TagKey<T> getTag(Variant<T> variant) {
 		return variant.getTag(this);
 	}
 	
-	public <T extends ItemConvertible> TagKey<T> getAliasTag(Variant<T> variant) {
+	public <T extends ItemLike> TagKey<T> getAliasTag(Variant<T> variant) {
 		return variant.getTag(alias);
 	}
 	
@@ -400,7 +400,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return variant.getHarvestData(this);
 	}
 	
-	public Optional<ExtendedFluid> getMoltenFluid() {
+	public Optional<ExtendedFluid.Entry> getMoltenFluid() {
 		return Optional.ofNullable(moltenFluid);
 	}
 	
@@ -572,19 +572,19 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 		
-		public MaterialFamily.Builder moltenFluid(ExtendedFluid moltenFluid) {
+		public MaterialFamily.Builder moltenFluid(ExtendedFluid.Entry moltenFluid) {
 			this.family.moltenFluid = moltenFluid;
 			return this;
 		}
 		
-		public MaterialFamily.Builder moltenFluid(ExtendedFluid moltenFluid, float meltingMultiplier) {
+		public MaterialFamily.Builder moltenFluid(ExtendedFluid.Entry moltenFluid, float meltingMultiplier) {
 			this.moltenFluid(moltenFluid);
 			this.family.baseMeltingTime = (int) (DEFAULT_BASE_MELTING_TIME * meltingMultiplier);
 			this.family.baseMeltingEnergy = (int) (DEFAULT_BASE_MELTING_ENERGY * meltingMultiplier);
 			return this;
 		}
 		
-		public MaterialFamily.Builder moltenFluid(ExtendedFluid moltenFluid, int baseMeltingTime, int baseMeltingEnergy) {
+		public MaterialFamily.Builder moltenFluid(ExtendedFluid.Entry moltenFluid, int baseMeltingTime, int baseMeltingEnergy) {
 			this.moltenFluid(moltenFluid);
 			this.family.baseMeltingTime = baseMeltingTime;
 			this.family.baseMeltingEnergy = baseMeltingEnergy;

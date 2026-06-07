@@ -24,66 +24,31 @@
 
 package com.github.mixinors.astromine.common.screen.handler.storage;
 
+import static com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityMenuLayout.*;
+
 import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
-import dev.vini2003.hammer.gui.api.common.event.type.EventType;
-import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
-import dev.vini2003.hammer.gui.api.common.widget.list.slot.SlotListWidget;
-import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class BufferScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final BufferBlockEntity buffer;
 	
-	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public BufferScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.BUFFER, syncId, player, position);
 		
 		buffer = (BufferBlockEntity) blockEntity;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
 		
-		if (!(buffer instanceof BufferBlockEntity.Creative)) {
-			var slotList = new SlotListWidget(buffer.getItemStorage(), 9 * 18, 6 * 18, 0);
-			slotList.setPosition(new Position(tab, PAD_7, PAD_10));
-			slotList.setSize(new Size(SLOT_WIDTH * 9.0F, SLOT_HEIGHT * 6.0F));
+		if (buffer instanceof BufferBlockEntity.Creative) {
+			addBlockEntityWildSlot(0, (int) (TABS_WIDTH / 2.0F - SLOT_WIDTH / 2.0F), (int) (PAD_25 + PAD_7 + SLOT_WIDTH), ($) -> true);
+		} else if (buffer != null && buffer.hasItemStorage()) {
+			var visibleSlots = Math.min(buffer.getItemStorage().getSlots(), 9 * 6);
 			
-			tab.add(slotList);
-		} else {
-			var slot = new SlotWidget(0, buffer.getItemStorage(), Slot::new);
-			slot.setPosition(new Position(tab, TABS_WIDTH / 2.0F - SLOT_WIDTH / 2.0F, SLOT_WIDTH));
-			slot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-			
-			var launchButton = new ButtonWidget();
-			launchButton.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
-				buffer.getItemStorage().setStack(0, ItemStack.EMPTY);
-			});
-			
-			launchButton.setPosition(new Position(slot, -(32.0F - SLOT_WIDTH) / 2.0F, SLOT_HEIGHT + PAD_3));
-			launchButton.setSize(new Size(CLEAR_BUTTON_WIDTH, CLEAR_BUTTON_HEIGHT));
-			launchButton.setLabel(Text.translatable("text.astromine.clear"));
-			
-			tab.add(launchButton);
-			tab.add(slot);
+			for (var slot = 0; slot < visibleSlots; ++slot) {
+				addBlockEntitySlot(slot, (int) (PAD_7 + slot % 9 * SLOT_WIDTH), (int) (PAD_25 + PAD_7 + PAD_10 + slot / 9 * SLOT_HEIGHT));
+			}
 		}
 	}
 	
-	@Override
-	public Size getTabsSizeExtension() {
-		if (!(buffer instanceof BufferBlockEntity.Creative)) {
-			return new Size(0.0F, 58.0F);
-		} else {
-			return super.getTabsSizeExtension();
-		}
-	}
 }

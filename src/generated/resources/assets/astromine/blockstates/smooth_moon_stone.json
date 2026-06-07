@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "dynamic=false": {
       "model": "astromine:block/smooth_moon_stone"
+    },
+    "dynamic=true": {
+      "model": "astromine:block/smooth_moon_stone_dynamic"
     }
   }
 }

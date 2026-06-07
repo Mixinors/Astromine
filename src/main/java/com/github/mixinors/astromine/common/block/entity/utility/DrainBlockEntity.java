@@ -29,10 +29,8 @@ import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import java.util.Arrays;
 
 public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorageSizeProvider {
@@ -50,28 +48,22 @@ public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorag
 		).extractPredicate((variant, slot) ->
 				false
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
-		
-		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidStorageSize());
 		
 		Arrays.fill(fluidStorage.getSidings(), StorageSiding.INSERT);
 	}
 	
 	@Override
 	public void tick() {
-		if (world == null) {
+		if (level == null) {
 			return;
 		}
 		
 		var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 		
 		if (!inputStorage.isResourceBlank()) {
-			try (var transaction = Transaction.openOuter()) {
-				inputStorage.extract(inputStorage.getResource(), Long.MAX_VALUE, transaction);
-				
-				transaction.commit();
-			}
+			inputStorage.setResource(net.neoforged.neoforge.fluids.FluidStack.EMPTY);
 		}
 	}
 	

@@ -24,17 +24,17 @@
 
 package com.github.mixinors.astromine.common.slot;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 
 public class InsertionSlot extends Slot {
-	public InsertionSlot(Inventory inventory, int index, int x, int y) {
+	public InsertionSlot(Container inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
 	
 	@Override
-	public boolean canTakeItems(PlayerEntity playerEntity) {
+	public boolean mayPickup(Player playerEntity) {
 		return false;
 	}
 }

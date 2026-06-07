@@ -3,15 +3,15 @@ package com.github.mixinors.astromine.common.body;
 import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import com.github.mixinors.astromine.common.util.math.Position;
+import com.github.mixinors.astromine.common.util.math.Size;
+import com.github.mixinors.astromine.common.gravity.GravityManager;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * <p>A {@link Body} represents a three-dimensional body in space,
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class Body {
 	public static final Codec<Body> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
-					Identifier.CODEC.fieldOf("id").forGetter(Body::id),
+					ResourceLocation.CODEC.fieldOf("id").forGetter(Body::id),
 					BodyType.CODEC.fieldOf("type").forGetter(Body::type),
 					Position.CODEC.fieldOf("position").forGetter(Body::position),
 					Size.CODEC.fieldOf("size").forGetter(Body::size),
@@ -35,7 +35,7 @@ public class Body {
 			).apply(instance, (id, type, position, size, orbit, surfaceDimension, orbitDimension, texture, name, description) -> new Body(id, type, position, size, orbit.orElse(null), surfaceDimension.orElse(null), orbitDimension.orElse(null), texture, name, description))
 	);
 	
-	private final Identifier id;
+	private final ResourceLocation id;
 	
 	private final BodyType type;
 	
@@ -52,8 +52,8 @@ public class Body {
 	
 	private final BodyTexture texture;
 	
-	private final Text name;
-	private final Text description;
+	private final Component name;
+	private final Component description;
 	
 	private double angle = 0.0D;
 	
@@ -66,7 +66,7 @@ public class Body {
 	private double scale = 0.0D;
 	private double prevScale = 1.0D;
 	
-	public Body(Identifier id, BodyType type, Position position, Size size, @Nullable BodyOrbit orbit, @Nullable BodyDimension surfaceDimension, @Nullable BodyDimension orbitDimension, BodyTexture texture, Text name, Text description) {
+	public Body(ResourceLocation id, BodyType type, Position position, Size size, @Nullable BodyOrbit orbit, @Nullable BodyDimension surfaceDimension, @Nullable BodyDimension orbitDimension, BodyTexture texture, Component name, Component description) {
 		this.id = id;
 		this.type = type;
 		this.position = position;
@@ -128,7 +128,7 @@ public class Body {
 		onLoad();
 	}
 	
-	public Identifier id() {
+	public ResourceLocation id() {
 		return id;
 	}
 	
@@ -163,11 +163,11 @@ public class Body {
 		return texture;
 	}
 	
-	public Text name() {
+	public Component name() {
 		return name;
 	}
 	
-	public Text description() {
+	public Component description() {
 		return description;
 	}
 	

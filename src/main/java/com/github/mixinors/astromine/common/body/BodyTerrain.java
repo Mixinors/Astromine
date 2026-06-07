@@ -2,22 +2,22 @@ package com.github.mixinors.astromine.common.body;
 
 import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.mojang.serialization.Codec;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public enum BodyTerrain {
-	SMOOTH(Text.translatable("text.astromine.body.terrain.smooth")),
-	RUGGED(Text.translatable("text.astromine.body.terrain.rugged")),
-	MISTY(Text.translatable("text.astromine.body.terrain.misty"));
+	SMOOTH(Component.translatable("text.astromine.body.terrain.smooth")),
+	RUGGED(Component.translatable("text.astromine.body.terrain.rugged")),
+	MISTY(Component.translatable("text.astromine.body.terrain.misty"));
 	
 	public static final Codec<BodyTerrain> CODEC = Codecs.createEnumCodec(BodyTerrain.class);
 
-	private final Text title;
+	private final Component title;
 	
-	BodyTerrain(Text title) {
+	BodyTerrain(Component title) {
 		this.title = title;
 	}
 	
-	public Text title() {
+	public Component title() {
 		return title;
 	}
 }

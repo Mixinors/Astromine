@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "astromine:block/energy_wire_connector_pillars",
-    "1": "astromine:block/energy_wire_connector_base",
-    "particle": "astromine:block/energy_wire_connector_pillars"
+    "0": "astromine:block/primitive_energy_cable_connector",
+    "1": "astromine:block/cable_connector",
+    "particle": "astromine:block/primitive_energy_cable_connector"
   },
   "elements": [
     {

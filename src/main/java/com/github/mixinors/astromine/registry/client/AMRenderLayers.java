@@ -24,104 +24,52 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import dev.architectury.event.events.client.ClientLifecycleEvent;
-import dev.architectury.registry.client.rendering.fabric.RenderTypeRegistryImpl;
-import net.minecraft.block.Block;
-import net.minecraft.client.render.*;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AMRenderLayers {
-	private static final Map<Identifier, RenderLayer> CACHE = new HashMap<>();
-	private static final RenderLayer HOLOGRAPHIC_BRIDGE = RenderLayer.of(
-			"holographic_bridge",
-			VertexFormats.POSITION_COLOR_LIGHT,
-			VertexFormat.DrawMode.QUADS,
-			256,
-			false,
-			true,
-			RenderLayer.MultiPhaseParameters.builder()
-											.cull(RenderPhase.DISABLE_CULLING)
-											.lightmap(RenderPhase.ENABLE_LIGHTMAP)
-											.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-											.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
-											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorLightmapShader))
-											.build(false));
+	private static final Map<ResourceLocation, RenderType> CACHE = new HashMap<>();
 	
-	private static final RenderLayer PUMP_TUBE = RenderLayer.of(
-			"pump_tube",
-			VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
-			VertexFormat.DrawMode.QUADS,
-			256,
-			true,
-			false,
-			RenderLayer.MultiPhaseParameters.builder()
-											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
-											.texture(new RenderPhase.Texture(AMCommon.id("textures/block/pump_tube.png"), false, false))
-											.cull(RenderPhase.DISABLE_CULLING)
-											.build(true)
-	);
+	public static void init(IEventBus modBus) {
+		modBus.addListener(AMRenderLayers::registerBlockLayers);
+	}
 	
-	public static void init() {
-		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
-			register(AMBlocks.AIRLOCK.get(), RenderLayer.getTranslucent());
+	private static void registerBlockLayers(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+			register(AMBlocks.AIRLOCK.get(), RenderType.translucent());
 			
-			register(AMBlocks.SPACE_SLIME_BLOCK.get(), RenderLayer.getTranslucent());
+			register(AMBlocks.SPACE_SLIME_BLOCK.get(), RenderType.translucent());
 		});
 	}
 	
-	public static <T extends Block> T register(T block, RenderLayer renderLayer) {
-		RenderTypeRegistryImpl.register(renderLayer, block);
+	public static <T extends Block> T register(T block, RenderType renderLayer) {
+		ItemBlockRenderTypes.setRenderLayer(block, renderLayer);
 		return block;
 	}
 	
-	public static RenderLayer get(Identifier texture) {
-		CACHE.computeIfAbsent(texture, (key) -> RenderLayer.of(
-				"entity_cutout",
-				VertexFormats.POSITION_COLOR_TEXTURE_LIGHT,
-				VertexFormat.DrawMode.QUADS,
-				256,
-				true,
-				true,
-				RenderLayer.MultiPhaseParameters.builder()
-												.texture(new RenderPhase.Texture(texture, false, false))
-												.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-												.lightmap(RenderPhase.DISABLE_LIGHTMAP)
-												.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
-												.build(true)));
-		
+	public static RenderType get(ResourceLocation texture) {
+		CACHE.computeIfAbsent(texture, RenderType::entityTranslucent);
 		return CACHE.get(texture);
 	}
 	
-	public static RenderLayer getBody(Identifier texture) {
-		CACHE.computeIfAbsent(texture, (key) -> RenderLayer.of(
-				texture.toUnderscoreSeparatedString(),
-				VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
-				VertexFormat.DrawMode.QUADS,
-				256,
-				true,
-				true,
-				RenderLayer.MultiPhaseParameters.builder()
-												.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
-												.texture(new RenderPhase.Texture(texture, false, false))
-												.cull(RenderPhase.DISABLE_CULLING)
-												.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-												.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
-												.build(true)
-		));
-		
+	public static RenderType getBody(ResourceLocation texture) {
+		CACHE.computeIfAbsent(texture, RenderType::entityTranslucent);
 		return CACHE.get(texture);
 	}
 	
-	public static RenderLayer getHolographicBridge() {
-		return HOLOGRAPHIC_BRIDGE;
+	public static RenderType getHolographicBridge() {
+		return RenderType.translucent();
 	}
 	
-	public static RenderLayer getPumpTube() {
-		return PUMP_TUBE;
+	public static RenderType getPumpTube() {
+		return RenderType.translucent();
 	}
 }

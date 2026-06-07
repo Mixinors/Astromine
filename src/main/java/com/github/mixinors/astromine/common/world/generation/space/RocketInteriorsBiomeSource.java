@@ -25,36 +25,42 @@
 package com.github.mixinors.astromine.common.world.generation.space;
 
 import com.github.mixinors.astromine.registry.common.AMBiomes;
-import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.RegistryOps;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
+import java.util.stream.Stream;
 
 public class RocketInteriorsBiomeSource extends BiomeSource {
-	public static final Codec<RocketInteriorsBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
-			instance.group(
-					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
-			).apply(instance, instance.stable(RocketInteriorsBiomeSource::new)));
+	public static final MapCodec<RocketInteriorsBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			RegistryOps.retrieveElement(AMBiomes.ROCKET_KEY)
+	).apply(instance, instance.stable(RocketInteriorsBiomeSource::new)));
 	
-	private final Registry<Biome> registry;
+	private final Holder<Biome> rocket;
 	
 	public RocketInteriorsBiomeSource(Registry<Biome> registry) {
-		super(ImmutableList.of(registry.getOrCreateEntry(AMBiomes.ROCKET_KEY)));
-
-		this.registry = registry;
+		this(registry.getHolder(AMBiomes.ROCKET_KEY).orElseThrow());
+	}
+	
+	public RocketInteriorsBiomeSource(Holder<Biome> rocket) {
+		this.rocket = rocket;
 	}
 	
 	@Override
-	protected Codec<? extends BiomeSource> getCodec() {
+	protected MapCodec<? extends BiomeSource> codec() {
 		return CODEC;
 	}
 	@Override
-	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.getEntry(AMBiomes.ROCKET_KEY).orElseThrow();
+	protected Stream<Holder<Biome>> collectPossibleBiomes() {
+		return Stream.of(this.rocket);
+	}
+	
+	@Override
+	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler noise) {
+		return this.rocket;
 	}
 }

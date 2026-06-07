@@ -28,12 +28,17 @@ import com.github.mixinors.astromine.client.render.entity.RocketEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 public class AMEntityRenderers {
-	public static void init() {
-		EntityRendererRegistry.register(AMEntityTypes.ROCKET.get(), RocketEntityRenderer::new);
-		EntityRendererRegistry.register(AMEntityTypes.SPACE_SLIME.get(), SpaceSlimeEntityRenderer::new);
-		EntityRendererRegistry.register(AMEntityTypes.SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntityRenderer::new);
+	public static void init(IEventBus modBus) {
+		modBus.addListener(AMEntityRenderers::register);
+	}
+	
+	private static void register(EntityRenderersEvent.RegisterRenderers event) {
+		event.registerEntityRenderer(AMEntityTypes.ROCKET.get(), RocketEntityRenderer::new);
+		event.registerEntityRenderer(AMEntityTypes.SPACE_SLIME.get(), SpaceSlimeEntityRenderer::new);
+		event.registerEntityRenderer(AMEntityTypes.SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntityRenderer::new);
 	}
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:bronze_ingots"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:bronze_nugget"
+  }
+}

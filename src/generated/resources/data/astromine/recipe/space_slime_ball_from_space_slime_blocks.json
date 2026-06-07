@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:space_slime_blocks"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:space_slime_ball"
+  }
+}

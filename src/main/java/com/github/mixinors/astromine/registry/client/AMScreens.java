@@ -26,54 +26,58 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.screen.BodySelectorHandledScreen;
 import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
-import com.github.mixinors.astromine.client.screen.base.Base.CustomForegroundBaseHandledScreen;
+import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.architectury.registry.menu.MenuRegistry;
-import dev.architectury.registry.registries.RegistrySupplier;
-import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class AMScreens {
-	public static void init() {
-		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
-		register(AMScreenHandlers.BODY_SELECTOR, BodySelectorHandledScreen::new);
-		
-		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
-		registerSimple(AMScreenHandlers.FLUID_INSERTER);
-		registerSimple(AMScreenHandlers.BLOCK_BREAKER);
-		registerSimple(AMScreenHandlers.BLOCK_PLACER);
-		registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
-		registerSimple(AMScreenHandlers.SOLID_GENERATOR);
-		registerSimple(AMScreenHandlers.TANK);
-		registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
-		registerSimple(AMScreenHandlers.CAPACITOR);
-		registerSimple(AMScreenHandlers.BUFFER);
-		registerSimple(AMScreenHandlers.TRITURATOR);
-		registerSimple(AMScreenHandlers.PRESSER);
-		registerSimple(AMScreenHandlers.WIRE_MILL);
-		registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
-		registerSimple(AMScreenHandlers.ELECTROLYZER);
-		registerSimple(AMScreenHandlers.REFINERY);
-		registerSimple(AMScreenHandlers.FLUID_MIXER);
-		registerSimple(AMScreenHandlers.ALLOY_SMELTER);
-		registerSimple(AMScreenHandlers.SOLIDIFIER);
-		registerSimple(AMScreenHandlers.MELTER);
-		registerSimple(AMScreenHandlers.PUMP);
-		
-		registerSimple(AMScreenHandlers.ROCKET_CONTROLLER);
+	public static void init(IEventBus modBus) {
+		modBus.addListener((RegisterMenuScreensEvent event) -> register(event));
 	}
 	
-	public static <H extends BaseScreenHandler> void registerSimple(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
-		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(type, CustomForegroundBaseHandledScreen::new);
+	private static void register(RegisterMenuScreensEvent event) {
+		register(event, AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
+		register(event, AMScreenHandlers.BODY_SELECTOR, BodySelectorHandledScreen::new);
+		
+		registerSimple(event, AMScreenHandlers.FLUID_EXTRACTOR);
+		registerSimple(event, AMScreenHandlers.FLUID_INSERTER);
+		registerSimple(event, AMScreenHandlers.BLOCK_BREAKER);
+		registerSimple(event, AMScreenHandlers.BLOCK_PLACER);
+		registerSimple(event, AMScreenHandlers.LIQUID_GENERATOR);
+		registerSimple(event, AMScreenHandlers.SOLID_GENERATOR);
+		registerSimple(event, AMScreenHandlers.TANK);
+		registerSimple(event, AMScreenHandlers.NUCLEAR_WARHEAD);
+		registerSimple(event, AMScreenHandlers.CAPACITOR);
+		registerSimple(event, AMScreenHandlers.BUFFER);
+		registerSimple(event, AMScreenHandlers.TRITURATOR);
+		registerSimple(event, AMScreenHandlers.PRESSER);
+		registerSimple(event, AMScreenHandlers.WIRE_MILL);
+		registerSimple(event, AMScreenHandlers.ELECTRIC_FURNACE);
+		registerSimple(event, AMScreenHandlers.ELECTROLYZER);
+		registerSimple(event, AMScreenHandlers.REFINERY);
+		registerSimple(event, AMScreenHandlers.FLUID_MIXER);
+		registerSimple(event, AMScreenHandlers.ALLOY_SMELTER);
+		registerSimple(event, AMScreenHandlers.SOLIDIFIER);
+		registerSimple(event, AMScreenHandlers.MELTER);
+		registerSimple(event, AMScreenHandlers.PUMP);
+		
+		registerSimple(event, AMScreenHandlers.ROCKET_CONTROLLER);
+		registerSimple(event, AMScreenHandlers.STATION_CONTROLLER);
 	}
 	
-	public static <H extends ScreenHandler, S extends Screen & ScreenHandlerProvider<H>> void register(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type, MenuRegistry.ScreenFactory<H, S> screenFactory) {
-		MenuRegistry.registerScreenFactory(type.get(), screenFactory);
+	public static <H extends AbstractContainerMenu> void registerSimple(RegisterMenuScreensEvent event, Supplier<? extends MenuType<? extends H>> type) {
+		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(event, type, CustomForegroundBaseHandledScreen::new);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <H extends AbstractContainerMenu, S extends Screen & MenuAccess<H>> void register(RegisterMenuScreensEvent event, Supplier<? extends MenuType<? extends H>> type, MenuScreens.ScreenConstructor<H, S> screenFactory) {
+		event.register((MenuType) type.get(), (MenuScreens.ScreenConstructor) screenFactory);
 	}
 }

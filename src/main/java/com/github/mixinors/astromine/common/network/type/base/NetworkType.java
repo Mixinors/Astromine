@@ -25,13 +25,13 @@
 package com.github.mixinors.astromine.common.network.type.base;
 
 import com.github.mixinors.astromine.common.network.Network;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class NetworkType<T> {
-	public abstract T find(World world, BlockPos pos, @Nullable Direction direction);
+	public abstract T find(Level world, BlockPos pos, @Nullable Direction direction);
 	
 	public abstract void tick(Network<T> instance);
 	

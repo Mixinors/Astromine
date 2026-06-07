@@ -24,92 +24,81 @@
 
 package com.github.mixinors.astromine.common.fluid.base;
 
-import com.github.mixinors.astromine.common.util.FluidUtils;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import com.shnupbups.cauldronlib.CauldronLib;
-import com.shnupbups.cauldronlib.block.FullCauldronBlock;
-import dev.architectury.platform.Platform;
-import dev.architectury.registry.registries.RegistrySupplier;
-import dev.vini2003.hammer.core.api.client.color.Color;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
-import net.fabricmc.fabric.api.transfer.v1.fluid.CauldronFluidContent;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.minecraft.block.*;
-import net.minecraft.block.cauldron.CauldronBehavior;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.fluid.FlowableFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Items;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
+import com.github.mixinors.astromine.common.util.Color;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
+import java.util.function.Supplier;
 
-public abstract class ExtendedFluid extends FlowableFluid {
-	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MapColor.WATER_BLUE).allowsMovement()
-																										   .lightPassesThrough()
-																										   .destroyedByPiston()
-																										   .replaceable()
-																										   .liquid()
-																										   .notSolid()
-																										   .build();
-	
+public abstract class ExtendedFluid extends FlowingFluid {
 	final int fogColor;
 	final int tintColor;
 	
 	final boolean infinite;
 	
-	RegistrySupplier<Block> block;
+	private final Links links;
 	
-	Fluid flowing;
-	Fluid still;
+	final DamageSource damageSource;
 	
-	RegistrySupplier<Item> bucket;
-	
-	Map<Item, CauldronBehavior> cauldronBehaviorMap;
-	RegistrySupplier<CauldronBlock> cauldron;
-	
-	final DamageSource source;
-	
-	public ExtendedFluid(int fogColor, int tintColor, boolean infinite, @Nullable DamageSource source) {
+	private ExtendedFluid(int fogColor, int tintColor, boolean infinite, @Nullable DamageSource source, Links links) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
 		this.infinite = infinite;
-		this.source = source == null ? DamageSource.GENERIC : source;
+		this.damageSource = source;
+		this.links = links;
 	}
 	
 	public static Builder builder() {
 		return new Builder();
 	}
 	
-	public DamageSource getSource() {
-		return source;
+	public DamageSource getDamageSource() {
+		return damageSource;
 	}
 	
 	@Override
-	public Fluid getStill() {
-		return still;
+	public Fluid getSource() {
+		return links.still.get();
 	}
 	
 	@Override
 	public Fluid getFlowing() {
-		return flowing;
+		return links.flowing.get();
 	}
 	
 	@Override
-	protected boolean isInfinite() {
+	public FluidType getFluidType() {
+		return links.type.get();
+	}
+	
+	@Override
+	protected boolean canConvertToSource(Level level) {
 		return infinite;
 	}
 	
@@ -122,61 +111,89 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	}
 	
 	public Block getBlock() {
-		return block.get();
+		return links.block.get();
 	}
 	
 	@Override
-	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
+	protected void beforeDestroyingBlock(LevelAccessor world, BlockPos position, BlockState state) {
 		var blockEntity = world.getBlockEntity(position);
-		Block.dropStacks(state, world, position, blockEntity);
+		Block.dropResources(state, world, position, blockEntity);
 	}
 	
 	@Override
-	public boolean matchesType(Fluid fluid) {
-		return fluid == flowing || fluid == still;
+	public boolean isSame(Fluid fluid) {
+		return fluid == getFlowing() || fluid == getSource();
 	}
 	
 	@Override
-	protected int getFlowSpeed(WorldView world) {
+	protected int getSlopeFindDistance(LevelReader world) {
 		return 4;
 	}
 	
 	@Override
-	protected int getLevelDecreasePerBlock(WorldView world) {
+	protected int getDropOff(LevelReader world) {
 		return 1;
 	}
 	
 	@Override
-	public Item getBucketItem() {
-		return bucket.get();
+	public Item getBucket() {
+		return links.bucket.get();
 	}
 	
 	@Override
-	protected boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
-		return direction == Direction.DOWN && fluid != flowing && fluid != still;
+	protected boolean canBeReplacedWith(FluidState state, BlockGetter world, BlockPos pos, Fluid fluid, Direction direction) {
+		return direction == Direction.DOWN && fluid != getFlowing() && fluid != getSource();
 	}
 	
 	@Override
-	public int getTickRate(WorldView world) {
+	public int getTickDelay(LevelReader world) {
 		return 5;
 	}
 	
 	@Override
-	protected float getBlastResistance() {
+	protected float getExplosionResistance() {
 		return 100.0F;
 	}
 	
 	@Override
-	protected BlockState toBlockState(FluidState state) {
-		return block.get().getDefaultState().with(FluidBlock.LEVEL, getBlockStateLevel(state));
+	protected BlockState createLegacyBlock(FluidState state) {
+		return links.block.get().defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
 	}
 	
-	public Map<Item, CauldronBehavior> getCauldronBehaviorMap() {
-		return cauldronBehaviorMap;
+	private static class Links {
+		private Supplier<? extends FluidType> type;
+		private Supplier<? extends Fluid> flowing;
+		private Supplier<? extends Fluid> still;
+		private Supplier<? extends Block> block;
+		private Supplier<? extends Item> bucket;
 	}
 	
-	public Block getCauldron() {
-		return cauldron.get();
+	public record Entry(
+			DeferredHolder<Fluid, Still> still,
+			DeferredHolder<Fluid, Flowing> flowing,
+			DeferredHolder<Block, ? extends Block> block,
+			DeferredHolder<Item, ? extends Item> bucket,
+			DeferredHolder<FluidType, FluidType> type
+	) {
+		public Still getSource() {
+			return still.get();
+		}
+		
+		public Flowing getFlowing() {
+			return flowing.get();
+		}
+		
+		public Block getBlock() {
+			return block.get();
+		}
+		
+		public Item getBucket() {
+			return bucket.get();
+		}
+		
+		public FluidType getType() {
+			return type.get();
+		}
 	}
 	
 	public static class Builder {
@@ -194,8 +211,6 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		private String name = "";
 		
 		private DamageSource source;
-		
-		private ItemGroup group;
 		
 		private Builder() {
 		}
@@ -245,91 +260,68 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			return this;
 		}
 		
-		public Builder group(ItemGroup group) {
-			this.group = group;
+		public Builder group(Supplier<?> group) {
 			return this;
 		}
 		
 		
-		public ExtendedFluid build() {
-			var flowing = AMFluids.register(name + "_flowing", new Flowing(fogColor, tintColor, infinite, source));
-			var still = AMFluids.register(name, new Still(fogColor, tintColor, infinite, source));
+		public Entry build() {
+			var links = new Links();
+			var type = AMFluids.registerType(name, () -> new FluidType(FluidType.Properties.create()
+					.descriptionId("block." + AMCommon.MOD_ID + "." + name)
+					.canConvertToSource(infinite)
+					.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+					.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+			));
+			var flowing = AMFluids.register(name + "_flowing", () -> new Flowing(fogColor, tintColor, infinite, source, links));
+			var still = AMFluids.register(name, () -> new Still(fogColor, tintColor, infinite, source, links));
+			var block = AMBlocks.register(name, () -> new LiquidBlock(still.get(), BlockBehaviour.Properties.of().noCollission().liquid().strength(100.0F).noLootTable()));
+			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still.get(), (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1)));
 			
-			flowing.flowing = flowing;
-			still.flowing = flowing;
+			links.type = type;
+			links.flowing = flowing;
+			links.still = still;
+			links.block = block;
+			links.bucket = bucket;
 			
-			flowing.still = still;
-			still.still = still;
-			
-			var block = AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
-			
-			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
-			
-			flowing.block = (RegistrySupplier) block;
-			still.block = (RegistrySupplier) block;
-			
-			flowing.bucket = (RegistrySupplier) bucket;
-			still.bucket = (RegistrySupplier) bucket;
-			
-			var cauldronBehaviorMap = CauldronBehavior.createMap();
-			
-			var cauldron = AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(AbstractBlock.Settings.copy(Blocks.CAULDRON), cauldronBehaviorMap));
-			
-			flowing.cauldronBehaviorMap = cauldronBehaviorMap;
-			still.cauldronBehaviorMap = cauldronBehaviorMap;
-			
-			flowing.cauldron = (RegistrySupplier) cauldron;
-			still.cauldron = (RegistrySupplier) cauldron;
-			
-			CauldronLib.registerBehaviorMap(cauldronBehaviorMap);
-			CauldronLib.registerFillFromBucketBehavior(bucket.get(), ((RegistrySupplier<? extends Block>) cauldron).get());
-			
-			cauldronBehaviorMap.put(Items.BUCKET, CauldronLib.createEmptyIntoBucketBehavior(bucket.get()));
-			
-			CauldronFluidContent.registerCauldron(((RegistrySupplier<? extends Block>) cauldron).get(), still, FluidConstants.BUCKET, null); // Fabric only! If we're going to do a Forge version, make sure this only runs on Fabric!
-			
-			if (Platform.getEnv() == EnvType.CLIENT) {
-				FluidUtils.registerSimpleFluid(name, tintColor, still, flowing, customSprite, customHandler);
-			}
-			
-			return still;
+			return new Entry(still, flowing, block, bucket, type);
 		}
 	}
 	
 	public static class Flowing extends ExtendedFluid {
-		public Flowing(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
-			super(fogColor, tintColor, isInfinite, source);
+		private Flowing(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source, Links links) {
+			super(fogColor, tintColor, isInfinite, source, links);
 		}
 		
 		@Override
-		protected void appendProperties(StateManager.Builder<Fluid, FluidState> builder) {
-			super.appendProperties(builder);
+		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
+			super.createFluidStateDefinition(builder);
 			builder.add(LEVEL);
 		}
 		
 		@Override
-		public int getLevel(FluidState state) {
-			return state.get(LEVEL);
+		public int getAmount(FluidState state) {
+			return state.getValue(LEVEL);
 		}
 		
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return false;
 		}
 	}
 	
 	public static class Still extends ExtendedFluid {
-		public Still(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
-			super(fogColor, tintColor, isInfinite, source);
+		private Still(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source, Links links) {
+			super(fogColor, tintColor, isInfinite, source, links);
 		}
 		
 		@Override
-		public int getLevel(FluidState state) {
+		public int getAmount(FluidState state) {
 			return 8;
 		}
 		
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return true;
 		}
 	}

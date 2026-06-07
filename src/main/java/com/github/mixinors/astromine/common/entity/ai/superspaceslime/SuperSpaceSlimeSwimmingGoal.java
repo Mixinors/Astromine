@@ -25,9 +25,8 @@
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import net.minecraft.entity.ai.goal.Goal;
-
 import java.util.EnumSet;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 public class SuperSpaceSlimeSwimmingGoal extends Goal {
 	private final SuperSpaceSlimeEntity slime;
@@ -35,14 +34,14 @@ public class SuperSpaceSlimeSwimmingGoal extends Goal {
 	public SuperSpaceSlimeSwimmingGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
 		
-		this.setControls(EnumSet.of(Goal.Control.JUMP, Goal.Control.MOVE));
+		this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
 		
-		slime.getNavigation().setCanSwim(true);
+		slime.getNavigation().setCanFloat(true);
 	}
 	
 	@Override
-	public boolean canStart() {
-		var validState = slime.isTouchingWater() || slime.isInLava();
+	public boolean canUse() {
+		var validState = slime.isInWater() || slime.isInLava();
 		
 		var hasSlimeMoveControls = slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 		
@@ -52,7 +51,7 @@ public class SuperSpaceSlimeSwimmingGoal extends Goal {
 	@Override
 	public void tick() {
 		if (slime.getRandom().nextFloat() < 0.8F) {
-			slime.getJumpControl().setActive();
+			slime.getJumpControl().jump();
 		}
 		
 		((SuperSpaceSlimeMoveControl) slime.getMoveControl()).move(1.2D);

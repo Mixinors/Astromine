@@ -1,206 +1,401 @@
 {
   "variants": {
-    "facing=east,half=bottom,shape=inner_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "y": 270
-    },
-    "facing=east,half=bottom,shape=inner_right": {
+    "dynamic=false,facing=east,half=bottom,shape=inner_left": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_inner"
     },
-    "facing=east,half=bottom,shape=outer_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+    "dynamic=false,facing=east,half=bottom,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
       "uvlock": true,
-      "y": 270
+      "y": 90
     },
-    "facing=east,half=bottom,shape=outer_right": {
+    "dynamic=false,facing=east,half=bottom,shape=outer_left": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_outer"
     },
-    "facing=east,half=bottom,shape=straight": {
+    "dynamic=false,facing=east,half=bottom,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=false,facing=east,half=bottom,shape=straight": {
       "model": "astromine:block/polished_dark_moon_stone_stairs"
     },
-    "facing=east,half=top,shape=inner_left": {
+    "dynamic=false,facing=east,half=top,shape=inner_left": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
       "x": 180
     },
-    "facing=east,half=top,shape=inner_right": {
+    "dynamic=false,facing=east,half=top,shape=inner_right": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
       "uvlock": true,
       "x": 180,
       "y": 90
     },
-    "facing=east,half=top,shape=outer_left": {
+    "dynamic=false,facing=east,half=top,shape=outer_left": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
       "x": 180
     },
-    "facing=east,half=top,shape=outer_right": {
+    "dynamic=false,facing=east,half=top,shape=outer_right": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
       "uvlock": true,
       "x": 180,
       "y": 90
     },
-    "facing=east,half=top,shape=straight": {
+    "dynamic=false,facing=east,half=top,shape=straight": {
       "model": "astromine:block/polished_dark_moon_stone_stairs",
-      "uvlock": true,
       "x": 180
     },
-    "facing=north,half=bottom,shape=inner_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=north,half=bottom,shape=inner_right": {
+    "dynamic=false,facing=north,half=bottom,shape=inner_left": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
       "uvlock": true,
       "y": 270
     },
-    "facing=north,half=bottom,shape=outer_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=north,half=bottom,shape=outer_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "y": 270
-    },
-    "facing=north,half=bottom,shape=straight": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs",
-      "uvlock": true,
-      "y": 270
-    },
-    "facing=north,half=top,shape=inner_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
-    },
-    "facing=north,half=top,shape=inner_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "x": 180
-    },
-    "facing=north,half=top,shape=outer_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
-    },
-    "facing=north,half=top,shape=outer_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "x": 180
-    },
-    "facing=north,half=top,shape=straight": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
-    },
-    "facing=south,half=bottom,shape=inner_left": {
+    "dynamic=false,facing=north,half=bottom,shape=inner_right": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_inner"
     },
-    "facing=south,half=bottom,shape=inner_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+    "dynamic=false,facing=north,half=bottom,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
       "uvlock": true,
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=bottom,shape=outer_left": {
+    "dynamic=false,facing=north,half=bottom,shape=outer_right": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_outer"
     },
-    "facing=south,half=bottom,shape=outer_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "y": 90
-    },
-    "facing=south,half=bottom,shape=straight": {
+    "dynamic=false,facing=north,half=bottom,shape=straight": {
       "model": "astromine:block/polished_dark_moon_stone_stairs",
       "uvlock": true,
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=top,shape=inner_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
-    },
-    "facing=south,half=top,shape=inner_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
-    },
-    "facing=south,half=top,shape=outer_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
-    },
-    "facing=south,half=top,shape=outer_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
-    },
-    "facing=south,half=top,shape=straight": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
-    },
-    "facing=west,half=bottom,shape=inner_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "y": 90
-    },
-    "facing=west,half=bottom,shape=inner_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=west,half=bottom,shape=outer_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "y": 90
-    },
-    "facing=west,half=bottom,shape=outer_right": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=west,half=bottom,shape=straight": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=west,half=top,shape=inner_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
-    },
-    "facing=west,half=top,shape=inner_right": {
+    "dynamic=false,facing=north,half=top,shape=inner_left": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
       "uvlock": true,
       "x": 180,
       "y": 270
     },
-    "facing=west,half=top,shape=outer_left": {
-      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
+    "dynamic=false,facing=north,half=top,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "x": 180
     },
-    "facing=west,half=top,shape=outer_right": {
+    "dynamic=false,facing=north,half=top,shape=outer_left": {
       "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
       "uvlock": true,
       "x": 180,
       "y": 270
     },
-    "facing=west,half=top,shape=straight": {
+    "dynamic=false,facing=north,half=top,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "x": 180
+    },
+    "dynamic=false,facing=north,half=top,shape=straight": {
       "model": "astromine:block/polished_dark_moon_stone_stairs",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=false,facing=south,half=bottom,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=false,facing=south,half=bottom,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=false,facing=south,half=bottom,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=false,facing=south,half=bottom,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=false,facing=south,half=bottom,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=false,facing=south,half=top,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=false,facing=south,half=top,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=false,facing=south,half=top,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=false,facing=south,half=top,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=false,facing=south,half=top,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=false,facing=west,half=bottom,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=false,facing=west,half=bottom,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "y": 270
+    },
+    "dynamic=false,facing=west,half=bottom,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=false,facing=west,half=bottom,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "y": 270
+    },
+    "dynamic=false,facing=west,half=bottom,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=false,facing=west,half=top,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=false,facing=west,half=top,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=false,facing=west,half=top,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=false,facing=west,half=top,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=false,facing=west,half=top,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=true,facing=east,half=bottom,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner"
+    },
+    "dynamic=true,facing=east,half=bottom,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=true,facing=east,half=bottom,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer"
+    },
+    "dynamic=true,facing=east,half=bottom,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=true,facing=east,half=bottom,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic"
+    },
+    "dynamic=true,facing=east,half=top,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "x": 180
+    },
+    "dynamic=true,facing=east,half=top,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=true,facing=east,half=top,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "x": 180
+    },
+    "dynamic=true,facing=east,half=top,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=true,facing=east,half=top,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic",
+      "x": 180
+    },
+    "dynamic=true,facing=north,half=bottom,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "y": 270
+    },
+    "dynamic=true,facing=north,half=bottom,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner"
+    },
+    "dynamic=true,facing=north,half=bottom,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "y": 270
+    },
+    "dynamic=true,facing=north,half=bottom,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer"
+    },
+    "dynamic=true,facing=north,half=bottom,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic",
+      "uvlock": true,
+      "y": 270
+    },
+    "dynamic=true,facing=north,half=top,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=true,facing=north,half=top,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "x": 180
+    },
+    "dynamic=true,facing=north,half=top,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=true,facing=north,half=top,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "x": 180
+    },
+    "dynamic=true,facing=north,half=top,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=true,facing=south,half=bottom,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=true,facing=south,half=bottom,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=true,facing=south,half=bottom,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=true,facing=south,half=bottom,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=true,facing=south,half=bottom,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic",
+      "uvlock": true,
+      "y": 90
+    },
+    "dynamic=true,facing=south,half=top,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=true,facing=south,half=top,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=true,facing=south,half=top,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=true,facing=south,half=top,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=true,facing=south,half=top,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "dynamic=true,facing=west,half=bottom,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=true,facing=west,half=bottom,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "y": 270
+    },
+    "dynamic=true,facing=west,half=bottom,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=true,facing=west,half=bottom,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "y": 270
+    },
+    "dynamic=true,facing=west,half=bottom,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic",
+      "uvlock": true,
+      "y": 180
+    },
+    "dynamic=true,facing=west,half=top,shape=inner_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=true,facing=west,half=top,shape=inner_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_inner_dynamic_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=true,facing=west,half=top,shape=outer_left": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "dynamic=true,facing=west,half=top,shape=outer_right": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_outer_dynamic_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "dynamic=true,facing=west,half=top,shape=straight": {
+      "model": "astromine:block/polished_dark_moon_stone_stairs_dynamic",
       "uvlock": true,
       "x": 180,
       "y": 180

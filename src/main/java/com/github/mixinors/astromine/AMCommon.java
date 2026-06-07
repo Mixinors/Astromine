@@ -25,21 +25,18 @@
 package com.github.mixinors.astromine;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.registry.common.*;
-import com.google.common.base.Suppliers;
 import com.google.gson.Gson;
-import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
-import net.fabricmc.api.ModInitializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.function.Supplier;
-
-public class AMCommon implements ModInitializer {
+@Mod(AMCommon.MOD_ID)
+public class AMCommon {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";
 	
@@ -47,28 +44,34 @@ public class AMCommon implements ModInitializer {
 	
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
 	
-	public static final Supplier<Registries> REGISTRIES = Suppliers.memoize(() -> Registries.get(MOD_ID));
+	private static IEventBus modEventBus;
 	
-	public static Identifier id(String name) {
+	public static ResourceLocation id(String name) {
 		if (name.indexOf(':') >= 0) {
-			return new Identifier(name);
+			return ResourceLocation.parse(name);
 		}
 		
-		return new Identifier(MOD_ID, name);
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
 	}
 	
-	public static <T> Registrar<T> registry(RegistryKey<Registry<T>> key) {
-		return REGISTRIES.get().get(key);
+	public static IEventBus modEventBus() {
+		return modEventBus;
 	}
 	
-	@Override
-	public void onInitialize() {
+	public AMCommon(IEventBus modBus, ModContainer container) {
+		modEventBus = modBus;
+		init();
+	}
+	
+	private static void init() {
 		AMConfig.init();
+		AMComponents.init();
 		AMAttributes.init();
-		AMIdentifierFixes.init();
+		AMParticles.init();
 		AMWorlds.init();
 		AMFeatures.init();
 		AMStructures.init();
+		AMArmorMaterials.init();
 		AMItems.init();
 		AMBlocks.init();
 		AMScreenHandlers.init();
@@ -90,5 +93,6 @@ public class AMCommon implements ModInitializer {
 		AMNetworking.init();
 		AMLookups.init();
 		AMBodies.init();
+		AMDatagen.init();
 	}
 }

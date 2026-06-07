@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.transfer;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.mojang.serialization.Codec;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * An enum representing a side's transfer information.
@@ -40,10 +40,10 @@ public enum TransferType {
 	
 	public static final Codec<TransferType> CODEC = Codecs.createEnumCodec(TransferType.class);
 	
-	private final Identifier texture;
+	private final ResourceLocation texture;
 	
 	/** Instantiates a {@link TransferType}. */
-	TransferType(Identifier texture) {
+	TransferType(ResourceLocation texture) {
 		this.texture = texture;
 	}
 	
@@ -56,7 +56,7 @@ public enum TransferType {
 	}
 	
 	/** Returns the texture of this type. */
-	public Identifier texture() {
+	public ResourceLocation texture() {
 		return texture;
 	}
 	

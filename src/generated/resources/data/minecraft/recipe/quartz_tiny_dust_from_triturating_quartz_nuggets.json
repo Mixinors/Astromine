@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 200,
+  "input": {
+    "count": 1,
+    "tag": "c:quartz_nuggets"
+  },
+  "output": {
+    "count": 1,
+    "item": "astromine:quartz_tiny_dust"
+  },
+  "time": 30
+}

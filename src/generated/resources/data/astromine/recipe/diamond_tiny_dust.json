@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:diamond_dusts"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:diamond_tiny_dust"
+  }
+}

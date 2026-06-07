@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 2464,
+  "input": {
+    "count": 1,
+    "tag": "c:steel_boots"
+  },
+  "output": {
+    "amount": 96,
+    "fluid": "astromine:molten_steel"
+  },
+  "time": 308
+}

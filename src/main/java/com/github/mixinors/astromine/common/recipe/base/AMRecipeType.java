@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.recipe.base;
 
 import com.github.mixinors.astromine.mixin.client.ClientRecipeBookMixin;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeType;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 
 /**
  * Our generic {@link RecipeType}, used in {@link ClientRecipeBookMixin}.

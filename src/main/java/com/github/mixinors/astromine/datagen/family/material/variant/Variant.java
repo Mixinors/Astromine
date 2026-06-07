@@ -26,13 +26,13 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-
+import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import java.util.function.BiConsumer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.ItemLike;
 
-public interface Variant<T extends ItemConvertible> {
+public interface Variant<T extends ItemLike> {
 	/**
 	 * The name of this variant
 	 */
@@ -41,7 +41,7 @@ public interface Variant<T extends ItemConvertible> {
 	/**
 	 * The consumer that registers this variant's model
 	 */
-	BiConsumer<?, T> getModelRegistrar();
+	BiConsumer<AMModelProvider, T> getModelRegistrar();
 	
 	/**
 	 * The path of this variant's family-independent tag, e.g. {@code raw_ore_blocks}, {@code gems}
@@ -85,26 +85,26 @@ public interface Variant<T extends ItemConvertible> {
 	}
 	
 	/**
-	 * The {@link Identifier} of this variant's family-independent tag, e.g. {@code c:raw_ore_blocks}, {@code c:gems}
+	 * The {@link ResourceLocation} of this variant's family-independent tag, e.g. {@code c:raw_ore_blocks}, {@code c:gems}
 	 */
-	default Identifier getTagId() {
-		return new Identifier("c", getTagPath());
+	default ResourceLocation getTagId() {
+		return ResourceLocation.fromNamespaceAndPath("c", getTagPath());
 	}
 	
 	/**
-	 * The {@link Identifier} of a family-dependent tag for the given family, e.g. {@code c:raw_iron_blocks}, {@code c:diamonds}
+	 * The {@link ResourceLocation} of a family-dependent tag for the given family, e.g. {@code c:raw_iron_blocks}, {@code c:diamonds}
 	 */
-	default Identifier getTagId(MaterialFamily family) {
+	default ResourceLocation getTagId(MaterialFamily family) {
 		return getTagId(family.getName());
 	}
 	
 	/**
-	 * The {@link Identifier} of a family-dependent tag for the given family name, e.g. {@code c:raw_iron_blocks}, {@code c:diamonds}
+	 * The {@link ResourceLocation} of a family-dependent tag for the given family name, e.g. {@code c:raw_iron_blocks}, {@code c:diamonds}
 	 *
 	 * @param family the family's name
 	 */
-	default Identifier getTagId(String family) {
-		return new Identifier("c", getTagPath(family));
+	default ResourceLocation getTagId(String family) {
+		return ResourceLocation.fromNamespaceAndPath("c", getTagPath(family));
 	}
 	
 	/**
@@ -165,7 +165,7 @@ public interface Variant<T extends ItemConvertible> {
 	/**
 	 * The tag factory for this variant, should be effectively static
 	 */
-	TagKey<T> createTag(Identifier id);
+	TagKey<T> createTag(ResourceLocation id);
 	
 	/**
 	 * The amount of molten fluid produced when melted, in droplets.

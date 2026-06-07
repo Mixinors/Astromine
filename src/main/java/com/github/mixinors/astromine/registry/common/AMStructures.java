@@ -29,52 +29,33 @@ import com.github.mixinors.astromine.common.world.structure.CraterGenerator;
 import com.github.mixinors.astromine.common.world.structure.CraterStructure;
 import com.github.mixinors.astromine.common.world.structure.MeteorGenerator;
 import com.github.mixinors.astromine.common.world.structure.MeteorStructure;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.structure.StructurePieceType;
-import net.minecraft.tag.BiomeTags;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.*;
-import net.minecraft.world.StructureSpawns;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.StructureTerrainAdaptation;
-import net.minecraft.world.gen.structure.Structure;
-import net.minecraft.world.gen.structure.StructureType;
-
-import java.util.Map;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class AMStructures {
-	public static final Identifier METEOR_ID = AMCommon.id("meteor");
-	public static final RegistryEntry<Structure> METEOR_STRUCTURE_FEATURE = registerStructure(METEOR_ID, new MeteorStructure(createConfig(BiomeTags.IS_OVERWORLD)), MeteorStructure.TYPE);
-	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE_PIECE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.Simple) MeteorGenerator::new);
+	public static final ResourceLocation METEOR_ID = AMCommon.id("meteor");
+	public static final ResourceLocation CRATER_ID = AMCommon.id("crater");
 	
-	public static final Identifier CRATER_ID = AMCommon.id("crater");
-	public static final RegistryEntry<Structure> CRATER_STRUCTURE_FEATURE = registerStructure(CRATER_ID, new CraterStructure(createConfig(AMTagKeys.BiomeTags.IS_MOON)), CraterStructure.TYPE);
-	public static final RegistrySupplier<StructurePieceType> CRATER_STRUCTURE_PIECE = registerStructurePiece(CRATER_ID, () -> (StructurePieceType.Simple) CraterGenerator::new);
+	private static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, AMCommon.MOD_ID);
+	private static final DeferredRegister<StructurePieceType> STRUCTURE_PIECES = DeferredRegister.create(Registries.STRUCTURE_PIECE, AMCommon.MOD_ID);
 	
-	public static void init() {}
+	public static final DeferredHolder<StructureType<?>, StructureType<MeteorStructure>> METEOR_STRUCTURE_TYPE = STRUCTURE_TYPES.register(METEOR_ID.getPath(), () -> MeteorStructure.TYPE);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> METEOR_STRUCTURE_PIECE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.ContextlessType) MeteorGenerator::new);
 	
-	public static RegistryEntry<Structure> registerStructure(Identifier id, Structure structure, StructureType<?> type) {
-		Registry.register(Registry.STRUCTURE_TYPE, id, type);
-		return BuiltinRegistries.add(BuiltinRegistries.STRUCTURE, RegistryKey.of(Registry.STRUCTURE_KEY, id), structure);
+	public static final DeferredHolder<StructureType<?>, StructureType<CraterStructure>> CRATER_STRUCTURE_TYPE = STRUCTURE_TYPES.register(CRATER_ID.getPath(), () -> CraterStructure.TYPE);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> CRATER_STRUCTURE_PIECE = registerStructurePiece(CRATER_ID, () -> (StructurePieceType.ContextlessType) CraterGenerator::new);
+	
+	public static void init() {
+		STRUCTURE_TYPES.register(AMCommon.modEventBus());
+		STRUCTURE_PIECES.register(AMCommon.modEventBus());
 	}
 	
-	public static <T extends StructurePieceType> RegistrySupplier<T> registerStructurePiece(Identifier id, Supplier<T> pieceType) {
-		return AMCommon.registry(Registry.STRUCTURE_PIECE_KEY).register(id, pieceType);
-	}
-	
-	private static Structure.Config createConfig(TagKey<Biome> biomeTag, Map<SpawnGroup, StructureSpawns> spawns) {
-		return new Structure.Config(getOrCreateBiomeTag(biomeTag), spawns, GenerationStep.Feature.SURFACE_STRUCTURES, StructureTerrainAdaptation.NONE);
-	}
-	
-	private static Structure.Config createConfig(TagKey<Biome> biome) {
-		return createConfig(biome, Map.of());
-	}
-	
-	private static RegistryEntryList<Biome> getOrCreateBiomeTag(TagKey<Biome> key) {
-		return BuiltinRegistries.BIOME.getOrCreateEntryList(key);
+	public static <T extends StructurePieceType> DeferredHolder<StructurePieceType, T> registerStructurePiece(ResourceLocation id, Supplier<T> pieceType) {
+		return STRUCTURE_PIECES.register(id.getPath(), pieceType);
 	}
 }

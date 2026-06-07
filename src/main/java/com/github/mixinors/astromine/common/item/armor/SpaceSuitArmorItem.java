@@ -26,25 +26,22 @@ package com.github.mixinors.astromine.common.item.armor;
 
 import com.github.mixinors.astromine.common.transfer.storage.EnergyStorageItem;
 import com.github.mixinors.astromine.common.transfer.storage.FluidStorageItem;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 
 public class SpaceSuitArmorItem extends ArmorItem {
-	public SpaceSuitArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
-		super(material, slot, settings);
+	public SpaceSuitArmorItem(Holder<ArmorMaterial> material, Type type, Properties settings) {
+		super(material, type, settings);
 	}
 	
 	public static class Chestplate extends SpaceSuitArmorItem implements FluidStorageItem, EnergyStorageItem {
 		private final long fluidCapacity;
 		private final long energyCapacity;
 		
-		public Chestplate(ArmorMaterial material, EquipmentSlot slot, Settings settings, long fluidCapacity, long energyCapacity) {
-			super(material, slot, settings);
+		public Chestplate(Holder<ArmorMaterial> material, Type type, Properties settings, long fluidCapacity, long energyCapacity) {
+			super(material, type, settings);
 			
 			this.fluidCapacity = fluidCapacity;
 			this.energyCapacity = energyCapacity;
@@ -61,37 +58,24 @@ public class SpaceSuitArmorItem extends ArmorItem {
 		}
 		
 		@Override
-		public int getItemBarStep(ItemStack stack) {
+		public int getBarWidth(ItemStack stack) {
 			if (getFluidCapacity() == 0) {
 				return 0;
 			}
 			
-			var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
-			
-			var totalAmount = 0L;
-			var totalCapacity = 0L;
-			
-			try (var transaction = Transaction.openOuter()) {
-				for (var fluidStorage : fluidStorages) {
-					totalAmount += fluidStorage.getAmount();
-					totalCapacity += fluidStorage.getCapacity();
-				}
-				
-				transaction.abort();
-			}
-			
-			totalCapacity = totalCapacity == 0L ? 1L : totalCapacity;
+			var totalAmount = getStoredFluid(stack).getAmount();
+			var totalCapacity = Math.max(1L, getFluidCapacity());
 			
 			return (int) (13.0F * ((float) totalAmount / (float) totalCapacity));
 		}
 		
 		@Override
-		public boolean isItemBarVisible(ItemStack stack) {
+		public boolean isBarVisible(ItemStack stack) {
 			return true;
 		}
 		
 		@Override
-		public int getItemBarColor(ItemStack stack) {
+		public int getBarColor(ItemStack stack) {
 			return 0x3DC5D6;
 		}
 	}

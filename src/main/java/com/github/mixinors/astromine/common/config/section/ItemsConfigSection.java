@@ -24,84 +24,31 @@
 
 package com.github.mixinors.astromine.common.config.section;
 
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 public class ItemsConfigSection {
-	@Comment("Settings for Batteries")
-	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
 	public BatteriesConfigSection batteries = new BatteriesConfigSection();
-	
-	@Comment("Settings for Portable Tanks")
-	@ConfigEntry.Gui.CollapsibleObject
 	public PortableTanksConfigSection portableTanks = new PortableTanksConfigSection();
-	
-	@Comment("Energy for the Gravity Gauntlet")
 	public long gravityGauntletEnergy = batteries.singleBatteries.advanced;
-	
-	@Comment("Energy for the Gravity Gauntlet actions")
 	public long gravityGauntletConsumed = 512L;
-	
-	@Comment("Delay for the Fire Extinguisher sneaking actions")
 	public int fireExtinguisherSneakingDelay = 2;
-	
-	@Comment("Delay for the Fire Extinguisher standing actions")
 	public int fireExtinguisherStandingDelay = 10;
-	
-	@Comment("Energy for the Drill block breaking")
 	public long drillConsumedBlockBreak = 6L;
-	
-	@Comment("Energy for the Drill entity hits")
 	public long drillConsumedEntityHit = 12L;
-	
-	@Comment("Energy for the Primitive Drill")
 	public long primitiveDrillEnergy = batteries.batteryPacks.primitive * 2L;
-	
-	@Comment("Energy for the Basic Drill")
 	public long basicDrillEnergy = batteries.batteryPacks.basic * 2L;
-	
-	@Comment("Energy for the Advanced Drill")
 	public long advancedDrillEnergy = batteries.batteryPacks.advanced * 2L;
-	
-	@Comment("Energy for the Elite Drill")
 	public long eliteDrillEnergy = batteries.batteryPacks.elite * 2L;
-	
-	@Comment("Energy for the Space Suit Chestplate")
 	public long spaceSuitChestplateEnergy = batteries.batteryPacks.elite * 2L;
-	
-	@Comment("Fluid for the Space Suit Chestplate")
 	public long spaceSuitChestplateFluid = portableTanks.large * 2L;
-	
-	@Comment("Fluid consumption for the Space Suit Chestplate")
 	public long spaceSuitChestplateFluidConsumption = spaceSuitChestplateFluid / (20L * 60L * 30L);
-	
-	@Comment("Energy consumption for the Space Suit Chestplate")
 	public long spaceSuitChestplateEnergyConsumption = spaceSuitChestplateEnergy / (20L * 60L * 30L);
-	
-	@Comment("Fuel Tank capacity for the Small Rocket Fuel Tank")
 	public long smallRocketFuelTankCapacity = portableTanks.large * 4L;
-	
-	@Comment("Fuel Tank capacity for the Medium Rocket Fuel Tank")
 	public long mediumRocketFuelTankCapacity = portableTanks.large * 8L;
-	
-	@Comment("Fuel Tank capacity for the Large Rocket Fuel Tank")
 	public long largeRocketFuelTankCapacity = portableTanks.large * 16L;
-	
-	@Comment("Trips for the Low Durability Rocket Hull")
 	public long lowDurabilityRocketHullTrips = 6;
-	
-	@Comment("Trips for the Medium Durability Rocket Hull")
 	public long mediumDurabilityRocketHullTrips = 18;
-
-	@Comment("Trips for the High Durability Rocket Hull")
 	public long highDurabilityRocketHullTrips = 36;
-	
-	@Comment("Fuel Consumption multiplier for the Low-Efficiency Rocket Thruster")
 	public double lowEfficiencyRocketThrusterFuelConsumptionMultiplier = 1.0D;
-	
-	@Comment("Fuel Consumption multiplier for the Medium-Efficiency Rocket Thruster")
 	public double mediumEfficiencyRocketThrusterFuelConsumptionMultiplier = 0.8D;
-	
-	@Comment("Fuel Consumption multiplier for the High-Efficiency Rocket Thruster")
 	public double highEfficiencyRocketThrusterFuelConsumptionMultiplier = 0.5D;
 }

@@ -1,100 +1,92 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 - 2022 Mixinors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.TransferNetworkType;
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@SuppressWarnings("UnstableApiUsage")
-public class FluidNetworkType extends TransferNetworkType<FluidVariant> {
+public class FluidNetworkType extends TransferNetworkType<IFluidHandler> {
 	@Override
-	public Storage<FluidVariant> find(World world, BlockPos pos, @Nullable Direction direction) {
-		return FluidStorage.SIDED.find(world, pos, direction);
+	public IFluidHandler find(Level world, BlockPos pos, @Nullable Direction direction) {
+		return world.getCapability(Capabilities.FluidHandler.BLOCK, pos, direction);
 	}
 	
 	@Override
-	public void tick(Network<Storage<FluidVariant>> network) {
+	public void tick(Network<IFluidHandler> network) {
+		var extractableStorages = new ArrayList<IFluidHandler>();
+		var bufferStorages = new ArrayList<IFluidHandler>();
+		var insertableStorages = new ArrayList<IFluidHandler>();
 		var world = network.getWorld();
-		
-		var extractableStorages = new Long2ObjectLinkedOpenHashMap<Storage<FluidVariant>>();
-		var bufferStorages = new Long2ObjectLinkedOpenHashMap<Storage<FluidVariant>>();
-		var insertableStorages = new Long2ObjectLinkedOpenHashMap<Storage<FluidVariant>>();
-		
-		var toRemove = new ArrayList<Network.Member>();
 		
 		for (var member : network.getMembers()) {
 			var storage = find(world, member.blockPos(), member.direction());
 			
 			if (storage == null) {
-				toRemove.add(member);
-				
-				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+				continue;
 			} else {
 				switch (member.siding()) {
-					case INSERT -> {
-						if (storage.supportsInsertion()) {
-							insertableStorages.put(member.blockPos().asLong(), storage);
-						}
-					}
-					
-					case EXTRACT -> {
-						if (storage.supportsExtraction()) {
-							extractableStorages.put(member.blockPos().asLong(), storage);
-						}
-					}
-					
-					case INSERT_EXTRACT -> {
-						if (storage.supportsInsertion() && storage.supportsExtraction()) {
-							bufferStorages.put(member.blockPos().asLong(), storage);
-						} else if (storage.supportsInsertion()) {
-							insertableStorages.put(member.blockPos().asLong(), storage);
-						} else if (storage.supportsExtraction()) {
-							extractableStorages.put(member.blockPos().asLong(), storage);
-						}
-					}
+					case INSERT -> insertableStorages.add(storage);
+					case EXTRACT -> extractableStorages.add(storage);
+					case INSERT_EXTRACT -> bufferStorages.add(storage);
 				}
 			}
 		}
 		
-		network.getMembers().removeAll(toRemove);
-		
-		move(network, extractableStorages, insertableStorages);
-		move(network, extractableStorages, bufferStorages);
-		move(network, bufferStorages, insertableStorages);
-		move(network, bufferStorages, bufferStorages);
+		move(extractableStorages, insertableStorages);
+		move(extractableStorages, bufferStorages);
+		move(bufferStorages, insertableStorages);
+		move(bufferStorages, bufferStorages);
+	}
+	
+	private void move(List<IFluidHandler> sources, List<IFluidHandler> destinations) {
+		for (var source : sources) {
+			var moved = 0L;
+			
+			for (var sourceTank = 0; sourceTank < source.getTanks() && moved < getTransferRate(); ++sourceTank) {
+				var stored = source.getFluidInTank(sourceTank);
+				
+				if (stored.isEmpty()) {
+					continue;
+				}
+				
+				var offered = stored.copyWithAmount((int) Math.min(Math.min(stored.getAmount(), getTransferRate() - moved), Integer.MAX_VALUE));
+				var extracted = source.drain(offered, IFluidHandler.FluidAction.SIMULATE);
+				
+				if (extracted.isEmpty()) {
+					continue;
+				}
+				
+				for (var destination : destinations) {
+					if (source == destination) {
+						continue;
+					}
+					
+					var accepted = destination.fill(extracted, IFluidHandler.FluidAction.SIMULATE);
+					
+					if (accepted <= 0) {
+						continue;
+					}
+					
+					var actuallyExtracted = source.drain(extracted.copyWithAmount(accepted), IFluidHandler.FluidAction.EXECUTE);
+					
+					if (!actuallyExtracted.isEmpty()) {
+						destination.fill(actuallyExtracted, IFluidHandler.FluidAction.EXECUTE);
+						moved += actuallyExtracted.getAmount();
+					}
+					
+					break;
+				}
+			}
+		}
 	}
 	
 	@Override

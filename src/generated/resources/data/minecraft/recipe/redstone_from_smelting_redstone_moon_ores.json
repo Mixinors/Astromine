@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": {
+    "tag": "c:redstone_moon_ores"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:redstone"
+  }
+}

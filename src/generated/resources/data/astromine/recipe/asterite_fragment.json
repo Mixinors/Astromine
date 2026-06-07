@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:asterites"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:asterite_fragment"
+  }
+}

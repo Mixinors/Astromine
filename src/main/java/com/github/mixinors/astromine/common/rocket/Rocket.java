@@ -1,30 +1,28 @@
 package com.github.mixinors.astromine.common.rocket;
 
 import com.github.mixinors.astromine.common.item.rocket.*;
-import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.tick.Tickable;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
+import com.github.mixinors.astromine.common.util.NbtUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -41,8 +39,8 @@ public final class Rocket implements Tickable {
 	private static final String ITEM_STORAGE_KEY = "ItemStorage";
 	private static final String FLUID_STORAGE_KEY = "FluidStorage";
 	
-	public static final FluidIngredient FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), 1L);
-	public static final FluidIngredient OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), 2L);
+	public static final FluidIngredient FUEL_INGREDIENT = new FluidIngredient(new FluidStack(AMFluids.FUEL.getSource(), 1), 1L);
+	public static final FluidIngredient OXYGEN_INGREDIENT = new FluidIngredient(new FluidStack(AMFluids.OXYGEN.getSource(), 2), 2L);
 	
 	public static final int OXYGEN_TANK_FLUID_IN = 0;
 	public static final int OXYGEN_TANK_FLUID_OUT = 0;
@@ -82,6 +80,7 @@ public final class Rocket implements Tickable {
 	private SimpleFluidStorage fluidStorage;
 	
 	private final Map<UUID, Placer> placers = new HashMap<>();
+	private Runnable syncListener = () -> {};
 	
 	public Rocket(UUID uuid, UUID ownerUuid, ChunkPos interiorPos) {
 		this.uuid = uuid;
@@ -108,17 +107,17 @@ public final class Rocket implements Tickable {
 		updateFluidStorage();
 	}
 	
-	public Rocket(NbtCompound nbt) {
-		this.uuid = nbt.getUuid(UUID_KEY);
-		this.ownerUuid = nbt.getUuid(OWNER_UUID_KEY);
+	public Rocket(CompoundTag nbt) {
+		this.uuid = nbt.getUUID(UUID_KEY);
+		this.ownerUuid = nbt.getUUID(OWNER_UUID_KEY);
 		
-		this.interiorPos = NbtUtil.getChunkPos(nbt, INTERIOR_POS_KEY);
+		this.interiorPos = NbtUtils.getChunkPos(nbt, INTERIOR_POS_KEY);
 		
 		this.parts = new Parts(nbt.getCompound(PARTS_KEY));
 		
 		var placersNbt = nbt.getCompound(PLACERS_KEY);
 		
-		for (var key : placersNbt.getKeys()) {
+		for (var key : placersNbt.getAllKeys()) {
 			var placerNbt = placersNbt.getCompound(key);
 			var placer = Placer.CODEC.decode(NbtOps.INSTANCE, placerNbt).result().get().getFirst();
 			
@@ -144,36 +143,40 @@ public final class Rocket implements Tickable {
 		updateFluidStorage();
 		var fluidStorageNbt = nbt.getCompound(FLUID_STORAGE_KEY);
 		fluidStorage.readFromNbt(fluidStorageNbt);
+		
+		if (nbt.contains(JOURNEY_KEY)) {
+			journey = RocketJourney.CODEC.decode(NbtOps.INSTANCE, nbt.getCompound(JOURNEY_KEY)).result().map(result -> result.getFirst()).orElse(null);
+		}
 	}
 	
-	public void writeToNbt(NbtCompound nbt) {
-		nbt.putUuid(UUID_KEY, uuid);
-		nbt.putUuid(OWNER_UUID_KEY, ownerUuid);
+	public void writeToNbt(CompoundTag nbt) {
+		nbt.putUUID(UUID_KEY, uuid);
+		nbt.putUUID(OWNER_UUID_KEY, ownerUuid);
 		
-		NbtUtil.putChunkPos(nbt, INTERIOR_POS_KEY, interiorPos);
+		NbtUtils.putChunkPos(nbt, INTERIOR_POS_KEY, interiorPos);
 		
-		nbt.put(PARTS_KEY, parts.writeToNbt(new NbtCompound()));
+		nbt.put(PARTS_KEY, parts.writeToNbt(new CompoundTag()));
 		
-		var placersNbt = new NbtCompound();
+		var placersNbt = new CompoundTag();
 		
 		for (var entry : placers.entrySet()) {
-			var placerNbt = Placer.CODEC.encode(entry.getValue(), NbtOps.INSTANCE, new NbtCompound()).result().get();
+			var placerNbt = Placer.CODEC.encode(entry.getValue(), NbtOps.INSTANCE, new CompoundTag()).result().get();
 			placersNbt.put(entry.getKey().toString(), placerNbt);
 		}
 		
 		nbt.put(PLACERS_KEY, placersNbt);
 		
 		if (journey != null) {
-			var journeyNbt = new NbtCompound();
+			var journeyNbt = new CompoundTag();
 			RocketJourney.CODEC.encode(journey, NbtOps.INSTANCE, journeyNbt);
 			nbt.put(JOURNEY_KEY, journeyNbt);
 		}
 		
-		var itemStorageNbt = new NbtCompound();
+		var itemStorageNbt = new CompoundTag();
 		itemStorage.writeToNbt(itemStorageNbt);
 		nbt.put(ITEM_STORAGE_KEY, itemStorageNbt);
 		
-		var fluidStorageNbt = new NbtCompound();
+		var fluidStorageNbt = new CompoundTag();
 		fluidStorage.writeToNbt(fluidStorageNbt);
 		nbt.put(FLUID_STORAGE_KEY, fluidStorageNbt);
 	}
@@ -192,20 +195,8 @@ public final class Rocket implements Tickable {
 		var fluidInputStorage1 = wildFluidStorage.getStorage(OXYGEN_TANK_FLUID_IN);
 		var fluidOutputStorage1 = wildFluidStorage.getStorage(OXYGEN_TANK_FLUID_OUT);
 		
-		var unloadFluidStorages1 = FluidStorage.ITEM.find(itemInputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage1));
-		var loadFluidStorages1 = FluidStorage.ITEM.find(itemOutputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage1));
-		
-		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(unloadFluidStorages1, fluidInputStorage1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
-			StorageUtil.move(fluidOutputStorage1, loadFluidStorages1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
-			
-			StorageUtil.move(itemInputStorage1, itemBufferStorage1, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorages1);
-				return stored == null || stored.isBlank();
-			}, 1, transaction);
-			
-			transaction.commit();
-		}
+		unloadFluidItem(itemInputStorage1, itemBufferStorage1, fluidInputStorage1, 1);
+		loadFluidItem(itemOutputStorage1, fluidOutputStorage1);
 		
 		var itemInputStorage2 = wildItemStorage.getStorage(FUEL_TANK_UNLOAD_SLOT);
 		var itemBufferStorage2 = wildItemStorage.getStorage(FUEL_TANK_BUFFER_SLOT);
@@ -213,20 +204,64 @@ public final class Rocket implements Tickable {
 		var fluidInputStorage2 = wildFluidStorage.getStorage(FUEL_TANK_FLUID_IN);
 		var fluidOutputStorage2 = wildFluidStorage.getStorage(FUEL_TANK_FLUID_OUT);
 		
-		var unloadFluidStorages2 = FluidStorage.ITEM.find(itemInputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage2));
-		var loadFluidStorages2 = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
+		unloadFluidItem(itemInputStorage2, itemBufferStorage2, fluidInputStorage2, 2);
+		loadFluidItem(itemOutputStorage2, fluidOutputStorage2);
+	}
+	
+	private static void unloadFluidItem(SimpleItemVariantStorage input, SimpleItemVariantStorage buffer, SimpleFluidVariantStorage tank, int itemMoveAmount) {
+		var stackBeforeTransfer = input.getStack();
 		
-		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(unloadFluidStorages2, fluidInputStorage2, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
-			StorageUtil.move(fluidOutputStorage2, loadFluidStorages2, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
-			
-			StorageUtil.move(itemInputStorage2, itemBufferStorage2, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorages2);
-				return stored == null || stored.isBlank();
-			}, 2, transaction);
-			
-			transaction.commit();
+		if (stackBeforeTransfer.isEmpty()) {
+			return;
 		}
+		
+		FluidUtil.getFluidHandler(stackBeforeTransfer).ifPresent(handler -> {
+			var drained = handler.drain(FluidType.BUCKET_VOLUME, IFluidHandler.FluidAction.SIMULATE);
+			
+			if (!drained.isEmpty()) {
+				var inserted = tank.insert(drained, drained.getAmount(), false, true);
+				
+				if (inserted > 0L) {
+					var movedFluid = handler.drain(drained.copyWithAmount((int) Math.min(inserted, Integer.MAX_VALUE)), IFluidHandler.FluidAction.EXECUTE);
+					
+					tank.insert(movedFluid, movedFluid.getAmount(), false, false);
+					input.setStack(handler.getContainer());
+				}
+			}
+			
+			if (handler.drain(FluidType.BUCKET_VOLUME, IFluidHandler.FluidAction.SIMULATE).isEmpty()) {
+				var stackToMove = input.getStack();
+				var moved = input.extract(stackToMove, itemMoveAmount, true, false);
+				
+				if (moved > 0) {
+					var movingStack = stackToMove.copy();
+					movingStack.setCount(moved);
+					buffer.insert(movingStack, moved, true, false);
+				}
+			}
+		});
+	}
+	
+	private static void loadFluidItem(SimpleItemVariantStorage output, SimpleFluidVariantStorage tank) {
+		var outputStack = output.getStack();
+		
+		if (outputStack.isEmpty() || tank.isResourceBlank()) {
+			return;
+		}
+		
+		FluidUtil.getFluidHandler(outputStack).ifPresent(handler -> {
+			var source = tank.getResource().copyWithAmount((int) Math.min(tank.getAmount(), FluidType.BUCKET_VOLUME));
+			var accepted = handler.fill(source, IFluidHandler.FluidAction.SIMULATE);
+			
+			if (accepted > 0) {
+				var moved = tank.extract(source.copyWithAmount(accepted), accepted, false, false);
+				
+				if (moved > 0L) {
+					handler.fill(source.copyWithAmount((int) Math.min(moved, Integer.MAX_VALUE)), IFluidHandler.FluidAction.EXECUTE);
+					output.setStack(handler.getContainer());
+				}
+			}
+		});
 	}
 	
 	private void updateFluidStorage() {
@@ -238,23 +273,20 @@ public final class Rocket implements Tickable {
 		if (fuelTank.isPresent()) {
 			fluidStorage.extractPredicate((variant, slot) -> false)
 						.extractPredicate((variant, slot) -> slot == OXYGEN_TANK_FLUID_OUT || slot == FUEL_TANK_FLUID_OUT)
-						.insertPredicate((variant, slot) -> (slot == OXYGEN_TANK_FLUID_IN && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FUEL_TANK_FLUID_IN && FUEL_INGREDIENT.testVariant(variant)))
-						.listener(() -> {
-							var server = InstanceUtil.getServer();
-							if (server == null) return;
-							
-							RocketManager.sync(server);
-						}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+						.insertPredicate((variant, slot) -> (slot == OXYGEN_TANK_FLUID_IN && OXYGEN_INGREDIENT.testStack(variant)) || (slot == FUEL_TANK_FLUID_IN && FUEL_INGREDIENT.testStack(variant)))
+						.listener(() -> syncListener.run())
+						.insertSlots(FLUID_INSERT_SLOTS)
+						.extractSlots(FLUID_EXTRACT_SLOTS);
 		}
 	}
 	
 	private void onStorageUpdate() {
-		var fuelTankItem = itemStorage.getStorage(FUEL_TANK_SLOT).getResource().toStack().getItem();
-		var hullItem = itemStorage.getStorage(HULL_SLOT).getResource().toStack().getItem();
-		var landingMechanismItem = itemStorage.getStorage(LANDING_MECHANISM_SLOT).getResource().toStack().getItem();
-		var lifeSupportItem = itemStorage.getStorage(LIFE_SUPPORT_SLOT).getResource().toStack().getItem();
-		var shieldingItem =  itemStorage.getStorage(SHIELDING_SLOT).getResource().toStack().getItem();
-		var thrusterItem = itemStorage.getStorage(THRUSTER_SLOT).getResource().toStack().getItem();
+		var fuelTankItem = itemStorage.getStorage(FUEL_TANK_SLOT).getResource().getItem();
+		var hullItem = itemStorage.getStorage(HULL_SLOT).getResource().getItem();
+		var landingMechanismItem = itemStorage.getStorage(LANDING_MECHANISM_SLOT).getResource().getItem();
+		var lifeSupportItem = itemStorage.getStorage(LIFE_SUPPORT_SLOT).getResource().getItem();
+		var shieldingItem =  itemStorage.getStorage(SHIELDING_SLOT).getResource().getItem();
+		var thrusterItem = itemStorage.getStorage(THRUSTER_SLOT).getResource().getItem();
 		
 		if (fuelTankItem instanceof RocketFuelTankItem rocketFuelTankItem) this.parts.setPart(PartType.FUEL_TANK, rocketFuelTankItem.getPart());
 		if (hullItem instanceof RocketHullItem rocketHullItem) this.parts.setPart(PartType.ROCKET_HULL, rocketHullItem.getPart());
@@ -264,11 +296,7 @@ public final class Rocket implements Tickable {
 		if (thrusterItem instanceof RocketThrusterItem rocketThrusterItem) this.parts.setPart(PartType.THRUSTER, rocketThrusterItem.getPart());
 		
 		updateFluidStorage();
-		
-		var server = InstanceUtil.getServer();
-		if (server == null) return;
-		
-		RocketManager.sync(server);
+		syncListener.run();
 	}
 	
 	private void tickJourney() {
@@ -277,16 +305,18 @@ public final class Rocket implements Tickable {
 				journey.tick(this);
 			} else if (journey.hasFinished()) {
 				journey = null;
+				syncListener.run();
 			}
 		}
 	}
 	
 	public void startJourney(RocketJourney journey) {
-		if (this.journey == null) {
+		if (this.journey != null) {
 			throw new RuntimeException("Tried changing journey while already on one.");
 		}
 		
 		this.journey = journey;
+		syncListener.run();
 	}
 	
 	public Optional<RocketJourney> getJourney() {
@@ -299,6 +329,7 @@ public final class Rocket implements Tickable {
 	
 	public void setOxygen(long oxygenRemaining) {
 		fluidStorage.getStorage(OXYGEN_TANK_FLUID_IN).setAmount(oxygenRemaining);
+		syncListener.run();
 	}
 	
 	public long getFuel() {
@@ -307,6 +338,7 @@ public final class Rocket implements Tickable {
 	
 	public void setFuel(long fuelRemaining) {
 		fluidStorage.getStorage(FUEL_TANK_FLUID_IN).setAmount(fuelRemaining);
+		syncListener.run();
 	}
 	
 	public ChunkPos getInteriorPos() {
@@ -319,6 +351,7 @@ public final class Rocket implements Tickable {
 	
 	public void setPlacer(UUID uuid, Placer placer) {
 		this.placers.put(uuid, placer);
+		syncListener.run();
 	}
 	
 	public UUID getUuid() {
@@ -337,17 +370,21 @@ public final class Rocket implements Tickable {
 		return fluidStorage;
 	}
 	
+	public void setSyncListener(Runnable syncListener) {
+		this.syncListener = syncListener;
+	}
+	
 	public static class Parts {
 		private final Map<PartType, Optional<RocketPart<?>>> parts = new HashMap<>();
 		
 		public Parts() {
 		}
 		
-		public Parts(NbtCompound tag) {
+		public Parts(CompoundTag tag) {
 			for (var value : PartType.values()) {
 				if (tag.contains("part_type_" + value.name())) {
-					var identifier = NbtUtil.getIdentifier(tag, "part_type_" + value.name());
-					parts.put(value, Optional.of(((RocketPartItem<RocketPart<?>>) Registry.ITEM.get(identifier)).getPart()));
+					var identifier = NbtUtils.getIdentifier(tag, "part_type_" + value.name());
+					parts.put(value, Optional.of(((RocketPartItem<RocketPart<?>>) BuiltInRegistries.ITEM.get(identifier)).getPart()));
 				}
 			}
 		}
@@ -366,10 +403,10 @@ public final class Rocket implements Tickable {
 			parts.put(type, Optional.of(part));
 		}
 		
-		public NbtElement writeToNbt(NbtCompound tag) {
+		public Tag writeToNbt(CompoundTag tag) {
 			for (var entry : parts.entrySet()) {
 				if (entry.getValue().isPresent()) {
-					NbtUtil.putIdentifier(tag, "part_type_" + entry.getKey().name(), Registry.ITEM.getId(entry.getValue().get().asItem()));
+					NbtUtils.putIdentifier(tag, "part_type_" + entry.getKey().name(), BuiltInRegistries.ITEM.getKey(entry.getValue().get().asItem()));
 				}
 			}
 			
@@ -378,13 +415,13 @@ public final class Rocket implements Tickable {
 	}
 	
 	public record Placer(
-			RegistryKey<World> worldKey,
+			ResourceKey<Level> worldKey,
 			double x, double y, double z,
 			float yaw, float pitch
 	) {
 		public static final Codec<Placer> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
-						RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("world").forGetter(Placer::worldKey),
+						ResourceKey.codec(Registries.DIMENSION).fieldOf("world").forGetter(Placer::worldKey),
 						Codec.DOUBLE.fieldOf("x").forGetter(Placer::x),
 						Codec.DOUBLE.fieldOf("y").forGetter(Placer::y),
 						Codec.DOUBLE.fieldOf("z").forGetter(Placer::z),

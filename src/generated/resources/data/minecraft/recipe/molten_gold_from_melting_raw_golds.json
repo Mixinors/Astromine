@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 2448,
+  "input": {
+    "count": 1,
+    "tag": "c:raw_golds"
+  },
+  "output": {
+    "amount": 144,
+    "fluid": "astromine:molten_gold"
+  },
+  "time": 306
+}

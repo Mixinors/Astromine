@@ -32,23 +32,26 @@ import com.github.mixinors.astromine.datagen.family.material.family.MaterialFami
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.ImmutableList;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.minecraft.block.Block;
-import net.minecraft.data.server.BlockLootTableGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.CopyNameLootFunction;
-import net.minecraft.loot.function.CopyNbtLootFunction;
-import net.minecraft.loot.provider.nbt.ContextLootNbtProvider;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyCustomDataFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
+import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
+public class AMBlockLootTableProvider extends BlockLootSubProvider {
 	private static final String BLOCK_ENTITY_TAG_KEY = "BlockEntityTag";
 	
 	private static final String REDSTONE_TYPE_KEY = "RedstoneType";
@@ -77,46 +80,50 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AMBlocks.DRAIN.get()
 	);
 	
-	public AMBlockLootTableProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMBlockLootTableProvider(HolderLookup.Provider registries) {
+		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
 	}
 	
-	public static LootTable.Builder machineDrops(Block drop) {
+	public LootTable.Builder machineDrops(Block drop) {
 		if (drop instanceof BlockWithEntity machine && machine.saveTagToDroppedItem()) {
-			var builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0F)).with(ItemEntry.builder(machine))));
+			var builder = LootTable.lootTable().withPool(applyExplosionCondition(machine, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(machine))));
 			
-			var copyNbtBuilder = CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY);
+			var copyNbtBuilder = CopyCustomDataFunction.copyData(ContextNbtProvider.BLOCK_ENTITY);
 			
 			var savedData = machine.getSavedDataForDroppedItem();
 			
 			if (savedData.redstoneControl()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation(REDSTONE_TYPE_KEY, BLOCK_ENTITY_TAG_KEY + "." + REDSTONE_TYPE_KEY);
+				copyNbtBuilder = copyNbtBuilder.copy(REDSTONE_TYPE_KEY, BLOCK_ENTITY_TAG_KEY + "." + REDSTONE_TYPE_KEY);
 			}
 			if (savedData.energyStorage()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation(ENERGY_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + ENERGY_STORAGE_KEY);
+				copyNbtBuilder = copyNbtBuilder.copy(ENERGY_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + ENERGY_STORAGE_KEY);
 			}
 			if (savedData.itemStorage()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation(ITEM_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + ITEM_STORAGE_KEY);
+				copyNbtBuilder = copyNbtBuilder.copy(ITEM_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + ITEM_STORAGE_KEY);
 			}
 			if (savedData.fluidStorage()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation(FLUID_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + FLUID_STORAGE_KEY);
+				copyNbtBuilder = copyNbtBuilder.copy(FLUID_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + FLUID_STORAGE_KEY);
 			}
 			
-			builder.apply(CopyNameLootFunction.builder(CopyNameLootFunction.Source.BLOCK_ENTITY)).apply(copyNbtBuilder);
+			builder.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(copyNbtBuilder);
 			
 			return builder;
 		}
 		
-		return drops(drop);
+		return createSingleItemTable(drop);
+	}
+	
+	private static boolean shouldGenerate(Block block) {
+		return !block.getLootTable().equals(BuiltInLootTables.EMPTY);
 	}
 	
 	@Override
-	protected void generateBlockLootTables() {
+	protected void generate() {
 		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateLootTables).forEachOrdered((family) ->
 				family.getBlockVariants().forEach((variant, block) -> {
 					if (family.shouldGenerateLootTable(variant)) {
 						switch (variant) {
-							case BLOCK, RAW_ORE_BLOCK -> addDrop(block);
+							case BLOCK, RAW_ORE_BLOCK -> dropSelf(block);
 							case STONE_ORE, DEEPSLATE_ORE, NETHER_ORE -> {
 								Item drop;
 								
@@ -126,10 +133,10 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 									drop = family.getBaseItem();
 								}
 								
-								addDrop(block, oreDrops(block, drop));
+								add(block, createOreDrop(block, drop));
 							}
-							case METEOR_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.METEOR_ORE_CLUSTER)));
-							case ASTEROID_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.ASTEROID_ORE_CLUSTER)));
+							case METEOR_ORE -> this.add(block, createOreDrop(block, family.getVariant(ItemVariant.METEOR_ORE_CLUSTER)));
+							case ASTEROID_ORE -> this.add(block, createOreDrop(block, family.getVariant(ItemVariant.ASTEROID_ORE_CLUSTER)));
 							case MOON_ORE, DARK_MOON_ORE -> {
 								Item drop;
 								
@@ -140,11 +147,11 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 								}
 								
 								if (drop == Items.REDSTONE) {
-									addDrop(block, redstoneOreDrops(block));
+									add(block, createRedstoneOreDrops(block));
 								} else if (drop == Items.LAPIS_LAZULI) {
-									addDrop(block, lapisOreDrops(block));
+									add(block, createLapisOreDrops(block));
 								} else {
-									addDrop(block, oreDrops(block,  drop));
+									add(block, createOreDrop(block,  drop));
 								}
 							}
 						}
@@ -153,22 +160,46 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 		);
 		
 		AMBlockFamilies.getFamilies().forEachOrdered((family) -> {
-			addDrop(family.getBaseBlock());
+			dropSelf(family.getBaseBlock());
 			
 			family.getVariants().forEach((variant, block) -> {
 				switch (variant) {
-					case DOOR -> addDrop(block, BlockLootTableGenerator::doorDrops);
-					case SLAB -> addDrop(block, BlockLootTableGenerator::slabDrops);
+					case DOOR -> add(block, this::createDoorTable);
+					case SLAB -> add(block, this::createSlabItemTable);
 					
-					default -> addDrop(block);
+					default -> dropSelf(block);
 				}
 			});
 		});
 		
-		DROPS_SELF.forEach(this::addDrop);
+		DROPS_SELF.forEach(this::dropSelf);
 		
-		addDrop(AMBlocks.AIRLOCK.get(), BlockLootTableGenerator::doorDrops);
+		add(AMBlocks.AIRLOCK.get(), this::createDoorTable);
 		
-		AMDatagenLists.BlockLists.MACHINES.forEach((block) -> this.addDrop(block, machineDrops(block)));
+		AMDatagenLists.BlockLists.MACHINES.stream().filter(AMBlockLootTableProvider::shouldGenerate).forEach((block) -> this.add(block, machineDrops(block)));
+	}
+	
+	@Override
+	protected Iterable<Block> getKnownBlocks() {
+		var blocks = new LinkedHashSet<Block>();
+		
+		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateLootTables).forEachOrdered((family) ->
+				family.getBlockVariants().forEach((variant, block) -> {
+					if (family.shouldGenerateLootTable(variant)) {
+						blocks.add(block);
+					}
+				})
+		);
+		
+		AMBlockFamilies.getFamilies().forEachOrdered((family) -> {
+			blocks.add(family.getBaseBlock());
+			blocks.addAll(family.getVariants().values());
+		});
+		
+		blocks.addAll(DROPS_SELF);
+		AMDatagenLists.BlockLists.MACHINES.stream().filter(AMBlockLootTableProvider::shouldGenerate).forEach(blocks::add);
+		blocks.add(AMBlocks.AIRLOCK.get());
+		
+		return blocks;
 	}
 }

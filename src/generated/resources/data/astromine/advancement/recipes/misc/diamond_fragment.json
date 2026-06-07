@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_diamonds": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:diamonds"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "astromine:diamond_fragment"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_diamonds"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "astromine:diamond_fragment"
+    ]
+  }
+}

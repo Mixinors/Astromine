@@ -26,22 +26,22 @@ package com.github.mixinors.astromine.common.item.utility;
 
 import com.github.mixinors.astromine.common.block.base.TieredBlock;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 public class MachineUpgradeKitItem extends Item {
 	private final Tier from;
 	private final Tier to;
 	
-	public MachineUpgradeKitItem(Tier from, Tier to, Settings settings) {
+	public MachineUpgradeKitItem(Tier from, Tier to, Properties settings) {
 		super(settings);
 		
 		this.from = from;
 		this.to = to;
 	}
 	
-	public MachineUpgradeKitItem(Tier to, Settings settings) {
+	public MachineUpgradeKitItem(Tier to, Properties settings) {
 		this(Tier.values()[to.ordinal() - 1], to, settings);
 	}
 	

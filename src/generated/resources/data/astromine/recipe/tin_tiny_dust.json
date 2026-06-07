@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:tin_dusts"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:tin_tiny_dust"
+  }
+}

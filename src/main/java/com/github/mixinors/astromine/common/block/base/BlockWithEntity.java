@@ -28,111 +28,108 @@ import com.github.mixinors.astromine.common.comparator.ComparatorMode;
 import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
 import com.github.mixinors.astromine.common.item.storage.SimpleFluidStorageItem;
 import com.github.mixinors.astromine.common.tick.Tickable;
-import dev.architectury.registry.menu.ExtendedMenuProvider;
-import dev.architectury.registry.menu.MenuRegistry;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BlockWithEntity extends Block implements BlockEntityProvider {
-	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
+public abstract class BlockWithEntity extends Block implements EntityBlock {
+	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	
 	public static final SavedData MACHINE = new SavedData(false, false, false, false);
 	public static final SavedData ITEM_MACHINE = new SavedData(true, true, true, false);
 	public static final SavedData FLUID_MACHINE = new SavedData(true, true, false, true);
 	public static final SavedData ITEM_AND_FLUID_MACHINE = new SavedData(true, true, true, true);
 	
-	protected BlockWithEntity(AbstractBlock.Settings settings) {
+	protected BlockWithEntity(BlockBehaviour.Properties settings) {
 		super(settings);
 	}
 	
-	public static void markActive(World world, BlockPos pos) {
-		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, true));
+	public static void markActive(Level world, BlockPos pos) {
+		world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(ACTIVE, true));
 	}
 	
-	public static void markInactive(World world, BlockPos pos) {
-		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, false));
+	public static void markInactive(Level world, BlockPos pos) {
+		world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(ACTIVE, false));
 	}
 	
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof SimpleEnergyStorageItem) && !(player.getStackInHand(hand).getItem() instanceof SimpleFluidStorageItem)) && hasScreenHandler()) {
-			MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, createScreenHandlerFactory((ServerPlayerEntity) player, state, world, pos));
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!world.isClientSide && (!(stack.getItem() instanceof BucketItem) && !(stack.getItem() instanceof SimpleEnergyStorageItem) && !(stack.getItem() instanceof SimpleFluidStorageItem)) && hasScreenHandler()) {
+			var serverPlayer = (ServerPlayer) player;
 			
-			return ActionResult.CONSUME;
-		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
-			return super.onUse(state, world, pos, player, hand, hit);
+			serverPlayer.openMenu(createScreenHandlerFactory(serverPlayer, state, world, pos), buffer -> populateScreenHandlerBuffer(state, world, pos, serverPlayer, buffer));
+			
+			return ItemInteractionResult.CONSUME;
+		} else if (stack.getItem() instanceof BucketItem) {
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		} else {
-			return ActionResult.SUCCESS;
+			return ItemInteractionResult.SUCCESS;
 		}
 	}
 	
 	public abstract boolean hasScreenHandler();
 	
-	public abstract ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player);
+	public abstract AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player);
 	
-	public abstract void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer);
+	public abstract void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer);
 	
-	public ExtendedMenuProvider createScreenHandlerFactory(ServerPlayerEntity player, BlockState state, World world, BlockPos pos) {
-		return new ExtendedMenuProvider() {
+	public MenuProvider createScreenHandlerFactory(ServerPlayer player, BlockState state, Level world, BlockPos pos) {
+		return new MenuProvider() {
 			@Override
-			public void saveExtraData(PacketByteBuf buffer) {
-				populateScreenHandlerBuffer(state, world, pos, player, buffer);
+			public Component getDisplayName() {
+				return Component.translatable(getDescriptionId());
 			}
 			
 			@Override
-			public Text getDisplayName() {
-				return Text.translatable(getTranslationKey());
-			}
-			
-			@Override
-			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+			public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
 				return createScreenHandler(state, world, pos, syncId, playerInventory, player);
 			}
 		};
 	}
 	
 	@Override
-	public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
-		super.onSyncedBlockEvent(state, world, pos, type, data);
+	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int type, int data) {
+		super.triggerEvent(state, world, pos, type, data);
 		
 		var blockEntity = world.getBlockEntity(pos);
 		
-		return blockEntity != null && blockEntity.onSyncedBlockEvent(type, data);
+		return blockEntity != null && blockEntity.triggerEvent(type, data);
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(ACTIVE);
 		
-		super.appendProperties(builder);
+		super.createBlockStateDefinition(builder);
 	}
 	
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return super.getPlacementState(context).with(ACTIVE, false);
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return super.getStateForPlacement(context).setValue(ACTIVE, false);
 	}
 	
 	protected ComparatorMode getComparatorMode() {
@@ -140,29 +137,24 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	}
 	
 	@Override
-	public boolean hasComparatorOutput(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return getComparatorMode().hasOutput();
 	}
 
 	@Override
-	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
 		return getComparatorMode().getOutput(world.getBlockEntity(pos));
 	}
 	
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		super.onPlaced(world, pos, state, placer, stack);
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(world, pos, state, placer, stack);
 		
-		var blockEntity = world.getBlockEntity(pos);
-		
-		if (blockEntity != null) {
-			blockEntity.readNbt(stack.getOrCreateNbt());
-		}
 	}
 	
 	@Nullable
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
 		return (world1, blockPos, blockState, blockEntity) -> {
 			if (blockEntity instanceof Tickable tickableBlockEntity) {
 				tickableBlockEntity.tick();

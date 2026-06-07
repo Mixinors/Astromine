@@ -28,124 +28,119 @@ import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMParticles;
-import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import com.github.mixinors.astromine.common.gravity.GravityManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class RocketEntity extends ExtendedEntity {
 	private static final String ROCKET_UUID_KEY = "rocket";
 	
-	public static final TrackedData<Boolean> RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
 	
 	private Rocket rocket;
 	
-	public RocketEntity(EntityType<?> type, World world) {
+	public RocketEntity(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 	
 	@Override
-	protected void initDataTracker() {
-		this.getDataTracker().startTracking(RUNNING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(RUNNING, false);
 	}
 	
 	@Override
-	protected void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
+	protected void addAdditionalSaveData(CompoundTag nbt) {
+		super.addAdditionalSaveData(nbt);
 		
 		if (rocket != null) {
-			nbt.putUuid(ROCKET_UUID_KEY, rocket.getUuid());
+			nbt.putUUID(ROCKET_UUID_KEY, rocket.getUuid());
 		}
 	}
 	
 	@Override
-	protected void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
+	protected void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
 		
 		if (nbt.contains(ROCKET_UUID_KEY)) {
-			rocket = RocketManager.get(nbt.getUuid(ROCKET_UUID_KEY));
+			rocket = RocketManager.get(level(), nbt.getUUID(ROCKET_UUID_KEY));
 		}
 	}
 	
-	public Vec3d getAcceleration() {
-		return new Vec3d(0.0D, 0.000025 / (Math.abs(getY()) / 1024.0D), 0.0D);
+	public Vec3 getAcceleration() {
+		return new Vec3(0.0D, 0.000025 / (Math.abs(getY()) / 1024.0D), 0.0D);
 	}
 	
 	@Override
-	public boolean isCollidable() {
+	public boolean canBeCollidedWith() {
 		return !this.isRemoved();
 	}
 	
 	@Override
-	public boolean canHit() {
+	public boolean isPickable() {
 		return !this.isRemoved();
 	}
 	
 	@Override
-	public ActionResult interact(PlayerEntity player, Hand hand) {
+	public InteractionResult interact(Player player, InteractionHand hand) {
 		return super.interact(player, hand);
 	}
 	
 	@Override
-	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		if (player.world.isClient()) {
-			return ActionResult.CONSUME;
+	public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
+		if (player.level().isClientSide()) {
+			return InteractionResult.CONSUME;
 		}
 		
-		RocketManager.teleportToRocketInterior(player, getUuid());
+		RocketManager.teleportToRocketInterior(player, getUUID());
 		
 		return super.interactAt(player, hitPos, hand);
-	}
-	
-	@Override
-	public Packet<?> createSpawnPacket() {
-		return new EntitySpawnS2CPacket(this);
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
 		
-		if (!world.isClient) {
+		var level = level();
+		
+		if (!level.isClientSide) {
 			if (isRunning()) {
 				var acceleration = getAcceleration();
 				
-				this.addVelocity(0, acceleration.y, 0);
-				this.move(MovementType.SELF, this.getVelocity());
+				this.push(0, acceleration.y, 0);
+				this.move(MoverType.SELF, this.getDeltaMovement());
 				
 				var box = getBoundingBox();
 				
 				for (var x = box.minX; x < box.maxX; x += 0.0625) {
 					for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
-						((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, getY(), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+						((ServerLevel) level).sendParticles(AMParticles.ROCKET_FLAME.get(), x, getY(), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 					}
 				}
 			} else {
-				this.addVelocity(0, -GravityManager.get(world.getRegistryKey()), 0);
-				this.move(MovementType.SELF, this.getVelocity());
+				this.push(0, -GravityManager.get(level.dimension()), 0);
+				this.move(MoverType.SELF, this.getDeltaMovement());
 				
-				velocityDirty = true;
+				hasImpulse = true;
 			}
 		}
 	}
 	
 	public boolean isRunning() {
-		return dataTracker.get(RUNNING);
+		return entityData.get(RUNNING);
 	}
 	
 	public void setRunning(boolean running) {
-		dataTracker.set(RUNNING, running);
+		entityData.set(RUNNING, running);
 	}
 	
 	public Rocket getRocket() {

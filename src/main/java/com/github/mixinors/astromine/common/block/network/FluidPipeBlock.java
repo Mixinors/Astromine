@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
 
 public final class FluidPipeBlock extends CableBlock {
-	public FluidPipeBlock(Settings settings) {
+	public FluidPipeBlock(Properties settings) {
 		super(settings);
 	}
 	

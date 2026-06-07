@@ -30,6 +30,7 @@ import com.github.mixinors.astromine.common.recipe.base.input.FluidInputRecipe;
 import com.github.mixinors.astromine.common.recipe.base.output.DoubleFluidOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
@@ -37,36 +38,35 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import com.github.mixinors.astromine.common.recipe.base.AstromineRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public record ElectrolyzingRecipe(
-		Identifier id,
+		ResourceLocation id,
 		FluidIngredient input,
 		FluidResult firstOutput,
 		FluidResult secondOutput,
 		long energyInput,
 		int time
 ) implements FluidInputRecipe, DoubleFluidOutputRecipe {
-	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
-	public static boolean allows(World world, FluidVariant... variants) {
+	public static boolean allows(Level world, FluidStack... stacks) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(ElectrolyzingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(variants)) {
+			if (recipe.allows(stacks)) {
 				return true;
 			}
 		}
@@ -74,9 +74,9 @@ public record ElectrolyzingRecipe(
 		return false;
 	}
 	
-	public static Optional<ElectrolyzingRecipe> matching(World world, SingleSlotStorage<FluidVariant>... storages) {
+	public static Optional<ElectrolyzingRecipe> matching(Level world, SimpleFluidVariantStorage... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(ElectrolyzingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
@@ -88,11 +88,11 @@ public record ElectrolyzingRecipe(
 		return Optional.empty();
 	}
 	
-	public boolean matches(SingleSlotStorage<FluidVariant>... variants) {
-		var inputStorage = variants[0];
+	public boolean matches(SimpleFluidVariantStorage... storages) {
+		var inputStorage = storages[0];
 		
-		var firstOutputStorage = variants[1];
-		var secondOutputStorage = variants[2];
+		var firstOutputStorage = storages[1];
+		var secondOutputStorage = storages[2];
 		
 		if (!input.test(inputStorage)) {
 			return false;
@@ -103,7 +103,7 @@ public record ElectrolyzingRecipe(
 	}
 	
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
@@ -118,7 +118,7 @@ public record ElectrolyzingRecipe(
 	}
 	
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AMBlocks.ADVANCED_ELECTROLYZER.get());
 	}
 	
@@ -144,8 +144,8 @@ public record ElectrolyzingRecipe(
 		return secondOutput;
 	}
 	
-	public static final class Serializer implements RecipeSerializer<ElectrolyzingRecipe> {
-		public static final Identifier ID = AMCommon.id("electrolyzing");
+	public static final class Serializer implements AstromineRecipeSerializer<ElectrolyzingRecipe> {
+		public static final ResourceLocation ID = AMCommon.id("electrolyzing");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
@@ -153,7 +153,7 @@ public record ElectrolyzingRecipe(
 		}
 		
 		@Override
-		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
+		public ElectrolyzingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
 			
 			return new ElectrolyzingRecipe(
@@ -167,7 +167,7 @@ public record ElectrolyzingRecipe(
 		}
 		
 		@Override
-		public ElectrolyzingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public ElectrolyzingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new ElectrolyzingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -179,7 +179,7 @@ public record ElectrolyzingRecipe(
 		}
 		
 		@Override
-		public void write(PacketByteBuf buffer, ElectrolyzingRecipe recipe) {
+		public void write(FriendlyByteBuf buffer, ElectrolyzingRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.input);
 			FluidResult.toPacket(buffer, recipe.firstOutput);
 			FluidResult.toPacket(buffer, recipe.secondOutput);

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "astromine:basic_energy_cable"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "astromine:blocks/basic_energy_cable"
+}

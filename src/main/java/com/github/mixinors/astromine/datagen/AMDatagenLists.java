@@ -7,17 +7,15 @@ import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant
 import com.github.mixinors.astromine.registry.common.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
-import net.minecraft.block.Block;
-import net.minecraft.data.family.BlockFamily;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.ItemTags;
-import net.minecraft.tag.TagKey;
-
+import net.minecraft.data.BlockFamily;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import java.util.List;
 import java.util.Map;
 
@@ -143,7 +141,7 @@ public class AMDatagenLists {
 		);
 		
 		public static final List<Item> ONE_BIOFUEL_ITEMS = ImmutableList.of(
-				Items.GRASS,
+				Items.SHORT_GRASS,
 				Items.FERN,
 				Items.DEAD_BUSH,
 				Items.SEAGRASS,
@@ -208,7 +206,7 @@ public class AMDatagenLists {
 	}
 	
 	public static class FluidLists {
-		public static final List<ExtendedFluid> INDUSTRIAL_FLUIDS = ImmutableList.of(
+		public static final List<ExtendedFluid.Entry> INDUSTRIAL_FLUIDS = ImmutableList.of(
 				AMFluids.OIL,
 				AMFluids.FUEL,
 				AMFluids.BIOMASS,
@@ -216,7 +214,7 @@ public class AMDatagenLists {
 				AMFluids.HYDROGEN
 		);
 		
-		public static final List<ExtendedFluid> MOLTEN_FLUIDS = ImmutableList.of(
+		public static final List<ExtendedFluid.Entry> MOLTEN_FLUIDS = ImmutableList.of(
 				AMFluids.MOLTEN_AMETHYST,
 				AMFluids.MOLTEN_ASTERITE,
 				AMFluids.MOLTEN_BRONZE,
@@ -243,7 +241,7 @@ public class AMDatagenLists {
 				AMFluids.MOLTEN_LUNUM
 		);
 		
-		public static final List<ExtendedFluid> FLUIDS = ImmutableList.<ExtendedFluid>builder()
+		public static final List<ExtendedFluid.Entry> FLUIDS = ImmutableList.<ExtendedFluid.Entry>builder()
 																			   .addAll(INDUSTRIAL_FLUIDS)
 																			   .addAll(MOLTEN_FLUIDS)
 																			   .build();
@@ -296,7 +294,7 @@ public class AMDatagenLists {
 		
 		public static final List<EntityType<?>> CAN_BREATHE_WATER_ENTITY_TYPES = ImmutableList.of(
 				EntityType.AXOLOTL,
-				EntityType.DOLPHIN, // not scientifically accurate, but shut up
+				EntityType.DOLPHIN,
 				EntityType.TURTLE
 		);
 		
@@ -373,12 +371,9 @@ public class AMDatagenLists {
 				.put(AMTagKeys.BlockTags.MUSHROOM_BLOCKS, AMTagKeys.ItemTags.MUSHROOM_BLOCKS)
 				.put(AMTagKeys.BlockTags.NETHER_FUNGI, AMTagKeys.ItemTags.NETHER_FUNGI)
 				.put(AMTagKeys.BlockTags.NETHER_ROOTS, AMTagKeys.ItemTags.NETHER_ROOTS)
-				.put(AMTagKeys.BlockTags.NETHER_VINES, AMTagKeys.ItemTags.NETHER_VINES)
 				.put(AMTagKeys.BlockTags.PUMPKINS, AMTagKeys.ItemTags.PUMPKINS)
 				.put(AMTagKeys.BlockTags.GOURDS, AMTagKeys.ItemTags.GOURDS)
-				.put(AMTagKeys.BlockTags.WEEPING_VINES, AMTagKeys.ItemTags.WEEPING_VINES)
-				.put(AMTagKeys.BlockTags.TWISTING_VINES, AMTagKeys.ItemTags.TWISTING_VINES)
-				.put(ConventionalBlockTags.ORES, ConventionalItemTags.ORES)
+				.put(Tags.Blocks.ORES, Tags.Items.ORES)
 				.build();
 		
 		public static final Map<BlockFamily.Variant, TagKey<Item>> BLOCK_FAMILY_VARIANTS = ImmutableMap.of(

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 144000,
+  "input": {
+    "count": 1,
+    "tag": "c:galaxium_asteroid_ores"
+  },
+  "output": {
+    "amount": 144,
+    "fluid": "astromine:molten_galaxium"
+  },
+  "time": 18000
+}

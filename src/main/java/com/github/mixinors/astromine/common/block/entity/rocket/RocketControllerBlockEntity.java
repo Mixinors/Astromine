@@ -6,14 +6,15 @@ import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 	private static final String OWNER_UUID_KEY = "OwnerUuid";
@@ -31,32 +32,33 @@ public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 	
 	@Nullable
 	public Rocket getRocket() {
-		return RocketManager.get(new ChunkPos(getPos()));
+		var level = getLevel();
+		return level == null ? null : RocketManager.get(level, new ChunkPos(getBlockPos()));
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		super.saveAdditional(nbt, registries);
 		
 		if (ownerUuid != null) {
-			nbt.putUuid(OWNER_UUID_KEY, ownerUuid);
+			nbt.putUUID(OWNER_UUID_KEY, ownerUuid);
 		}
 		
 		if (rocketUuid != null) {
-			nbt.putUuid(ROCKET_UUID_KEY, rocketUuid);
+			nbt.putUUID(ROCKET_UUID_KEY, rocketUuid);
 		}
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
-		super.readNbt(nbt);
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
+		super.loadAdditional(nbt, registries);
 		
 		if (nbt.contains(OWNER_UUID_KEY)) {
-			ownerUuid = nbt.getUuid(OWNER_UUID_KEY);
+			ownerUuid = nbt.getUUID(OWNER_UUID_KEY);
 		}
 
 		if (nbt.contains(ROCKET_UUID_KEY)) {
-			rocketUuid = nbt.getUuid(ROCKET_UUID_KEY);
+			rocketUuid = nbt.getUUID(ROCKET_UUID_KEY);
 		}
 	}
 	

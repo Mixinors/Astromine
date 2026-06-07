@@ -24,18 +24,19 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -50,26 +51,34 @@ public final class FluidIngredient {
 	private final Entry entry;
 	
 	@Nullable
-	private FluidVariant[] matchingVariants;
+	private FluidStack[] matchingStacks;
 	
 	public FluidIngredient(Entry entry) {
 		this.entry = entry;
 	}
 	
-	public FluidIngredient(FluidVariant variant, long amount) {
-		this.entry = new VariantEntry(variant, amount);
+	public FluidIngredient(FluidStack stack, long amount) {
+		this.entry = new StackEntry(stack, amount);
 	}
 	
-	public boolean test(SingleSlotStorage<FluidVariant> testStorage) {
+	public FluidIngredient(Fluid fluid, long amount) {
+		this(new FluidStack(fluid, clampAmount(amount)), amount);
+	}
+	
+	public boolean test(SimpleFluidVariantStorage testStorage) {
+		if (testStorage.isResourceBlank()) {
+			return false;
+		}
+		
 		return test(testStorage.getResource(), testStorage.getAmount());
 	}
 	
-	public boolean test(FluidVariant testVariant, Long testAmount) {
-		return entry.test(testVariant, testAmount);
+	public boolean test(FluidStack testStack, Long testAmount) {
+		return entry.test(testStack, testAmount);
 	}
 	
-	public boolean testVariant(FluidVariant testVariant) {
-		return entry.testVariant(testVariant);
+	public boolean testStack(FluidStack testStack) {
+		return entry.testStack(testStack);
 	}
 	
 	public Entry getEntry() {
@@ -80,62 +89,40 @@ public final class FluidIngredient {
 		return entry.getAmount();
 	}
 	
-	public FluidVariant[] getMatchingVariants() {
-		this.cacheMatchingVariants();
+	public FluidStack[] getMatchingStacks() {
+		this.cacheMatchingStacks();
 		
-		return this.matchingVariants;
+		return this.matchingStacks;
 	}
 	
-	private void cacheMatchingVariants() {
-		if (this.matchingVariants == null) {
-			this.matchingVariants = entry.getVariants().stream().distinct().toArray(FluidVariant[]::new);
+	private void cacheMatchingStacks() {
+		if (this.matchingStacks == null) {
+			this.matchingStacks = entry.getStacks().stream().distinct().toArray(FluidStack[]::new);
 		}
 	}
 	
 	public static FluidIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
-			var entryAsId = new Identifier(json.getAsString());
-			var entryAsFluid = Registry.FLUID.get(entryAsId);
-			var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
+			var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(json.getAsString()));
 			
-			return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
+			return new FluidIngredient(new StackEntry(new FluidStack(fluid, FluidType.BUCKET_VOLUME)));
 		}
 		
 		if (json.isJsonObject()) {
 			var jsonObject = json.getAsJsonObject();
 			
 			if (jsonObject.has(FLUID_KEY)) {
-				if (jsonObject.has(AMOUNT_KEY)) {
-					var entryAsId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
-					var entryAsFluid = Registry.FLUID.get(entryAsId);
-					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
-					
-					var entryAmount = jsonObject.get(AMOUNT_KEY).getAsLong();
-					
-					return new FluidIngredient(new VariantEntry(entryAsFluidVariant, entryAmount));
-				} else {
-					var entryAsId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
-					var entryAsFluid = Registry.FLUID.get(entryAsId);
-					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
-					
-					return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
-				}
+				var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(jsonObject.get(FLUID_KEY).getAsString()));
+				var amount = jsonObject.has(AMOUNT_KEY) ? jsonObject.get(AMOUNT_KEY).getAsLong() : FluidType.BUCKET_VOLUME;
+				
+				return new FluidIngredient(new StackEntry(new FluidStack(fluid, clampAmount(amount)), amount));
 			}
 			
 			if (jsonObject.has(TAG_KEY)) {
-				if (jsonObject.has(AMOUNT_KEY)) {
-					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
-					var entryAsTag = AMTagKeys.createFluidTag(entryAsId);
-					
-					var entryAmount = jsonObject.get(AMOUNT_KEY).getAsLong();
-					
-					return new FluidIngredient(new TagEntry(entryAsTag, entryAmount));
-				} else {
-					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
-					var entryAsTag = AMTagKeys.createFluidTag(entryAsId);
-					
-					return new FluidIngredient(new TagEntry(entryAsTag));
-				}
+				var tag = AMTagKeys.createFluidTag(ResourceLocation.parse(jsonObject.get(TAG_KEY).getAsString()));
+				var amount = jsonObject.has(AMOUNT_KEY) ? jsonObject.get(AMOUNT_KEY).getAsLong() : FluidType.BUCKET_VOLUME;
+				
+				return new FluidIngredient(new TagEntry(tag, amount));
 			}
 		}
 		
@@ -145,90 +132,84 @@ public final class FluidIngredient {
 	public static JsonObject toJson(FluidIngredient ingredient) {
 		var jsonObject = new JsonObject();
 		
-		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			var entryJsonObject = new JsonObject();
-			
-			entryJsonObject.addProperty(FLUID_KEY, Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
-			entryJsonObject.addProperty(AMOUNT_KEY, variantEntry.requiredAmount);
+		if (ingredient.entry instanceof StackEntry stackEntry) {
+			jsonObject.addProperty(FLUID_KEY, BuiltInRegistries.FLUID.getKey(stackEntry.requiredStack.getFluid()).toString());
+			jsonObject.addProperty(AMOUNT_KEY, stackEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			var entryJsonObject = new JsonObject();
-			
-			entryJsonObject.addProperty(TAG_KEY, tagEntry.requiredTag.id().toString());
-			entryJsonObject.addProperty(AMOUNT_KEY, tagEntry.requiredAmount);
+			jsonObject.addProperty(TAG_KEY, tagEntry.requiredTag.location().toString());
+			jsonObject.addProperty(AMOUNT_KEY, tagEntry.requiredAmount);
 		}
 		
 		return jsonObject;
 	}
 	
-	public static FluidIngredient fromPacket(PacketByteBuf buf) {
-		var entryType = buf.readString();
-		var entryTypeId = new Identifier(buf.readString());
-		
+	public static FluidIngredient fromPacket(FriendlyByteBuf buf) {
+		var entryType = buf.readUtf();
+		var entryTypeId = ResourceLocation.parse(buf.readUtf());
 		var entryAmount = buf.readLong();
 		
 		if (entryType.equals(FLUID_KEY)) {
-			var entryFluid = Registry.FLUID.get(entryTypeId);
-			var entryVariant = FluidVariant.of(entryFluid);
+			var fluid = BuiltInRegistries.FLUID.get(entryTypeId);
 			
-			return new FluidIngredient(new VariantEntry(entryVariant, entryAmount));
+			return new FluidIngredient(new StackEntry(new FluidStack(fluid, clampAmount(entryAmount)), entryAmount));
 		}
 		
 		if (entryType.equals(TAG_KEY)) {
-			var entryTag = AMTagKeys.createFluidTag(entryTypeId);
-			
-			return new FluidIngredient(new TagEntry(entryTag, entryAmount));
+			return new FluidIngredient(new TagEntry(AMTagKeys.createFluidTag(entryTypeId), entryAmount));
 		}
 		
 		return null;
 	}
 	
-	public static void toPacket(PacketByteBuf buf, FluidIngredient ingredient) {
-		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			buf.writeString(FLUID_KEY);
-			buf.writeString(Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
-			buf.writeLong(variantEntry.requiredAmount);
+	public static void toPacket(FriendlyByteBuf buf, FluidIngredient ingredient) {
+		if (ingredient.entry instanceof StackEntry stackEntry) {
+			buf.writeUtf(FLUID_KEY);
+			buf.writeUtf(BuiltInRegistries.FLUID.getKey(stackEntry.requiredStack.getFluid()).toString());
+			buf.writeLong(stackEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			buf.writeString(TAG_KEY);
-			buf.writeString(tagEntry.requiredTag.id().toString());
+			buf.writeUtf(TAG_KEY);
+			buf.writeUtf(tagEntry.requiredTag.location().toString());
 			buf.writeLong(tagEntry.requiredAmount);
 		}
 	}
 	
-	public static abstract class Entry implements BiPredicate<FluidVariant, Long> {
-		public abstract long getAmount();
-		
-		public abstract Collection<FluidVariant> getVariants();
-		
-		public abstract boolean testVariant(FluidVariant testVariant);
+	private static int clampAmount(long amount) {
+		return (int) Math.max(0L, Math.min(amount, Integer.MAX_VALUE));
 	}
 	
-	public static class VariantEntry extends Entry {
-		private final FluidVariant requiredVariant;
+	public static abstract class Entry implements BiPredicate<FluidStack, Long> {
+		public abstract long getAmount();
 		
+		public abstract Collection<FluidStack> getStacks();
+		
+		public abstract boolean testStack(FluidStack testStack);
+	}
+	
+	public static class StackEntry extends Entry {
+		private final FluidStack requiredStack;
 		private final long requiredAmount;
 		
-		public VariantEntry(FluidVariant variant) {
-			this.requiredVariant = variant;
-			this.requiredAmount = 1;
+		public StackEntry(FluidStack stack) {
+			this(stack, stack.isEmpty() ? 0L : stack.getAmount());
 		}
 		
-		public VariantEntry(FluidVariant variant, long amount) {
-			this.requiredVariant = variant;
+		public StackEntry(FluidStack stack, long amount) {
+			this.requiredStack = stack.isEmpty() ? FluidStack.EMPTY : stack.copyWithAmount(1);
 			this.requiredAmount = amount;
 		}
 		
 		@Override
-		public boolean test(FluidVariant testVariant, Long testAmount) {
-			return testVariant(testVariant) && testAmount >= requiredAmount;
+		public boolean test(FluidStack testStack, Long testAmount) {
+			return testStack(testStack) && testAmount >= requiredAmount;
 		}
 		
 		@Override
-		public boolean testVariant(FluidVariant testVariant) {
-			return testVariant.equals(requiredVariant);
+		public boolean testStack(FluidStack testStack) {
+			return FluidStack.isSameFluidSameComponents(testStack, requiredStack);
 		}
 		
 		@Override
@@ -237,21 +218,19 @@ public final class FluidIngredient {
 		}
 		
 		@Override
-		public ImmutableCollection<FluidVariant> getVariants() {
-			return ImmutableList.of(requiredVariant);
+		public Collection<FluidStack> getStacks() {
+			return ImmutableList.of(requiredStack.copyWithAmount(clampAmount(requiredAmount)));
 		}
 	}
 	
 	public static class TagEntry extends Entry {
-		private List<FluidVariant> requiredVariants;
+		private List<FluidStack> requiredStacks;
 		
 		private final TagKey<Fluid> requiredTag;
-		
 		private final long requiredAmount;
 		
 		public TagEntry(TagKey<Fluid> tag) {
-			this.requiredTag = tag;
-			this.requiredAmount = 1;
+			this(tag, FluidType.BUCKET_VOLUME);
 		}
 		
 		public TagEntry(TagKey<Fluid> tag, long amount) {
@@ -260,19 +239,13 @@ public final class FluidIngredient {
 		}
 		
 		@Override
-		public boolean test(FluidVariant testVariant, Long testAmount) {
-			return testVariant(testVariant) && testAmount >= requiredAmount;
+		public boolean test(FluidStack testStack, Long testAmount) {
+			return testStack(testStack) && testAmount >= requiredAmount;
 		}
 		
 		@Override
-		public boolean testVariant(FluidVariant testVariant) {
-			for (var requiredVariant : getVariants()) {
-				if (requiredVariant.equals(testVariant)) {
-					return true;
-				}
-			}
-			
-			return false;
+		public boolean testStack(FluidStack testStack) {
+			return !testStack.isEmpty() && testStack.getFluid().is(requiredTag);
 		}
 		
 		@Override
@@ -281,22 +254,22 @@ public final class FluidIngredient {
 		}
 		
 		@Override
-		public Collection<FluidVariant> getVariants() {
-			if (requiredVariants == null) {
-				var builder = ImmutableList.<FluidVariant>builder();
+		public Collection<FluidStack> getStacks() {
+			if (requiredStacks == null) {
+				var builder = ImmutableList.<FluidStack>builder();
 				
-				for (var entry : Registry.FLUID.iterateEntries(requiredTag)) {
+				for (var entry : BuiltInRegistries.FLUID.getTagOrEmpty(requiredTag)) {
 					var fluid = entry.value();
 					
-					if (fluid.isStill(fluid.getDefaultState())) {
-						builder.add(FluidVariant.of(fluid));
+					if (fluid != Fluids.EMPTY && fluid.isSource(fluid.defaultFluidState())) {
+						builder.add(new FluidStack(fluid, clampAmount(requiredAmount)));
 					}
 				}
 				
-				requiredVariants = builder.build();
+				requiredStacks = builder.build();
 			}
 			
-			return requiredVariants;
+			return requiredStacks;
 		}
 	}
 }

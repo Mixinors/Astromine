@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 992,
+  "input": {
+    "count": 1,
+    "tag": "c:lead_dusts"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_lead"
+  },
+  "time": 124
+}

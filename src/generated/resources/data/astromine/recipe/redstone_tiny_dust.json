@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:redstone_dusts"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:redstone_tiny_dust"
+  }
+}

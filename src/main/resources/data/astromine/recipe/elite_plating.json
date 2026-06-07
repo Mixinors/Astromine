@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "03 ",
+    "30 ",
+    "   "
+  ],
+  "key": {
+    "0": {
+      "tag": "c:steel_ingots"
+    },
+    "3": {
+      "tag": "c:diamond_dusts"
+    }
+  },
+  "result": {
+    "count": 2,
+    "id": "astromine:elite_plating"
+  }
+}

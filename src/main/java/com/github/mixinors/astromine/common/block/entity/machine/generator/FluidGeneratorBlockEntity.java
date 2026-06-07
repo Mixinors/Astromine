@@ -29,14 +29,13 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageMachineConfigProvider;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -53,7 +52,7 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), 0L, getMaxTransferRate());
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), 0L, getMaxTransferRate());
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				false
@@ -62,29 +61,27 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				return false;
 			}
 			
-			return FluidGeneratingRecipe.allows(world, variant);
+			return FluidGeneratingRecipe.allows(level, variant);
 		}).listener(() -> {
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
 			
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
-		
-		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		if (fluidStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
-				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT));
+				optionalRecipe = FluidGeneratingRecipe.matching(level, fluidStorage.slice(INPUT_SLOT));
 			}
 			
 			if (optionalRecipe.isPresent()) {
@@ -95,28 +92,24 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				var speed = Math.min(getSpeed(), limit - progress);
 				var generated = (long) (recipe.energyOutput() * speed / limit);
 				
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount + generated <= energyStorage.capacity) {
-						energyStorage.amount += generated;
+				if (energyStorage.amount + generated <= energyStorage.capacity) {
+					energyStorage.amount += generated;
+					
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 						
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
-							
-							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
-							
-							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction, true);
-							
-							transaction.commit();
-							
-							progress = 0.0D;
-						} else {
-							progress += speed;
-						}
+						var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 						
-						active = true;
+						inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), true, false);
+						
+						progress = 0.0D;
 					} else {
-						active = false;
+						progress += speed;
 					}
+					
+					active = true;
+				} else {
+					active = false;
 				}
 			} else {
 				progress = 0.0D;

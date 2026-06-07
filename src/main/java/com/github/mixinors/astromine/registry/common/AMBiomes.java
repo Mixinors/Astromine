@@ -25,37 +25,39 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.gen.GenerationStep;
-
 import java.util.HashSet;
 import java.util.Set;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMBiomes {
-	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
+	private static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(Registries.BIOME, AMCommon.MOD_ID);
 	
-	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
-	public static final RegistryKey<Biome> ASTEROID_BELT_KEY = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
+	private static final Set<ResourceKey<?>> KEYS = new HashSet<>();
 	
-	public static final Identifier MOON_LIGHT_SIDE_ID = AMCommon.id("moon_light_side");
-	public static final RegistryKey<Biome> MOON_LIGHT_SIDE_KEY = register(Registry.BIOME_KEY, MOON_LIGHT_SIDE_ID);
+	public static final ResourceLocation ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
+	public static final ResourceKey<Biome> ASTEROID_BELT_KEY = register(Registries.BIOME, ASTEROID_BELT_ID);
 	
-	public static final Identifier MOON_DARK_SIDE_ID = AMCommon.id("moon_dark_side");
-	public static final RegistryKey<Biome> MOON_DARK_SIDE_KEY = register(Registry.BIOME_KEY, MOON_DARK_SIDE_ID);
+	public static final ResourceLocation MOON_LIGHT_SIDE_ID = AMCommon.id("moon_light_side");
+	public static final ResourceKey<Biome> MOON_LIGHT_SIDE_KEY = register(Registries.BIOME, MOON_LIGHT_SIDE_ID);
 	
-	public static final Identifier MOON_CRATER_FIELD_ID = AMCommon.id("moon_crater_field");
-	public static final RegistryKey<Biome> MOON_CRATER_FIELD_KEY = register(Registry.BIOME_KEY, MOON_CRATER_FIELD_ID);
+	public static final ResourceLocation MOON_DARK_SIDE_ID = AMCommon.id("moon_dark_side");
+	public static final ResourceKey<Biome> MOON_DARK_SIDE_KEY = register(Registries.BIOME, MOON_DARK_SIDE_ID);
 	
-	public static final Identifier ROCKET_ID = AMCommon.id("rocket");
-	public static final RegistryKey<Biome> ROCKET_KEY = register(Registry.BIOME_KEY, ROCKET_ID);
+	public static final ResourceLocation MOON_CRATER_FIELD_ID = AMCommon.id("moon_crater_field");
+	public static final ResourceKey<Biome> MOON_CRATER_FIELD_KEY = register(Registries.BIOME, MOON_CRATER_FIELD_ID);
+	
+	public static final ResourceLocation ROCKET_ID = AMCommon.id("rocket");
+	public static final ResourceKey<Biome> ROCKET_KEY = register(Registries.BIOME, ROCKET_ID);
 	
 	// We specify what entities spawn and what features generate in the biome.
 	// Aside from some structures, trees, rocks, plants and
@@ -64,139 +66,128 @@ public class AMBiomes {
 	
 	// Applies for all create<X> methods.
 	private static Biome createAsteroidBelt() {
-		var spawnSettings = new SpawnSettings.Builder()
-				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+		var spawnSettings = new MobSpawnSettings.Builder()
+				.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
 				.build();
 		
-		var generationSettings = new GenerationSettings.Builder()
-				.feature(GenerationStep.Feature.UNDERGROUND_ORES, AMFeatures.ASTEROID_ORES_PLACED_FEATURE)
+		var generationSettings = new BiomeGenerationSettings.PlainBuilder()
+				.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AMFeatures.ASTEROID_ORES_PLACED_FEATURE)
 				.build();
 		
-		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+		return (new Biome.BiomeBuilder())
 				.temperature(0.0F)
 				.downfall(0.0F)
-				.effects((new BiomeEffects.Builder())
+				.specialEffects((new BiomeSpecialEffects.Builder())
 						.waterColor(0x3F76E4)
 						.waterFogColor(0x050533)
 						.fogColor(0xC0D8FF)
 						.skyColor(0x77ADFF)
 						.build())
-				.spawnSettings(spawnSettings)
+				.mobSpawnSettings(spawnSettings)
 				.generationSettings(generationSettings)
 				.build();
 	}
 	
 	private static Biome createMoonLightSide() {
-		var spawnSettings = new SpawnSettings.Builder()
-				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+		var spawnSettings = new MobSpawnSettings.Builder()
+				.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
 				.build();
 		
-		var generationSettings = new GenerationSettings.Builder()
-				.build();
+		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
-		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+		return (new Biome.BiomeBuilder())
 				.temperature(0.0F)
 				.downfall(0.0F)
-				.effects((new BiomeEffects.Builder())
+				.specialEffects((new BiomeSpecialEffects.Builder())
 						.waterColor(0x3F76E4)
 						.waterFogColor(0x050533)
 						.fogColor(0xC0D8FF)
 						.skyColor(0x77ADFF)
 						.build())
-				.spawnSettings(spawnSettings)
+				.mobSpawnSettings(spawnSettings)
 				.generationSettings(generationSettings)
 				.build();
 	}
 	
-	// TODO: Add Dark versions of mobs to this biome!
 	private static Biome createMoonDarkSide() {
-		var spawnSettings = new SpawnSettings.Builder()
-				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+		var spawnSettings = new MobSpawnSettings.Builder()
+				.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
 				.build();
 		
-		var generationSettings = new GenerationSettings.Builder()
-				.build();
+		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
-		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+		return (new Biome.BiomeBuilder())
 				.temperature(0.0F)
 				.downfall(0.0F)
-				.effects((new BiomeEffects.Builder())
+				.specialEffects((new BiomeSpecialEffects.Builder())
 						.waterColor(0x3F76E4)
 						.waterFogColor(0x050533)
 						.fogColor(0xC0D8FF)
 						.skyColor(0x77ADFF)
 						.build())
-				.spawnSettings(spawnSettings)
+				.mobSpawnSettings(spawnSettings)
 				.generationSettings(generationSettings)
 				.build();
 	}
 	
 	private static Biome createMoonCraterField() {
-		var spawnSettings = new SpawnSettings.Builder()
-				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+		var spawnSettings = new MobSpawnSettings.Builder()
+				.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
 				.build();
 		
-		var generationSettings = new GenerationSettings.Builder()
-				.build();
+		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
-		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+		return (new Biome.BiomeBuilder())
 				.temperature(0.0F)
 				.downfall(0.0F)
-				.effects((new BiomeEffects.Builder())
+				.specialEffects((new BiomeSpecialEffects.Builder())
 						.waterColor(0x3F76E4)
 						.waterFogColor(0x050533)
 						.fogColor(0xC0D8FF)
 						.skyColor(0x77ADFF)
 						.build())
-				.spawnSettings(spawnSettings)
+				.mobSpawnSettings(spawnSettings)
 				.generationSettings(generationSettings)
 				.build();
 	}
 	
 	private static Biome createRocket() {
-		var spawnSettings = new SpawnSettings.Builder().build();
+		var spawnSettings = new MobSpawnSettings.Builder().build();
 		
-		// TODO: Generate a rocket feature
-		var generationSettings = new GenerationSettings.Builder().build();
+		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
-		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+		return (new Biome.BiomeBuilder())
 				.temperature(0.0F)
 				.downfall(0.0F)
-				.effects((new BiomeEffects.Builder())
+				.specialEffects((new BiomeSpecialEffects.Builder())
 						.waterColor(0x3F76E4)
 						.waterFogColor(0x050533)
 						.fogColor(0xC0D8FF)
 						.skyColor(0x77ADFF)
 						.build())
-				.spawnSettings(spawnSettings)
+				.mobSpawnSettings(spawnSettings)
 				.generationSettings(generationSettings)
 				.build();
 	}
 	
 	public static void init() {
-		Registry.register(BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
-		
-		Registry.register(BuiltinRegistries.BIOME, MOON_LIGHT_SIDE_KEY.getValue(), createMoonLightSide());
-		Registry.register(BuiltinRegistries.BIOME, MOON_DARK_SIDE_KEY.getValue(), createMoonDarkSide());
-		Registry.register(BuiltinRegistries.BIOME, MOON_CRATER_FIELD_KEY.getValue(), createMoonCraterField());
-		
-		Registry.register(BuiltinRegistries.BIOME, ROCKET_KEY.getValue(), createRocket());
+		BIOMES.register("asteroid_belt", AMBiomes::createAsteroidBelt);
+		BIOMES.register("moon_light_side", AMBiomes::createMoonLightSide);
+		BIOMES.register("moon_dark_side", AMBiomes::createMoonDarkSide);
+		BIOMES.register("moon_crater_field", AMBiomes::createMoonCraterField);
+		BIOMES.register("rocket", AMBiomes::createRocket);
+		BIOMES.register(AMCommon.modEventBus());
 	}
 	
-	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
-		var key = RegistryKey.of(registry, identifier);
+	public static <T> ResourceKey<T> register(ResourceKey<? extends Registry<T>> registry, ResourceLocation identifier) {
+		var key = ResourceKey.create(registry, identifier);
 		
 		KEYS.add(key);
 		
 		return key;
 	}
 	
-	public static boolean isAstromine(RegistryKey<?> key) {
+	public static boolean isAstromine(ResourceKey<?> key) {
 		return KEYS.contains(key);
 	}
 }

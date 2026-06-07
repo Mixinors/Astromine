@@ -24,58 +24,35 @@
 
 package com.github.mixinors.astromine.common.screen.handler.machine;
 
+import static com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityMenuLayout.*;
+
 import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final MelterBlockEntity melter;
 	
-	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public MelterScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.MELTER, syncId, player, position);
 		
 		melter = (MelterBlockEntity) blockEntity;
+		
+		var inputX = centeredProcessInputX();
+		var inputY = centeredProcessInputY();
+		var arrowX = processArrowX(inputX);
+		var arrowY = processArrowY(inputY);
+		
+		addBlockEntitySlot(MelterBlockEntity.ITEM_INPUT_SLOT, inputX, inputY);
+		addFluidBar(MelterBlockEntity.FLUID_OUTPUT_SLOT, processOutputX(arrowX), ENERGY_BAR_Y);
+		addProgressArrow(arrowX, arrowY);
 	}
 	
 	@Override
 	public int getDefaultFluidSlotForBar() {
 		return MelterBlockEntity.FLUID_OUTPUT_SLOT;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
-		
-		var input = new SlotWidget(MelterBlockEntity.ITEM_INPUT_SLOT, melter.getItemStorage(), (inventory, id, x, y) -> {
-			var slot = new FilterSlot(inventory, id, x, y);
-			
-			slot.setInsertPredicate((stack) -> {
-				return melter.getItemStorage().canInsert(ItemVariant.of(stack), MelterBlockEntity.ITEM_INPUT_SLOT);
-			});
-			
-			return slot;
-		});
-		input.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
-		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F - 0.5F)); // 0.5F centers the arrow against the input slot.
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) melter.limit);
-		arrow.setCurrent(() -> (float) melter.progress);
-		
-		fluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
-		
-		tab.add(input);
-		tab.add(arrow);
 	}
 }

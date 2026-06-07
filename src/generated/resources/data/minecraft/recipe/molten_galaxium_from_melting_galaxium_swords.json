@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 31680,
+  "input": {
+    "count": 1,
+    "tag": "c:galaxium_swords"
+  },
+  "output": {
+    "amount": 48,
+    "fluid": "astromine:molten_galaxium"
+  },
+  "time": 3960
+}

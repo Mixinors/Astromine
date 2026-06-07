@@ -5,6 +5,7 @@
     "bottom": "astromine:block/fluid_collector_bottom",
     "front": "astromine:block/fluid_collector_front",
     "left": "astromine:block/fluid_collector_left",
+    "particle": "astromine:block/fluid_collector_top",
     "right": "astromine:block/fluid_collector_right",
     "top": "astromine:block/fluid_collector_top"
   }

@@ -37,35 +37,34 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import com.github.mixinors.astromine.common.recipe.base.AstromineRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public record PressingRecipe(
-		Identifier id,
+		ResourceLocation id,
 		ItemIngredient input,
 		ItemResult output,
 		long energyInput,
 		int time
 ) implements ItemInputRecipe, ItemOutputRecipe {
-	private static final Map<World, PressingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, PressingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
-	public static boolean allows(World world, ItemVariant... variants) {
+	public static boolean allows(Level world, ItemStack... stacks) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(PressingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(variants)) {
+			if (recipe.allows(stacks)) {
 				return true;
 			}
 		}
@@ -73,9 +72,9 @@ public record PressingRecipe(
 		return false;
 	}
 	
-	public static Optional<PressingRecipe> matching(World world, SingleSlotStorage<ItemVariant>... storages) {
+	public static Optional<PressingRecipe> matching(Level world, SimpleItemVariantStorage... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(PressingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
@@ -87,7 +86,7 @@ public record PressingRecipe(
 		return Optional.empty();
 	}
 	
-	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
+	public boolean matches(SimpleItemVariantStorage... storages) {
 		var inputStorage = storages[0];
 		
 		var outputStorage = storages[1];
@@ -100,7 +99,7 @@ public record PressingRecipe(
 	}
 	
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
@@ -115,7 +114,7 @@ public record PressingRecipe(
 	}
 	
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AMBlocks.ADVANCED_PRESSER.get());
 	}
 	
@@ -137,8 +136,8 @@ public record PressingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer implements RecipeSerializer<PressingRecipe> {
-		public static final Identifier ID = AMCommon.id("pressing");
+	public static final class Serializer implements AstromineRecipeSerializer<PressingRecipe> {
+		public static final ResourceLocation ID = AMCommon.id("pressing");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
@@ -146,7 +145,7 @@ public record PressingRecipe(
 		}
 		
 		@Override
-		public PressingRecipe read(Identifier identifier, JsonObject object) {
+		public PressingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, PressingRecipe.Format.class);
 			
 			return new PressingRecipe(
@@ -159,7 +158,7 @@ public record PressingRecipe(
 		}
 		
 		@Override
-		public PressingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public PressingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new PressingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
@@ -170,7 +169,7 @@ public record PressingRecipe(
 		}
 		
 		@Override
-		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
+		public void write(FriendlyByteBuf buffer, PressingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.input);
 			ItemResult.toPacket(buffer, recipe.output);
 			LongUtils.toPacket(buffer, recipe.energyInput);

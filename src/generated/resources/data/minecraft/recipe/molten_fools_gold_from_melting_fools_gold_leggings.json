@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 2240,
+  "input": {
+    "count": 1,
+    "tag": "c:fools_gold_leggings"
+  },
+  "output": {
+    "amount": 168,
+    "fluid": "astromine:molten_fools_gold"
+  },
+  "time": 280
+}

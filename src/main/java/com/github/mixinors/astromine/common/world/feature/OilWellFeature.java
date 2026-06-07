@@ -26,18 +26,16 @@ package com.github.mixinors.astromine.common.world.feature;
 
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.mojang.serialization.Codec;
-import com.terraformersmc.terraform.shapes.api.Position;
-import com.terraformersmc.terraform.shapes.impl.Shapes;
-import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class OilWellFeature extends Feature<DefaultFeatureConfig> {
+public class OilWellFeature extends Feature<NoneFeatureConfiguration> {
 	private static final int BOTTOM_WELL_SIZE = 8;
 	private static final int BOTTOM_WELL_MAX_OFFSET = 20;
 	private static final int TOP_WELL_WIDTH = 12;
@@ -46,31 +44,39 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 	private static final int GEYSER_MIN_HEIGHT = 3;
 	private static final int GEYSER_MAX_HEIGHT = 10;
 	
-	public OilWellFeature(Codec<DefaultFeatureConfig> configCodec) {
+	public OilWellFeature(Codec<NoneFeatureConfiguration> configCodec) {
 		super(configCodec);
 	}
 	
 	@Override
-	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-		var random = context.getRandom();
-		var world = context.getWorld();
-		var pos = context.getOrigin();
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+		var random = context.random();
+		var world = context.level();
+		var pos = context.origin();
 		
-		var oceanFloorPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, pos);
+		var oceanFloorPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos);
 		
-		var offsetY = (int) (random.nextFloat() * (BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE) + BOTTOM_WELL_SIZE); // TODO: Check if this works!
+		var offsetY = nextIntBetween(random, BOTTOM_WELL_SIZE, BOTTOM_WELL_MAX_OFFSET);
 		
 		if (pos.getY() - offsetY > oceanFloorPos.getY() - BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE) {
 			pos = new BlockPos(pos.getX(), oceanFloorPos.getY() - offsetY - BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE, pos.getZ());
 		}
 		
-		var oilState = AMFluids.OIL.getBlock().getDefaultState();
+		var oilState = AMFluids.OIL.getBlock().defaultBlockState();
 		
-		Shapes.ellipsoid(BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(wellPos ->
-				world.setBlockState(wellPos.toBlockPos(), oilState, 0)
-		);
+		var bottomCenter = pos.relative(Direction.UP, offsetY);
 		
-		var topPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, pos);
+		for (var x = -BOTTOM_WELL_SIZE; x <= BOTTOM_WELL_SIZE; ++x) {
+			for (var y = -BOTTOM_WELL_SIZE; y <= BOTTOM_WELL_SIZE; ++y) {
+				for (var z = -BOTTOM_WELL_SIZE; z <= BOTTOM_WELL_SIZE; ++z) {
+					if (x * x + y * y + z * z <= BOTTOM_WELL_SIZE * BOTTOM_WELL_SIZE) {
+						world.setBlock(bottomCenter.offset(x, y, z), oilState, 0);
+					}
+				}
+			}
+		}
+		
+		var topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos);
 		
 		for (var x = pos.getX() - (TOP_WELL_WIDTH); x < pos.getX() + (TOP_WELL_WIDTH); ++x) {
 			for (var z = pos.getZ() - (TOP_WELL_WIDTH); z < pos.getZ() + (TOP_WELL_WIDTH); ++z) {
@@ -80,31 +86,35 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 				var distance = (int) (1.0D + Math.ceil(Math.sqrt(dX * dX + dZ * dZ)));
 				
 				if (random.nextInt(TOP_WELL_WIDTH) > distance || random.nextInt(TOP_WELL_WIDTH) > distance) {
-					var offsetTopPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(x, topPos.getY(), z)).down();
+					var offsetTopPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, new BlockPos(x, topPos.getY(), z)).below();
 					
 					var offsetTopState = world.getBlockState(offsetTopPos);
 					
 					if (!offsetTopState.getFluidState().isEmpty()) {
-						world.setBlockState(offsetTopPos, oilState, 0);
+						world.setBlock(offsetTopPos, oilState, 0);
 						
-						world.createAndScheduleFluidTick(offsetTopPos, AMFluids.OIL, 0);
+						world.scheduleTick(offsetTopPos, AMFluids.OIL.getSource(), 0);
 					}
 				}
 			}
 		}
 		
-		var geyserHeight = (int) (random.nextFloat() - (GEYSER_MAX_HEIGHT - GEYSER_MIN_HEIGHT) + GEYSER_MIN_HEIGHT);
+		var geyserHeight = nextIntBetween(random, GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
 		
-		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < topPos.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
-			world.setBlockState(mutablePos, oilState, 0);
+		for (var mutablePos = new BlockPos.MutableBlockPos(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < topPos.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
+			world.setBlock(mutablePos, oilState, 0);
 			
 			for (var direction : new Direction[] { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
-				world.setBlockState(mutablePos.offset(direction), Blocks.AIR.getDefaultState(), 0);
+				world.setBlock(mutablePos.relative(direction), Blocks.AIR.defaultBlockState(), 0);
 			}
 			
-			world.createAndScheduleFluidTick(mutablePos, AMFluids.OIL, 0);
+			world.scheduleTick(mutablePos, AMFluids.OIL.getSource(), 0);
 		}
 		
 		return true;
+	}
+	
+	private static int nextIntBetween(RandomSource random, int min, int max) {
+		return random.nextInt(max - min + 1) + min;
 	}
 }

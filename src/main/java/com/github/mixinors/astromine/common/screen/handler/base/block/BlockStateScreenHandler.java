@@ -24,32 +24,33 @@
 
 package com.github.mixinors.astromine.common.screen.handler.base.block;
 
-import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Supplier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class BlockStateScreenHandler extends BaseScreenHandler {
-	protected final World world;
+public abstract class BlockStateScreenHandler extends AbstractContainerMenu {
+	protected final Level world;
+	protected final Player player;
 	
 	protected final BlockPos blockPos;
 	protected final BlockState blockState;
 	protected final Block block;
 	
-	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos blockPos) {
-		super(type.get(), syncId, player);
+	public BlockStateScreenHandler(Supplier<? extends MenuType<?>> type, int syncId, Player player, BlockPos blockPos) {
+		super(type.get(), syncId);
 		
-		this.world = player.getWorld();
+		this.player = player;
+		this.world = player.level();
 		
 		this.blockPos = blockPos;
 		
@@ -60,17 +61,39 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public boolean canUse(@Nullable PlayerEntity player) {
+	public boolean stillValid(@Nullable Player player) {
 		if (player == null) {
 			return false;
 		}
 		
-		return canUse(ScreenHandlerContext.create(player.getWorld(), blockPos), player, block);
+		return stillValid(ContainerLevelAccess.create(player.level(), blockPos), player, block);
 	}
 	
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
-		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
+	public ItemStack quickMoveStack(Player player, int index) {
 		return ItemStack.EMPTY;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public BlockPos getBlockPos() {
+		return blockPos;
+	}
+	
+	public void init(int width, int height) {
+	}
+	
+	protected void addPlayerInventory(Inventory inventory, int x, int y) {
+		for (var row = 0; row < 3; ++row) {
+			for (var column = 0; column < 9; ++column) {
+				addSlot(new net.minecraft.world.inventory.Slot(inventory, column + row * 9 + 9, x + 1 + column * 18, y + 1 + row * 18));
+			}
+		}
+		
+		for (var column = 0; column < 9; ++column) {
+			addSlot(new net.minecraft.world.inventory.Slot(inventory, column, x + 1 + column * 18, y + 1 + 58));
+		}
 	}
 }

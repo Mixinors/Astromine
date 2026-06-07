@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 768,
+  "input": {
+    "count": 1,
+    "tag": "c:tin_dusts"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_tin"
+  },
+  "time": 96
+}

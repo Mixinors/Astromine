@@ -3,8 +3,10 @@
   "generator": {
     "type": "astromine:moon",
     "biome_source": {
-      "type": "astromine:moon"
+      "type": "astromine:moon",
+      "seed": 0
     },
+    "seed": 0,
     "settings": {
       "humidity": {
         "type": "minecraft:shifted_noise",

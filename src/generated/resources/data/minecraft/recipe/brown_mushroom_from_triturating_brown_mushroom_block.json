@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 300,
+  "input": {
+    "count": 1,
+    "item": "minecraft:brown_mushroom_block"
+  },
+  "output": {
+    "count": 4,
+    "item": "minecraft:brown_mushroom"
+  },
+  "time": 80
+}

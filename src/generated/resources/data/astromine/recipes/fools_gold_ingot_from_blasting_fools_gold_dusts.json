@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "cookingtime": 100,
-  "experience": 0.0,
-  "ingredient": {
-    "tag": "c:fools_gold_dusts"
-  },
-  "result": "astromine:fools_gold_ingot"
-}

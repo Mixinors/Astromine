@@ -24,27 +24,28 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFacingBlockWithEntity implements TieredBlock {
-	public HorizontalFacingTieredBlockWithEntity(Settings settings) {
+	public HorizontalFacingTieredBlockWithEntity(Properties settings) {
 		super(settings);
 	}
 	
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		var result = tryUpgrade(state, world, pos, player, hand, hit);
 		
-		if (result.isAccepted()) {
-			return result;
+		if (result.consumesAction()) {
+			return ItemInteractionResult.sidedSuccess(world.isClientSide);
 		}
 		
-		return super.onUse(state, world, pos, player, hand, hit);
+		return super.useItemOn(stack, state, world, pos, player, hand, hit);
 	}
 }

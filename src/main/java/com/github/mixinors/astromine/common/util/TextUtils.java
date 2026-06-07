@@ -24,37 +24,59 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import dev.vini2003.hammer.core.api.common.util.NumberUtil;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 @SuppressWarnings("unstable")
 public class TextUtils {
 	public static final char ENERGY_UNIT = 'E';
 	public static final char FLUID_UNIT = 'd';
 	
-	public static MutableText getAstromine() {
-		return Text.literal("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC);
+	public static MutableComponent getAstromine() {
+		return Component.literal("Astromine").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC);
 	}
 	
-	public static MutableText getEnergy() {
-		return Text.translatable("text.astromine.energy");
+	public static MutableComponent getEnergy() {
+		return Component.translatable("text.astromine.energy");
 	}
 	
-	public static MutableText getEnergy(long amount, long capacity) {
-		return getEnergyAmount(amount).append(Text.literal(" / ").formatted(Formatting.GRAY)).append(getEnergyAmount(capacity));
+	public static MutableComponent getEnergy(long amount, long capacity) {
+		return getEnergyAmount(amount).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(getEnergyAmount(capacity));
 	}
 	
-	public static MutableText getRatio(int progress, int limit) {
-		return Text.literal((int) ((float) progress / (float) limit * 100) + "%");
+	public static MutableComponent getRatio(int progress, int limit) {
+		return Component.literal((int) ((float) progress / (float) limit * 100) + "%");
 	}
 	
-	public static MutableText getAmount(long amount, char unit) {
-		return Text.literal(NumberUtil.getPrettyShortenedString(amount, "" + unit));
+	public static MutableComponent getAmount(long amount, char unit) {
+		return Component.literal(formatAmount(amount, unit));
 	}
 	
-	public static MutableText getEnergyAmount(long amount) {
-		return getAmount(amount, ENERGY_UNIT).formatted(Formatting.GREEN);
+	public static MutableComponent getEnergyAmount(long amount) {
+		return getAmount(amount, ENERGY_UNIT).withStyle(ChatFormatting.GREEN);
+	}
+	
+	private static String formatAmount(long amount, char unit) {
+		var absolute = Math.abs((double) amount);
+		var suffix = "";
+		var value = (double) amount;
+		
+		if (absolute >= 1_000_000_000D) {
+			value /= 1_000_000_000D;
+			suffix = "G";
+		} else if (absolute >= 1_000_000D) {
+			value /= 1_000_000D;
+			suffix = "M";
+		} else if (absolute >= 1_000D) {
+			value /= 1_000D;
+			suffix = "k";
+		}
+		
+		if (suffix.isEmpty()) {
+			return amount + String.valueOf(unit);
+		}
+		
+		return String.format(java.util.Locale.ROOT, "%.1f%s%c", value, suffix, unit);
 	}
 }

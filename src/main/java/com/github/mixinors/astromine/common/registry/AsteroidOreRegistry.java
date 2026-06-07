@@ -27,18 +27,18 @@ package com.github.mixinors.astromine.common.registry;
 import com.github.mixinors.astromine.common.util.data.range.Range;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Set;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.level.block.Block;
 
 public class AsteroidOreRegistry {
 	public static final AsteroidOreRegistry INSTANCE = new AsteroidOreRegistry();
 	
-	public final Reference2ReferenceMap<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> diameters = new Reference2ReferenceOpenHashMap<>();
+	public final Reference2ReferenceMap<Block, @Nullable Tuple<Range<Integer>, Range<Integer>>> diameters = new Reference2ReferenceOpenHashMap<>();
 	
 	private AsteroidOreRegistry() {
 		// Locked.
@@ -59,7 +59,7 @@ public class AsteroidOreRegistry {
 		if (weightRange == null || sizeRange == null) {
 			diameters.remove(block);
 		} else {
-			diameters.put(block, new Pair<>(weightRange, sizeRange));
+			diameters.put(block, new Tuple<>(weightRange, sizeRange));
 		}
 	}
 	
@@ -67,13 +67,13 @@ public class AsteroidOreRegistry {
 		return diameters.keySet();
 	}
 	
-	public int getDiameter(Random random, Block block) {
+	public int getDiameter(RandomSource random, Block block) {
 		var pair = diameters.get(block);
 		
 		if (pair == null) {
 			return 0;
 		}
 		
-		return (int) (((pair.getRight().maximum() - pair.getRight().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getRight().minimum()) * 0.9);
+		return (int) (((pair.getB().maximum() - pair.getB().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getB().minimum()) * 0.9);
 	}
 }

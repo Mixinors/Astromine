@@ -1,0 +1,9 @@
+{
+  "center": "astromine:block/elite_energy_cable_center",
+  "connector": "astromine:block/cable_connector",
+  "extract_connector": "astromine:block/cable_connector_extract",
+  "insert_connector": "astromine:block/cable_connector_insert",
+  "insert_extract_connector": "astromine:block/cable_connector_insert_extract",
+  "loader": "astromine:cable",
+  "side": "astromine:block/cable_side"
+}

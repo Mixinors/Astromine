@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.client.render.skybox;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
 
 public class SpaceSkyRenderer {
 	private static final ExtendedCubeMapRenderer cubeMapRenderer = new ExtendedCubeMapRenderer();
@@ -35,22 +35,25 @@ public class SpaceSkyRenderer {
 			AMCommon.id("textures/skybox/earth_orbit_up.png"),
 			AMCommon.id("textures/skybox/space_down.png"),
 			AMCommon.id("textures/skybox/space_north.png"),
-			AMCommon.id("textures/skybox/space_south.png"),
 			AMCommon.id("textures/skybox/space_east.png"),
+			AMCommon.id("textures/skybox/space_south.png"),
 			AMCommon.id("textures/skybox/space_west.png")
 	);
 	
-	public static void render(WorldRenderContext ctx) {
-		var client = MinecraftClient.getInstance();
-		var worldKey = client.player.world.getRegistryKey();
+	public static boolean render(ClientLevel level, Camera camera) {
+		var worldKey = level.dimension();
 		var body = BodyManager.getBodyDimensionOfWorld(worldKey);
 		
 		if (body != null && body.skybox() != null) {
 			cubeMapRenderer.swapTextures(body.skybox());
-			cubeMapRenderer.render();
+			cubeMapRenderer.render(camera);
+			return true;
 		} else if (AMWorlds.isAstromine(worldKey)) {
 			cubeMapRenderer.swapTextures(SPACE_SKYBOX);
-			cubeMapRenderer.render();
+			cubeMapRenderer.render(camera);
+			return true;
 		}
+		
+		return false;
 	}
 }

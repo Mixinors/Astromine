@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.2,
+  "ingredient": {
+    "tag": "c:lapis_asteroid_ores"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:lapis_lazuli"
+  }
+}

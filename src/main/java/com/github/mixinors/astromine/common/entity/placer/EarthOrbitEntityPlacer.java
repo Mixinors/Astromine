@@ -26,9 +26,10 @@ package com.github.mixinors.astromine.common.entity.placer;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.entity.placer.base.EntityPlacer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.TeleportTarget;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.phys.Vec3;
 
 public record EarthOrbitEntityPlacer(
 		int y
@@ -37,7 +38,7 @@ public record EarthOrbitEntityPlacer(
 	public static final EarthOrbitEntityPlacer TO_EARTH_ORBIT = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.earthOrbit.spawnY);
 	
 	@Override
-	public TeleportTarget placeEntity(Entity entity) {
-		return new TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), entity.getHeadYaw(), entity.getPitch());
+	public DimensionTransition placeEntity(Entity entity) {
+		return new DimensionTransition((ServerLevel) entity.level(), new Vec3(entity.getX(), y, entity.getZ()), entity.getDeltaMovement(), entity.getYHeadRot(), entity.getXRot(), DimensionTransition.DO_NOTHING);
 	}
 }

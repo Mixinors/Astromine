@@ -5,6 +5,7 @@
     "bottom": "astromine:block/elite_refinery_bottom",
     "front": "astromine:block/elite_refinery_front",
     "left": "astromine:block/elite_refinery_left",
+    "particle": "astromine:block/elite_refinery_top",
     "right": "astromine:block/elite_refinery_right",
     "top": "astromine:block/elite_refinery_top"
   }

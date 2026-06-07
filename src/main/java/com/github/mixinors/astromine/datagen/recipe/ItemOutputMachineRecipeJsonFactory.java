@@ -25,23 +25,16 @@
 package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
-import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 
 public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
-	private static final String ITEM_KEY = "item";
-	private static final String COUNT_KEY = "count";
-	private static final String OUTPUT_KEY = "output";
-	
 	protected final Item output;
 	
 	protected final int outputCount;
 	
-	protected ItemOutputMachineRecipeJsonFactory(ItemConvertible output, int outputCount, int processingTime, int energy, RecipeSerializer<T> serializer) {
+	protected ItemOutputMachineRecipeJsonFactory(ItemLike output, int outputCount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 		super(processingTime, energy, serializer);
 		
 		this.output = output.asItem();
@@ -49,37 +42,12 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRe
 	}
 	
 	@Override
-	public Item getOutputItem() {
+	public Item getResult() {
 		return output;
 	}
 	
 	@Override
 	public OutputType getOutputType() {
 		return OutputType.ITEM;
-	}
-	
-	public abstract static class ItemOutputMachineRecipeJsonProvider<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
-		private final Item output;
-		
-		private final int outputCount;
-		
-		public ItemOutputMachineRecipeJsonProvider(Identifier recipeId, Item output, int outputCount, int processingTime, int energy, RecipeSerializer<T> serializer) {
-			super(recipeId, processingTime, energy, serializer);
-			
-			this.output = output;
-			this.outputCount = outputCount;
-		}
-		
-		@Override
-		public void serialize(JsonObject json) {
-			var outputJson = new JsonObject();
-			
-			outputJson.addProperty(ITEM_KEY, Registry.ITEM.getId(this.output).toString());
-			outputJson.addProperty(COUNT_KEY, outputCount);
-			
-			json.add(OUTPUT_KEY, outputJson);
-			
-			super.serialize(json);
-		}
 	}
 }

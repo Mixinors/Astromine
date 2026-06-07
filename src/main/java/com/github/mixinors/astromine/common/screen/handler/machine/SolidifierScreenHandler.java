@@ -28,43 +28,29 @@ import com.github.mixinors.astromine.common.block.entity.machine.SolidifierBlock
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final SolidifierBlockEntity solidifier;
 	
-	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public SolidifierScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.SOLIDIFIER, syncId, player, position);
 		
 		solidifier = (SolidifierBlockEntity) blockEntity;
+		
+		var fluidX = defaultFluidBarX();
+		var fluidY = defaultFluidBarY();
+		var arrowX = fluidArrowX(fluidX);
+		var arrowY = fluidArrowY(fluidY);
+		
+		addFluidBar(SolidifierBlockEntity.FLUID_INPUT_SLOT, fluidX, fluidY);
+		addBlockEntityOutputSlot(SolidifierBlockEntity.ITEM_OUTPUT_SLOT, processOutputX(arrowX), processOutputY(arrowY));
+		addProgressArrow(arrowX, arrowY);
 	}
 	
 	@Override
 	public int getDefaultFluidSlotForBar() {
 		return SolidifierBlockEntity.FLUID_INPUT_SLOT;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
-		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) solidifier.limit);
-		arrow.setCurrent(() -> (float) solidifier.progress);
-		
-		var output = new SlotWidget(SolidifierBlockEntity.ITEM_OUTPUT_SLOT, solidifier.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F)); // 1.0F centers the slot against the arrow.
-		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-		
-		tab.add(output);
-		tab.add(arrow);
 	}
 }

@@ -1,28 +1,28 @@
 package com.github.mixinors.astromine.common.block.dynamic;
 
 import com.github.mixinors.astromine.registry.common.AMProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.Nullable;
 
-public class DynamicStairsBlock extends StairsBlock {
-	public DynamicStairsBlock(BlockState baseBlockState, Settings settings) {
+public class DynamicStairsBlock extends StairBlock {
+	public DynamicStairsBlock(BlockState baseBlockState, Properties settings) {
 		super(baseBlockState, settings);
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		
 		builder.add(AMProperties.DYNAMIC);
 	}
 	
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return super.getPlacementState(ctx).with(AMProperties.DYNAMIC, false);
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		return super.getStateForPlacement(ctx).setValue(AMProperties.DYNAMIC, false);
 	}
 }

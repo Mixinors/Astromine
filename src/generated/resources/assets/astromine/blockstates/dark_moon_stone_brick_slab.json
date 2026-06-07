@@ -1,13 +1,22 @@
 {
   "variants": {
-    "type=bottom": {
+    "dynamic=false,type=bottom": {
       "model": "astromine:block/dark_moon_stone_brick_slab"
     },
-    "type=double": {
+    "dynamic=false,type=double": {
       "model": "astromine:block/dark_moon_stone_bricks"
     },
-    "type=top": {
+    "dynamic=false,type=top": {
       "model": "astromine:block/dark_moon_stone_brick_slab_top"
+    },
+    "dynamic=true,type=bottom": {
+      "model": "astromine:block/dark_moon_stone_brick_slab_dynamic"
+    },
+    "dynamic=true,type=double": {
+      "model": "astromine:block/dark_moon_stone_bricks_dynamic"
+    },
+    "dynamic=true,type=top": {
+      "model": "astromine:block/dark_moon_stone_brick_slab_top_dynamic_top"
     }
   }
 }

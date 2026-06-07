@@ -27,20 +27,21 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
 import com.github.mixinors.astromine.common.world.generation.space.MoonChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitChunkGenerator;
 import com.github.mixinors.astromine.common.world.generation.space.RocketInteriorsChunkGenerator;
-import com.mojang.serialization.Codec;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMChunkGenerators {
-	public static void init() {
-		register(AMCommon.id("earth_orbit"), EarthOrbitChunkGenerator.CODEC);
-		register(AMCommon.id("moon"), MoonChunkGenerator.CODEC);
-		register(AMCommon.id("rocket_interiors"), RocketInteriorsChunkGenerator.CODEC);
-	}
+	private static final DeferredRegister<MapCodec<? extends ChunkGenerator>> REGISTRY = DeferredRegister.create(Registries.CHUNK_GENERATOR, AMCommon.MOD_ID);
 	
-	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {
-		Registry.register(Registry.CHUNK_GENERATOR, id, codec);
+	public static void init() {
+		REGISTRY.register("earth_orbit", () -> EarthOrbitChunkGenerator.CODEC);
+		REGISTRY.register("moon", () -> MoonChunkGenerator.CODEC);
+		REGISTRY.register("moon_orbit", () -> MoonOrbitChunkGenerator.CODEC);
+		REGISTRY.register("rocket_interiors", () -> RocketInteriorsChunkGenerator.CODEC);
+		REGISTRY.register(AMCommon.modEventBus());
 	}
 }

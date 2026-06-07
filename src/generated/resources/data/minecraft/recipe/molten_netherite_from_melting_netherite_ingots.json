@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 3200,
+  "input": {
+    "count": 1,
+    "tag": "c:netherite_ingots"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_netherite"
+  },
+  "time": 400
+}

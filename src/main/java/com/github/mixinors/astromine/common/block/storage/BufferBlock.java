@@ -29,19 +29,19 @@ import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEnti
 import com.github.mixinors.astromine.common.screen.handler.storage.BufferScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity {
-	public BufferBlock(Settings settings) {
+	public BufferBlock(Properties settings) {
 		super(settings);
 	}
 	
@@ -67,22 +67,22 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 	}
 	
 	@Override
-	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+	public AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player) {
 		return new BufferScreenHandler(syncId, playerInventory.player, pos);
 	}
 	
 	@Override
-	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+	public void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
 	
 	public static class Primitive extends BufferBlock {
-		public Primitive(Settings settings) {
+		public Primitive(Properties settings) {
 			super(settings);
 		}
 		
 		@Override
-		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Primitive(pos, state);
 		}
 		
@@ -93,12 +93,12 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 	}
 	
 	public static class Basic extends BufferBlock {
-		public Basic(Settings settings) {
+		public Basic(Properties settings) {
 			super(settings);
 		}
 		
 		@Override
-		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Basic(pos, state);
 		}
 		
@@ -109,12 +109,12 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 	}
 	
 	public static class Advanced extends BufferBlock {
-		public Advanced(Settings settings) {
+		public Advanced(Properties settings) {
 			super(settings);
 		}
 		
 		@Override
-		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Advanced(pos, state);
 		}
 		
@@ -125,12 +125,12 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 	}
 	
 	public static class Elite extends BufferBlock {
-		public Elite(Settings settings) {
+		public Elite(Properties settings) {
 			super(settings);
 		}
 		
 		@Override
-		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Elite(pos, state);
 		}
 		
@@ -141,12 +141,12 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 	}
 	
 	public static class Creative extends BufferBlock {
-		public Creative(Settings settings) {
+		public Creative(Properties settings) {
 			super(settings);
 		}
 		
 		@Override
-		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Creative(pos, state);
 		}
 		

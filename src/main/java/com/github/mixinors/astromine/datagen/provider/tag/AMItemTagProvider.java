@@ -33,36 +33,41 @@ import com.github.mixinors.astromine.datagen.family.material.family.MaterialFami
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import com.shnupbups.piglib.Piglib;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
+import java.util.concurrent.CompletableFuture;
+
+public class AMItemTagProvider extends net.minecraft.data.tags.ItemTagsProvider {
 	
 	
-	public AMItemTagProvider(FabricDataGenerator dataGenerator, @Nullable BlockTagProvider blockTagProvider) {
-		super(dataGenerator, blockTagProvider);
+	public AMItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTags, ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, blockTags, AMCommon.MOD_ID, existingFileHelper);
 	}
 	
 	@Override
-	protected void generateTags() {
-		var beaconPaymentTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.ItemTags.BEACON_PAYMENT_ITEMS);
+	protected void addTags(HolderLookup.Provider provider) {
+		var beaconPaymentTagBuilder = tag(net.minecraft.tags.ItemTags.BEACON_PAYMENT_ITEMS);
 		
-		var piglinLovedTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.ItemTags.PIGLIN_LOVED);
-		var piglinLovedNuggetsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_LOVED_NUGGETS);
-		var piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
-		var piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
+		var piglinLovedTagBuilder = tag(net.minecraft.tags.ItemTags.PIGLIN_LOVED);
+		var piglinLovedNuggetsTagBuilder = tag(AMTagKeys.createCommonItemTag("piglin_loved_nuggets"));
+		var piglinBarteringItemsTagBuilder = tag(AMTagKeys.createCommonItemTag("piglin_bartering_items"));
+		var piglinSafeArmorTagBuilder = tag(AMTagKeys.createCommonItemTag("piglin_safe_armor"));
 		
 		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			AMDatagen.toTreeMap(family.getItemTags()).forEach((variant, tag) -> {
-				getOrCreateTagBuilder(tag).add(family.getVariant(variant));
+				tag(tag).add(family.getVariant(variant));
 				
 				if (family.hasAlias()) {
-					getOrCreateTagBuilder(family.getAliasTag(variant)).addTag(tag);
+					tag(family.getAliasTag(variant)).addTag(tag);
 				}
 				
 				if (family.isPiglinLoved()) {
@@ -82,10 +87,10 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				}
 				
 				if (variant.hasTag()) {
-					getOrCreateTagBuilder(variant.getTag()).addTag(tag);
+					tag(variant.getTag()).addTag(tag);
 					
 					if (family.hasAlias()) {
-						getOrCreateTagBuilder(variant.getTag()).addTag(family.getAliasTag(variant));
+						tag(variant.getTag()).addTag(family.getAliasTag(variant));
 					}
 				}
 			});
@@ -103,10 +108,10 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				}
 				
 				if (variant.hasTag()) {
-					getOrCreateTagBuilder(variant.getItemTag()).addTag(tag);
+					tag(variant.getItemTag()).addTag(tag);
 					
 					if (family.hasAlias()) {
-						getOrCreateTagBuilder(variant.getItemTag()).addTag(family.getAliasItemTag(variant));
+						tag(variant.getItemTag()).addTag(family.getAliasItemTag(variant));
 					}
 				}
 			});
@@ -124,7 +129,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			
 			if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
 				var clustersTag = family.getItemTag("clusters");
-				var clustersTagBuilder = getOrCreateTagBuilder(clustersTag);
+				var clustersTagBuilder = tag(clustersTag);
 				
 				AMDatagenLists.ItemVariantLists.CLUSTER_VARIANTS.forEach((variant) -> {
 					if (family.hasVariant(variant)) {
@@ -133,7 +138,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				});
 				
 				if (family.hasAlias()) {
-					getOrCreateTagBuilder(family.getAliasItemTag("clusters")).addTag(clustersTag);
+					tag(family.getAliasItemTag("clusters")).addTag(clustersTag);
 				}
 			}
 			
@@ -142,10 +147,10 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				var toolsTag = family.getItemTag("tools");
 				
 				var salvageablesTag = family.getItemTag("salvageables");
-				var salvageablesTagBuilder = getOrCreateTagBuilder(salvageablesTag);
+				var salvageablesTagBuilder = tag(salvageablesTag);
 				
 				if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.ARMOR_VARIANTS)) {
-					var armorTagBuilder = getOrCreateTagBuilder(armorTag);
+					var armorTagBuilder = tag(armorTag);
 					
 					AMDatagenLists.ItemVariantLists.ARMOR_VARIANTS.forEach((variant) -> {
 						if (family.hasVariant(variant)) {
@@ -164,12 +169,12 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 					salvageablesTagBuilder.addTag(armorTag);
 					
 					if (family.hasAlias()) {
-						getOrCreateTagBuilder(family.getAliasItemTag("armor")).addTag(armorTag);
+						tag(family.getAliasItemTag("armor")).addTag(armorTag);
 					}
 				}
 				
 				if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.TOOL_VARIANTS)) {
-					var toolsTagBuilder = getOrCreateTagBuilder(toolsTag);
+					var toolsTagBuilder = tag(toolsTag);
 					
 					AMDatagenLists.ItemVariantLists.TOOL_VARIANTS.forEach((variant) -> {
 						if (family.hasVariant(variant)) {
@@ -180,7 +185,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 					salvageablesTagBuilder.addTag(toolsTag);
 					
 					if (family.hasAlias()) {
-						getOrCreateTagBuilder(family.getAliasItemTag("tools")).addTag(toolsTag);
+						tag(family.getAliasItemTag("tools")).addTag(toolsTag);
 					}
 				}
 				
@@ -189,7 +194,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				}
 				
 				if (family.hasAlias()) {
-					getOrCreateTagBuilder(family.getAliasItemTag("salvageables")).addTag(salvageablesTag);
+					tag(family.getAliasItemTag("salvageables")).addTag(salvageablesTag);
 				}
 			}
 			
@@ -212,17 +217,17 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		
 		AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
 			if (AMDatagenLists.ItemTagLists.BLOCK_FAMILY_VARIANTS.containsKey(variant)) {
-				getOrCreateTagBuilder(AMDatagenLists.ItemTagLists.BLOCK_FAMILY_VARIANTS.get(variant)).add(block.asItem());
+				tag(AMDatagenLists.ItemTagLists.BLOCK_FAMILY_VARIANTS.get(variant)).add(block.asItem());
 			}
 		}));
 		
 		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
-			var bucketTagBuilder = getOrCreateTagBuilder(AMTagKeys.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
-			bucketTagBuilder.add(fluid.getBucketItem());
+			var bucketTagBuilder = tag(AMTagKeys.createCommonItemTag(BuiltInRegistries.FLUID.getKey(fluid.getSource()).getPath() + "_buckets"));
+			bucketTagBuilder.add(fluid.getBucket());
 		});
 		
 		AMDatagenLists.ItemTagLists.GENERIC_TAGS.forEach((variantSet, tagKey) -> {
-			var tag = getOrCreateTagBuilder(tagKey);
+			var tag = tag(tagKey);
 			
 			variantSet.forEach((variant) -> {
 				if (variant.hasTag()) {
@@ -231,58 +236,81 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			});
 		});
 		
-		AMDatagenLists.ItemVariantLists.TOOL_VARIANTS.forEach((variant) -> getOrCreateTagBuilder(AMTagKeys.createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag()));
+		AMDatagenLists.ItemVariantLists.TOOL_VARIANTS.forEach((variant) -> tag(toolTag(variant)).addTag(variant.getTag()));
 		
-		var drillsTagBuilder = getOrCreateTagBuilder(AMTagKeys.createItemTag(AMCommon.id("drills")));
+		var drillsTagBuilder = tag(AMTagKeys.createItemTag(AMCommon.id("drills")));
 		
 		AMDatagenLists.ItemLists.DRILLS.forEach(drillsTagBuilder::add);
 		
 		AMDatagenLists.ItemTagLists.COPY.forEach(this::copy);
 		
-		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("gold_apples"))
+		tag(AMTagKeys.createCommonItemTag("gold_apples"))
 				.add(Items.ENCHANTED_GOLDEN_APPLE);
 		
-		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("seeds"))
+		tag(AMTagKeys.createCommonItemTag("seeds"))
 				.add(Items.WHEAT_SEEDS)
 				.add(Items.BEETROOT_SEEDS)
 				.add(Items.MELON_SEEDS)
 				.add(Items.PUMPKIN_SEEDS);
 		
-		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("berries"))
+		tag(AMTagKeys.createCommonItemTag("berries"))
 				.add(Items.SWEET_BERRIES)
 				.add(Items.GLOW_BERRIES);
 		
-		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("vines"))
+		var weepingVinesTag = AMTagKeys.ItemTags.WEEPING_VINES;
+		tag(weepingVinesTag)
+				.add(Items.WEEPING_VINES);
+		
+		var twistingVinesTag = AMTagKeys.ItemTags.TWISTING_VINES;
+		tag(twistingVinesTag)
+				.add(Items.TWISTING_VINES);
+		
+		tag(AMTagKeys.ItemTags.NETHER_VINES)
+				.addTag(weepingVinesTag)
+				.addTag(twistingVinesTag);
+		
+		tag(AMTagKeys.createCommonItemTag("vines"))
 				.addTag(AMTagKeys.ItemTags.NETHER_VINES)
 				.add(Items.VINE);
 		
-		getOrCreateTagBuilder(AMTagKeys.ItemTags.BIOFUEL)
+		tag(AMTagKeys.ItemTags.BIOFUEL)
 				.add(AMItems.BIOFUEL.get());
 		
-		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("carbon_dusts"))
+		tag(AMTagKeys.createCommonItemTag("carbon_dusts"))
 				.addTag(AMTagKeys.createCommonItemTag("coal_dusts"))
 				.addTag(AMTagKeys.createCommonItemTag("charcoal_dusts"));
 		
-		var oneBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.ItemTags.MAKES_ONE_BIOFUEL);
+		var oneBiofuelTagBuilder = tag(AMTagKeys.ItemTags.MAKES_ONE_BIOFUEL);
 		
 		AMDatagenLists.ItemLists.ONE_BIOFUEL_ITEMS.forEach(oneBiofuelTagBuilder::add);
 		AMDatagenLists.ItemTagLists.ONE_BIOFUEL_TAGS.forEach(oneBiofuelTagBuilder::addTag);
-		AMDatagenLists.ItemTagLists.ONE_BIOFUEL_TAGS_FORCED.forEach(oneBiofuelTagBuilder::forceAddTag);
+		AMDatagenLists.ItemTagLists.ONE_BIOFUEL_TAGS_FORCED.forEach(oneBiofuelTagBuilder::addOptionalTag);
 		
-		var twoBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.ItemTags.MAKES_TWO_BIOFUEL);
+		var twoBiofuelTagBuilder = tag(AMTagKeys.ItemTags.MAKES_TWO_BIOFUEL);
 		
 		AMDatagenLists.ItemLists.TWO_BIOFUEL_ITEMS.forEach(twoBiofuelTagBuilder::add);
-		AMDatagenLists.ItemTagLists.TWO_BIOFUEL_TAGS_FORCED.forEach(twoBiofuelTagBuilder::forceAddTag);
+		AMDatagenLists.ItemTagLists.TWO_BIOFUEL_TAGS_FORCED.forEach(twoBiofuelTagBuilder::addOptionalTag);
 		
-		var fourBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.ItemTags.MAKES_FOUR_BIOFUEL);
+		var fourBiofuelTagBuilder = tag(AMTagKeys.ItemTags.MAKES_FOUR_BIOFUEL);
 		
 		AMDatagenLists.ItemLists.FOUR_BIOFUEL_ITEMS.forEach(fourBiofuelTagBuilder::add);
 		AMDatagenLists.ItemTagLists.FOUR_BIOFUEL_TAGS.forEach(fourBiofuelTagBuilder::addTag);
-		AMDatagenLists.ItemTagLists.FOUR_BIOFUEL_TAGS_FORCED.forEach(fourBiofuelTagBuilder::forceAddTag);
+		AMDatagenLists.ItemTagLists.FOUR_BIOFUEL_TAGS_FORCED.forEach(fourBiofuelTagBuilder::addOptionalTag);
 		
-		var nineBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.ItemTags.MAKES_NINE_BIOFUEL);
+		var nineBiofuelTagBuilder = tag(AMTagKeys.ItemTags.MAKES_NINE_BIOFUEL);
 		
 		AMDatagenLists.ItemLists.NINE_BIOFUEL_ITEMS.forEach(nineBiofuelTagBuilder::add);
 		AMDatagenLists.ItemTagLists.NINE_BIOFUEL_TAGS.forEach(nineBiofuelTagBuilder::addTag);
+	}
+	
+	private static TagKey<Item> toolTag(ItemVariant variant) {
+		return switch (variant) {
+			case PICKAXE -> ItemTags.PICKAXES;
+			case AXE -> ItemTags.AXES;
+			case SHOVEL -> ItemTags.SHOVELS;
+			case SWORD -> ItemTags.SWORDS;
+			case HOE -> ItemTags.HOES;
+			default -> throw new IllegalArgumentException("Not a vanilla tool variant: " + variant);
+		};
 	}
 }

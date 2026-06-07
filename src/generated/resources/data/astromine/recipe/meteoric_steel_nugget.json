@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:meteoric_steel_ingots"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:meteoric_steel_nugget"
+  }
+}

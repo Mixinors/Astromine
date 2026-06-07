@@ -25,102 +25,95 @@
 package com.github.mixinors.astromine.common.world.generation.space;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.mixin.common.StructureAccessorAccessor;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.structure.StructureSet;
-import net.minecraft.util.Unit;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.HeightLimitView;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.Blender;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.noise.NoiseConfig;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 public class RocketInteriorsChunkGenerator extends ChunkGenerator {
-	public static final Codec<RocketInteriorsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
-		return createStructureSetRegistryGetter(instance).and(
+	public static final MapCodec<RocketInteriorsChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
-		).apply(instance, RocketInteriorsChunkGenerator::new);
-	});
+	).apply(instance, RocketInteriorsChunkGenerator::new));
+	
+	public RocketInteriorsChunkGenerator(BiomeSource biomeSource) {
+		super(biomeSource);
+	}
 	
 	public RocketInteriorsChunkGenerator(Registry<StructureSet> structureFeatureRegistry, BiomeSource biomeSource) {
-		super(structureFeatureRegistry, Optional.empty(), biomeSource);
+		this(biomeSource);
 	}
 	
 	@Override
-	protected Codec<? extends ChunkGenerator> getCodec() {
+	protected MapCodec<? extends ChunkGenerator> codec() {
 		return CODEC;
 	}
 	
 	@Override
-	public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+	public void applyCarvers(WorldGenRegion chunkRegion, long seed, RandomState noiseConfig, BiomeManager biomeAccess, StructureManager structureAccessor, ChunkAccess chunk, GenerationStep.Carving carverStep) {
 	
 	}
 	
 	@Override
-	public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
-	
+	public void buildSurface(WorldGenRegion region, StructureManager structures, RandomState noiseConfig, ChunkAccess chunk) {
+		populateNoise(region, chunk);
 	}
 	
 	@Override
-	public void populateEntities(ChunkRegion region) {
+	public void spawnOriginalMobs(WorldGenRegion region) {
 		
 	}
 	
 	@Override
-	public int getWorldHeight() {
+	public int getGenDepth() {
 		return 96;
 	}
 	
 	@Override
-	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
-		return CompletableFuture.supplyAsync(() -> {
-			populateNoise(structureAccessor, chunk);
-			return Unit.INSTANCE;
-		}, executor).thenApply(unit -> chunk);
+	public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState noiseConfig, StructureManager structureAccessor, ChunkAccess chunk) {
+		return CompletableFuture.completedFuture(chunk);
 	}
 	
 	@Override
 	public int getSeaLevel() {
-		return 0; // there is no ocean in space, or maybe all of space is an ocean, after all we travel in space with spaceSHIPs :tiny_potato:
-	}
-	
-	@Override
-	public int getMinimumY() {
 		return 0;
 	}
 	
-	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
+	@Override
+	public int getMinY() {
+		return 0;
+	}
+	
+	public void populateNoise(ServerLevelAccessor access, ChunkAccess chunk) {
 		if (chunk.getPos().x % 32 == 0 && chunk.getPos().z % 32 == 0) {
-			var world = ((StructureAccessorAccessor) accessor).getWorld();
-			var server = world.getServer();
+			var server = access.getServer();
 			if (server == null) return;
-			var manager = server.getStructureTemplateManager();
-			var structure = manager.getTemplate(AMCommon.id("rocket"));
+			var manager = server.getStructureManager();
+			var structure = manager.get(AMCommon.id("rocket"));
 			
-			if (structure.isPresent() && world instanceof ServerWorldAccess access) {
-				var structurePlacementData = new StructurePlacementData();
-				structure.get().place(access, new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), structurePlacementData, access.getRandom(), Block.NOTIFY_LISTENERS);
+			if (structure.isPresent()) {
+				var structurePlacementData = new StructurePlaceSettings();
+				structure.get().placeInWorld(access, new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), structurePlacementData, access.getRandom(), Block.UPDATE_CLIENTS);
 			}
 		}
 	}
@@ -132,19 +125,19 @@ public class RocketInteriorsChunkGenerator extends ChunkGenerator {
 	}
 	
 	@Override
-	public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView world, NoiseConfig noiseConfig) {
+	public int getBaseHeight(int x, int z, Heightmap.Types heightmap, LevelHeightAccessor world, RandomState noiseConfig) {
 		return 96;
 	}
 	
 	@Override
-	public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world, NoiseConfig noiseConfig) {
+	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor world, RandomState noiseConfig) {
 		var states = new BlockState[96];
-		Arrays.fill(states, Blocks.AIR.getDefaultState());
-		return new VerticalBlockSample(world.getBottomY(), states);
+		Arrays.fill(states, Blocks.AIR.defaultBlockState());
+		return new NoiseColumn(world.getMinBuildHeight(), states);
 	}
 	
 	@Override
-	public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
+	public void addDebugScreenInfo(List<String> text, RandomState noiseConfig, BlockPos pos) {
 	
 	}
 }

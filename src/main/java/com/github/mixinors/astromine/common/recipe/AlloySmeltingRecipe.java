@@ -30,6 +30,7 @@ import com.github.mixinors.astromine.common.recipe.base.input.DoubleItemInputRec
 import com.github.mixinors.astromine.common.recipe.base.output.ItemOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
@@ -37,36 +38,34 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import com.github.mixinors.astromine.common.recipe.base.AstromineRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public record AlloySmeltingRecipe(
-		Identifier id,
+		ResourceLocation id,
 		ItemIngredient firstInput,
 		ItemIngredient secondInput,
 		ItemResult output,
 		long energyInput,
 		int time
 ) implements DoubleItemInputRecipe, ItemOutputRecipe {
-	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
-	public static boolean allows(World world, ItemVariant... variants) {
+	public static boolean allows(Level world, ItemStack... stacks) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(AlloySmeltingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(variants)) {
+			if (recipe.allows(stacks)) {
 				return true;
 			}
 		}
@@ -74,9 +73,9 @@ public record AlloySmeltingRecipe(
 		return false;
 	}
 	
-	public static Optional<AlloySmeltingRecipe> matching(World world, SingleSlotStorage<ItemVariant>... storages) {
+	public static Optional<AlloySmeltingRecipe> matching(Level world, SimpleItemVariantStorage... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(AlloySmeltingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
@@ -88,17 +87,14 @@ public record AlloySmeltingRecipe(
 		return Optional.empty();
 	}
 	
-	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
+	public boolean matches(SimpleItemVariantStorage... storages) {
 		var firstInputStorage = storages[0];
 		var secondInputStorage = storages[1];
 		
 		var outputStorage = storages[2];
 		
-		if (!firstInput.test(firstInputStorage) && !secondInput.test(firstInputStorage)) {
-			return false;
-		}
-		
-		if (!firstInput.test(secondInputStorage) && !secondInput.test(secondInputStorage)) {
+		if (!((firstInput.test(firstInputStorage) && secondInput.test(secondInputStorage))
+				|| (firstInput.test(secondInputStorage) && secondInput.test(firstInputStorage)))) {
 			return false;
 		}
 		
@@ -106,7 +102,7 @@ public record AlloySmeltingRecipe(
 	}
 	
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
@@ -121,7 +117,7 @@ public record AlloySmeltingRecipe(
 	}
 	
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AMBlocks.ADVANCED_ALLOY_SMELTER.get());
 	}
 	
@@ -147,8 +143,8 @@ public record AlloySmeltingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer implements RecipeSerializer<AlloySmeltingRecipe> {
-		public static final Identifier ID = AMCommon.id("alloy_smelting");
+	public static final class Serializer implements AstromineRecipeSerializer<AlloySmeltingRecipe> {
+		public static final ResourceLocation ID = AMCommon.id("alloy_smelting");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
@@ -156,7 +152,7 @@ public record AlloySmeltingRecipe(
 		}
 		
 		@Override
-		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
+		public AlloySmeltingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 			
 			return new AlloySmeltingRecipe(
@@ -170,7 +166,7 @@ public record AlloySmeltingRecipe(
 		}
 		
 		@Override
-		public AlloySmeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public AlloySmeltingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new AlloySmeltingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
@@ -182,7 +178,7 @@ public record AlloySmeltingRecipe(
 		}
 		
 		@Override
-		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
+		public void write(FriendlyByteBuf buffer, AlloySmeltingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.firstInput);
 			ItemIngredient.toPacket(buffer, recipe.secondInput);
 			ItemResult.toPacket(buffer, recipe.output);

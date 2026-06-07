@@ -5,6 +5,7 @@
     "bottom": "astromine:block/basic_tank_bottom",
     "front": "astromine:block/basic_tank_front",
     "left": "astromine:block/basic_tank_left",
+    "particle": "astromine:block/basic_tank_top",
     "right": "astromine:block/basic_tank_right",
     "top": "astromine:block/basic_tank_top"
   }

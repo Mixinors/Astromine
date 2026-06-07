@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 200,
+  "input": {
+    "count": 1,
+    "tag": "c:lunum_salvageables"
+  },
+  "output": {
+    "count": 2,
+    "item": "astromine:lunum_tiny_dust"
+  },
+  "time": 30
+}

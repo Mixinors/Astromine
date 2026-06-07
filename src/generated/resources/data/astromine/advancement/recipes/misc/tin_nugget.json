@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "astromine:tin_nugget"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tin_ingots": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:tin_ingots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tin_ingots"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "astromine:tin_nugget"
+    ]
+  }
+}

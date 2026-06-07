@@ -24,18 +24,17 @@
 
 package com.github.mixinors.astromine.datagen.family.material;
 
+import com.github.mixinors.astromine.datagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily.MaterialType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import net.fabricmc.yarn.constants.MiningLevels;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.Items;
-import net.minecraft.util.registry.Registry;
-
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -57,7 +56,7 @@ public class AMMaterialFamilies {
 			.armor(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS)
 			.horseArmor(Items.DIAMOND_HORSE_ARMOR)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.oreSmeltingExperience(1.0F)
 			.moltenFluid(AMFluids.MOLTEN_DIAMOND, 3.8F)
 			.build();
@@ -71,7 +70,7 @@ public class AMMaterialFamilies {
 			.darkMoonOre(AMBlocks.DARK_MOON_EMERALD_ORE.get(), Items.EMERALD)
 			.dust(AMItems.EMERALD_DUST.get(), AMItems.EMERALD_TINY_DUST.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.oreSmeltingExperience(1.0F)
 			.moltenFluid(AMFluids.MOLTEN_EMERALD, 2.8F)
 			.build();
@@ -109,7 +108,7 @@ public class AMMaterialFamilies {
 			.gear(AMItems.IRON_GEAR.get())
 			.plate(AMItems.IRON_PLATE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.STONE)
+			.miningLevel(HarvestData.STONE)
 			.moltenFluid(AMFluids.MOLTEN_IRON)
 			.build();
 	
@@ -132,7 +131,7 @@ public class AMMaterialFamilies {
 			.apple(Items.GOLDEN_APPLE)
 			.piglinLoved()
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.oreSmeltingExperience(1.0F)
 			.moltenFluid(AMFluids.MOLTEN_GOLD, 0.85F).build();
 	
@@ -148,7 +147,7 @@ public class AMMaterialFamilies {
 			.gear(AMItems.COPPER_GEAR.get())
 			.plate(AMItems.COPPER_PLATE.get())
 			.wire(AMItems.COPPER_WIRE.get())
-			.miningLevel(MiningLevels.STONE)
+			.miningLevel(HarvestData.STONE)
 			.moltenFluid(AMFluids.MOLTEN_COPPER, 0.875F)
 			.build();
 	
@@ -171,7 +170,7 @@ public class AMMaterialFamilies {
 			.moonOreGem(AMBlocks.MOON_REDSTONE_ORE.get())
 			.darkMoonOreGem(AMBlocks.DARK_MOON_REDSTONE_ORE.get())
 			.tinyDust(AMItems.REDSTONE_TINY_DUST.get())
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.build();
 	
 	public static final MaterialFamily LAPIS = register("lapis", Items.LAPIS_LAZULI, MaterialType.MISC)
@@ -183,7 +182,7 @@ public class AMMaterialFamilies {
 			.dust(AMItems.LAPIS_DUST.get(), AMItems.LAPIS_TINY_DUST.get())
 			.alias("lapis_lazuli")
 			.baseTagPathOverride("lapis")
-			.miningLevel(MiningLevels.STONE)
+			.miningLevel(HarvestData.STONE)
 			.oreSmeltingExperience(0.2F)
 			.moltenFluid(AMFluids.MOLTEN_LAPIS, 1.6F)
 			.build();
@@ -192,7 +191,7 @@ public class AMMaterialFamilies {
 			.netherOre(Blocks.ANCIENT_DEBRIS)
 			.dust(AMItems.RAW_NETHERITE_DUST.get(), AMItems.RAW_NETHERITE_TINY_DUST.get())
 			.alias("netherite_scrap")
-			.miningLevel(MiningLevels.DIAMOND)
+			.miningLevel(HarvestData.DIAMOND)
 			.oreSmeltingExperience(2.0F)
 			.build();
 	
@@ -224,7 +223,7 @@ public class AMMaterialFamilies {
 			.smithingBase(DIAMOND)
 			.alloyIngredients(GOLD, 4, RAW_NETHERITE, 4, 1, 100, 100)
 			.validForBeacon()
-			.miningLevel(MiningLevels.DIAMOND)
+			.miningLevel(HarvestData.DIAMOND)
 			.moltenFluid(AMFluids.MOLTEN_NETHERITE, 2.0F)
 			.build();
 	
@@ -238,7 +237,7 @@ public class AMMaterialFamilies {
 			.tools(AMItems.ASTERITE_PICKAXE.get(), AMItems.ASTERITE_AXE.get(), AMItems.ASTERITE_SHOVEL.get(), AMItems.ASTERITE_SWORD.get(), AMItems.ASTERITE_HOE.get())
 			.armor(AMItems.ASTERITE_HELMET.get(), AMItems.ASTERITE_CHESTPLATE.get(), AMItems.ASTERITE_LEGGINGS.get(), AMItems.ASTERITE_BOOTS.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE)
+			.miningLevel(HarvestData.NETHERITE)
 			.oreSmeltingExperience(2.0F)
 			.moltenFluid(AMFluids.MOLTEN_ASTERITE, 14).build();
 	
@@ -269,7 +268,7 @@ public class AMMaterialFamilies {
 			.gear(AMItems.TIN_GEAR.get())
 			.plate(AMItems.TIN_PLATE.get())
 			.wire(AMItems.TIN_WIRE.get())
-			.miningLevel(MiningLevels.STONE)
+			.miningLevel(HarvestData.STONE)
 			.moltenFluid(AMFluids.MOLTEN_TIN, 0.6F)
 			.build();
 	
@@ -286,7 +285,7 @@ public class AMMaterialFamilies {
 			.plate(AMItems.SILVER_PLATE.get())
 			.wire(AMItems.SILVER_WIRE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.oreSmeltingExperience(0.8F)
 			.moltenFluid(AMFluids.MOLTEN_SILVER, 0.8F)
 			.build();
@@ -303,7 +302,7 @@ public class AMMaterialFamilies {
 			.gear(AMItems.LEAD_GEAR.get())
 			.plate(AMItems.LEAD_PLATE.get())
 			.apple(AMItems.LEAD_APPLE.get())
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.oreSmeltingExperience(0.8F)
 			.moltenFluid(AMFluids.MOLTEN_LEAD, 0.775F).build();
 	
@@ -320,7 +319,7 @@ public class AMMaterialFamilies {
 			.alloyIngredients(IRON, 1, COAL, 2, 1, 250, 900)
 			.alloyIngredients(IRON, 1, CHARCOAL, 2, 1, 250, 900)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.moltenFluid(AMFluids.MOLTEN_STEEL, 1.1F)
 			.build();
 	
@@ -334,7 +333,7 @@ public class AMMaterialFamilies {
 			.plate(AMItems.BRONZE_PLATE.get())
 			.alloyIngredients(COPPER, 3, TIN, 1, 200, 800)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.moltenFluid(AMFluids.MOLTEN_BRONZE, 0.9F)
 			.build();
 	
@@ -347,7 +346,7 @@ public class AMMaterialFamilies {
 			.wire(AMItems.ELECTRUM_WIRE.get())
 			.alloyIngredients(GOLD, SILVER, 180, 750)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON)
+			.miningLevel(HarvestData.IRON)
 			.moltenFluid(AMFluids.MOLTEN_ELECTRUM, 1.1F)
 			.build();
 	
@@ -362,7 +361,7 @@ public class AMMaterialFamilies {
 			.alloyIngredients(IRON, GUNPOWDER, 1, 150, 600)
 			.piglinLoved()
 			.alias("pyrite")
-			.miningLevel(MiningLevels.STONE)
+			.miningLevel(HarvestData.STONE)
 			.moltenFluid(AMFluids.MOLTEN_FOOLS_GOLD).build();
 	
 	// Astromine Space Ingots
@@ -378,7 +377,7 @@ public class AMMaterialFamilies {
 			.gear(AMItems.METITE_GEAR.get())
 			.plate(AMItems.METITE_PLATE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE).oreSmeltingExperience(0.5F)
+			.miningLevel(HarvestData.NETHERITE).oreSmeltingExperience(0.5F)
 			.moltenFluid(AMFluids.MOLTEN_METITE, 2.5F)
 			.build();
 	
@@ -392,7 +391,7 @@ public class AMMaterialFamilies {
 			.gear(AMItems.STELLUM_GEAR.get())
 			.plate(AMItems.STELLUM_PLATE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE)
+			.miningLevel(HarvestData.NETHERITE)
 			.oreSmeltingExperience(1.5F)
 			.moltenFluid(AMFluids.MOLTEN_STELLUM, 8)
 			.build();
@@ -423,7 +422,7 @@ public class AMMaterialFamilies {
 			.plate(AMItems.METEORIC_STEEL_PLATE.get())
 			.alloyIngredients(METITE, 2, STEEL, 1, 300, 1000)
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE)
+			.miningLevel(HarvestData.NETHERITE)
 			.moltenFluid(AMFluids.MOLTEN_METEORIC_STEEL, 2.6F)
 			.build();
 
@@ -440,7 +439,7 @@ public class AMMaterialFamilies {
 			.gear(AMItems.LUNUM_GEAR.get())
 			.plate(AMItems.LUNUM_PLATE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.STONE)
+			.miningLevel(HarvestData.STONE)
 			.moltenFluid(AMFluids.MOLTEN_LUNUM)
 			.build();
 	
@@ -454,13 +453,13 @@ public class AMMaterialFamilies {
 			.build();
 	
 	
-	public static MaterialFamily.Builder register(String name, ItemConvertible baseItem, MaterialType materialType) {
+	public static MaterialFamily.Builder register(String name, ItemLike baseItem, MaterialType materialType) {
 		var builder = new MaterialFamily.Builder(name, baseItem.asItem(), materialType);
 		
 		var materialFamily = BASE_ITEMS_TO_FAMILIES.put(baseItem.asItem(), builder.build());
 		
 		if (materialFamily != null) {
-			throw new IllegalStateException("Duplicate family definition for " + Registry.ITEM.getId(baseItem.asItem()));
+			throw new IllegalStateException("Duplicate family definition for " + BuiltInRegistries.ITEM.getKey(baseItem.asItem()));
 		}
 		
 		return builder;

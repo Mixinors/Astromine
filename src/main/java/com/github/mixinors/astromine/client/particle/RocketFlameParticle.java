@@ -24,17 +24,17 @@
 
 package com.github.mixinors.astromine.client.particle;
 
-import net.minecraft.client.particle.AbstractSlowingParticle;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.RisingParticle;
 
-public class RocketFlameParticle extends AbstractSlowingParticle {
-	public RocketFlameParticle(ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+public class RocketFlameParticle extends RisingParticle {
+	public RocketFlameParticle(ClientLevel clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 		super(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
 	}
 	
 	@Override
-	public ParticleTextureSheet getType() {
-		return ParticleTextureSheet.PARTICLE_SHEET_OPAQUE;
+	public ParticleRenderType getRenderType() {
+		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 }

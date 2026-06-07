@@ -25,18 +25,13 @@
 package com.github.mixinors.astromine.common.item.storage;
 
 import com.github.mixinors.astromine.common.transfer.storage.FluidStorageItem;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class SimpleFluidStorageItem extends Item implements FluidStorageItem {
 	private final long capacity;
 	
-	public SimpleFluidStorageItem(Item.Settings settings, long capacity) {
+	public SimpleFluidStorageItem(Item.Properties settings, long capacity) {
 		super(settings);
 		
 		this.capacity = capacity;
@@ -48,39 +43,27 @@ public class SimpleFluidStorageItem extends Item implements FluidStorageItem {
 	}
 	
 	@Override
-	public int getItemBarStep(ItemStack stack) {
+	public int getBarWidth(ItemStack stack) {
 		if (getFluidCapacity() == 0L) {
 			return 0;
 		}
 		
-		var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
-		
-		var totalAmount = 0L;
-		var totalCapacity = 0L;
-		
-		try (var transaction = Transaction.openOuter()) {
-			for (var fluidStorage : fluidStorages) {
-				totalAmount += fluidStorage.getAmount();
-				totalCapacity += fluidStorage.getCapacity();
-			}
-			
-			transaction.abort();
-		}
-		
-		totalCapacity = totalCapacity == 0L ? 1L : totalCapacity;
+		var fluid = getStoredFluid(stack);
+		var totalAmount = fluid.getAmount();
+		var totalCapacity = Math.max(1L, getFluidCapacity());
 		
 		return (int) (13.0F * ((float) totalAmount / (float) totalCapacity));
 	}
 	
 	@Override
-	public boolean isItemBarVisible(ItemStack stack) {
+	public boolean isBarVisible(ItemStack stack) {
 		return true;
 	}
 	
 	@Override
-	public int getItemBarColor(ItemStack stack) {
-		var fluidStorage = (SimpleFluidItemStorage) FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+	public int getBarColor(ItemStack stack) {
+		var fluid = getStoredFluid(stack);
 		
-		return FluidVariantRendering.getColor(fluidStorage.getResource());
+		return fluid.isEmpty() ? 0xFFFFFF : 0x3F76E4;
 	}
 }

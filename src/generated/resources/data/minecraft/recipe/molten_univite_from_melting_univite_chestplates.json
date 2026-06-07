@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 44800,
+  "input": {
+    "count": 1,
+    "tag": "c:univite_chestplates"
+  },
+  "output": {
+    "amount": 192,
+    "fluid": "astromine:molten_univite"
+  },
+  "time": 5600
+}

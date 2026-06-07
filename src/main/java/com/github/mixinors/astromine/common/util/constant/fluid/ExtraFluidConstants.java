@@ -24,11 +24,14 @@
 
 package com.github.mixinors.astromine.common.util.constant.fluid;
 
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.neoforged.neoforge.fluids.FluidType;
 
 public class ExtraFluidConstants {
-	public static final long INGOT_FROM_2x2_BLOCK = 20250; // BLOCK / 4
-	public static final long NUGGET_FROM_2x2_BLOCK = 2250; // INGOT_FROM_2x2_BLOCK / 9
+	public static final long BLOCK = FluidType.BUCKET_VOLUME;
+	public static final long INGOT = BLOCK / 9L;
+	public static final long NUGGET = Math.max(1L, INGOT / 9L);
+	public static final long INGOT_FROM_2x2_BLOCK = BLOCK / 4L;
+	public static final long NUGGET_FROM_2x2_BLOCK = Math.max(1L, INGOT_FROM_2x2_BLOCK / 9L);
 	
 	public static long ingot(boolean block2x2) {
 		return ingots(1, block2x2);
@@ -39,10 +42,10 @@ public class ExtraFluidConstants {
 	}
 	
 	public static long ingots(int count, boolean block2x2) {
-		return (block2x2 ? INGOT_FROM_2x2_BLOCK : FluidConstants.INGOT) * count;
+		return (block2x2 ? INGOT_FROM_2x2_BLOCK : INGOT) * count;
 	}
 	
 	public static long nuggets(int count, boolean block2x2) {
-		return (block2x2 ? NUGGET_FROM_2x2_BLOCK : FluidConstants.NUGGET) * count;
+		return (block2x2 ? NUGGET_FROM_2x2_BLOCK : NUGGET) * count;
 	}
 }

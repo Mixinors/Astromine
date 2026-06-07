@@ -30,21 +30,21 @@ import com.github.mixinors.astromine.common.config.entry.utility.FluidStorageUti
 import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
+import com.github.mixinors.astromine.common.util.NbtUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidDrainable;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -73,24 +73,22 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 	public PumpBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.PUMP, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
 				false
 		).listener(() -> {
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
-		
-		fluidStorage.getStorage(OUTPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
@@ -98,7 +96,7 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 			age += 1;
 			
 			if (age % 5 == 0) {
-				if (world.getBlockState(pos.add(0, (int) -Math.ceil(Math.max(depth, 1.0D) / 20.0D), 0)).isAir()) {
+				if (level.getBlockState(worldPosition.offset(0, (int) -Math.ceil(Math.max(depth, 1.0D) / 20.0D), 0)).isAir()) {
 					depth += 2.5D;
 				}
 			}
@@ -109,115 +107,97 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 				cooldown = 0L;
 				
 				active = false;
-			} else {
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						if (!posToPump.isEmpty()) {
-							if (cooldown > getSpeed()) {
-								cooldown = 0L;
-								
-								var targetPos = posToPump.pop();
-								
-								var targetBlockState = world.getBlockState(targetPos);
-								var targetFluidState = targetBlockState.getFluidState();
-								
-								var targetBlock = targetBlockState.getBlock();
-								
-								var targetFluid = targetFluidState.getFluid();
-								
-								var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
-								
-								if (!targetFluidState.isEmpty() && targetFluidState.isStill() && outputStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction, true) == FluidConstants.BUCKET) {
-									((FluidDrainable) targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
-									
-									world.playSound(null, getPos(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-									
-									energyStorage.amount -= consumed;
-									
-									cooldown = 0L;
-									
-									transaction.commit();
-								} else {
-									active = false;
-									
-									transaction.abort();
-								}
-							} else {
-								++cooldown;
-								
-								active = true;
-							}
-						} else {
-							var posToCheck = new ArrayDeque<BlockPos>();
-							
-							posToCheck.add(getPos().add(0, -Math.ceil(depth / 20.0D), 0));
-							
-							var mainCheckFluidState = world.getFluidState(posToCheck.getLast());
-							
-							if (!mainCheckFluidState.isEmpty()) {
-								while (!posToCheck.isEmpty()) {
-									var checkPos = posToCheck.pop();
-									var checkBlockState = world.getBlockState(checkPos);
-									var checkFluidState = checkBlockState.getFluidState();
-									
-									if (mainCheckFluidState.isEmpty() && !checkFluidState.isEmpty()) {
-										mainCheckFluidState = checkFluidState;
-									}
-									
-									if (!posToPump.contains(checkPos) && !posToCheck.contains(checkPos) && !checkFluidState.isEmpty() && checkFluidState.equals(mainCheckFluidState)) {
-										for (var directions : DirectionUtils.VALUES) {
-											posToCheck.add(checkPos.offset(directions));
-										}
-										
-										posToPump.add(checkPos);
-									}
-								}
-							}
-							
-							active = false;
-							
-							transaction.abort();
-						}
+			} else if (!posToPump.isEmpty()) {
+				if (cooldown > getSpeed()) {
+					cooldown = 0L;
+
+					var targetPos = posToPump.pop();
+					var targetBlockState = level.getBlockState(targetPos);
+					var targetFluidState = targetBlockState.getFluidState();
+					var targetBlock = targetBlockState.getBlock();
+					var targetFluid = targetFluidState.getType();
+					var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
+					var bucket = new FluidStack(targetFluid, FluidType.BUCKET_VOLUME);
+
+					if (!targetFluidState.isEmpty() && targetFluidState.isSource() && targetBlock instanceof BucketPickup pickup && outputStorage.insert(bucket, FluidType.BUCKET_VOLUME, true, true) == FluidType.BUCKET_VOLUME) {
+						outputStorage.insert(bucket, FluidType.BUCKET_VOLUME, true, false);
+						pickup.pickupBlock(null, level, targetPos, targetBlockState);
+
+						level.playSound(null, getBlockPos(), SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1, 1);
+
+						energyStorage.amount -= consumed;
+
+						cooldown = 0L;
 					} else {
 						active = false;
-						
-						transaction.abort();
+					}
+				} else {
+					++cooldown;
+
+					active = true;
+				}
+			} else {
+				var posToCheck = new ArrayDeque<BlockPos>();
+
+				posToCheck.add(getBlockPos().offset(0, (int) -Math.ceil(depth / 20.0D), 0));
+
+				var mainCheckFluidState = level.getFluidState(posToCheck.getLast());
+
+				if (!mainCheckFluidState.isEmpty()) {
+					while (!posToCheck.isEmpty()) {
+						var checkPos = posToCheck.pop();
+						var checkBlockState = level.getBlockState(checkPos);
+						var checkFluidState = checkBlockState.getFluidState();
+
+						if (mainCheckFluidState.isEmpty() && !checkFluidState.isEmpty()) {
+							mainCheckFluidState = checkFluidState;
+						}
+
+						if (!posToPump.contains(checkPos) && !posToCheck.contains(checkPos) && !checkFluidState.isEmpty() && checkFluidState.equals(mainCheckFluidState)) {
+							for (var directions : DirectionUtils.VALUES) {
+								posToCheck.add(checkPos.relative(directions));
+							}
+
+							posToPump.add(checkPos);
+						}
 					}
 				}
+
+				active = false;
 			}
 		}
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		nbt.putLong(COOLDOWN_KEY, cooldown);
 		nbt.putDouble(DEPTH_KEY, depth);
 		
-		var posToPumpList = new NbtList();
+		var posToPumpList = new ListTag();
 		
 		for (var pos : posToPump) {
-			posToPumpList.add(NbtHelper.fromBlockPos(pos));
+			posToPumpList.add(NbtUtils.writeBlockPos(pos));
 		}
 		
 		nbt.put(POSITIONS_TO_PUMP_KEY, posToPumpList);
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		cooldown = nbt.getLong(COOLDOWN_KEY);
 		depth = nbt.getDouble(DEPTH_KEY);
 		
 		posToPump.clear();
 		
-		var posToPumpList = nbt.getList(POSITIONS_TO_PUMP_KEY, NbtElement.COMPOUND_TYPE);
+		var posToPumpList = nbt.getList(POSITIONS_TO_PUMP_KEY, Tag.TAG_COMPOUND);
 		
 		for (var pos : posToPumpList) {
-			posToPump.add(NbtHelper.toBlockPos((NbtCompound) pos));
+			posToPump.add(NbtUtils.readBlockPos((CompoundTag) pos));
 		}
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override

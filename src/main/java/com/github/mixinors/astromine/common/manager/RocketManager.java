@@ -1,52 +1,50 @@
 package com.github.mixinors.astromine.common.manager;
 
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.component.level.RocketsComponent;
 import com.github.mixinors.astromine.common.rocket.Rocket;
-import com.github.mixinors.astromine.registry.common.AMStaticComponents;
+import com.github.mixinors.astromine.registry.common.AMNetworking;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import dev.architectury.networking.NetworkManager;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtIo;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.WorldSavePath;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static com.github.mixinors.astromine.registry.common.AMNetworking.SYNC_ROCKETS;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class RocketManager {
-	public static Rocket readFromNbt(NbtCompound rocketTag) {
+	private static final RocketsComponent CLIENT_ROCKETS = new RocketsComponent();
+	private static final String LEGACY_FILE_ID = "rockets";
+	
+	public static Rocket readFromNbt(CompoundTag rocketTag) {
 		return new Rocket(rocketTag);
 	}
 	
-	@NotNull
-	public static Rocket create(UUID ownerUuid, UUID uuid) {
-		var rocket = new Rocket(uuid, ownerUuid, findUnoccupiedSpace());
-		return add(rocket);
+	private static RocketsComponent getData(MinecraftServer server) {
+		return server.overworld().getDataStorage().computeIfAbsent(RocketsComponent.factory(), RocketsComponent.FILE_ID);
 	}
 	
-	private static Rocket add(Rocket rocket) {
-		var server = InstanceUtil.getServer();
-		if (server == null) throw new RuntimeException("Server is null.");
-
-		var component = AMStaticComponents.getRockets();
+	@NotNull
+	public static Rocket create(MinecraftServer server, UUID ownerUuid, UUID uuid) {
+		var rocket = new Rocket(uuid, ownerUuid, findUnoccupiedSpace(server));
+		return add(server, rocket);
+	}
+	
+	private static Rocket add(MinecraftServer server, Rocket rocket) {
+		var component = getData(server);
 		component.add(rocket);
+		attachSyncListener(server, component, rocket);
 		
 		sync(server);
 		
@@ -54,28 +52,51 @@ public class RocketManager {
 	}
 	
 	@Nullable
-	public static Rocket get(UUID uuid) {
-		var component = AMStaticComponents.getRockets();
-		return component.get(uuid);
+	public static Rocket get(MinecraftServer server, UUID uuid) {
+		return getData(server).get(uuid);
 	}
 	
 	@Nullable
-	public static Rocket get(ChunkPos interiorPos) {
-		return getRockets()
+	public static Rocket get(Level level, UUID uuid) {
+		return level instanceof ServerLevel serverLevel ? get(serverLevel.getServer(), uuid) : CLIENT_ROCKETS.get(uuid);
+	}
+	
+	@Nullable
+	public static Rocket get(UUID uuid) {
+		return CLIENT_ROCKETS.get(uuid);
+	}
+	
+	@Nullable
+	public static Rocket get(MinecraftServer server, ChunkPos interiorPos) {
+		return getRockets(server)
 				.stream()
 				.filter(rocket -> rocket.getInteriorPos().equals(interiorPos))
 				.findFirst()
 				.orElse(null);
 	}
 	
-	public static Collection<Rocket> getRockets() {
-		var component = AMStaticComponents.getRockets();
-		return component.getAll();
+	@Nullable
+	public static Rocket get(Level level, ChunkPos interiorPos) {
+		return level instanceof ServerLevel serverLevel
+				? get(serverLevel.getServer(), interiorPos)
+				: getRockets()
+						.stream()
+						.filter(rocket -> rocket.getInteriorPos().equals(interiorPos))
+						.findFirst()
+						.orElse(null);
 	}
 	
-	private static ChunkPos findUnoccupiedSpace() {
+	public static Collection<Rocket> getRockets(MinecraftServer server) {
+		return getData(server).getAll();
+	}
+	
+	public static Collection<Rocket> getRockets() {
+		return CLIENT_ROCKETS.getAll();
+	}
+	
+	private static ChunkPos findUnoccupiedSpace(MinecraftServer server) {
 		var occupiedPositions = RocketManager
-				.getRockets()
+				.getRockets(server)
 				.stream()
 				.map(Rocket::getInteriorPos)
 				.collect(Collectors.toSet());
@@ -95,129 +116,108 @@ public class RocketManager {
 		return chunkPos;
 	}
 	
-	public static void teleportToRocketInterior(PlayerEntity player, UUID uuid) {
-		var rocket = get(uuid);
-		if (rocket == null) rocket = create(player.getUuid(), uuid);
-		if (rocket == null) return;
+	public static void teleportToRocketInterior(Player player, UUID uuid) {
+		if (!(player instanceof ServerPlayer serverPlayer)) {
+			return;
+		}
+		
+		var server = serverPlayer.getServer();
+		var rocket = get(server, uuid);
+		if (rocket == null) rocket = create(server, player.getUUID(), uuid);
 		
 		var chunkPos = rocket.getInteriorPos();
-		var placer = rocket.getPlacer(player.getUuid());
+		var placer = rocket.getPlacer(player.getUUID());
 		
 		if (placer == null) {
-			placer = new Rocket.Placer(player.getWorld().getRegistryKey(), player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
-		
-			rocket.setPlacer(player.getUuid(), placer);
+			placer = new Rocket.Placer(player.level().dimension(), player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot());
+			
+			rocket.setPlacer(player.getUUID(), placer);
 		}
 		
-		if (player instanceof ServerPlayerEntity serverPlayer) {
-			var server = player.getServer();
-			if (server == null) return;
-			var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
-			if (world == null) return;
+		var world = server.getLevel(AMWorlds.ROCKET_INTERIORS);
+		if (world == null) return;
 		
-			serverPlayer.teleport(world, chunkPos.x * 16.0F + 3.5F, 1.0F, chunkPos.z * 16.0F + 3.5F, 270.0F, 0.0F);
-		}
+		serverPlayer.teleportTo(world, chunkPos.x * 16.0F + 3.5F, 1.0F, chunkPos.z * 16.0F + 3.5F, 270.0F, 0.0F);
 	}
 	
-	public static void teleportToPlacer(PlayerEntity player, UUID uuid) {
-		var rocket = get(uuid);
+	public static void teleportToPlacer(Player player, UUID uuid) {
+		if (!(player instanceof ServerPlayer serverPlayer)) {
+			return;
+		}
+		
+		var server = serverPlayer.getServer();
+		var rocket = get(server, uuid);
 		if (rocket == null) return;
 		
-		var placer = rocket.getPlacer(player.getUuid());
+		var placer = rocket.getPlacer(player.getUUID());
 		
 		if (placer != null) {
-			if (player instanceof ServerPlayerEntity serverPlayer) {
-				var server = player.getServer();
-				if (server == null) return;
-				var world = server.getWorld(placer.worldKey());
-				if (world == null) return;
-		
-				serverPlayer.teleport(world, placer.x(), placer.y(), placer.z(), placer.yaw(), placer.pitch());
-			}
+			var world = server.getLevel(placer.worldKey());
+			if (world == null) return;
+			
+			serverPlayer.teleportTo(world, placer.x(), placer.y(), placer.z(), placer.yaw(), placer.pitch());
 		} else {
-			if (player instanceof ServerPlayerEntity serverPlayer) {
-				var server = serverPlayer.getServer();
-				if (server == null) return;
-				
-				var world = server.getWorld(World.OVERWORLD);
-				if (world == null) return;
-				
-				serverPlayer.teleport(world.getSpawnPos().getX(), world.getSpawnPos().getY(), world.getSpawnPos().getZ());
-			}
+			var world = server.getLevel(Level.OVERWORLD);
+			if (world == null) return;
+			
+			serverPlayer.teleportTo(world.getSharedSpawnPos().getX(), world.getSharedSpawnPos().getY(), world.getSharedSpawnPos().getZ());
 		}
 	}
 	
-	public static void onSync(PacketByteBuf buf, NetworkManager.PacketContext context) {
-		var nbt = buf.readNbt();
-		
-		context.queue(() -> {
-			var component = AMStaticComponents.getRockets();
-			component.readFromNbt(nbt);
-		});
+	public static void onSync(CompoundTag nbt) {
+		CLIENT_ROCKETS.readFromNbt(nbt);
 	}
 	
-	public static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
+	public static void onPlayerJoin(MinecraftServer server) {
 		sync(server);
 	}
 	
 	public static void onServerStarting(MinecraftServer server) {
-		var fabricLoader = FabricLoader.getInstance();
-		if (fabricLoader == null) return;
-		
-		var worldDir = server.getSavePath(WorldSavePath.ROOT).toFile();
-		
-		var rocketsFile = worldDir.toPath().resolve("data").resolve("stations.dat").toFile();
-		
-		if (rocketsFile.exists()) {
-			var rocketsNbt = new NbtCompound();
-			
-			try {
-				rocketsNbt = NbtIo.read(rocketsFile);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			AMStaticComponents.getRockets().readFromNbt(rocketsNbt);
-		}
-	}
-	
-	public static void onServerStopping(MinecraftServer server) {
-		var fabricLoader = FabricLoader.getInstance();
-		if (fabricLoader == null) return;
-		
-		var worldDir = server.getSavePath(WorldSavePath.ROOT).toFile();
-		
-		var rocketFile = worldDir.toPath().resolve("data").resolve("rockets.dat").toFile();
-		
-		var rocketsNbt = new NbtCompound();
-		
-		AMStaticComponents.getRockets().writeToNbt(rocketsNbt);
-		
-		try {
-			// TODO: Use NbtIo#writeCompressed.
-			NbtIo.write(rocketsNbt, rocketFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		var component = getData(server);
+		migrateLegacyData(server, component);
+		attachSyncListeners(server, component);
 	}
 	
 	public static void sync(MinecraftServer server) {
-		var component = AMStaticComponents.getRockets();
+		var component = getData(server);
 		
-		var nbt = new NbtCompound();
+		var nbt = new CompoundTag();
 		component.writeToNbt(nbt);
 		
-		var playerManager = server.getPlayerManager();
-		if (playerManager == null) return;
-		
-		var playerList = playerManager.getPlayerList();
-		if (playerList == null) return;
-		
-		var buf = PacketByteBufs.create();
-		buf.writeNbt(nbt);
-		
-		for (var player : playerList) {
-			ServerPlayNetworking.send(player, SYNC_ROCKETS, PacketByteBufs.duplicate(buf));
+		for (var player : server.getPlayerList().getPlayers()) {
+			PacketDistributor.sendToPlayer(player, new AMNetworking.SyncRocketsPayload(nbt.copy()));
 		}
+	}
+	
+	private static void migrateLegacyData(MinecraftServer server, RocketsComponent component) {
+		if (!component.isEmpty()) {
+			return;
+		}
+		
+		var legacyFile = server.getWorldPath(LevelResource.ROOT).resolve("data").resolve(LEGACY_FILE_ID + ".dat");
+		
+		if (!legacyFile.toFile().exists()) {
+			return;
+		}
+		
+		try {
+			component.readFromNbt(NbtIo.read(legacyFile));
+			component.setDirty();
+		} catch (IOException exception) {
+			AMCommon.LOGGER.warn("Failed to migrate legacy rocket data from {}", legacyFile, exception);
+		}
+	}
+	
+	private static void attachSyncListeners(MinecraftServer server, RocketsComponent component) {
+		for (var rocket : component.getAll()) {
+			attachSyncListener(server, component, rocket);
+		}
+	}
+	
+	private static void attachSyncListener(MinecraftServer server, RocketsComponent component, Rocket rocket) {
+		rocket.setSyncListener(() -> {
+			component.setDirty();
+			sync(server);
+		});
 	}
 }

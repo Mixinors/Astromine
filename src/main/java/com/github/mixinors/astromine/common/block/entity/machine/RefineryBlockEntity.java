@@ -29,14 +29,13 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageMachineConfigProvider;
 import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -55,7 +54,7 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 	public RefineryBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		fluidStorage = new SimpleFluidStorage(2, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				slot == OUTPUT_SLOT
@@ -64,13 +63,13 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 				return false;
 			}
 			
-			return RefiningRecipe.allows(world, variant);
+			return RefiningRecipe.allows(level, variant);
 		}).listener(() -> {
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
 			
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -78,13 +77,13 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		if (fluidStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
-				optionalRecipe = RefiningRecipe.matching(world, fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
+				optionalRecipe = RefiningRecipe.matching(level, fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 			}
 			
 			if (optionalRecipe.isPresent()) {
@@ -95,32 +94,28 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						energyStorage.amount -= consumed;
+				if (energyStorage.amount >= consumed) {
+					energyStorage.amount -= consumed;
+					
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 						
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
-							
-							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
-							
-							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction, true);
-							
-							var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
-							
-							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction, true);
-							
-							transaction.commit();
-							
-							progress = 0.0D;
-						} else {
-							progress += speed;
-						}
+						var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 						
-						active = true;
+						inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), true, false);
+						
+						var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
+						
+						outputStorage.insert(recipe.output().toStack(), recipe.output().amount(), true, false);
+						
+						progress = 0.0D;
 					} else {
-						active = false;
+						progress += speed;
 					}
+					
+					active = true;
+				} else {
+					active = false;
 				}
 			} else {
 				progress = 0.0D;

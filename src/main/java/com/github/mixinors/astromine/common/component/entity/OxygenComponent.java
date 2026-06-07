@@ -26,17 +26,15 @@ package com.github.mixinors.astromine.common.component.entity;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 
 
-public final class OxygenComponent implements AutoSyncedComponent {
+public final class OxygenComponent {
 	private static final UUID AK9_UUID = UUID.fromString("38113444-0bc0-4502-9a4c-17903067907c");
 	
 	public static final String OXYGEN_KEY = "Oxygen";
@@ -50,11 +48,7 @@ public final class OxygenComponent implements AutoSyncedComponent {
 	
 	@Nullable
 	public static <V> OxygenComponent get(V v) {
-		try {
-			return AMComponents.OXYGEN_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		return v instanceof Entity entity ? entity.getData(AMComponents.OXYGEN_COMPONENT) : null;
 	}
 	
 	public OxygenComponent(Entity entity) {
@@ -62,7 +56,7 @@ public final class OxygenComponent implements AutoSyncedComponent {
 	}
 	
 	public void tick(boolean breathing) {
-		if (entity instanceof PlayerEntity player) {
+		if (entity instanceof Player player) {
 			if (player.isCreative() || player.isSpectator()) {
 				return;
 			}
@@ -73,12 +67,12 @@ public final class OxygenComponent implements AutoSyncedComponent {
 		if (oxygen == getMinimumOxygen()) {
 			var isAK9 = false;
 			
-			if (entity instanceof PlayerEntity playerEntity) {
+			if (entity instanceof Player playerEntity) {
 				isAK9 = playerEntity.getGameProfile().getId().equals(AK9_UUID);
 			}
 			
 			if (!isAK9 || AMConfig.get().secret.asphyxiateAK9) {
-				entity.damage(DamageSource.DROWN, 1.0F);
+				entity.hurt(entity.damageSources().drown(), 1.0F);
 			}
 		}
 	}
@@ -119,13 +113,11 @@ public final class OxygenComponent implements AutoSyncedComponent {
 		this.entity = entity;
 	}
 	
-	@Override
-	public void writeToNbt(NbtCompound nbt) {
+	public void writeToNbt(CompoundTag nbt) {
 		nbt.putInt(OXYGEN_KEY, oxygen);
 	}
 	
-	@Override
-	public void readFromNbt(NbtCompound nbt) {
+	public void readFromNbt(CompoundTag nbt) {
 		oxygen = nbt.getInt(OXYGEN_KEY);
 	}
 }

@@ -24,47 +24,27 @@
 
 package com.github.mixinors.astromine.common.config;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.section.*;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import com.google.gson.GsonBuilder;
+import net.neoforged.fml.loading.FMLPaths;
 
-@Config(name = "astromine")
-public class AMConfig implements ConfigData {
-	@ConfigEntry.Gui.Excluded
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public class AMConfig {
+	private static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get().resolve("astromine.json");
+	private static final com.google.gson.Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	
 	public static AMConfig INSTANCE;
-	
-	@Comment("Whether Nuclear Warheads are enabled")
 	public boolean nuclearWarheadEnabled = true;
-	
-	@Comment("Whether to attempt to migrate old, broken data to new data. Usage recommended when first loading old chunks after an update")
 	public boolean compatibilityMode = true;
-	
-	@Comment("Block Settings")
-	@ConfigEntry.Gui.CollapsibleObject
 	public BlocksConfigSection blocks = new BlocksConfigSection();
-	
-	@Comment("Item Settings")
-	@ConfigEntry.Gui.CollapsibleObject
 	public ItemsConfigSection items = new ItemsConfigSection();
-	
-	@Comment("World Settings")
-	@ConfigEntry.Gui.CollapsibleObject
 	public WorldConfigSection world = new WorldConfigSection();
-	
-	@Comment("Network Settings")
-	@ConfigEntry.Gui.CollapsibleObject
 	public NetworksConfigSection networks = new NetworksConfigSection();
-	
-	@Comment("Entity Settings")
-	@ConfigEntry.Gui.CollapsibleObject
 	public EntitiesConfigSection entities = new EntitiesConfigSection();
-	
-	@Comment("Secret Settings")
-	@ConfigEntry.Gui.CollapsibleObject
 	public SecretConfigSection secret = new SecretConfigSection();
 	
 	public static void init() {
@@ -74,22 +54,32 @@ public class AMConfig implements ConfigData {
 	public static AMConfig get() {
 		if (INSTANCE == null) {
 			try {
-				AutoConfig.register(AMConfig.class, JanksonConfigSerializer::new);
-				
-				try {
-					AutoConfig.getConfigHolder(AMConfig.class).save();
-				} catch (Throwable throwable) {
-					throwable.printStackTrace();
+				if (Files.exists(CONFIG_PATH)) {
+					try (var reader = Files.newBufferedReader(CONFIG_PATH)) {
+						INSTANCE = GSON.fromJson(reader, AMConfig.class);
+					}
 				}
 				
-				INSTANCE = AutoConfig.getConfigHolder(AMConfig.class).getConfig();
-			} catch (Throwable throwable) {
-				throwable.printStackTrace();
+				if (INSTANCE == null) {
+					INSTANCE = new AMConfig();
+				}
+				
+				save();
+			} catch (Exception exception) {
+				AMCommon.LOGGER.warn("Failed to load Astromine config from {}; using defaults", CONFIG_PATH, exception);
 				
 				INSTANCE = new AMConfig();
 			}
 		}
 		
 		return INSTANCE;
+	}
+	
+	public static void save() throws IOException {
+		Files.createDirectories(CONFIG_PATH.getParent());
+		
+		try (var writer = Files.newBufferedWriter(CONFIG_PATH)) {
+			GSON.toJson(INSTANCE, writer);
+		}
 	}
 }

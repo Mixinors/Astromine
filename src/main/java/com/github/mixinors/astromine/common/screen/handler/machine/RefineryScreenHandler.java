@@ -27,45 +27,29 @@ package com.github.mixinors.astromine.common.screen.handler.machine;
 import com.github.mixinors.astromine.common.block.entity.machine.RefineryBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final RefineryBlockEntity refinery;
 	
-	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public RefineryScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.REFINERY, syncId, player, position);
 		
 		refinery = (RefineryBlockEntity) blockEntity;
+		
+		var fluidX = defaultFluidBarX();
+		var fluidY = defaultFluidBarY();
+		var arrowX = fluidArrowX(fluidX);
+		var arrowY = fluidArrowY(fluidY);
+		
+		addFluidBar(RefineryBlockEntity.INPUT_SLOT, fluidX, fluidY);
+		addFluidBar(RefineryBlockEntity.OUTPUT_SLOT, processOutputX(arrowX), fluidY);
+		addProgressArrow(arrowX, arrowY);
 	}
 	
 	@Override
 	public int getDefaultFluidSlotForBar() {
 		return RefineryBlockEntity.INPUT_SLOT;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
-		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) refinery.limit);
-		arrow.setCurrent(() -> (float) refinery.progress);
-		
-		var outputFluidBar = new FluidBarWidget();
-		outputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
-		outputFluidBar.setSize(new Size(fluidBar));
-		outputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(RefineryBlockEntity.OUTPUT_SLOT));
-		outputFluidBar.setSmooth(false);
-		
-		tab.add(outputFluidBar);
-		tab.add(arrow);
 	}
 }

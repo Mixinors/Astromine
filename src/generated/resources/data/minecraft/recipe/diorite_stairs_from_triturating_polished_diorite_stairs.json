@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 300,
+  "input": {
+    "count": 1,
+    "item": "minecraft:polished_diorite_stairs"
+  },
+  "output": {
+    "count": 1,
+    "item": "minecraft:diorite_stairs"
+  },
+  "time": 80
+}

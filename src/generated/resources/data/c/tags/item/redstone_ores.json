@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#c:redstone_stone_ores",
+    "#c:redstone_deepslate_ores",
+    "#c:redstone_asteroid_ores",
+    "#c:redstone_moon_ores",
+    "#c:redstone_dark_moon_ores"
+  ]
+}

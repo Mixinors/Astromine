@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 270,
+  "input": {
+    "count": 1,
+    "tag": "c:netherite_ingots"
+  },
+  "output": {
+    "count": 1,
+    "item": "astromine:netherite_dust"
+  },
+  "time": 60
+}

@@ -5,6 +5,7 @@
     "bottom": "astromine:block/elite_solidifier_bottom",
     "front": "astromine:block/elite_solidifier_front",
     "left": "astromine:block/elite_solidifier_left",
+    "particle": "astromine:block/elite_solidifier_top",
     "right": "astromine:block/elite_solidifier_right",
     "top": "astromine:block/elite_solidifier_top"
   }

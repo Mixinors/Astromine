@@ -5,6 +5,7 @@
     "bottom": "astromine:block/pump_bottom",
     "front": "astromine:block/pump_front",
     "left": "astromine:block/pump_left",
+    "particle": "astromine:block/pump_top",
     "right": "astromine:block/pump_right",
     "top": "astromine:block/pump_top"
   }

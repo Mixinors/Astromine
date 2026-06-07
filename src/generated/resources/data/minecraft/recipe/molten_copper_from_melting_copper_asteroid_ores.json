@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 7000,
+  "input": {
+    "count": 1,
+    "tag": "c:copper_asteroid_ores"
+  },
+  "output": {
+    "amount": 144,
+    "fluid": "astromine:molten_copper"
+  },
+  "time": 875
+}

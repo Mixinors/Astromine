@@ -24,31 +24,35 @@
 
 package com.github.mixinors.astromine.common.recipe.base;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.world.World;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.level.Level;
 
-public interface AMRecipe extends Recipe<Inventory> {
+public interface AMRecipe extends Recipe<RecipeInput> {
 	@Override
-	default boolean matches(Inventory inventory, World world) {
+	default boolean matches(RecipeInput inventory, Level world) {
 		return false;
 	}
 	
 	@Override
-	default ItemStack craft(Inventory inventory) {
-		return getOutput().copy();
+	default ItemStack assemble(RecipeInput inventory, HolderLookup.Provider registries) {
+		return getResultItem(registries).copy();
 	}
 	
 	@Override
-	default boolean fits(int width, int height) {
+	default boolean canCraftInDimensions(int width, int height) {
 		return false;
 	}
 	
 	@Override
-	default ItemStack getOutput() {
+	default ItemStack getResultItem(HolderLookup.Provider registries) {
 		return ItemStack.EMPTY;
 	}
 	
 	int getTime();
+	
+	ResourceLocation getId();
 }

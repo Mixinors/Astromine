@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 608,
+  "input": {
+    "count": 1,
+    "tag": "c:diamond_nuggets"
+  },
+  "output": {
+    "amount": 12,
+    "fluid": "astromine:molten_diamond"
+  },
+  "time": 76
+}

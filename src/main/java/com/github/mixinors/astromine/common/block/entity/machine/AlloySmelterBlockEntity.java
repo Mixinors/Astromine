@@ -29,14 +29,13 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -58,15 +57,15 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
+		energyStorage = new LongEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 		
 		itemStorage = new SimpleItemStorage(3).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT_1 && slot != INPUT_SLOT_2) {
 				return false;
 			}
 			
-			return AlloySmeltingRecipe.allows(world, variant, itemStorage.getVariant(INPUT_SLOT_2)) ||
-					AlloySmeltingRecipe.allows(world, itemStorage.getVariant(INPUT_SLOT_1), variant);
+			return AlloySmeltingRecipe.allows(level, variant, itemStorage.getVariant(INPUT_SLOT_2)) ||
+					AlloySmeltingRecipe.allows(level, itemStorage.getVariant(INPUT_SLOT_1), variant);
 		}).extractPredicate((variant, slot) ->
 				slot == OUTPUT_SLOT
 		).listener(() -> {
@@ -74,7 +73,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 				optionalRecipe = Optional.empty();
 			}
 			
-			markDirty();
+			setChanged();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
@@ -82,13 +81,13 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 	public void tick() {
 		super.tick();
 		
-		if (world == null || world.isClient || !shouldRun()) {
+		if (level == null || level.isClientSide || !shouldRun()) {
 			return;
 		}
 		
 		if (itemStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
-				optionalRecipe = AlloySmeltingRecipe.matching(world, itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT));
+				optionalRecipe = AlloySmeltingRecipe.matching(level, itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT));
 			}
 			
 			if (optionalRecipe.isPresent()) {
@@ -99,39 +98,35 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 				var speed = min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.amount >= consumed) {
-						energyStorage.amount -= consumed;
+				if (energyStorage.amount >= consumed) {
+					energyStorage.amount -= consumed;
+					
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 						
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
-							
-							var firstInputStorage = itemStorage.getStorage(INPUT_SLOT_1);
-							var secondInputStorage = itemStorage.getStorage(INPUT_SLOT_2);
-							
-							if (recipe.firstInput().test(firstInputStorage) && recipe.secondInput().test(secondInputStorage)) {
-								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput().getAmount(), transaction, true);
-								secondInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput().getAmount(), transaction, true);
-							} else if (recipe.firstInput().test(secondInputStorage) && recipe.secondInput().test(firstInputStorage)) {
-								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput().getAmount(), transaction, true);
-								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput().getAmount(), transaction, true);
-							}
-							
-							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
-							
-							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction, true);
-							
-							transaction.commit();
-							
-							progress = 0.0D;
-						} else {
-							progress += speed;
+						var firstInputStorage = itemStorage.getStorage(INPUT_SLOT_1);
+						var secondInputStorage = itemStorage.getStorage(INPUT_SLOT_2);
+						
+						if (recipe.firstInput().test(firstInputStorage) && recipe.secondInput().test(secondInputStorage)) {
+							firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput().getAmount(), true, false);
+							secondInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput().getAmount(), true, false);
+						} else if (recipe.firstInput().test(secondInputStorage) && recipe.secondInput().test(firstInputStorage)) {
+							firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput().getAmount(), true, false);
+							secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput().getAmount(), true, false);
 						}
 						
-						active = true;
+						var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+						
+						outputStorage.insert(recipe.output().toStack(), recipe.output().count(), true, false);
+						
+						progress = 0.0D;
 					} else {
-						active = false;
+						progress += speed;
 					}
+					
+					active = true;
+				} else {
+					active = false;
 				}
 			} else {
 				progress = 0.0D;

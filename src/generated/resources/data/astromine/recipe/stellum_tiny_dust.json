@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:stellum_dusts"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "astromine:stellum_tiny_dust"
+  }
+}

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.comparator;
 
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 /**

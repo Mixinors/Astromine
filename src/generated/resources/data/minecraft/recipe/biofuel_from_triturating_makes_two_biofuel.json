@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 100,
+  "input": {
+    "count": 1,
+    "tag": "astromine:makes_two_biofuel"
+  },
+  "output": {
+    "count": 2,
+    "item": "astromine:biofuel"
+  },
+  "time": 140
+}

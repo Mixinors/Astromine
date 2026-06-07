@@ -26,18 +26,18 @@ package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public interface TieredBlock {
@@ -54,14 +54,14 @@ public interface TieredBlock {
 		return getForTier(tier) != null;
 	}
 	
-	default ActionResult tryUpgrade(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		var stack = player.getStackInHand(hand);
+	default InteractionResult tryUpgrade(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		var stack = player.getItemInHand(hand);
 		
 		if (stack.getItem() instanceof MachineUpgradeKitItem upgradeKitItem && upgradeKitItem.isValidFor(this)) {
 			var newBlock = upgradeKitItem.getUpgrade(this);
 			
 			if (newBlock != null) {
-				if (world.isClient) {
+				if (world.isClientSide) {
 					var random = world.random;
 					
 					var x = pos.getX() - 0.3F;
@@ -72,18 +72,18 @@ public interface TieredBlock {
 						world.addParticle(ParticleTypes.COMPOSTER, x + random.nextDouble() * 1.6F, y + random.nextDouble() * 1.6F, z + random.nextDouble() * 1.6F, -0.2F + random.nextDouble() * 0.4F, -0.2F + random.nextDouble() * 0.4F, -0.2F + random.nextDouble() * 0.4F);
 					}
 					
-					world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+					world.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 				} else {
 					if (!player.isCreative()) {
-						stack.decrement(1);
+						stack.shrink(1);
 					}
 					
 					var blockEntity = world.getBlockEntity(pos);
 					
-					var blockEntityNbt = (NbtCompound) null;
+					var blockEntityNbt = (CompoundTag) null;
 					
 					if (blockEntity != null) {
-						blockEntityNbt = blockEntity.createNbtWithId();
+						blockEntityNbt = blockEntity.saveWithId(world.registryAccess());
 						
 						blockEntityNbt.putInt(X_KEY, pos.getX());
 						blockEntityNbt.putInt(Y_KEY, pos.getY());
@@ -92,21 +92,21 @@ public interface TieredBlock {
 					
 					world.removeBlockEntity(pos);
 					
-					var newState = newBlock.getStateWithProperties(state);
+					var newState = newBlock.withPropertiesOf(state);
 					
-					world.setBlockState(pos, newState, Block.NOTIFY_ALL, 512);
+					world.setBlock(pos, newState, Block.UPDATE_ALL, 512);
 					
 					var newBlockEntity = world.getBlockEntity(pos);
 					
 					if (newBlockEntity != null && blockEntityNbt != null) {
-						newBlockEntity.readNbt(blockEntityNbt);
+						newBlockEntity.loadWithComponents(blockEntityNbt, world.registryAccess());
 					}
 				}
 				
-				return ActionResult.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
 		
-		return ActionResult.PASS;
+		return InteractionResult.PASS;
 	}
 }

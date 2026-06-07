@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "cookingtime": 200,
-  "experience": 0.0,
-  "ingredient": {
-    "tag": "c:bronze_dusts"
-  },
-  "result": "astromine:bronze_ingot"
-}

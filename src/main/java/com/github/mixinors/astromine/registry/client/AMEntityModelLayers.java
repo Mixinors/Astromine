@@ -26,20 +26,22 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.entity.RocketEntityModel;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 public class AMEntityModelLayers {
-	public static final EntityModelLayer ROCKET = register("rocket", RocketEntityModel::getTexturedModelData);
+	public static final ModelLayerLocation ROCKET = register("rocket");
 	
-	public static void init() {
+	public static void init(IEventBus modBus) {
+		modBus.addListener(AMEntityModelLayers::registerLayerDefinitions);
 	}
 	
-	public static EntityModelLayer register(String id, EntityModelLayerRegistry.TexturedModelDataProvider texturedModelDataProvider) {
-		var entityModelLayer = new EntityModelLayer(AMCommon.id(id), "main");
-		
-		EntityModelLayerRegistry.registerModelLayer(entityModelLayer, texturedModelDataProvider);
-		
-		return entityModelLayer;
+	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+		event.registerLayerDefinition(ROCKET, RocketEntityModel::getTexturedModelData);
+	}
+	
+	public static ModelLayerLocation register(String id) {
+		return new ModelLayerLocation(AMCommon.id(id), "main");
 	}
 }

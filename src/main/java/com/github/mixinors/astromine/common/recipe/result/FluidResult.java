@@ -24,81 +24,80 @@
 
 package com.github.mixinors.astromine.common.recipe.result;
 
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.architectury.fluid.FluidStack;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 
 public record FluidResult(
-		FluidVariant variant,
-		long amount
+		FluidStack stack
 ) {
 	private static final String FLUID_KEY = "fluid";
 	private static final String AMOUNT_KEY = "amount";
 	
-	public static final FluidResult EMPTY = new FluidResult(FluidVariant.blank(), 0);
+	public static final FluidResult EMPTY = new FluidResult(FluidStack.EMPTY);
 	
 	public FluidStack toStack() {
-		return FluidStack.create(variant.getFluid(), amount, variant.copyNbt());
+		return stack.copy();
 	}
 	
-	public boolean equalsAndFitsIn(SingleSlotStorage<FluidVariant> storage) {
-		return storage.getCapacity() - storage.getAmount() >= amount && (storage.getResource().equals(variant) || storage.isResourceBlank());
+	public long amount() {
+		return stack.getAmount();
+	}
+	
+	public boolean equalsAndFitsIn(SimpleFluidVariantStorage storage) {
+		var storedStack = storage.getResource();
+		var storedAmount = storage.getAmount();
+		
+		return storage.getCapacity() - storedAmount >= amount()
+				&& (storedStack.isEmpty() || FluidStack.isSameFluidSameComponents(storedStack, stack));
 	}
 	
 	public static JsonObject toJson(FluidResult result) {
 		var jsonObject = new JsonObject();
 		
-		jsonObject.addProperty(FLUID_KEY, Registry.FLUID.getId(result.variant.getFluid()).toString());
-		jsonObject.addProperty(AMOUNT_KEY, result.amount);
+		jsonObject.addProperty(FLUID_KEY, BuiltInRegistries.FLUID.getKey(result.stack.getFluid()).toString());
+		jsonObject.addProperty(AMOUNT_KEY, result.stack.getAmount());
 		
 		return jsonObject;
 	}
 	
 	public static FluidResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
-			var variantId = new Identifier(jsonElement.getAsString());
-			var variantFluid = Registry.FLUID.get(variantId);
+			var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(jsonElement.getAsString()));
 			
-			var variant = FluidVariant.of(variantFluid);
-			
-			return new FluidResult(variant, FluidConstants.BUCKET);
-		} else {
-			var jsonObject = jsonElement.getAsJsonObject();
-			
-			var variantId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
-			var variantFluid = Registry.FLUID.get(variantId);
-			
-			var variant = FluidVariant.of(variantFluid);
-			
-			if (jsonObject.has(AMOUNT_KEY)) {
-				var variantAmount = jsonObject.get(AMOUNT_KEY).getAsInt();
-				
-				return new FluidResult(variant, variantAmount);
-			} else {
-				return new FluidResult(variant, FluidConstants.BUCKET);
-			}
+			return new FluidResult(new FluidStack(fluid, FluidType.BUCKET_VOLUME));
 		}
+		
+		var jsonObject = jsonElement.getAsJsonObject();
+		var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(jsonObject.get(FLUID_KEY).getAsString()));
+		var amount = jsonObject.has(AMOUNT_KEY) ? jsonObject.get(AMOUNT_KEY).getAsLong() : FluidType.BUCKET_VOLUME;
+		
+		if (fluid == Fluids.EMPTY || amount <= 0L) {
+			return EMPTY;
+		}
+		
+		return new FluidResult(new FluidStack(fluid, (int) Math.min(amount, Integer.MAX_VALUE)));
 	}
 	
-	public static void toPacket(PacketByteBuf buf, FluidResult result) {
-		buf.writeString(Registry.FLUID.getId(result.variant.getFluid()).toString());
-		buf.writeLong(result.amount);
+	public static void toPacket(FriendlyByteBuf buf, FluidResult result) {
+		buf.writeUtf(BuiltInRegistries.FLUID.getKey(result.stack.getFluid()).toString());
+		buf.writeLong(result.stack.getAmount());
 	}
 	
-	public static FluidResult fromPacket(PacketByteBuf buf) {
-		var variantId = new Identifier(buf.readString());
-		var variantFluid = Registry.FLUID.get(variantId);
+	public static FluidResult fromPacket(FriendlyByteBuf buf) {
+		var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(buf.readUtf()));
+		var amount = buf.readLong();
 		
-		var variant = FluidVariant.of(variantFluid);
+		if (fluid == Fluids.EMPTY || amount <= 0L) {
+			return EMPTY;
+		}
 		
-		var variantAmount = buf.readLong();
-		
-		return new FluidResult(variant, variantAmount);
+		return new FluidResult(new FluidStack(fluid, (int) Math.min(amount, Integer.MAX_VALUE)));
 	}
 }

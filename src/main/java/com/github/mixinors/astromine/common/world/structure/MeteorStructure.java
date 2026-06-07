@@ -24,40 +24,39 @@
 
 package com.github.mixinors.astromine.common.world.structure;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.structure.StructurePiecesCollector;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.structure.Structure;
-import net.minecraft.world.gen.structure.StructureType;
-
+import com.mojang.serialization.MapCodec;
 import java.util.Optional;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
 public class MeteorStructure extends Structure {
-	public static final Codec<MeteorStructure> CODEC = createCodec(MeteorStructure::new);
+	public static final MapCodec<MeteorStructure> CODEC = simpleCodec(MeteorStructure::new);
 	
 	public static final StructureType<MeteorStructure> TYPE = () -> CODEC;
 	
-	public MeteorStructure(Config config) {
+	public MeteorStructure(StructureSettings config) {
 		super(config);
 	}
 	
-	private static void addPieces(StructurePiecesCollector collector, Context context) {
-		collector.addPiece(new MeteorGenerator(context.random(), context.chunkPos().getStartX(), context.chunkPos().getStartZ()));
+	private static void addPieces(StructurePiecesBuilder collector, GenerationContext context) {
+		collector.addPiece(new MeteorGenerator(context.random(), context.chunkPos().getMinBlockX(), context.chunkPos().getMinBlockZ()));
 	}
 	
 	@Override
-	public GenerationStep.Feature getFeatureGenerationStep() {
-		return GenerationStep.Feature.SURFACE_STRUCTURES;
+	public GenerationStep.Decoration step() {
+		return GenerationStep.Decoration.SURFACE_STRUCTURES;
 	}
 	
 	@Override
-	public Optional<StructurePosition> getStructurePosition(Context context) {
-		return getStructurePosition(context, Heightmap.Type.WORLD_SURFACE_WG, collector -> addPieces(collector, context));
+	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+		return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, collector -> addPieces(collector, context));
 	}
 	
 	@Override
-	public StructureType<?> getType() {
+	public StructureType<?> type() {
 		return TYPE;
 	}
 }

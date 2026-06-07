@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import net.minecraft.entity.ai.control.MoveControl;
-import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 
 public class SuperSpaceSlimeMoveControl extends MoveControl {
 	private final SuperSpaceSlimeEntity slime;
@@ -42,23 +42,23 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 		
 		this.slime = slime;
 		
-		this.targetYaw = 180.0F * slime.getYaw() / (float) Math.PI;
+		this.targetYaw = 180.0F * slime.getYRot() / (float) Math.PI;
 	}
 	
 	@Override
 	public void tick() {
-		entity.setYaw(wrapDegrees(entity.getYaw(), targetYaw, 90.0F));
+		mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
 		
-		entity.headYaw = entity.getYaw();
-		entity.bodyYaw = entity.getYaw();
+		mob.yHeadRot = mob.getYRot();
+		mob.yBodyRot = mob.getYRot();
 		
-		if (state != MoveControl.State.MOVE_TO) {
-			entity.setForwardSpeed(0.0F);
+		if (operation != MoveControl.Operation.MOVE_TO) {
+			mob.setZza(0.0F);
 		} else {
-			state = MoveControl.State.WAIT;
+			operation = MoveControl.Operation.WAIT;
 			
-			if (entity.isOnGround()) {
-				entity.setMovementSpeed((float) (speed * entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+			if (mob.onGround()) {
+				mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 				
 				if (ticksUntilJump-- <= 0) {
 					ticksUntilJump = slime.getTicksUntilNextJump();
@@ -67,17 +67,17 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 						ticksUntilJump /= 3;
 					}
 					
-					slime.getJumpControl().setActive();
+					slime.getJumpControl().jump();
 					
 					slime.playSound(slime.getJumpSound(), slime.getSoundVolume(), slime.getJumpSoundPitch());
 				} else {
-					slime.sidewaysSpeed = 0.0F;
-					slime.forwardSpeed = 0.0F;
+					slime.xxa = 0.0F;
+					slime.zza = 0.0F;
 					
-					entity.setMovementSpeed(0.0F);
+					mob.setSpeed(0.0F);
 				}
 			} else {
-				entity.setMovementSpeed((float) (speed * entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+				mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 			}
 		}
 	}
@@ -88,7 +88,7 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 	}
 	
 	public void move(double speed) {
-		this.speed = speed;
-		this.state = MoveControl.State.MOVE_TO;
+		this.speedModifier = speed;
+		this.operation = MoveControl.Operation.MOVE_TO;
 	}
 }

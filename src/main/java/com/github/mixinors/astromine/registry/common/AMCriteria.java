@@ -26,10 +26,13 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.criterion.*;
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.Criterion;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.core.registries.Registries;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMCriteria {
+	private static final DeferredRegister<CriterionTrigger<?>> REGISTRY = DeferredRegister.create(Registries.TRIGGER_TYPE, AMCommon.MOD_ID);
+	
 	public static final TrickedPiglinCriterion TRICKED_PIGLIN = register(new TrickedPiglinCriterion(AMCommon.id("tricked_piglin")));
 	
 	public static final LaunchRocketCriterion LAUNCH_ROCKET = register(new LaunchRocketCriterion(AMCommon.id("launch_rocket")));
@@ -40,9 +43,11 @@ public class AMCriteria {
 	public static final ProperlyUseFireExtinguisherCriterion PROPERLY_USE_FIRE_EXTINGUISHER = register(new ProperlyUseFireExtinguisherCriterion(AMCommon.id("properly_use_fire_extinguisher")));
 	
 	public static void init() {
+		REGISTRY.register(AMCommon.modEventBus());
 	}
 	
-	public static <T extends Criterion<?>> T register(T criterion) {
-		return Criteria.register(criterion);
+	public static <T extends CriterionTrigger<?> & IdentifiedCriterion> T register(T criterion) {
+		REGISTRY.register(criterion.getId().getPath(), () -> criterion);
+		return criterion;
 	}
 }

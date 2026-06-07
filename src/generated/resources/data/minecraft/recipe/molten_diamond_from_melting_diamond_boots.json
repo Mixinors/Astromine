@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 8512,
+  "input": {
+    "count": 1,
+    "tag": "c:diamond_boots"
+  },
+  "output": {
+    "amount": 96,
+    "fluid": "astromine:molten_diamond"
+  },
+  "time": 1064
+}

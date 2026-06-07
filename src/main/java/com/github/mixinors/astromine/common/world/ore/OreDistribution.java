@@ -26,21 +26,30 @@ package com.github.mixinors.astromine.common.world.ore;
 
 import com.github.mixinors.astromine.registry.common.AMFeatures;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.intprovider.ConstantIntProvider;
-import net.minecraft.util.math.intprovider.IntProvider;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.placementmodifier.*;
+import net.minecraft.core.Holder;
+import net.minecraft.data.worldgen.features.OreFeatures;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
 public record OreDistribution(
 		int veinSize,
 		IntProvider veinsPerChunk,
-		YOffset min,
-		YOffset max,
+		VerticalAnchor min,
+		VerticalAnchor max,
 		float discardOnAirChance,
 		HeightRangePlacementModifierType type
 ) {
@@ -66,12 +75,12 @@ public record OreDistribution(
 		- COPPER_LARGE = trapezoid(20, 16, YOffset.fixed(-16), YOffset.fixed(112)); // only in dripstone caves
 	 */
 	
-	public static final OreDistribution TIN = trapezoid(10, 14, YOffset.fixed(-24), YOffset.fixed(88));
-	public static final OreDistribution TIN_SMALL = uniform(4, 2, YOffset.fixed(-24), YOffset.fixed(64), 0.1f);
-	public static final OreDistribution SILVER = trapezoid(9, 6, YOffset.fixed(-56), YOffset.fixed(64), 0.2f);
-	public static final OreDistribution SILVER_LOWER = uniform(9, UniformIntProvider.create(0, 2), YOffset.fixed(-64), YOffset.fixed(-16), 0.2f);
-	public static final OreDistribution LEAD = trapezoid(8, 8, YOffset.fixed(-32), YOffset.fixed(48));
-	public static final OreDistribution LEAD_SMALL = uniform(4, 8, YOffset.getBottom(), YOffset.fixed(56));
+	public static final OreDistribution TIN = trapezoid(10, 14, VerticalAnchor.absolute(-24), VerticalAnchor.absolute(88));
+	public static final OreDistribution TIN_SMALL = uniform(4, 2, VerticalAnchor.absolute(-24), VerticalAnchor.absolute(64), 0.1f);
+	public static final OreDistribution SILVER = trapezoid(9, 6, VerticalAnchor.absolute(-56), VerticalAnchor.absolute(64), 0.2f);
+	public static final OreDistribution SILVER_LOWER = uniform(9, UniformInt.of(0, 2), VerticalAnchor.absolute(-64), VerticalAnchor.absolute(-16), 0.2f);
+	public static final OreDistribution LEAD = trapezoid(8, 8, VerticalAnchor.absolute(-32), VerticalAnchor.absolute(48));
+	public static final OreDistribution LEAD_SMALL = uniform(4, 8, VerticalAnchor.bottom(), VerticalAnchor.absolute(56));
 	
 	/**
 	 * Creates a new uniform Ore Distribution.
@@ -82,7 +91,7 @@ public record OreDistribution(
 	 * @param max                the maximum y offset
 	 * @param discardOnAirChance the chance that an ore block won't generate if directly exposed to air
 	 */
-	public static OreDistribution uniform(int veinSize, IntProvider veinsPerChunk, YOffset min, YOffset max, float discardOnAirChance) {
+	public static OreDistribution uniform(int veinSize, IntProvider veinsPerChunk, VerticalAnchor min, VerticalAnchor max, float discardOnAirChance) {
 		return new OreDistribution(veinSize, veinsPerChunk, min, max, discardOnAirChance, HeightRangePlacementModifierType.UNIFORM);
 	}
 	
@@ -94,7 +103,7 @@ public record OreDistribution(
 	 * @param min           the minimum y offset
 	 * @param max           the maximum y offset
 	 */
-	public static OreDistribution uniform(int veinSize, IntProvider veinsPerChunk, YOffset min, YOffset max) {
+	public static OreDistribution uniform(int veinSize, IntProvider veinsPerChunk, VerticalAnchor min, VerticalAnchor max) {
 		return uniform(veinSize, veinsPerChunk, min, max, 0.0f);
 	}
 	
@@ -107,8 +116,8 @@ public record OreDistribution(
 	 * @param max                the maximum y offset
 	 * @param discardOnAirChance the chance that an ore block won't generate if directly exposed to air
 	 */
-	public static OreDistribution uniform(int veinSize, int veinsPerChunk, YOffset min, YOffset max, float discardOnAirChance) {
-		return uniform(veinSize, ConstantIntProvider.create(veinsPerChunk), min, max, discardOnAirChance);
+	public static OreDistribution uniform(int veinSize, int veinsPerChunk, VerticalAnchor min, VerticalAnchor max, float discardOnAirChance) {
+		return uniform(veinSize, ConstantInt.of(veinsPerChunk), min, max, discardOnAirChance);
 	}
 	
 	/**
@@ -119,7 +128,7 @@ public record OreDistribution(
 	 * @param min           the minimum y offset
 	 * @param max           the maximum y offset
 	 */
-	public static OreDistribution uniform(int veinSize, int veinsPerChunk, YOffset min, YOffset max) {
+	public static OreDistribution uniform(int veinSize, int veinsPerChunk, VerticalAnchor min, VerticalAnchor max) {
 		return uniform(veinSize, veinsPerChunk, min, max, 0.0f);
 	}
 	
@@ -132,7 +141,7 @@ public record OreDistribution(
 	 * @param max                the maximum y offset
 	 * @param discardOnAirChance the chance that an ore block won't generate if directly exposed to air
 	 */
-	public static OreDistribution trapezoid(int veinSize, IntProvider veinsPerChunk, YOffset min, YOffset max, float discardOnAirChance) {
+	public static OreDistribution trapezoid(int veinSize, IntProvider veinsPerChunk, VerticalAnchor min, VerticalAnchor max, float discardOnAirChance) {
 		return new OreDistribution(veinSize, veinsPerChunk, min, max, discardOnAirChance, HeightRangePlacementModifierType.TRAPEZOID);
 	}
 	
@@ -144,7 +153,7 @@ public record OreDistribution(
 	 * @param min           the minimum y offset
 	 * @param max           the maximum y offset
 	 */
-	public static OreDistribution trapezoid(int veinSize, IntProvider veinsPerChunk, YOffset min, YOffset max) {
+	public static OreDistribution trapezoid(int veinSize, IntProvider veinsPerChunk, VerticalAnchor min, VerticalAnchor max) {
 		return trapezoid(veinSize, veinsPerChunk, min, max, 0.0f);
 	}
 	
@@ -157,8 +166,8 @@ public record OreDistribution(
 	 * @param max                the maximum y offset
 	 * @param discardOnAirChance the chance that an ore block won't generate if directly exposed to air
 	 */
-	public static OreDistribution trapezoid(int veinSize, int veinsPerChunk, YOffset min, YOffset max, float discardOnAirChance) {
-		return trapezoid(veinSize, ConstantIntProvider.create(veinsPerChunk), min, max, discardOnAirChance);
+	public static OreDistribution trapezoid(int veinSize, int veinsPerChunk, VerticalAnchor min, VerticalAnchor max, float discardOnAirChance) {
+		return trapezoid(veinSize, ConstantInt.of(veinsPerChunk), min, max, discardOnAirChance);
 	}
 	
 	/**
@@ -169,17 +178,17 @@ public record OreDistribution(
 	 * @param min           the minimum y offset
 	 * @param max           the maximum y offset
 	 */
-	public static OreDistribution trapezoid(int veinSize, int veinsPerChunk, YOffset min, YOffset max) {
+	public static OreDistribution trapezoid(int veinSize, int veinsPerChunk, VerticalAnchor min, VerticalAnchor max) {
 		return trapezoid(veinSize, veinsPerChunk, min, max, 0.0f);
 	}
 	
-	private RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> registerConfiguredFeature(Identifier id, Block stoneOre, Block deepslateOre) {
+	private Holder<ConfiguredFeature<OreConfiguration, ?>> registerConfiguredFeature(ResourceLocation id, Block stoneOre, Block deepslateOre) {
 		var targets = ImmutableList.of(
-				OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, stoneOre.getDefaultState()),
-				OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.getDefaultState())
+				OreConfiguration.target(new TagMatchTest(net.minecraft.tags.BlockTags.STONE_ORE_REPLACEABLES), stoneOre.defaultBlockState()),
+				OreConfiguration.target(new TagMatchTest(net.minecraft.tags.BlockTags.DEEPSLATE_ORE_REPLACEABLES), deepslateOre.defaultBlockState())
 		);
 		
-		return AMFeatures.registerConfiguredFeature(id, Feature.ORE, new OreFeatureConfig(targets, veinSize, discardOnAirChance));
+		return AMFeatures.registerConfiguredFeature(id, Feature.ORE, new OreConfiguration(targets, veinSize, discardOnAirChance));
 	}
 	
 	/**
@@ -189,23 +198,23 @@ public record OreDistribution(
 	 * @param stoneOre     the stone variant of the ore
 	 * @param deepslateOre the deepslate variant of the ore
 	 */
-	public RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, Block stoneOre, Block deepslateOre) {
+	public Holder<PlacedFeature> registerPlacedFeature(ResourceLocation id, Block stoneOre, Block deepslateOre) {
 		return AMFeatures.registerPlacedFeature(id, registerConfiguredFeature(id, stoneOre, deepslateOre), modifiers());
 	}
 	
-	private HeightRangePlacementModifier heightRangePlacementModifier() {
+	private HeightRangePlacement heightRangePlacementModifier() {
 		return switch (type) {
-			case UNIFORM -> HeightRangePlacementModifier.uniform(min, max);
-			case TRAPEZOID -> HeightRangePlacementModifier.trapezoid(min, max);
+			case UNIFORM -> HeightRangePlacement.uniform(min, max);
+			case TRAPEZOID -> HeightRangePlacement.triangle(min, max);
 		};
 	}
 	
-	private CountPlacementModifier countPlacementModifier() {
-		return CountPlacementModifier.of(veinsPerChunk);
+	private CountPlacement countPlacementModifier() {
+		return CountPlacement.of(veinsPerChunk);
 	}
 	
 	private ImmutableList<PlacementModifier> modifiers() {
-		return ImmutableList.of(countPlacementModifier(), SquarePlacementModifier.of(), heightRangePlacementModifier(), BiomePlacementModifier.of());
+		return ImmutableList.of(countPlacementModifier(), InSquarePlacement.spread(), heightRangePlacementModifier(), BiomeFilter.biome());
 	}
 	
 	public enum HeightRangePlacementModifierType {

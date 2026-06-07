@@ -25,9 +25,8 @@
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import net.minecraft.entity.ai.goal.Goal;
-
 import java.util.EnumSet;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 public class SuperSpaceSlimeExplosionGoal extends Goal {
 	private final SuperSpaceSlimeEntity slime;
@@ -37,16 +36,16 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 	public SuperSpaceSlimeExplosionGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
 		
-		this.setControls(EnumSet.of(Control.MOVE, Control.JUMP));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 	
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		return slime.getHealth() <= slime.getMaxHealth() * 0.5D && !slime.hasExploded();
 	}
 	
 	@Override
-	public boolean shouldContinue() {
+	public boolean canContinueToUse() {
 		return ticksLeft > 0;
 	}
 	

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 224,
+  "input": {
+    "count": 1,
+    "tag": "c:quartz_tiny_dusts"
+  },
+  "output": {
+    "amount": 27,
+    "fluid": "astromine:molten_quartz"
+  },
+  "time": 28
+}

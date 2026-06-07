@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 1584,
+  "input": {
+    "count": 1,
+    "tag": "c:bronze_hoes"
+  },
+  "output": {
+    "amount": 48,
+    "fluid": "astromine:molten_bronze"
+  },
+  "time": 198
+}

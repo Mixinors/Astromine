@@ -1,0 +1,9 @@
+{
+  "type": "astromine:moon_orbit",
+  "generator": {
+    "type": "astromine:moon_orbit",
+    "biome_source": {
+      "type": "astromine:moon_orbit"
+    }
+  }
+}

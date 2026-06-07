@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "astromine:block/dynamic_smooth_moon_stone"
+  }
+}

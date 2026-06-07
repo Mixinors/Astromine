@@ -27,8 +27,8 @@ package com.github.mixinors.astromine.common.transfer;
 import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.mojang.serialization.Codec;
-import net.minecraft.item.Item;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 
 /**
  * A {@link StorageType} which dictates which of a machine's storages should be used.
@@ -48,11 +48,11 @@ public enum StorageType {
 		};
 	}
 	
-	public Text getName() {
+	public Component getName() {
 		return switch (this) {
-			case ITEM -> Text.translatable("text.astromine.item");
-			case FLUID -> Text.translatable("text.astromine.fluid");
-			case ENERGY -> Text.translatable("text.astromine.energy");
+			case ITEM -> Component.translatable("text.astromine.item");
+			case FLUID -> Component.translatable("text.astromine.fluid");
+			case ENERGY -> Component.translatable("text.astromine.energy");
 		};
 	}
 }

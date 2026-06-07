@@ -26,18 +26,19 @@ package com.github.mixinors.astromine.common.util;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class StackUtils {
 	private static final String ITEM_KEY = "item";
+	private static final String ID_KEY = "id";
 	private static final String COUNT_KEY = "count";
 	
 	public static boolean areItemsAndTagsEqual(ItemStack left, ItemStack right) {
-		return ItemStack.areItemsEqual(left, right) && ItemStack.areNbtEqual(left, right);
+		return ItemStack.matches(left, right);
 	}
 	
 	public static ItemStack fromJson(JsonElement jsonElement) {
@@ -46,7 +47,7 @@ public class StackUtils {
 				var primitive = jsonElement.getAsJsonPrimitive();
 				
 				if (primitive.isString()) {
-					return new ItemStack(Registry.ITEM.get(new Identifier(primitive.getAsString())));
+					return new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(primitive.getAsString())));
 				} else {
 					return ItemStack.EMPTY;
 				}
@@ -54,24 +55,29 @@ public class StackUtils {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			return ShapedRecipe.outputFromJson(jsonElement.getAsJsonObject());
+			var object = jsonElement.getAsJsonObject();
+			var itemKey = object.has(ITEM_KEY) ? ITEM_KEY : ID_KEY;
+			var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(object.get(itemKey).getAsString()));
+			var count = object.has(COUNT_KEY) ? object.get(COUNT_KEY).getAsInt() : 1;
+			
+			return new ItemStack(item, count);
 		}
 	}
 	
 	public static JsonElement toJson(ItemStack stack) {
 		var object = new JsonObject();
 		
-		object.addProperty(ITEM_KEY, Registry.ITEM.getId(stack.getItem()).toString());
+		object.addProperty(ITEM_KEY, BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
 		object.addProperty(COUNT_KEY, stack.getCount());
 		
 		return object;
 	}
 	
-	public static ItemStack fromPacket(PacketByteBuf buffer) {
-		return buffer.readItemStack();
+	public static ItemStack fromPacket(FriendlyByteBuf buffer) {
+		return ItemStack.OPTIONAL_STREAM_CODEC.decode((RegistryFriendlyByteBuf) buffer);
 	}
 	
-	public static void toPacket(PacketByteBuf buffer, ItemStack stack) {
-		buffer.writeItemStack(stack);
+	public static void toPacket(FriendlyByteBuf buffer, ItemStack stack) {
+		ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) buffer, stack);
 	}
 }

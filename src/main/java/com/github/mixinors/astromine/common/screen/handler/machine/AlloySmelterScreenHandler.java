@@ -24,70 +24,33 @@
 
 package com.github.mixinors.astromine.common.screen.handler.machine;
 
+import static com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityMenuLayout.*;
+
 import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final AlloySmelterBlockEntity smelter;
 	
-	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public AlloySmelterScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.ALLOY_SMELTER, syncId, player, position);
 		
 		smelter = (AlloySmelterBlockEntity) blockEntity;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
 		
-		var firstInput = new SlotWidget(AlloySmelterBlockEntity.INPUT_SLOT_1, smelter.getItemStorage(), (inventory, id, x, y) -> {
-			var slot = new FilterSlot(inventory, id, x, y);
-			
-			slot.setInsertPredicate((stack) -> {
-				return smelter.getItemStorage().canInsert(ItemVariant.of(stack), AlloySmelterBlockEntity.INPUT_SLOT_1);
-			});
-			
-			return slot;
-		});
-		firstInput.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F - (SLOT_HEIGHT / 2.0F) - PAD_3));
-		firstInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		var inputX = centeredProcessInputX();
+		var firstInputY = centeredProcessInputY() - (int) (SLOT_HEIGHT / 2.0F + PAD_3);
+		var secondInputY = centeredProcessInputY() + (int) (SLOT_HEIGHT / 2.0F + PAD_3);
+		var arrowX = inputX + (int) (SLOT_WIDTH + PAD_7);
+		var arrowY = secondInputY - (int) (SLOT_HEIGHT / 2.0F + PAD_3);
 		
-		var secondInput = new SlotWidget(AlloySmelterBlockEntity.INPUT_SLOT_2, smelter.getItemStorage(), (inventory, id, x, y) -> {
-			var slot = new FilterSlot(inventory, id, x, y);
-			
-			slot.setInsertPredicate((stack) -> {
-				return smelter.getItemStorage().canInsert(ItemVariant.of(stack), AlloySmelterBlockEntity.INPUT_SLOT_2);
-			});
-			
-			return slot;
-		});
-		secondInput.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F + (SLOT_HEIGHT / 2.0F) + PAD_3));
-		secondInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(secondInput, SLOT_WIDTH + PAD_7, -(SLOT_HEIGHT / 2.0F + PAD_3) + 0.5F)); // 0.5F centers the arrow against the input slots.
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) smelter.limit);
-		arrow.setCurrent(() -> (float) smelter.progress);
-		
-		var output = new SlotWidget(AlloySmelterBlockEntity.OUTPUT_SLOT, smelter.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F)); // 1.0F centers the slot against the arrow.
-		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-		
-		tab.add(firstInput);
-		tab.add(secondInput);
-		tab.add(output);
-		tab.add(arrow);
+		addBlockEntitySlot(AlloySmelterBlockEntity.INPUT_SLOT_1, inputX, firstInputY);
+		addBlockEntitySlot(AlloySmelterBlockEntity.INPUT_SLOT_2, inputX, secondInputY);
+		addBlockEntityOutputSlot(AlloySmelterBlockEntity.OUTPUT_SLOT, processOutputX(arrowX), processOutputY(arrowY));
+		addProgressArrow(arrowX, arrowY);
 	}
 }

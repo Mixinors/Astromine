@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 140,
+  "input": {
+    "count": 1,
+    "tag": "c:electrum_tiny_dusts"
+  },
+  "output": {
+    "amount": 12,
+    "fluid": "astromine:molten_electrum"
+  },
+  "time": 17
+}

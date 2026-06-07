@@ -26,34 +26,34 @@ package com.github.mixinors.astromine.common.block.ore;
 
 import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class AsteroidOreBlock extends ExtendedOreBlock {
-	public AsteroidOreBlock(Settings settings) {
+	public AsteroidOreBlock(Properties settings) {
 		super(settings);
 	}
 	
 	@Override
-	protected int getExperienceWhenMined(Random random) {
+	protected int getExperienceWhenMined(RandomSource random) {
 		if (this == AMBlocks.ASTEROID_ASTERITE_ORE.get()) {
-			return MathHelper.nextInt(random, 5, 8);
+			return Mth.nextInt(random, 5, 8);
 		} else if (this == AMBlocks.ASTEROID_GALAXIUM_ORE.get() || this == AMBlocks.ASTEROID_STELLUM_ORE.get()) {
-			return MathHelper.nextInt(random, 6, 9);
+			return Mth.nextInt(random, 6, 9);
 		} else if (this == AMBlocks.ASTEROID_METITE_ORE.get()) {
-			return MathHelper.nextInt(random, 4, 7);
+			return Mth.nextInt(random, 4, 7);
 		} else if (this == AMBlocks.ASTEROID_COAL_ORE.get()) {
-			return MathHelper.nextInt(random, 0, 2);
+			return Mth.nextInt(random, 0, 2);
 		} else if (this == AMBlocks.ASTEROID_TIN_ORE.get() || this == AMBlocks.ASTEROID_COPPER_ORE.get()) {
-			return MathHelper.nextInt(random, 1, 2);
+			return Mth.nextInt(random, 1, 2);
 		} else if (this == AMBlocks.ASTEROID_IRON_ORE.get()) {
-			return MathHelper.nextInt(random, 1, 3);
+			return Mth.nextInt(random, 1, 3);
 		} else if (this == AMBlocks.ASTEROID_GOLD_ORE.get()) {
-			return MathHelper.nextInt(random, 2, 3);
+			return Mth.nextInt(random, 2, 3);
 		} else if (this == AMBlocks.ASTEROID_DIAMOND_ORE.get() || this == AMBlocks.ASTEROID_EMERALD_ORE.get()) {
-			return MathHelper.nextInt(random, 3, 7);
+			return Mth.nextInt(random, 3, 7);
 		} else if (this == AMBlocks.ASTEROID_LAPIS_ORE.get() || this == AMBlocks.ASTEROID_REDSTONE_ORE.get()) {
-			return MathHelper.nextInt(random, 2, 5);
+			return Mth.nextInt(random, 2, 5);
 		} else {
 			return 0;
 		}

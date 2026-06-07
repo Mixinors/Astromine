@@ -4,6 +4,7 @@ import com.github.mixinors.astromine.common.body.Body;
 import com.github.mixinors.astromine.common.registry.base.RegistryEntry;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.common.rocket.RocketThrusterPart;
+import com.github.mixinors.astromine.common.util.math.Position;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -44,7 +45,18 @@ public class RocketJourney {
 	}
 	
 	public long getDistance() {
-		return (long) from.get().position().distanceTo(to.get().position());
+		var fromBody = from.get();
+		var toBody = to.get();
+		
+		if (orbits(toBody, fromBody)) {
+			return distanceFromOrbitCenter(toBody);
+		}
+		
+		if (orbits(fromBody, toBody)) {
+			return distanceFromOrbitCenter(fromBody);
+		}
+		
+		return (long) fromBody.position().distanceTo(toBody.position());
 	}
 	
 	public long getTravelledDistance() {
@@ -89,7 +101,6 @@ public class RocketJourney {
 	// Means we consume 9 buckets of Fuel and 18 buckets of Oxygen per Moon journey.
 	// Means we consume 1/3rd of a Small Fuel Tank to get to the Moon
 	
-	// TODO: Make Moon a bit closer so it only uses 16 buckets of Oxygen.
 	public void tick(Rocket rocket) {
 		if (!hasFinished()) {
 			var oxygen = (double) rocket.getOxygen();
@@ -108,5 +119,18 @@ public class RocketJourney {
 				finish();
 			}
 		}
+	}
+	
+	private static boolean orbits(Body body, Body orbitedBody) {
+		var orbit = body.orbit();
+		
+		return orbit != null && orbit.orbitedBodyId() != null && orbit.orbitedBodyId().equals(orbitedBody.id());
+	}
+	
+	private static long distanceFromOrbitCenter(Body body) {
+		var orbit = body.orbit();
+		var orbitCenter = orbit != null && orbit.orbitedBodyOffset() != null ? orbit.orbitedBodyOffset() : new Position(0.0F, 0.0F, 0.0F);
+		
+		return (long) orbitCenter.distanceTo(body.position());
 	}
 }

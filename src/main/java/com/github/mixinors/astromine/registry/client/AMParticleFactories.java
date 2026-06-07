@@ -25,22 +25,25 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.particle.RocketFlameParticle;
-import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMParticles;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.minecraft.client.particle.CrackParticle;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.BreakingItemParticle;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
-@Environment(EnvType.CLIENT)
 public class AMParticleFactories {
-	public static void init() {
-		ParticleFactoryRegistry.getInstance().register(AMParticles.SPACE_SLIME.get(), (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new CrackParticle(world, x, y, z, new ItemStack(AMItems.SPACE_SLIME_BALL.get())));
+	public static void init(IEventBus modBus) {
+		modBus.addListener(AMParticleFactories::register);
+	}
+	
+	private static void register(RegisterParticleProvidersEvent event) {
+		event.registerSpecial(AMParticles.SPACE_SLIME.get(), new BreakingItemParticle.SlimeProvider());
 		
-		ParticleFactoryRegistry.getInstance().register(AMParticles.ROCKET_FLAME.get(), provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
+		event.registerSpriteSet(AMParticles.ROCKET_FLAME.get(), provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
 			var particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-			particle.setSprite(provider);
+			particle.setSpriteFromAge(provider);
 			return particle;
 		});
 	}

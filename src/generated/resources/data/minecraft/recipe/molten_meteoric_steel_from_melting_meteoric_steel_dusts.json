@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 3328,
+  "input": {
+    "count": 1,
+    "tag": "c:meteoric_steel_dusts"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_meteoric_steel"
+  },
+  "time": 416
+}

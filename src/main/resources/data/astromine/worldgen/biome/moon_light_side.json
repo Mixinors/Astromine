@@ -1,0 +1,25 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.0,
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 12638463,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "sky_color": 7843327
+  },
+  "carvers": {},
+  "features": [],
+  "creature_spawn_probability": 0.1,
+  "spawners": {
+    "monster": [
+      {
+        "type": "astromine:space_slime",
+        "weight": 10,
+        "minCount": 3,
+        "maxCount": 8
+      }
+    ]
+  },
+  "spawn_costs": {}
+}

@@ -27,15 +27,15 @@ package com.github.mixinors.astromine.common.util;
 import com.github.mixinors.astromine.AMCommon;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class StringUtils {
-	public static void toPacket(PacketByteBuf buffer, String string) {
-		buffer.writeString(string);
+	public static void toPacket(FriendlyByteBuf buffer, String string) {
+		buffer.writeUtf(string);
 	}
 	
-	public static String fromPacket(PacketByteBuf buffer) {
-		return buffer.readString();
+	public static String fromPacket(FriendlyByteBuf buffer) {
+		return buffer.readUtf();
 	}
 	
 	public static JsonElement toJson(String string) {

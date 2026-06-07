@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 1496,
+  "input": {
+    "count": 1,
+    "tag": "c:gold_axes"
+  },
+  "output": {
+    "amount": 72,
+    "fluid": "astromine:molten_gold"
+  },
+  "time": 187
+}

@@ -25,61 +25,52 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.world.generation.space.*;
-import net.minecraft.block.Block;
-import net.minecraft.structure.StructureSet;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.WorldPresets;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-
-import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
 
 public class AMWorlds {
-	public static final RegistryKey<World> ROCKET_INTERIORS = createWorldKey(AMCommon.id("rocket_interiors"));
-	public static final RegistryKey<DimensionType> ROCKET_INTERIORS_DIMENSION_TYPE_KEY = createTypeKey(AMCommon.id("rocket_interiors"));
-	public static final RegistryKey<DimensionOptions> ROCKET_INTERIORS_DIMENSION_OPTIONS_KEY = createOptionsKey(AMCommon.id("rocket_interiors"));
+	public static final ResourceKey<Level> ROCKET_INTERIORS = createWorldKey(AMCommon.id("rocket_interiors"));
+	public static final ResourceKey<DimensionType> ROCKET_INTERIORS_DIMENSION_TYPE_KEY = createTypeKey(AMCommon.id("rocket_interiors"));
+	public static final ResourceKey<LevelStem> ROCKET_INTERIORS_DIMENSION_OPTIONS_KEY = createOptionsKey(AMCommon.id("rocket_interiors"));
 	
-	public static final RegistryKey<World> MOON = createWorldKey(AMCommon.id("moon"));
-	public static final RegistryKey<DimensionType> MOON_DIMENSION_TYPE_KEY = createTypeKey(AMCommon.id("moon"));
-	public static final RegistryKey<DimensionOptions> MOON_DIMENSION_OPTIONS_KEY = createOptionsKey(AMCommon.id("moon"));
+	public static final ResourceKey<Level> MOON = createWorldKey(AMCommon.id("moon"));
+	public static final ResourceKey<DimensionType> MOON_DIMENSION_TYPE_KEY = createTypeKey(AMCommon.id("moon"));
+	public static final ResourceKey<LevelStem> MOON_DIMENSION_OPTIONS_KEY = createOptionsKey(AMCommon.id("moon"));
 	
-	public static final RegistryKey<World> EARTH_ORBIT = createWorldKey(AMCommon.id("earth_orbit"));
-	public static final RegistryKey<DimensionType> EARTH_ORBIT_DIMENSION_TYPE_KEY = createTypeKey(AMCommon.id("earth_orbit"));
-	public static final RegistryKey<DimensionOptions> EARTH_ORBIT_DIMENSION_OPTIONS_KEY = createOptionsKey(AMCommon.id("earth_orbit"));
+	public static final ResourceKey<Level> MOON_ORBIT = createWorldKey(AMCommon.id("moon_orbit"));
+	public static final ResourceKey<DimensionType> MOON_ORBIT_DIMENSION_TYPE_KEY = createTypeKey(AMCommon.id("moon_orbit"));
+	public static final ResourceKey<LevelStem> MOON_ORBIT_DIMENSION_OPTIONS_KEY = createOptionsKey(AMCommon.id("moon_orbit"));
+	
+	public static final ResourceKey<Level> EARTH_ORBIT = createWorldKey(AMCommon.id("earth_orbit"));
+	public static final ResourceKey<DimensionType> EARTH_ORBIT_DIMENSION_TYPE_KEY = createTypeKey(AMCommon.id("earth_orbit"));
+	public static final ResourceKey<LevelStem> EARTH_ORBIT_DIMENSION_OPTIONS_KEY = createOptionsKey(AMCommon.id("earth_orbit"));
 	
 	public static void init() {
 	
 	}
 	
-	public static boolean isVacuum(RegistryEntry<DimensionType> dimensionType) {
-		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_VACUUM);
+	public static boolean isVacuum(Holder<DimensionType> dimensionType) {
+		return dimensionType.is(AMTagKeys.DimensionTypeTags.IS_VACUUM);
 	}
 	
-	public static boolean isAstromine(RegistryKey<World> key) {
-		return key.equals(ROCKET_INTERIORS) || key.equals(MOON) || key.equals(EARTH_ORBIT);
+	public static boolean isAstromine(ResourceKey<Level> key) {
+		return key.equals(ROCKET_INTERIORS) || key.equals(MOON) || key.equals(MOON_ORBIT) || key.equals(EARTH_ORBIT);
 	}
 	
-	public static RegistryKey<DimensionOptions> createOptionsKey(Identifier id) {
-		return RegistryKey.of(Registry.DIMENSION_KEY, id);
+	public static ResourceKey<LevelStem> createOptionsKey(ResourceLocation id) {
+		return ResourceKey.create(Registries.LEVEL_STEM, id);
 	}
 	
-	private static RegistryKey<DimensionType> createTypeKey(Identifier id) {
-		return RegistryKey.of(Registry.DIMENSION_TYPE_KEY, id);
+	private static ResourceKey<DimensionType> createTypeKey(ResourceLocation id) {
+		return ResourceKey.create(Registries.DIMENSION_TYPE, id);
 	}
 	
-	public static RegistryKey<World> createWorldKey(Identifier id) {
-		return RegistryKey.of(Registry.WORLD_KEY, id);
+	public static ResourceKey<Level> createWorldKey(ResourceLocation id) {
+		return ResourceKey.create(Registries.DIMENSION, id);
 	}
 }

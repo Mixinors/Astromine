@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.datagen;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
 import com.github.mixinors.astromine.datagen.provider.AMBlockLootTableProvider;
@@ -31,32 +32,46 @@ import com.github.mixinors.astromine.datagen.provider.AMEntityLootTableProvider;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import com.github.mixinors.astromine.datagen.provider.AMRecipeProvider;
 import com.github.mixinors.astromine.datagen.provider.tag.*;
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
-public class AMDatagen implements DataGeneratorEntrypoint {
-	@Override
-	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
+public class AMDatagen {
+	public static void init() {
+		AMCommon.modEventBus().addListener(AMDatagen::gatherData);
+	}
+	
+	public static void gatherData(GatherDataEvent event) {
 		AMBlockFamilies.init();
 		AMMaterialFamilies.init();
 		
-		dataGenerator.addProvider(AMModelProvider::new);
-		dataGenerator.addProvider(AMRecipeProvider::new);
+		var lookupProvider = event.getLookupProvider();
+		var existingFileHelper = event.getExistingFileHelper();
 		
-		var blockTagProvider = new AMBlockTagProvider(dataGenerator);
+		event.createProvider(AMModelProvider::new);
+		event.createProvider(AMRecipeProvider::new);
 		
-		dataGenerator.addProvider(blockTagProvider);
-		
-		dataGenerator.addProvider(new AMItemTagProvider(dataGenerator, blockTagProvider));
-		
-		dataGenerator.addProvider(AMFluidTagProvider::new);
-		dataGenerator.addProvider(AMEntityTypeTagProvider::new);
-		dataGenerator.addProvider(AMDimensionTypeTagProvider::new);
-		dataGenerator.addProvider(AMBlockLootTableProvider::new);
-		dataGenerator.addProvider(AMEntityLootTableProvider::new);
+		event.createBlockAndItemTags(
+				(output, lookup) -> new AMBlockTagProvider(output, lookup, existingFileHelper),
+				(output, lookup, blockTags) -> new AMItemTagProvider(output, lookup, blockTags, existingFileHelper)
+		);
+		event.addProvider(new AMFluidTagProvider(event.getGenerator().getPackOutput(), lookupProvider, existingFileHelper));
+		event.addProvider(new AMEntityTypeTagProvider(event.getGenerator().getPackOutput(), lookupProvider, existingFileHelper));
+		event.addProvider(new AMDimensionTypeTagProvider(event.getGenerator().getPackOutput(), lookupProvider, existingFileHelper));
+		event.addProvider(new LootTableProvider(
+				event.getGenerator().getPackOutput(),
+				Set.of(),
+				List.of(
+						new LootTableProvider.SubProviderEntry(AMBlockLootTableProvider::new, LootContextParamSets.BLOCK),
+						new LootTableProvider.SubProviderEntry(AMEntityLootTableProvider::new, LootContextParamSets.ENTITY)
+				),
+				lookupProvider
+		));
 	}
 	
 	public static <T extends Comparable<?>, U> TreeMap<T, U> toTreeMap(Map<T, U> map) {

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:smooth_asteroid_stone"
+  },
+  "result": {
+    "count": 1,
+    "id": "astromine:asteroid_stone_bricks"
+  }
+}

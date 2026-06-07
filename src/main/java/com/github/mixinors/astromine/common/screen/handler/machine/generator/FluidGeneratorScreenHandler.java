@@ -24,44 +24,34 @@
 
 package com.github.mixinors.astromine.common.screen.handler.machine.generator;
 
+import static com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityMenuLayout.*;
+
 import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final FluidGeneratorBlockEntity generator;
 	
-	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public FluidGeneratorScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
 		
 		generator = (FluidGeneratorBlockEntity) blockEntity;
+		
+		var fluidX = (int) (TABS_WIDTH / 2.0F - (BAR_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + BAR_WIDTH) / 2.0F);
+		var fluidY = ENERGY_BAR_Y;
+		var arrowX = fluidArrowX(fluidX);
+		var arrowY = fluidArrowY(fluidY);
+		
+		addFluidBar(FluidGeneratorBlockEntity.INPUT_SLOT, fluidX, fluidY);
+		setEnergyBarPosition(processOutputX(arrowX), fluidY);
+		addProgressArrow(arrowX, arrowY);
 	}
 	
 	@Override
 	public int getDefaultFluidSlotForBar() {
 		return FluidGeneratorBlockEntity.INPUT_SLOT;
-	}
-	
-	@Override
-	public void init(int width, int height) {
-		super.init(width, height);
-		
-		fluidBar.setPosition(new Position(tab, TABS_WIDTH / 2.0F - (BAR_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + BAR_WIDTH) / 2.0F, PAD_11));
-		
-		var arrow = new ArrowWidget();
-		arrow.setHorizontal(true);
-		arrow.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
-		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
-		arrow.setMaximum(() -> (float) generator.limit);
-		arrow.setCurrent(() -> (float) generator.progress);
-		
-		energyBar.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7, 0.0F));
-		
-		tab.add(arrow);
 	}
 }

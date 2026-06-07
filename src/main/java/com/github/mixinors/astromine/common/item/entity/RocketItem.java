@@ -26,23 +26,24 @@ package com.github.mixinors.astromine.common.item.entity;
 
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.common.manager.RocketManager;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
+import com.github.mixinors.astromine.common.util.ItemDataUtils;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class RocketItem extends Item {
@@ -52,61 +53,61 @@ public class RocketItem extends Item {
 	
 	private final EntityType<?> type;
 	
-	public RocketItem(EntityType<?> type, Item.Settings settings) {
+	public RocketItem(EntityType<?> type, Item.Properties settings) {
 		super(settings);
 		
 		this.type = type;
 	}
 	
 	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		var itemStack = user.getStackInHand(hand);
-		var hitResult = SpawnEggItem.raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
+	public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+		var itemStack = user.getItemInHand(hand);
+		var hitResult = SpawnEggItem.getPlayerPOVHitResult(world, user, ClipContext.Fluid.SOURCE_ONLY);
 		
 		if (((HitResult) hitResult).getType() != HitResult.Type.BLOCK) {
-			return TypedActionResult.pass(itemStack);
+			return InteractionResultHolder.pass(itemStack);
 		}
 		
-		if (!(world instanceof ServerWorld)) {
-			return TypedActionResult.success(itemStack);
+		if (!(world instanceof ServerLevel serverLevel)) {
+			return InteractionResultHolder.success(itemStack);
 		}
 		
 		var blockPos = hitResult.getBlockPos();
 		
-		if (world.getBlockState(blockPos).getBlock() instanceof FluidBlock) {
-			return TypedActionResult.pass(itemStack);
+		if (world.getBlockState(blockPos).getBlock() instanceof LiquidBlock) {
+			return InteractionResultHolder.pass(itemStack);
 		}
 		
-		if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, hitResult.getSide(), itemStack)) {
-			return TypedActionResult.fail(itemStack);
+		if (!world.mayInteract(user, blockPos) || !user.mayUseItemAt(blockPos, hitResult.getDirection(), itemStack)) {
+			return InteractionResultHolder.fail(itemStack);
 		}
 		
-		var entityType = this.getEntityType(itemStack.getNbt());
+		var entityType = this.getEntityType(ItemDataUtils.get(itemStack));
 		
-		var result = entityType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockPos.up(), SpawnReason.SPAWN_EGG, false, false);
+		var result = entityType.spawn(serverLevel, itemStack, user, blockPos.above(), MobSpawnType.SPAWN_EGG, false, false);
 		if (result == null) {
-			return TypedActionResult.pass(itemStack);
+			return InteractionResultHolder.pass(itemStack);
 		}
 		
-		if (!user.getAbilities().creativeMode) {
-			itemStack.decrement(1);
+		if (!user.getAbilities().instabuild) {
+			itemStack.shrink(1);
 		}
 		
 		if (result instanceof RocketEntity rocket) {
-			rocket.setRocket(RocketManager.create(user.getUuid(), rocket.getUuid()));
+			rocket.setRocket(RocketManager.create(serverLevel.getServer(), user.getUUID(), rocket.getUUID()));
 		}
 		
-		user.incrementStat(Stats.USED.getOrCreateStat(this));
-		world.emitGameEvent(user, GameEvent.ENTITY_PLACE, user.getPos());
+		user.awardStat(Stats.ITEM_USED.get(this));
+		world.gameEvent(user, GameEvent.ENTITY_PLACE, user.position());
 		
-		return TypedActionResult.consume(itemStack);
+		return InteractionResultHolder.consume(itemStack);
 	}
 	
-	public EntityType<?> getEntityType(@Nullable NbtCompound nbt) {
-		var nbtCompound = (NbtCompound) null;
+	public EntityType<?> getEntityType(@Nullable CompoundTag nbt) {
+		var nbtCompound = (CompoundTag) null;
 		
-		if (nbt != null && nbt.contains(ENTITY_TAG_KEY, NbtElement.COMPOUND_TYPE) && (nbtCompound = nbt.getCompound(ENTITY_TAG_KEY)).contains(ID_KEY, NbtElement.STRING_TYPE)) {
-			return EntityType.get(nbtCompound.getString(ID_KEY)).orElse(this.type);
+		if (nbt != null && nbt.contains(ENTITY_TAG_KEY, Tag.TAG_COMPOUND) && (nbtCompound = nbt.getCompound(ENTITY_TAG_KEY)).contains(ID_KEY, Tag.TAG_STRING)) {
+			return EntityType.byString(nbtCompound.getString(ID_KEY)).orElse(this.type);
 		}
 		
 		return this.type;

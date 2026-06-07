@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "cookingtime": 200,
-  "experience": 0.5,
-  "ingredient": {
-    "tag": "c:metite_clusters"
-  },
-  "result": "astromine:metite_ingot"
-}

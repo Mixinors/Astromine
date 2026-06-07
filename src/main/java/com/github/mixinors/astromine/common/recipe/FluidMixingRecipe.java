@@ -30,41 +30,41 @@ import com.github.mixinors.astromine.common.recipe.base.input.DoubleFluidInputRe
 import com.github.mixinors.astromine.common.recipe.base.output.FluidOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import com.github.mixinors.astromine.common.recipe.base.AstromineRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public record FluidMixingRecipe(
-		Identifier id,
+		ResourceLocation id,
 		FluidIngredient firstInput,
 		FluidIngredient secondInput,
 		FluidResult output,
 		long energyInput,
 		int time
 ) implements DoubleFluidInputRecipe, FluidOutputRecipe {
-	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
-	public static boolean allows(World world, FluidVariant... variants) {
+	public static boolean allows(Level world, FluidStack... stacks) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(FluidMixingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(variants)) {
+			if (recipe.allows(stacks)) {
 				return true;
 			}
 		}
@@ -72,9 +72,9 @@ public record FluidMixingRecipe(
 		return false;
 	}
 	
-	public static Optional<FluidMixingRecipe> matching(World world, SingleSlotStorage<FluidVariant>... storages) {
+	public static Optional<FluidMixingRecipe> matching(Level world, SimpleFluidVariantStorage... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(FluidMixingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
@@ -86,17 +86,14 @@ public record FluidMixingRecipe(
 		return Optional.empty();
 	}
 	
-	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
+	public boolean matches(SimpleFluidVariantStorage... storages) {
 		var firstInputStorage = storages[0];
 		var secondInputStorage = storages[1];
 		
 		var outputStorage = storages[2];
 		
-		if (!firstInput.test(firstInputStorage)) {
-			return false;
-		}
-		
-		if (!secondInput.test(secondInputStorage)) {
+		if (!((firstInput.test(firstInputStorage) && secondInput.test(secondInputStorage))
+				|| (firstInput.test(secondInputStorage) && secondInput.test(firstInputStorage)))) {
 			return false;
 		}
 		
@@ -104,7 +101,7 @@ public record FluidMixingRecipe(
 	}
 	
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
@@ -140,15 +137,15 @@ public record FluidMixingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
-		public static final Identifier ID = AMCommon.id("fluid_mixing");
+	public static final class Serializer implements AstromineRecipeSerializer<FluidMixingRecipe> {
+		public static final ResourceLocation ID = AMCommon.id("fluid_mixing");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
 		private Serializer() {}
 		
 		@Override
-		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
+		public FluidMixingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 			
 			return new FluidMixingRecipe(
@@ -162,7 +159,7 @@ public record FluidMixingRecipe(
 		}
 		
 		@Override
-		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public FluidMixingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new FluidMixingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -174,7 +171,7 @@ public record FluidMixingRecipe(
 		}
 		
 		@Override
-		public void write(PacketByteBuf buffer, FluidMixingRecipe recipe) {
+		public void write(FriendlyByteBuf buffer, FluidMixingRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.firstInput);
 			FluidIngredient.toPacket(buffer, recipe.secondInput);
 			FluidResult.toPacket(buffer, recipe.output);

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.0,
+  "ingredient": {
+    "tag": "c:metite_tiny_dusts"
+  },
+  "result": {
+    "count": 1,
+    "id": "astromine:metite_nugget"
+  }
+}

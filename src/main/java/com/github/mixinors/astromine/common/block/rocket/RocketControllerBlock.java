@@ -4,23 +4,24 @@ import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWith
 import com.github.mixinors.astromine.common.block.entity.rocket.RocketControllerBlockEntity;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.screen.handler.rocket.RocketControllerScreenHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class RocketControllerBlock extends HorizontalFacingBlockWithEntity {
-	public RocketControllerBlock(Settings settings) {
+	public RocketControllerBlock(Properties settings) {
 		super(settings);
 	}
 	
@@ -31,7 +32,7 @@ public class RocketControllerBlock extends HorizontalFacingBlockWithEntity {
 	
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new RocketControllerBlockEntity(pos, state);
 	}
 	
@@ -41,24 +42,23 @@ public class RocketControllerBlock extends HorizontalFacingBlockWithEntity {
 	}
 	
 	@Override
-	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+	public AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player) {
 		return new RocketControllerScreenHandler(syncId, playerInventory.player, pos);
 	}
 	
 	@Override
-	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+	public void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
 	
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		super.onPlaced(world, pos, state, placer, stack);
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(world, pos, state, placer, stack);
 		
 		var blockEntity = world.getBlockEntity(pos);
 		
-		if (blockEntity instanceof RocketControllerBlockEntity) {
-			// TODO: Check if needed.
-			RocketManager.create(placer.getUuid(), UUID.randomUUID());
+		if (blockEntity instanceof RocketControllerBlockEntity && world instanceof ServerLevel serverLevel) {
+			RocketManager.create(serverLevel.getServer(), placer.getUUID(), UUID.randomUUID());
 		}
 	}
 }

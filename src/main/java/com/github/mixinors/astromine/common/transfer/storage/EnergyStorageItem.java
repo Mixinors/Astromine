@@ -24,16 +24,90 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import team.reborn.energy.api.base.SimpleBatteryItem;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 
-public interface EnergyStorageItem extends SimpleBatteryItem {
-	@Override
+public interface EnergyStorageItem {
+	String ENERGY_KEY = "Energy";
+	
+	long getEnergyCapacity();
+	
 	default long getEnergyMaxInput() {
 		return getEnergyCapacity();
 	}
 	
-	@Override
 	default long getEnergyMaxOutput() {
 		return getEnergyCapacity();
+	}
+	
+	default long getStoredEnergy(ItemStack stack) {
+		return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getLong(ENERGY_KEY);
+	}
+	
+	default void setStoredEnergy(ItemStack stack, long amount) {
+		var tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+		
+		tag.putLong(ENERGY_KEY, Math.clamp(amount, 0L, getEnergyCapacity()));
+		
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+	}
+	
+	default boolean tryUseEnergy(ItemStack stack, long amount) {
+		if (getStoredEnergy(stack) < amount) {
+			return false;
+		}
+		
+		setStoredEnergy(stack, getStoredEnergy(stack) - amount);
+		
+		return true;
+	}
+	
+	default LongEnergyStorage createEnergyStorage(ItemStack stack) {
+		return new StackBackedEnergyStorage(stack, this);
+	}
+	
+	class StackBackedEnergyStorage extends LongEnergyStorage {
+		private final ItemStack stack;
+		private final EnergyStorageItem item;
+		
+		public StackBackedEnergyStorage(ItemStack stack, EnergyStorageItem item) {
+			super(item.getEnergyCapacity(), item.getEnergyMaxInput(), item.getEnergyMaxOutput(), item.getStoredEnergy(stack));
+			
+			this.stack = stack;
+			this.item = item;
+		}
+		
+		@Override
+		public long insert(long maxAmount, boolean simulate) {
+			amount = item.getStoredEnergy(stack);
+			
+			var inserted = super.insert(maxAmount, simulate);
+			
+			if (!simulate) {
+				item.setStoredEnergy(stack, amount);
+			}
+			
+			return inserted;
+		}
+		
+		@Override
+		public long extract(long maxAmount, boolean simulate) {
+			amount = item.getStoredEnergy(stack);
+			
+			var extracted = super.extract(maxAmount, simulate);
+			
+			if (!simulate) {
+				item.setStoredEnergy(stack, amount);
+			}
+			
+			return extracted;
+		}
+		
+		@Override
+		public long getAmount() {
+			return item.getStoredEnergy(stack);
+		}
 	}
 }

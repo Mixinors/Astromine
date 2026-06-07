@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.common.entity.placer.base;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.DimensionTransition;
 
 /**
  * An interface describing a placer for {@link Entity}-ies.
  */
 public interface EntityPlacer {
-	/** Returns a {@link TeleportTarget} for the given entity. */
-	TeleportTarget placeEntity(Entity entity);
+	/** Returns a {@link DimensionTransition} for the given entity. */
+	DimensionTransition placeEntity(Entity entity);
 }

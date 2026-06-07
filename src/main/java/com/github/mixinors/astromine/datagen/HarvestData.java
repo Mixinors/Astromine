@@ -1,24 +1,30 @@
 package com.github.mixinors.astromine.datagen;
 
-import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager;
-import net.fabricmc.yarn.constants.MiningLevels;
-import net.minecraft.block.Block;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.TagKey;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 
 public record HarvestData(
 		TagKey<Block> mineableTag,
 		int miningLevel
 ) {
-	public static final HarvestData PICKAXE = new HarvestData(BlockTags.PICKAXE_MINEABLE);
-	public static final HarvestData AXE = new HarvestData(BlockTags.AXE_MINEABLE);
-	public static final HarvestData SHOVEL = new HarvestData(BlockTags.SHOVEL_MINEABLE);
-	public static final HarvestData HOE = new HarvestData(BlockTags.HOE_MINEABLE);
+	public static final HarvestData PICKAXE = new HarvestData(BlockTags.MINEABLE_WITH_PICKAXE);
+	public static final HarvestData AXE = new HarvestData(BlockTags.MINEABLE_WITH_AXE);
+	public static final HarvestData SHOVEL = new HarvestData(BlockTags.MINEABLE_WITH_SHOVEL);
+	public static final HarvestData HOE = new HarvestData(BlockTags.MINEABLE_WITH_HOE);
 	
-	public static final HarvestData STONE_PICKAXE = new HarvestData(MiningLevels.STONE);
-	public static final HarvestData IRON_PICKAXE = new HarvestData(MiningLevels.IRON);
-	public static final HarvestData DIAMOND_PICKAXE = new HarvestData(MiningLevels.DIAMOND);
-	public static final HarvestData NETHERITE_PICKAXE = new HarvestData(MiningLevels.NETHERITE);
+	public static final int WOOD = 0;
+	public static final int STONE = 1;
+	public static final int IRON = 2;
+	public static final int DIAMOND = 3;
+	public static final int NETHERITE = 4;
+	
+	public static final HarvestData STONE_PICKAXE = new HarvestData(STONE);
+	public static final HarvestData IRON_PICKAXE = new HarvestData(IRON);
+	public static final HarvestData DIAMOND_PICKAXE = new HarvestData(DIAMOND);
+	public static final HarvestData NETHERITE_PICKAXE = new HarvestData(NETHERITE);
 	public static final HarvestData LEVEL_5_PICKAXE = new HarvestData(5);
 	public static final HarvestData LEVEL_6_PICKAXE = new HarvestData(6);
 	
@@ -34,14 +40,20 @@ public record HarvestData(
 	public static final HarvestData MISC_MACHINE_HARVEST_DATA = IRON_PICKAXE;
 	
 	public HarvestData(TagKey<Block> mineableTag) {
-		this(mineableTag, MiningLevels.WOOD);
+		this(mineableTag, WOOD);
 	}
 	
 	public HarvestData(int miningLevel) {
-		this(BlockTags.PICKAXE_MINEABLE, miningLevel);
+		this(BlockTags.MINEABLE_WITH_PICKAXE, miningLevel);
 	}
 	
 	public TagKey<Block> miningLevelTag() {
-		return MiningLevelManager.getBlockTag(miningLevel());
+		return switch (miningLevel()) {
+			case STONE -> BlockTags.NEEDS_STONE_TOOL;
+			case IRON -> BlockTags.NEEDS_IRON_TOOL;
+			case DIAMOND -> BlockTags.NEEDS_DIAMOND_TOOL;
+			case NETHERITE -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
+			default -> AMTagKeys.createCommonBlockTag("needs_tool_level_" + miningLevel());
+		};
 	}
 }

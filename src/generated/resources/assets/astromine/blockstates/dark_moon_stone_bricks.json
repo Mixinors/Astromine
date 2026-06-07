@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "dynamic=false": {
       "model": "astromine:block/dark_moon_stone_bricks"
+    },
+    "dynamic=true": {
+      "model": "astromine:block/dark_moon_stone_bricks_dynamic"
     }
   }
 }

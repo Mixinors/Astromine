@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "dynamic=false": {
       "model": "astromine:block/moon_lead_ore"
+    },
+    "dynamic=true": {
+      "model": "astromine:block/moon_lead_ore_dynamic"
     }
   }
 }

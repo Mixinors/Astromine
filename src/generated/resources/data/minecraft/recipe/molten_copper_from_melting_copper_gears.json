@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 1260,
+  "input": {
+    "count": 1,
+    "tag": "c:copper_gears"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_copper"
+  },
+  "time": 157
+}

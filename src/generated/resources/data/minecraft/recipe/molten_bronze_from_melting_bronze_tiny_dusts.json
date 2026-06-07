@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 115,
+  "input": {
+    "count": 1,
+    "tag": "c:bronze_tiny_dusts"
+  },
+  "output": {
+    "amount": 12,
+    "fluid": "astromine:molten_bronze"
+  },
+  "time": 14
+}

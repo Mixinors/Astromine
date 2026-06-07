@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.noise;
 
 /**
- * A class that can create 2d and 3d noise. You *MUST* have at least one constructor in your implementation that takes in only a seed, otherwise {@link OctaveNoiseSampler} won't work in conjunction with it.
+ * A class that can create 2d and 3d noise.
  *
  * @author SuperCoder79
  */
@@ -38,7 +38,7 @@ public abstract class Noise {
 	// Helper noise functions =======================
 	
 	/**
-	 * A bit hack that computes a rough estimation of a square root for the given number Don't use this in places that need accuracy-- You'll regret it!
+	 * A bit-level approximation of square root for callers that do not require exact precision.
 	 *
 	 * @param d the input for the fastSqrt algorithm
 	 *

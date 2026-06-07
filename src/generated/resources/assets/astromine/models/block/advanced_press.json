@@ -5,6 +5,7 @@
     "bottom": "astromine:block/advanced_press_bottom",
     "front": "astromine:block/advanced_press_front",
     "left": "astromine:block/advanced_press_left",
+    "particle": "astromine:block/advanced_press_top",
     "right": "astromine:block/advanced_press_right",
     "top": "astromine:block/advanced_press_top"
   }

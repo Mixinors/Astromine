@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "cookingtime": 200,
-  "experience": 0.2,
-  "ingredient": {
-    "tag": "c:lapis_clusters"
-  },
-  "result": "minecraft:lapis_lazuli"
-}

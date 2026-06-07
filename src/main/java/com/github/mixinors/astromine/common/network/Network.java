@@ -28,15 +28,15 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtLong;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import com.github.mixinors.astromine.common.util.NbtUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.LongTag;
+import net.minecraft.world.level.Level;
 
 
 public final class Network<T> {
@@ -48,12 +48,12 @@ public final class Network<T> {
 	private final Set<Node> nodes = Sets.newConcurrentHashSet();
 	
 	@Nullable
-	private final World world;
+	private final Level world;
 	
 	@Nullable
 	private final NetworkType<T> type;
 	
-	public Network(@Nullable World world, @Nullable NetworkType<T> type) {
+	public Network(@Nullable Level world, @Nullable NetworkType<T> type) {
 		this.type = type;
 		this.world = world;
 	}
@@ -69,7 +69,7 @@ public final class Network<T> {
 	}
 	
 	@Nullable
-	public World getWorld() {
+	public Level getWorld() {
 		return world;
 	}
 	
@@ -123,18 +123,18 @@ public final class Network<T> {
 			Direction direction,
 			StorageSiding siding
 	) {
-		public static Member fromNbt(NbtCompound nbt) {
+		public static Member fromNbt(CompoundTag nbt) {
 			return new Member(
-					NbtUtil.getBlockPos(nbt, POSITION_KEY),
+					NbtUtils.getBlockPos(nbt, POSITION_KEY),
 					Direction.valueOf(nbt.getString(DIRECTION_KEY)),
 					StorageSiding.valueOf(nbt.getString(SIDING_KEY))
 			);
 		}
 		
-		public NbtCompound toNbt() {
-			var nbt = new NbtCompound();
+		public CompoundTag toNbt() {
+			var nbt = new CompoundTag();
 			
-			NbtUtil.putBlockPos(nbt, POSITION_KEY, blockPos);
+			NbtUtils.putBlockPos(nbt, POSITION_KEY, blockPos);
 			
 			nbt.putString(DIRECTION_KEY, direction.name());
 			nbt.putString(SIDING_KEY, siding.name());
@@ -146,12 +146,12 @@ public final class Network<T> {
 	public record Node(
 			BlockPos blockPos
 	) {
-		public static Node fromNbt(NbtLong nbt) {
-			return new Node(BlockPos.fromLong(nbt.longValue()));
+		public static Node fromNbt(LongTag nbt) {
+			return new Node(BlockPos.of(nbt.getAsLong()));
 		}
 		
-		public NbtLong toNbt() {
-			return NbtLong.of(blockPos.asLong());
+		public LongTag toNbt() {
+			return LongTag.valueOf(blockPos.asLong());
 		}
 	}
 }

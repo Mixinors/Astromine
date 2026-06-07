@@ -24,12 +24,11 @@
 
 package com.github.mixinors.astromine.common.noise;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
+import java.util.function.LongFunction;
 
 /**
- * A helper class used to generify the usage of octaves in noise generation. It clamps the values between amplitudeLow and amplitudeHigh
+ * A helper class used to generify the usage of octaves in noise generation. It clamps the values between amplitudeLow and amplitudeHigh.
  *
  * @param <T> The noise sampler that you are using. It must have a constructor with just a long parameter.
  *
@@ -42,46 +41,19 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	private final double amplitudeLow;
 	private final double amplitudeHigh;
 	
-	public OctaveNoiseSampler(Class<T> classT, Random rand, int octaves, double frequency, double amplitudeHigh, double amplitudeLow) {
+	public OctaveNoiseSampler(LongFunction<T> samplerFactory, Random rand, int octaves, double frequency, double amplitudeHigh, double amplitudeLow) {
 		super(0);
 		
 		samplers = new Noise[octaves];
 		clamp = 1D / (1D - (1D / Math.pow(2, octaves)));
 		
-		var constructor = this.getNoiseConstructor(classT);
-		
 		for (var i = 0; i < octaves; ++i) {
-			samplers[i] = create(constructor, rand.nextLong());
+			samplers[i] = samplerFactory.apply(rand.nextLong());
 		}
 		
 		this.frequency = frequency;
 		this.amplitudeLow = amplitudeLow;
 		this.amplitudeHigh = amplitudeHigh;
-	}
-	
-	private Constructor<T> getNoiseConstructor(Class<T> clazz) {
-		try {
-			return clazz.getDeclaredConstructor(long.class);
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
-	 * Reflection hackery to make the Noise objects
-	 */
-	private T create(Constructor<T> constructor, long seed) {
-		if (constructor == null) {
-			return null;
-		}
-		
-		try {
-			return constructor.newInstance(seed);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 	public double sample(double x, double y) {

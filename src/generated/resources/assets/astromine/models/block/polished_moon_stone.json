@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "astromine:block/polished_moon_stone"
+    "all": "astromine:block/static_polished_moon_stone"
   }
 }

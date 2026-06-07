@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 19200,
+  "input": {
+    "count": 1,
+    "tag": "c:raw_iron_blocks"
+  },
+  "output": {
+    "amount": 1332,
+    "fluid": "astromine:molten_iron"
+  },
+  "time": 2400
+}

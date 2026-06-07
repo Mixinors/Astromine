@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 24640,
+  "input": {
+    "count": 1,
+    "tag": "c:asterite_shovels"
+  },
+  "output": {
+    "amount": 24,
+    "fluid": "astromine:molten_asterite"
+  },
+  "time": 3080
+}

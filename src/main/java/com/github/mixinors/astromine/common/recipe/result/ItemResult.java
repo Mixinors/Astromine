@@ -24,84 +24,77 @@
 
 package com.github.mixinors.astromine.common.recipe.result;
 
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public record ItemResult(
-		ItemVariant variant,
-		int count
+		ItemStack stack
 ) {
 	private static final String ITEM_KEY = "item";
 	private static final String COUNT_KEY = "count";
 	
-	public static final ItemResult EMPTY = new ItemResult(ItemVariant.blank(), 0);
+	public static final ItemResult EMPTY = new ItemResult(ItemStack.EMPTY);
 	
 	public ItemStack toStack() {
-		return variant.toStack(count);
+		return stack.copy();
 	}
 	
-	public boolean equalsAndFitsIn(SingleSlotStorage<ItemVariant> storage) {
+	public int count() {
+		return stack.getCount();
+	}
+	
+	public boolean equalsAndFitsIn(SimpleItemVariantStorage storage) {
 		return equalsAndFitsIn(storage, false);
 	}
 	
-	public boolean equalsAndFitsIn(SingleSlotStorage<ItemVariant> storage, boolean ignoreMaxCount) {
-		return storage.getAmount() + count <= storage.getCapacity() && (storage.getAmount() + count <= variant.getItem().getMaxCount() || ignoreMaxCount) && (storage.getResource().equals(variant) || storage.isResourceBlank());
+	public boolean equalsAndFitsIn(SimpleItemVariantStorage storage, boolean ignoreMaxCount) {
+		var storedStack = storage.getResource();
+		var storedAmount = storage.getAmount();
+		var capacity = storage.getCapacity(stack);
+		var maxStackSize = stack.getMaxStackSize();
+		
+		return storedAmount + stack.getCount() <= capacity
+				&& (storedAmount + stack.getCount() <= maxStackSize || ignoreMaxCount)
+				&& (storedStack.isEmpty() || ItemStack.isSameItemSameComponents(storedStack, stack));
 	}
 	
 	public static JsonObject toJson(ItemResult result) {
 		var jsonObject = new JsonObject();
 		
-		jsonObject.addProperty(ITEM_KEY, Registry.ITEM.getId(result.variant.getItem()).toString());
-		jsonObject.addProperty(COUNT_KEY, result.count);
+		jsonObject.addProperty(ITEM_KEY, BuiltInRegistries.ITEM.getKey(result.stack.getItem()).toString());
+		jsonObject.addProperty(COUNT_KEY, result.stack.getCount());
 		
 		return jsonObject;
 	}
 	
 	public static ItemResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
-			var variantId = new Identifier(jsonElement.getAsString());
-			var variantItem = Registry.ITEM.get(variantId);
+			var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(jsonElement.getAsString()));
 			
-			var variant = ItemVariant.of(variantItem);
-			
-			return new ItemResult(variant, 1);
-		} else {
-			var jsonObject = jsonElement.getAsJsonObject();
-			
-			var variantId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
-			var variantItem = Registry.ITEM.get(variantId);
-			
-			var variant = ItemVariant.of(variantItem);
-			
-			var variantCount = 1;
-			
-			if (jsonObject.has(COUNT_KEY)) {
-				variantCount = jsonObject.get(COUNT_KEY).getAsInt();
-			}
-			
-			return new ItemResult(variant, variantCount);
+			return new ItemResult(new ItemStack(item));
 		}
+		
+		var jsonObject = jsonElement.getAsJsonObject();
+		var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(jsonObject.get(ITEM_KEY).getAsString()));
+		var count = jsonObject.has(COUNT_KEY) ? jsonObject.get(COUNT_KEY).getAsInt() : 1;
+		
+		return new ItemResult(new ItemStack(item, count));
 	}
 	
-	public static void toPacket(PacketByteBuf buf, ItemResult result) {
-		buf.writeString(Registry.ITEM.getId(result.variant.getItem()).toString());
-		buf.writeInt(result.count);
+	public static void toPacket(FriendlyByteBuf buf, ItemResult result) {
+		buf.writeUtf(BuiltInRegistries.ITEM.getKey(result.stack.getItem()).toString());
+		buf.writeInt(result.stack.getCount());
 	}
 	
-	public static ItemResult fromPacket(PacketByteBuf buf) {
-		var variantId = new Identifier(buf.readString());
-		var variantItem = Registry.ITEM.get(variantId);
+	public static ItemResult fromPacket(FriendlyByteBuf buf) {
+		var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(buf.readUtf()));
+		var amount = buf.readInt();
 		
-		var variant = ItemVariant.of(variantItem);
-		
-		var variantAmount = buf.readInt();
-		
-		return new ItemResult(variant, variantAmount);
+		return new ItemResult(new ItemStack(item, amount));
 	}
 }

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 2880,
+  "input": {
+    "count": 1,
+    "tag": "c:netherite_gears"
+  },
+  "output": {
+    "amount": 111,
+    "fluid": "astromine:molten_netherite"
+  },
+  "time": 360
+}

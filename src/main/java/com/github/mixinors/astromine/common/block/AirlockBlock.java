@@ -25,232 +25,247 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.*;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class AirlockBlock extends Block implements Waterloggable {
-	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
-	public static final BooleanProperty POWERED = Properties.POWERED;
-	public static final BooleanProperty LEFT = BooleanProperty.of("left");
-	public static final BooleanProperty RIGHT = BooleanProperty.of("right");
+public class AirlockBlock extends Block implements SimpleWaterloggedBlock {
+	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	public static final BooleanProperty LEFT = BooleanProperty.create("left");
+	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 	
-	public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
+	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 	
-	public static final VoxelShape LEFT_SHAPE = Block.createCuboidShape(0, 0, 6, 1, 16, 10);
-	public static final VoxelShape RIGHT_SHAPE = Block.createCuboidShape(15, 0, 6, 16, 16, 10);
-	public static final VoxelShape DOOR_SHAPE = Block.createCuboidShape(1, 0, 7, 15, 16, 9);
-	public static final VoxelShape BOTTOM_SHAPE = Block.createCuboidShape(0, 0, 5, 16, 1, 11);
-	public static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0, 15, 6, 16, 16, 10);
+	public static final VoxelShape LEFT_SHAPE = Block.box(0, 0, 6, 1, 16, 10);
+	public static final VoxelShape RIGHT_SHAPE = Block.box(15, 0, 6, 16, 16, 10);
+	public static final VoxelShape DOOR_SHAPE = Block.box(1, 0, 7, 15, 16, 9);
+	public static final VoxelShape BOTTOM_SHAPE = Block.box(0, 0, 5, 16, 1, 11);
+	public static final VoxelShape TOP_SHAPE = Block.box(0, 15, 6, 16, 16, 10);
 	
-	public AirlockBlock(Settings settings) {
+	public AirlockBlock(Properties settings) {
 		super(settings);
 		
-		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false).with(HALF, DoubleBlockHalf.LOWER).with(LEFT, false).with(RIGHT, false).with(Properties.WATERLOGGED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(HALF, DoubleBlockHalf.LOWER).setValue(LEFT, false).setValue(RIGHT, false).setValue(BlockStateProperties.WATERLOGGED, false));
 	}
 	
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
+		return (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) ? Fluids.WATER.defaultFluidState() : super.getFluidState(state);
 	}
 	
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		Direction facing = state.get(FACING);
-		VoxelShape shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		Direction facing = state.getValue(FACING);
+		VoxelShape shape = Shapes.or(Shapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
 		
-		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
+		if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
 		} else {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
 		}
 		
-		if (!state.get(LEFT)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
+		if (!state.getValue(LEFT)) {
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
 		}
 		
-		if (!state.get(RIGHT)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
+		if (!state.getValue(RIGHT)) {
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
 		}
 		
 		return shape;
 	}
 	
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		var shape = VoxelShapes.empty();
-		var facing = state.get(FACING);
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		var shape = Shapes.empty();
+		var facing = state.getValue(FACING);
 		
-		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
+		if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
 		} else {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
 		}
 		
-		if (!state.get(LEFT)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
+		if (!state.getValue(LEFT)) {
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
 		}
 		
-		if (!state.get(RIGHT)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
+		if (!state.getValue(RIGHT)) {
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
 		}
 		
-		if (!state.get(POWERED)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
+		if (!state.getValue(POWERED)) {
+			shape = Shapes.or(shape, VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
 		}
 		
 		return shape;
 	}
 	
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-		var doubleBlockHalf = state.get(HALF);
-		var facing = state.get(FACING);
+	public BlockState updateShape(BlockState state, Direction direction, BlockState newState, LevelAccessor world, BlockPos pos, BlockPos posFrom) {
+		var doubleBlockHalf = state.getValue(HALF);
+		var facing = state.getValue(FACING);
 		var changedState = state;
 		
-		if (direction == facing.rotateYClockwise() || direction == facing.rotateYCounterclockwise()) {
-			if (newState.isOf(this) && (newState.get(FACING) == facing || newState.get(FACING) == facing.getOpposite())) {
-				if (direction == facing.rotateYCounterclockwise()) {
-					changedState = changedState.with(LEFT, true);
-				} else if (direction == facing.rotateYClockwise()) {
-					changedState = changedState.with(RIGHT, true);
+		if (direction == facing.getClockWise() || direction == facing.getCounterClockWise()) {
+			if (newState.is(this) && (newState.getValue(FACING) == facing || newState.getValue(FACING) == facing.getOpposite())) {
+				if (direction == facing.getCounterClockWise()) {
+					changedState = changedState.setValue(LEFT, true);
+				} else if (direction == facing.getClockWise()) {
+					changedState = changedState.setValue(RIGHT, true);
 				}
-			} else if (direction == facing.rotateYCounterclockwise()) {
-				changedState = changedState.with(LEFT, false);
-			} else if (direction == facing.rotateYClockwise()) {
-				changedState = changedState.with(RIGHT, false);
+			} else if (direction == facing.getCounterClockWise()) {
+				changedState = changedState.setValue(LEFT, false);
+			} else if (direction == facing.getClockWise()) {
+				changedState = changedState.setValue(RIGHT, false);
 			}
 		}
 		
 		if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP)) {
-			return newState.isOf(this) && newState.get(HALF) != doubleBlockHalf ? changedState.with(FACING, newState.get(FACING)).with(POWERED, newState.get(POWERED)) : Blocks.AIR.getDefaultState();
+			return newState.is(this) && newState.getValue(HALF) != doubleBlockHalf ? changedState.setValue(FACING, newState.getValue(FACING)).setValue(POWERED, newState.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
 		} else {
-			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !changedState.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : changedState;
+			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !changedState.canSurvive(world, pos) ? Blocks.AIR.defaultBlockState() : changedState;
 		}
 	}
 	
 	@Override
-	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (!world.isClient && player.isCreative()) {
-			TallPlantBlock.onBreakInCreative(world, pos, state, player);
+	public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+		if (!world.isClientSide && player.isCreative()) {
+			preventDropFromBottomPart(world, pos, state, player);
 		}
 		
-		super.onBreak(world, pos, state, player);
+		return super.playerWillDestroy(world, pos, state, player);
 	}
 	
 	@Override
-	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return switch (type) {
-			case LAND, AIR -> state.get(POWERED);
+			case LAND, AIR -> state.getValue(POWERED);
 			default -> false;
 		};
 	}
 	
-	private int getOpenSoundEventId() {
-		return WorldEvents.IRON_DOOR_OPENS;
-	}
-	
-	private int getCloseSoundEventId() {
-		return WorldEvents.IRON_DOOR_CLOSES;
-	}
-	
 	@Nullable
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		var blockPos = ctx.getBlockPos();
-		if (blockPos.getY() < 255 && ctx.getWorld().getBlockState(blockPos.up()).canReplace(ctx)) {
-			var world = ctx.getWorld();
-			var bl = world.isReceivingRedstonePower(blockPos) || world.isReceivingRedstonePower(blockPos.up());
-			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getFluidState(blockPos).isEqualAndStill(Fluids.WATER));
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		var blockPos = ctx.getClickedPos();
+		if (blockPos.getY() < 255 && ctx.getLevel().getBlockState(blockPos.above()).canBeReplaced(ctx)) {
+			var world = ctx.getLevel();
+			var bl = world.hasNeighborSignal(blockPos) || world.hasNeighborSignal(blockPos.above());
+			return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(POWERED, bl).setValue(HALF, DoubleBlockHalf.LOWER).setValue(BlockStateProperties.WATERLOGGED, world.getFluidState(blockPos).isSourceOfType(Fluids.WATER));
 		} else {
 			return null;
 		}
 	}
 	
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), 3);
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		world.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 	
 	public boolean isPowered(BlockState state) {
-		return state.get(POWERED);
+		return state.getValue(POWERED);
 	}
 	
-	public void setOpen(World world, BlockState state, BlockPos blockPos, boolean open, boolean notify) {
-		if (state.isOf(this) && isPowered(state) != open) {
-			byte flags = Block.REDRAW_ON_MAIN_THREAD;
+	public void setOpen(Level world, BlockState state, BlockPos blockPos, boolean open, boolean notify) {
+		if (state.is(this) && isPowered(state) != open) {
+			byte flags = Block.UPDATE_IMMEDIATE;
 			if (notify) {
-				flags |= Block.NOTIFY_LISTENERS;
+				flags |= Block.UPDATE_CLIENTS;
 			}
-			world.setBlockState(blockPos, state.with(POWERED, open), flags);
+			world.setBlock(blockPos, state.setValue(POWERED, open), flags);
 			this.playOpenCloseSound(world, blockPos, open);
+			world.gameEvent(null, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, blockPos);
 		}
 	}
 	
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		var open = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		var open = world.hasNeighborSignal(pos) || world.hasNeighborSignal(pos.relative(state.getValue(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
 		if (block != this) {
 			setOpen(world, state, pos, open, notify);
 		}
 	}
 	
 	@Override
-	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		var blockPos = pos.down();
+	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+		var blockPos = pos.below();
 		var blockState = world.getBlockState(blockPos);
-		return state.get(HALF) == DoubleBlockHalf.LOWER ? blockState.isSideSolidFullSquare(world, blockPos, Direction.UP) : blockState.isOf(this);
+		return state.getValue(HALF) == DoubleBlockHalf.LOWER ? blockState.isFaceSturdy(world, blockPos, Direction.UP) : blockState.is(this);
 	}
 	
-	private void playOpenCloseSound(World world, BlockPos pos, boolean open) {
-		world.syncWorldEvent(null, open ? this.getCloseSoundEventId() : this.getOpenSoundEventId(), pos, 0);
+	private void playOpenCloseSound(Level world, BlockPos pos, boolean open) {
+		world.playSound(null, pos, open ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.1F + 0.9F);
 	}
 	
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
-	}
-	
-	@Override
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		return state.with(FACING, rotation.rotate(state.get(FACING)));
-	}
-	
-	@Override
-	public BlockState mirror(BlockState state, BlockMirror mirror) {
-		return mirror == BlockMirror.NONE ? state : state.rotate(mirror.getRotation(state.get(FACING)));
-	}
-	
-	@Environment(EnvType.CLIENT)
-	@Override
-	public long getRenderingSeed(BlockState state, BlockPos pos) {
-		return MathHelper.hashCode(pos.getX(), pos.down(state.get(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
+	private static void preventDropFromBottomPart(Level world, BlockPos pos, BlockState state, Player player) {
+		if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+			var lowerPos = pos.below();
+			var lowerState = world.getBlockState(lowerPos);
+			
+			if (lowerState.is(state.getBlock()) && lowerState.getValue(HALF) == DoubleBlockHalf.LOWER) {
+				var replacement = lowerState.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+				
+				world.setBlock(lowerPos, replacement, 35);
+				world.levelEvent(player, 2001, lowerPos, Block.getId(lowerState));
+			}
+		}
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(HALF, FACING, POWERED, LEFT, RIGHT, Properties.WATERLOGGED);
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return PushReaction.DESTROY;
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return mirror == Mirror.NONE ? state : state.rotate(mirror.getRotation(state.getValue(FACING)));
+	}
+	
+	@Override
+	public long getSeed(BlockState state, BlockPos pos) {
+		return Mth.getSeed(pos.getX(), pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
+	}
+	
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(HALF, FACING, POWERED, LEFT, RIGHT, BlockStateProperties.WATERLOGGED);
 	}
 }

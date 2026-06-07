@@ -1,13 +1,22 @@
 {
   "variants": {
-    "type=bottom": {
+    "dynamic=false,type=bottom": {
       "model": "astromine:block/smooth_moon_stone_slab"
     },
-    "type=double": {
+    "dynamic=false,type=double": {
       "model": "astromine:block/smooth_moon_stone"
     },
-    "type=top": {
+    "dynamic=false,type=top": {
       "model": "astromine:block/smooth_moon_stone_slab_top"
+    },
+    "dynamic=true,type=bottom": {
+      "model": "astromine:block/smooth_moon_stone_slab_dynamic"
+    },
+    "dynamic=true,type=double": {
+      "model": "astromine:block/smooth_moon_stone_dynamic"
+    },
+    "dynamic=true,type=top": {
+      "model": "astromine:block/smooth_moon_stone_slab_top_dynamic_top"
     }
   }
 }

@@ -25,32 +25,38 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
+import com.github.mixinors.astromine.common.block.network.CableBlock;
 import com.github.mixinors.astromine.common.tick.Tickable;
 import com.github.mixinors.astromine.common.transfer.RedstoneType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import com.github.mixinors.astromine.common.transfer.StorageType;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
-import dev.architectury.hooks.block.BlockEntityHooks;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import com.github.mixinors.astromine.common.util.NetworkUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.EnergyStorageUtil;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,7 +90,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	protected RedstoneType redstoneType = RedstoneType.WORK_ALWAYS;
 	
-	protected SimpleEnergyStorage energyStorage = null;
+	protected LongEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
 	protected SimpleFluidStorage fluidStorage = null;
 	
@@ -100,13 +106,13 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void tick() {
-		if (!hasWorld() || world.isClient) {
+		if (!hasLevel() || level.isClientSide) {
 			return;
 		}
 		
 		// Sync with nearby players.
-		for (var player : world.getPlayers()) {
-			if (player.squaredDistanceTo(getPos().getX(), getPos().getY(), getPos().getZ()) < 8 * 8) {
+		for (var player : level.players()) {
+			if (player.distanceToSqr(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ()) < 8 * 8) {
 				syncData();
 			}
 		}
@@ -114,9 +120,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		// Trigger a block update if item sidings have changed.
 		if (itemStorage != null) {
 			if (!Arrays.equals(lastItemStorageSidings, itemStorage.getSidings())) {
-				for (var directions : DirectionUtils.VALUES) {
-					world.getBlockState(getPos().offset(directions)).neighborUpdate(world, getPos().offset(directions), getCachedState().getBlock(), getPos(), false);
-				}
+				notifySidingChanged();
 			}
 			
 			lastItemStorageSidings = itemStorage.getSidings().clone();
@@ -125,62 +129,40 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		// Trigger a block update if fluid sidings have changed.
 		if (fluidStorage != null) {
 			if (!Arrays.equals(lastFluidStorageSidings, fluidStorage.getSidings())) {
-				for (var directions : DirectionUtils.VALUES) {
-					world.getBlockState(getPos().offset(directions)).neighborUpdate(world, getPos().offset(directions), getCachedState().getBlock(), getPos(), false);
-				}
+				notifySidingChanged();
 			}
 			
 			lastFluidStorageSidings = fluidStorage.getSidings().clone();
 		}
 		
-		try (var transaction = Transaction.openOuter()) {
-			for (var direction : DirectionUtils.VALUES) {
-				var theirPos = getPos().offset(direction);
-				
-				var theirItemStorage = ItemStorage.SIDED.find(world, theirPos, direction.getOpposite());
-				var ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
-				
-				if (ourItemStorage != null && theirItemStorage != null) {
-					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) -> theirItemStorage.exactView(transaction, variant) == null || ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount(), 1, transaction);
-				}
-				
-				var theirFluidStorage = FluidStorage.SIDED.find(world, theirPos, direction.getOpposite());
-				var ourFluidStorage = FluidStorage.SIDED.find(world, pos, direction);
-				
-				if (ourFluidStorage != null && theirFluidStorage != null) {
-					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) -> theirFluidStorage.exactView(transaction, variant) == null || ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount(), FluidConstants.BUCKET, transaction);
-				}
-			}
-			
-			moveEnergyAveraged(transaction);
-			
-			transaction.commit();
-		}
+		moveItemsAveraged();
+		moveFluidsAveraged();
+		moveEnergyAveraged();
 		
-		if (world.getBlockState(getPos()).contains(BlockWithEntity.ACTIVE)) {
+		if (level.getBlockState(getBlockPos()).hasProperty(BlockWithEntity.ACTIVE)) {
 			if (activity.length - 1 >= 0) {
 				System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 			}
 			
 			activity[4] = active;
 			
-			var blockStateActive = world.getBlockState(getPos()).get(BlockWithEntity.ACTIVE);
+			var blockStateActive = level.getBlockState(getBlockPos()).getValue(BlockWithEntity.ACTIVE);
 			
 			if (!blockStateActive && active && !activity[0]) {
-				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
+				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockWithEntity.ACTIVE, true));
 			} else if (blockStateActive && !active && activity[0]) {
-				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
+				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockWithEntity.ACTIVE, false));
 			}
 		}
 	}
 	
 	// Transacts energy to the neighboring blocks by averaging the available energy.
 	// This will make sure everyone has the same amount of energy.
-	private void moveEnergyAveraged(Transaction transaction) {
+	private void moveEnergyAveraged() {
 		record EnergyPair(
 				long maxAmount,
-				EnergyStorage our,
-				EnergyStorage their
+				IEnergyStorage our,
+				IEnergyStorage their
 		) {}
 		
 		var list = new ArrayList<EnergyPair>();
@@ -188,32 +170,28 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		var requesting = 0L;
 		
 		for (var direction : DirectionUtils.VALUES) {
-			var theirPos = getPos().offset(direction);
-			var ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
+			var theirPos = getBlockPos().relative(direction);
+			var ourEnergyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, worldPosition, direction);
 			
-			if (ourEnergyStorage != null && ourEnergyStorage.supportsExtraction() && ourEnergyStorage.getAmount() > 0) {
-				var theirEnergyStorage = EnergyStorage.SIDED.find(world, theirPos, direction.getOpposite());
+			if (ourEnergyStorage != null && ourEnergyStorage.canExtract() && LongEnergyStorage.getAmount(ourEnergyStorage) > 0) {
+				var theirEnergyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, theirPos, direction.getOpposite());
 				
-				if (theirEnergyStorage != null && theirEnergyStorage.supportsInsertion()) {
+				if (theirEnergyStorage != null && theirEnergyStorage.canReceive()) {
 					// We are an output only block entity, so we should transfer all energy to the other storage.
-					var maxAmount = !ourEnergyStorage.supportsInsertion() ? Long.MAX_VALUE
+					var maxAmount = !ourEnergyStorage.canReceive() ? Long.MAX_VALUE
 							// We should maintain an equilibrium of energy between us.
-							: ourEnergyStorage.getAmount() - theirEnergyStorage.getAmount();
+							: LongEnergyStorage.getAmount(ourEnergyStorage) - LongEnergyStorage.getAmount(theirEnergyStorage);
 					
 					if (maxAmount > 0) {
-						try (var extractionTestTransaction = Transaction.openNested(transaction)) {
-							maxAmount = ourEnergyStorage.extract(maxAmount, extractionTestTransaction);
-						}
+						maxAmount = LongEnergyStorage.extract(ourEnergyStorage, maxAmount, true);
 					}
 					
 					if (maxAmount > 0) {
-						try (var insertionTestTransaction = Transaction.openNested(transaction)) {
-							maxAmount = theirEnergyStorage.insert(maxAmount, insertionTestTransaction);
-						}
+						maxAmount = LongEnergyStorage.insert(theirEnergyStorage, maxAmount, true);
 					}
 					
 					if (maxAmount > 0) {
-						offering = Math.max(offering, ourEnergyStorage.getAmount());
+						offering = Math.max(offering, LongEnergyStorage.getAmount(ourEnergyStorage));
 						requesting += maxAmount;
 						list.add(new EnergyPair(maxAmount, ourEnergyStorage, theirEnergyStorage));
 					}
@@ -224,21 +202,141 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		list.sort(Comparator.comparingLong(EnergyPair::maxAmount));
 		
 		for (var pair : list) {
-			var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
+			var move = (long) Math.ceil(pair.maxAmount * Mth.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
 			
-			EnergyStorageUtil.move(pair.our, pair.their, move, transaction);
+			LongEnergyStorage.move(pair.our, pair.their, move);
 		}
+	}
+
+	private void moveItemsAveraged() {
+		for (var direction : DirectionUtils.VALUES) {
+			var theirPos = getBlockPos().relative(direction);
+			var ourItemStorage = level.getCapability(Capabilities.ItemHandler.BLOCK, worldPosition, direction);
+			var theirItemStorage = level.getCapability(Capabilities.ItemHandler.BLOCK, theirPos, direction.getOpposite());
+
+			if (ourItemStorage == null || theirItemStorage == null) {
+				continue;
+			}
+
+			moveOneItemIfImbalanced(ourItemStorage, theirItemStorage);
+		}
+	}
+
+	private static void moveOneItemIfImbalanced(IItemHandler source, IItemHandler destination) {
+		for (var slot = 0; slot < source.getSlots(); ++slot) {
+			var sourceStack = source.getStackInSlot(slot);
+
+			if (sourceStack.isEmpty() || !destinationHasLess(destination, sourceStack)) {
+				continue;
+			}
+
+			var extracted = source.extractItem(slot, 1, true);
+
+			if (extracted.isEmpty()) {
+				continue;
+			}
+
+			var remainder = ItemHandlerHelper.insertItem(destination, extracted, true);
+			var accepted = extracted.getCount() - remainder.getCount();
+
+			if (accepted > 0) {
+				var moved = source.extractItem(slot, accepted, false);
+				ItemHandlerHelper.insertItem(destination, moved, false);
+				return;
+			}
+		}
+	}
+
+	private static boolean destinationHasLess(IItemHandler destination, ItemStack sourceStack) {
+		var sourceAmount = sourceStack.getCount();
+		var destinationAmount = 0;
+		var foundMatchingStack = false;
+
+		for (var slot = 0; slot < destination.getSlots(); ++slot) {
+			var stack = destination.getStackInSlot(slot);
+
+			if (stack.isEmpty()) {
+				return true;
+			}
+
+			if (ItemStack.matches(stack, sourceStack)) {
+				foundMatchingStack = true;
+				destinationAmount += stack.getCount();
+			}
+		}
+
+		return !foundMatchingStack || sourceAmount > destinationAmount;
+	}
+
+	private void moveFluidsAveraged() {
+		for (var direction : DirectionUtils.VALUES) {
+			var theirPos = getBlockPos().relative(direction);
+			var ourFluidStorage = level.getCapability(Capabilities.FluidHandler.BLOCK, worldPosition, direction);
+			var theirFluidStorage = level.getCapability(Capabilities.FluidHandler.BLOCK, theirPos, direction.getOpposite());
+
+			if (ourFluidStorage == null || theirFluidStorage == null) {
+				continue;
+			}
+
+			moveFluidIfImbalanced(ourFluidStorage, theirFluidStorage);
+		}
+	}
+
+	private static void moveFluidIfImbalanced(IFluidHandler source, IFluidHandler destination) {
+		for (var tank = 0; tank < source.getTanks(); ++tank) {
+			var sourceStack = source.getFluidInTank(tank);
+
+			if (sourceStack.isEmpty() || !destinationHasLess(destination, sourceStack)) {
+				continue;
+			}
+
+			var request = sourceStack.copyWithAmount(Math.min(sourceStack.getAmount(), FluidType.BUCKET_VOLUME));
+			var drained = source.drain(request, IFluidHandler.FluidAction.SIMULATE);
+
+			if (drained.isEmpty()) {
+				continue;
+			}
+
+			var accepted = destination.fill(drained, IFluidHandler.FluidAction.SIMULATE);
+
+			if (accepted > 0) {
+				var moved = source.drain(drained.copyWithAmount(accepted), IFluidHandler.FluidAction.EXECUTE);
+				destination.fill(moved, IFluidHandler.FluidAction.EXECUTE);
+				return;
+			}
+		}
+	}
+
+	private static boolean destinationHasLess(IFluidHandler destination, FluidStack sourceStack) {
+		var sourceAmount = sourceStack.getAmount();
+		var destinationAmount = 0;
+		var foundMatchingStack = false;
+
+		for (var tank = 0; tank < destination.getTanks(); ++tank) {
+			var stack = destination.getFluidInTank(tank);
+
+			if (stack.isEmpty()) {
+				return true;
+			}
+
+			if (FluidStack.isSameFluidSameComponents(stack, sourceStack)) {
+				foundMatchingStack = true;
+				destinationAmount += stack.getAmount();
+			}
+		}
+
+		return !foundMatchingStack || sourceAmount > destinationAmount;
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		nbt.putString(REDSTONE_TYPE_KEY, redstoneType.name());
 		
 		nbt.putDouble(PROGRESS_KEY, progress);
 		nbt.putDouble(LIMIT_KEY, limit);
 		
 		if (energyStorage != null) {
-			var energyStorageNbt = new NbtCompound();
+			var energyStorageNbt = new CompoundTag();
 			
 			energyStorageNbt.putLong(AMOUNT_KEY, energyStorage.amount);
 			
@@ -246,26 +344,26 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		}
 		
 		if (itemStorage != null) {
-			var itemStorageNbt = new NbtCompound();
+			var itemStorageNbt = new CompoundTag();
 			
-			itemStorage.writeToNbt(itemStorageNbt);
+			itemStorage.writeToNbt(itemStorageNbt, registries);
 			
 			nbt.put(ITEM_STORAGE_KEY, itemStorageNbt);
 		}
 		
 		if (fluidStorage != null) {
-			var fluidStorageNbt = new NbtCompound();
+			var fluidStorageNbt = new CompoundTag();
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
 			nbt.put(FLUID_STORAGE_KEY, fluidStorageNbt);
 		}
 		
-		super.writeNbt(nbt);
+		super.saveAdditional(nbt, registries);
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
+	protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
 		if (nbt.contains(REDSTONE_TYPE_KEY)) {
 			redstoneType = RedstoneType.valueOf(nbt.getString(REDSTONE_TYPE_KEY));
 		}
@@ -287,7 +385,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		if (nbt.contains(ITEM_STORAGE_KEY)) {
 			var itemStorageNbt = nbt.getCompound(ITEM_STORAGE_KEY);
 			
-			itemStorage.readFromNbt(itemStorageNbt);
+			itemStorage.readFromNbt(itemStorageNbt, registries);
 		} else if (nbt.contains(ITEM_STORAGE_SIDINGS_KEY)) {
 			var sidings = getItemStorage().getSidings();
 			
@@ -312,14 +410,14 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			}
 		}
 		
-		super.readNbt(nbt);
+		super.loadAdditional(nbt, registries);
 	}
 	
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		var nbt = new NbtCompound();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		var nbt = new CompoundTag();
 		
-		writeNbt(nbt);
+		saveAdditional(nbt, registries);
 		
 		if (hasItemStorage()) {
 			var itemStorage = getItemStorage();
@@ -329,7 +427,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				
 				var sidings = itemStorage.getSidings();
 				
-				var sidingsNbt = new NbtCompound();
+				var sidingsNbt = new CompoundTag();
 				
 				for (var i = 0; i < sidings.length; ++i) {
 					sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
@@ -351,7 +449,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				
 				var sidings = fluidStorage.getSidings();
 				
-				var sidingsNbt = new NbtCompound();
+				var sidingsNbt = new CompoundTag();
 				
 				for (var i = 0; i < sidings.length; ++i) {
 					sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
@@ -359,7 +457,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				
 				nbt.put(FLUID_STORAGE_SIDINGS_KEY, sidingsNbt);
 			} else {
-				syncItemStorage = false;
+				syncFluidStorage = false;
 				
 				lastFluidStorageVersion = fluidStorage.getVersion();
 			}
@@ -370,8 +468,8 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Nullable
 	@Override
-	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
+	public Packet<ClientGamePacketListener> getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 	
 	/**
@@ -392,7 +490,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	 * Asserts whether this block entity should run or not.
 	 */
 	public boolean shouldRun() {
-		var powered = world.getReceivedRedstonePower(getPos()) > 0;
+		var powered = level.getBestNeighborSignal(getBlockPos()) > 0;
 		var shouldRun = redstoneType.shouldRun(powered);
 		
 		active = shouldRun;
@@ -404,7 +502,49 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	 * Schedules this block entity for server to client sync.
 	 */
 	public void syncData() {
-		BlockEntityHooks.syncData(this);
+		setChanged();
+
+		if (level != null) {
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+		}
+	}
+	
+	public void notifySidingChanged() {
+		if (level == null) {
+			return;
+		}
+		
+		setChanged();
+		level.invalidateCapabilities(worldPosition);
+		
+		for (var directions : DirectionUtils.VALUES) {
+			var neighborPos = getBlockPos().relative(directions);
+			var neighborState = level.getBlockState(neighborPos);
+			
+			neighborState.handleNeighborChanged(level, neighborPos, getBlockState().getBlock(), getBlockPos(), false);
+			
+			if (neighborState.getBlock() instanceof CableBlock cableBlock) {
+				NetworkUtils.trace(cableBlock.getNetworkType(), level, neighborPos);
+				cableBlock.updateConnections(level, neighborPos);
+			}
+		}
+	}
+	
+	public boolean setStorageSiding(StorageType storageType, Direction direction, StorageSiding siding) {
+		var changed = false;
+		
+		if (storageType == StorageType.ITEM && itemStorage != null) {
+			changed = itemStorage.setSiding(direction, siding);
+		} else if (storageType == StorageType.FLUID && fluidStorage != null) {
+			changed = fluidStorage.setSiding(direction, siding);
+		}
+		
+		if (changed) {
+			notifySidingChanged();
+			syncData();
+		}
+		
+		return changed;
 	}
 	
 	/**
@@ -422,7 +562,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	}
 	
 	/**
-	 * Asserts whether this block entity has a {@link SimpleEnergyStorage} or not.
+	 * Asserts whether this block entity has a {@link LongEnergyStorage} or not.
 	 */
 	public boolean hasEnergyStorage() {
 		return getEnergyStorage() != null;
@@ -443,10 +583,10 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	}
 	
 	/**
-	 * Returns this block entity's {@link SimpleEnergyStorage}.
+	 * Returns this block entity's {@link LongEnergyStorage}.
 	 */
 	@Nullable
-	public SimpleEnergyStorage getEnergyStorage() {
+	public LongEnergyStorage getEnergyStorage() {
 		return energyStorage;
 	}
 	

@@ -26,27 +26,26 @@ package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
-import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.vini2003.hammer.core.api.client.color.Color;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import com.github.mixinors.astromine.common.util.Color;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
-	public HoloBridgeProjectorBlock(AbstractBlock.Settings settings) {
+	public HoloBridgeProjectorBlock(BlockBehaviour.Properties settings) {
 		super(settings);
 	}
 	
@@ -56,16 +55,14 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	}
 	
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		var stack = player.getStackInHand(hand);
-		
+	protected ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level world, BlockPos position, Player player, InteractionHand hand, BlockHitResult hit) {
 		var changeColor = false;
 		Color color = null;
 		
 		if (stack.getItem() instanceof DyeItem dye) {
 			changeColor = true;
-			var dyeColor = dye.getColor().getColorComponents();
-			color = new Color(dyeColor[0], dyeColor[1], dyeColor[2], 0x7E);
+			var dyeColor = dye.getDyeColor().getTextureDiffuseColor();
+			color = new Color(((dyeColor >> 16) & 0xFF) / 255.0F, ((dyeColor >> 8) & 0xFF) / 255.0F, (dyeColor & 0xFF) / 255.0F, 0x7E);
 		} else if (stack.getItem() == Items.WATER_BUCKET) {
 			changeColor = true;
 			color = HoloBridgeProjectorBlockEntity.DEFAULT_COLOR;
@@ -78,32 +75,32 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 				if (entity != null) {
 					entity.color = color;
 					
-					entity.markDirty();
+					entity.setChanged();
 					
-					if (!world.isClient) {
-						BlockEntityHooks.syncData(entity);
+					if (!world.isClientSide) {
+						entity.syncData();
 					}
 					
 					if (entity.hasChild()) {
 						entity.getChild().color = color;
 						
-						entity.getChild().markDirty();
+						entity.getChild().setChanged();
 						
-						if (!world.isClient) {
-							BlockEntityHooks.syncData(entity.getChild());
+						if (!world.isClientSide) {
+							entity.getChild().syncData();
 						}
 					}
 					
 					if (!player.isCreative()) {
-						stack.decrement(1);
+						stack.shrink(1);
 					}
 				}
 			}
 			
-			return ActionResult.PASS;
+			return ItemInteractionResult.sidedSuccess(world.isClientSide);
 		}
 		
-		return ActionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 	
 	@Override
@@ -113,17 +110,17 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new HoloBridgeProjectorBlockEntity(pos, state);
 	}
 	
 	@Override
-	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+	public AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player) {
 		return null;
 	}
 	
 	@Override
-	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {}
+	public void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer) {}
 	
 	@Override
 	public boolean saveTagToDroppedItem() {

@@ -29,32 +29,25 @@ import com.github.mixinors.astromine.common.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.util.WeightedList;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.serialization.Codec;
-import com.terraformersmc.terraform.shapes.api.Position;
-import com.terraformersmc.terraform.shapes.api.Quaternion;
-import com.terraformersmc.terraform.shapes.impl.Shapes;
-import com.terraformersmc.terraform.shapes.impl.layer.transform.RotateLayer;
-import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
-
 import java.util.Objects;
-import java.util.stream.Collectors;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
-	public AsteroidOreFeature(Codec<DefaultFeatureConfig> codec) {
+public class AsteroidOreFeature extends Feature<NoneFeatureConfiguration> {
+	public AsteroidOreFeature(Codec<NoneFeatureConfiguration> codec) {
 		super(codec);
 	}
 	
 	@Override
-	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-		var world = context.getWorld();
-		var random = context.getRandom();
-		var featurePosition = context.getOrigin();
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+		var world = context.level();
+		var random = context.random();
+		var featurePosition = context.origin();
 		
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
 		
@@ -81,24 +74,30 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		return true;
 	}
 	
-	private void chances(Random random, WeightedList<Block> ores) {
+	private void chances(RandomSource random, WeightedList<Block> ores) {
 		for (var entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
 			var pair = entry.getValue();
 			if (pair != null) {
-				ores.add(entry.getKey(), (int) ((pair.getLeft().maximum() - pair.getLeft().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getLeft().minimum()));
+				ores.add(entry.getKey(), (int) ((pair.getA().maximum() - pair.getA().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getA().minimum()));
 			}
 		}
 	}
 	
-	private void place(StructureWorldAccess world, Random random, BlockPos featurePosition, Block ore, float xSize, float ySize, float zSize) {
-		var vein = Shapes.ellipsoid(xSize, ySize, zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(featurePosition)));
-		
-		for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
-			var orePosition = streamPosition.toBlockPos();
-			
-			if (world.getBlockState(orePosition).isOf(AMBlocks.ASTEROID_STONE.get())) {
-				if (random.nextInt(AMConfig.get().world.asteroidOreGenerationThreshold) == 0) {
-					world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
+	private void place(WorldGenLevel world, RandomSource random, BlockPos featurePosition, Block ore, float xSize, float ySize, float zSize) {
+		for (var x = (int) -xSize; x <= xSize; ++x) {
+			for (var y = (int) -ySize; y <= ySize; ++y) {
+				for (var z = (int) -zSize; z <= zSize; ++z) {
+					var normalized = x * x / (xSize * xSize) + y * y / (ySize * ySize) + z * z / (zSize * zSize);
+					
+					if (normalized > 1.0F) {
+						continue;
+					}
+					
+					var orePosition = featurePosition.offset(x, y, z);
+					
+					if (world.getBlockState(orePosition).is(AMBlocks.ASTEROID_STONE.get()) && random.nextInt(AMConfig.get().world.asteroidOreGenerationThreshold) == 0) {
+						world.setBlock(orePosition, ore.defaultBlockState(), 0b0110100);
+					}
 				}
 			}
 		}

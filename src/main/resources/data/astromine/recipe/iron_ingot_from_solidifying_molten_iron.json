@@ -1,0 +1,12 @@
+{
+  "type": "astromine:solidifying",
+  "input": {
+    "fluid": "astromine:molten_iron",
+    "amount": 111
+  },
+  "output": {
+    "item": "minecraft:iron_ingot"
+  },
+  "energy_input": 1600,
+  "time": 200
+}

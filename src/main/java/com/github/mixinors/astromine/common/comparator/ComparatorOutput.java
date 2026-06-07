@@ -25,11 +25,13 @@
 package com.github.mixinors.astromine.common.comparator;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ComparatorBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.api.EnergyStorage;
 
 /**
  * A handler of {@link ComparatorBlockEntity} output levels.
@@ -37,14 +39,14 @@ import team.reborn.energy.api.EnergyStorage;
 public class ComparatorOutput {
 	public static int forItems(BlockEntity blockEntity) {
 		if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-			return StorageUtil.calculateComparatorOutput(extendedBlockEntity.getItemStorage());
+			return forItems(extendedBlockEntity.getItemStorage());
 		}
 		return 0;
 	}
 	
 	public static int forFluids(BlockEntity blockEntity) {
 		if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-			return StorageUtil.calculateComparatorOutput(extendedBlockEntity.getFluidStorage());
+			return forFluids(extendedBlockEntity.getFluidStorage());
 		}
 		return 0;
 	}
@@ -57,17 +59,61 @@ public class ComparatorOutput {
 	}
 	
 	/**
-	 * Returns the output level for an {@link EnergyStorage}.
+	 * Returns the output level for an {@link IEnergyStorage}.
 	 */
-	public static int forEnergy(@Nullable EnergyStorage storage) {
+	public static int forEnergy(@Nullable IEnergyStorage storage) {
 		if (storage == null) {
 			return 0;
 		}
 		
-		if (storage.getAmount() <= 0.0001) {
+		var amount = LongEnergyStorage.getAmount(storage);
+		var capacity = LongEnergyStorage.getCapacity(storage);
+		
+		if (amount <= 0L || capacity <= 0L) {
 			return 0;
 		}
 		
-		return 1 + (int) (storage.getAmount() / storage.getCapacity() * 14.0);
+		return 1 + (int) ((double) amount / (double) capacity * 14.0D);
+	}
+	
+	public static int forItems(@Nullable IItemHandler storage) {
+		if (storage == null || storage.getSlots() <= 0) {
+			return 0;
+		}
+		
+		var occupiedSlots = 0;
+		var fullness = 0.0D;
+		
+		for (var slot = 0; slot < storage.getSlots(); ++slot) {
+			var stack = storage.getStackInSlot(slot);
+			
+			if (!stack.isEmpty()) {
+				fullness += (double) stack.getCount() / (double) Math.min(storage.getSlotLimit(slot), stack.getMaxStackSize());
+				++occupiedSlots;
+			}
+		}
+		
+		return occupiedSlots == 0 ? 0 : 1 + (int) (fullness / storage.getSlots() * 14.0D);
+	}
+	
+	public static int forFluids(@Nullable IFluidHandler storage) {
+		if (storage == null || storage.getTanks() <= 0) {
+			return 0;
+		}
+		
+		var occupiedTanks = 0;
+		var fullness = 0.0D;
+		
+		for (var tank = 0; tank < storage.getTanks(); ++tank) {
+			var stack = storage.getFluidInTank(tank);
+			var capacity = storage.getTankCapacity(tank);
+			
+			if (!stack.isEmpty() && capacity > 0) {
+				fullness += (double) stack.getAmount() / (double) capacity;
+				++occupiedTanks;
+			}
+		}
+		
+		return occupiedTanks == 0 ? 0 : 1 + (int) (fullness / storage.getTanks() * 14.0D);
 	}
 }

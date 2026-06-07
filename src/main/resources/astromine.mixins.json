@@ -2,24 +2,9 @@
   "required" : true,
   "minVersion" : "0.8",
   "package" : "com.github.mixinors.astromine.mixin",
-  "compatibilityLevel" : "JAVA_17",
+  "compatibilityLevel" : "JAVA_21",
   "mixins" : [
-    "common.BlockRenderViewMixin",
-    "common.DataPackContentsMixin",
-    "common.EntityMixin",
-    "common.EntityNavigationMixin",
-    "common.JsonDataLoaderMixin",
-    "common.LifecycleMixin",
-    "common.LivingEntityMixin",
-    "common.MobEntityMixin",
-    "common.PiglinBrainMixin",
-    "common.PistonHandlerMixin",
-    "common.RecipeManagerAccessor",
-    "common.ServerPlayNetworkHandlerMixin",
-    "common.StayAboveWaterTaskMixin",
-    "common.StructureAccessorAccessor",
-    "common.SwimGoalAccessor",
-    "common.SwimGoalMixin"
+    "common.LivingEntityMixin"
   ],
   "client" : [
     "client.AbstractSoundInstanceMixin",

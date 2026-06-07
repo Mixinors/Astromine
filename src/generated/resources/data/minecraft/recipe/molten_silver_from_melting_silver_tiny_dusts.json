@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 102,
+  "input": {
+    "count": 1,
+    "tag": "c:silver_tiny_dusts"
+  },
+  "output": {
+    "amount": 12,
+    "fluid": "astromine:molten_silver"
+  },
+  "time": 12
+}

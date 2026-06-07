@@ -1,27 +1,26 @@
 {
   "variants": {
     "facing=east,half=bottom,shape=inner_left": {
-      "model": "astromine:block/meteor_stone_stairs_inner",
-      "uvlock": true,
-      "y": 270
-    },
-    "facing=east,half=bottom,shape=inner_right": {
       "model": "astromine:block/meteor_stone_stairs_inner"
     },
-    "facing=east,half=bottom,shape=outer_left": {
-      "model": "astromine:block/meteor_stone_stairs_outer",
+    "facing=east,half=bottom,shape=inner_right": {
+      "model": "astromine:block/meteor_stone_stairs_inner",
       "uvlock": true,
-      "y": 270
+      "y": 90
+    },
+    "facing=east,half=bottom,shape=outer_left": {
+      "model": "astromine:block/meteor_stone_stairs_outer"
     },
     "facing=east,half=bottom,shape=outer_right": {
-      "model": "astromine:block/meteor_stone_stairs_outer"
+      "model": "astromine:block/meteor_stone_stairs_outer",
+      "uvlock": true,
+      "y": 90
     },
     "facing=east,half=bottom,shape=straight": {
       "model": "astromine:block/meteor_stone_stairs"
     },
     "facing=east,half=top,shape=inner_left": {
       "model": "astromine:block/meteor_stone_stairs_inner",
-      "uvlock": true,
       "x": 180
     },
     "facing=east,half=top,shape=inner_right": {
@@ -32,7 +31,6 @@
     },
     "facing=east,half=top,shape=outer_left": {
       "model": "astromine:block/meteor_stone_stairs_outer",
-      "uvlock": true,
       "x": 180
     },
     "facing=east,half=top,shape=outer_right": {
@@ -43,28 +41,23 @@
     },
     "facing=east,half=top,shape=straight": {
       "model": "astromine:block/meteor_stone_stairs",
-      "uvlock": true,
       "x": 180
     },
     "facing=north,half=bottom,shape=inner_left": {
       "model": "astromine:block/meteor_stone_stairs_inner",
       "uvlock": true,
-      "y": 180
+      "y": 270
     },
     "facing=north,half=bottom,shape=inner_right": {
-      "model": "astromine:block/meteor_stone_stairs_inner",
-      "uvlock": true,
-      "y": 270
+      "model": "astromine:block/meteor_stone_stairs_inner"
     },
     "facing=north,half=bottom,shape=outer_left": {
       "model": "astromine:block/meteor_stone_stairs_outer",
       "uvlock": true,
-      "y": 180
+      "y": 270
     },
     "facing=north,half=bottom,shape=outer_right": {
-      "model": "astromine:block/meteor_stone_stairs_outer",
-      "uvlock": true,
-      "y": 270
+      "model": "astromine:block/meteor_stone_stairs_outer"
     },
     "facing=north,half=bottom,shape=straight": {
       "model": "astromine:block/meteor_stone_stairs",
@@ -79,7 +72,6 @@
     },
     "facing=north,half=top,shape=inner_right": {
       "model": "astromine:block/meteor_stone_stairs_inner",
-      "uvlock": true,
       "x": 180
     },
     "facing=north,half=top,shape=outer_left": {
@@ -90,7 +82,6 @@
     },
     "facing=north,half=top,shape=outer_right": {
       "model": "astromine:block/meteor_stone_stairs_outer",
-      "uvlock": true,
       "x": 180
     },
     "facing=north,half=top,shape=straight": {
@@ -100,20 +91,24 @@
       "y": 270
     },
     "facing=south,half=bottom,shape=inner_left": {
-      "model": "astromine:block/meteor_stone_stairs_inner"
-    },
-    "facing=south,half=bottom,shape=inner_right": {
       "model": "astromine:block/meteor_stone_stairs_inner",
       "uvlock": true,
       "y": 90
     },
+    "facing=south,half=bottom,shape=inner_right": {
+      "model": "astromine:block/meteor_stone_stairs_inner",
+      "uvlock": true,
+      "y": 180
+    },
     "facing=south,half=bottom,shape=outer_left": {
-      "model": "astromine:block/meteor_stone_stairs_outer"
+      "model": "astromine:block/meteor_stone_stairs_outer",
+      "uvlock": true,
+      "y": 90
     },
     "facing=south,half=bottom,shape=outer_right": {
       "model": "astromine:block/meteor_stone_stairs_outer",
       "uvlock": true,
-      "y": 90
+      "y": 180
     },
     "facing=south,half=bottom,shape=straight": {
       "model": "astromine:block/meteor_stone_stairs",
@@ -153,22 +148,22 @@
     "facing=west,half=bottom,shape=inner_left": {
       "model": "astromine:block/meteor_stone_stairs_inner",
       "uvlock": true,
-      "y": 90
+      "y": 180
     },
     "facing=west,half=bottom,shape=inner_right": {
       "model": "astromine:block/meteor_stone_stairs_inner",
       "uvlock": true,
-      "y": 180
+      "y": 270
     },
     "facing=west,half=bottom,shape=outer_left": {
       "model": "astromine:block/meteor_stone_stairs_outer",
       "uvlock": true,
-      "y": 90
+      "y": 180
     },
     "facing=west,half=bottom,shape=outer_right": {
       "model": "astromine:block/meteor_stone_stairs_outer",
       "uvlock": true,
-      "y": 180
+      "y": 270
     },
     "facing=west,half=bottom,shape=straight": {
       "model": "astromine:block/meteor_stone_stairs",

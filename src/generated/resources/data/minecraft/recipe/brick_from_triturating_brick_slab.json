@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "energy_input": 300,
+  "input": {
+    "count": 1,
+    "item": "minecraft:brick_slab"
+  },
+  "output": {
+    "count": 2,
+    "item": "minecraft:brick"
+  },
+  "time": 80
+}

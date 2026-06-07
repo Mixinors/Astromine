@@ -1,11 +1,11 @@
 package com.github.mixinors.astromine.common.item.rocket;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public abstract class RocketPartItem<T> extends Item {
 	protected T part;
 	
-	public RocketPartItem(Settings settings) {
+	public RocketPartItem(Properties settings) {
 		super(settings);
 	}
 	

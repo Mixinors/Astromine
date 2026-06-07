@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "cookingtime": 200,
-  "experience": 0.1,
-  "ingredient": {
-    "tag": "c:diamond_salvageables"
-  },
-  "result": "astromine:diamond_fragment"
-}

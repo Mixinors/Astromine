@@ -37,35 +37,34 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import com.github.mixinors.astromine.common.recipe.base.AstromineRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public record WireMillingRecipe(
-		Identifier id,
+		ResourceLocation id,
 		ItemIngredient input,
 		ItemResult output,
 		long energyInput,
 		int time
 ) implements ItemInputRecipe, ItemOutputRecipe {
-	private static final Map<World, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
-	public static boolean allows(World world, ItemVariant... variants) {
+	public static boolean allows(Level world, ItemStack... stacks) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(WireMillingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(variants)) {
+			if (recipe.allows(stacks)) {
 				return true;
 			}
 		}
@@ -73,9 +72,9 @@ public record WireMillingRecipe(
 		return false;
 	}
 	
-	public static Optional<WireMillingRecipe> matching(World world, SingleSlotStorage<ItemVariant>... storages) {
+	public static Optional<WireMillingRecipe> matching(Level world, SimpleItemVariantStorage... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllRecipesFor(Type.INSTANCE).stream().map(holder -> holder.value()).toArray(WireMillingRecipe[]::new));
 		}
 		
 		for (var recipe : RECIPE_CACHE.get(world)) {
@@ -87,7 +86,7 @@ public record WireMillingRecipe(
 		return Optional.empty();
 	}
 	
-	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
+	public boolean matches(SimpleItemVariantStorage... storages) {
 		var inputStorage = storages[0];
 		
 		var outputStorage = storages[1];
@@ -100,7 +99,7 @@ public record WireMillingRecipe(
 	}
 	
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 	
@@ -115,7 +114,7 @@ public record WireMillingRecipe(
 	}
 	
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AMBlocks.ADVANCED_WIRE_MILL.get());
 	}
 	
@@ -137,8 +136,8 @@ public record WireMillingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer implements RecipeSerializer<WireMillingRecipe> {
-		public static final Identifier ID = AMCommon.id("wire_milling");
+	public static final class Serializer implements AstromineRecipeSerializer<WireMillingRecipe> {
+		public static final ResourceLocation ID = AMCommon.id("wire_milling");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
@@ -146,7 +145,7 @@ public record WireMillingRecipe(
 		}
 		
 		@Override
-		public WireMillingRecipe read(Identifier identifier, JsonObject object) {
+		public WireMillingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
 			
 			return new WireMillingRecipe(identifier,
@@ -158,7 +157,7 @@ public record WireMillingRecipe(
 		}
 		
 		@Override
-		public WireMillingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public WireMillingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new WireMillingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
@@ -169,7 +168,7 @@ public record WireMillingRecipe(
 		}
 		
 		@Override
-		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
+		public void write(FriendlyByteBuf buffer, WireMillingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.input);
 			ItemResult.toPacket(buffer, recipe.output);
 			LongUtils.toPacket(buffer, recipe.energyInput);

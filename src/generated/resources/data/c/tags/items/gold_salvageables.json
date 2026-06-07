@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#c:gold_armor",
-    "#c:gold_tools",
-    "minecraft:golden_horse_armor"
-  ]
-}

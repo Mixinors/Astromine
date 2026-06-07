@@ -25,45 +25,45 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.material.Fluid;
 
 public class AMTagKeys {
 	public static final String COMMON_TAG_NAMESPACE = "c";
 	
-	public static final Identifier IS_MOON_ID = createCommonTagId("is_moon");
+	public static final ResourceLocation IS_MOON_ID = createCommonTagId("is_moon");
 	
-	public static final Identifier INFINIBURN_SPACE_ID = createCommonTagId("infiniburn_space");
-	public static final Identifier YELLOW_SANDSTONES_ID = createCommonTagId("yellow_sandstones");
-	public static final Identifier RED_SANDSTONES_ID = createCommonTagId("red_sandstones");
-	public static final Identifier SANDSTONES_ID = createCommonTagId("sandstones");
-	public static final Identifier QUARTZ_BLOCKS_ID = createCommonTagId("quartz_blocks");
-	public static final Identifier UNWAXED_COPPER_BLOCKS_ID = createCommonTagId("unwaxed_copper_blocks");
-	public static final Identifier WAXED_COPPER_BLOCKS_ID = createCommonTagId("waxed_copper_blocks");
-	public static final Identifier COPPER_BLOCKS_ID = createCommonTagId("copper_blocks");
-	public static final Identifier UNWAXED_CUT_COPPER_ID = createCommonTagId("unwaxed_cut_copper");
-	public static final Identifier WAXED_CUT_COPPER_ID = createCommonTagId("waxed_cut_copper");
-	public static final Identifier CUT_COPPER_ID = createCommonTagId("cut_copper");
-	public static final Identifier PURPUR_BLOCKS_ID = createCommonTagId("purpur_blocks");
-	public static final Identifier MUSHROOMS_ID = createCommonTagId("mushrooms");
-	public static final Identifier MUSHROOM_BLOCKS_ID = createCommonTagId("mushroom_blocks");
-	public static final Identifier NETHER_FUNGI_ID = createCommonTagId("nether_fungi");
-	public static final Identifier NETHER_ROOTS_ID = createCommonTagId("nether_roots");
-	public static final Identifier NETHER_VINES_ID = createCommonTagId("nether_vines");
-	public static final Identifier PUMPKINS_ID = createCommonTagId("pumpkins");
-	public static final Identifier GOURDS_ID = createCommonTagId("gourds");
-	public static final Identifier WEEPING_VINES_ID = createCommonTagId("weeping_vines");
-	public static final Identifier TWISTING_VINES_ID = createCommonTagId("twisting_vines");
+	public static final ResourceLocation INFINIBURN_SPACE_ID = createCommonTagId("infiniburn_space");
+	public static final ResourceLocation YELLOW_SANDSTONES_ID = createCommonTagId("yellow_sandstones");
+	public static final ResourceLocation RED_SANDSTONES_ID = createCommonTagId("red_sandstones");
+	public static final ResourceLocation SANDSTONES_ID = createCommonTagId("sandstones");
+	public static final ResourceLocation QUARTZ_BLOCKS_ID = createCommonTagId("quartz_blocks");
+	public static final ResourceLocation UNWAXED_COPPER_BLOCKS_ID = createCommonTagId("unwaxed_copper_blocks");
+	public static final ResourceLocation WAXED_COPPER_BLOCKS_ID = createCommonTagId("waxed_copper_blocks");
+	public static final ResourceLocation COPPER_BLOCKS_ID = createCommonTagId("copper_blocks");
+	public static final ResourceLocation UNWAXED_CUT_COPPER_ID = createCommonTagId("unwaxed_cut_copper");
+	public static final ResourceLocation WAXED_CUT_COPPER_ID = createCommonTagId("waxed_cut_copper");
+	public static final ResourceLocation CUT_COPPER_ID = createCommonTagId("cut_copper");
+	public static final ResourceLocation PURPUR_BLOCKS_ID = createCommonTagId("purpur_blocks");
+	public static final ResourceLocation MUSHROOMS_ID = createCommonTagId("mushrooms");
+	public static final ResourceLocation MUSHROOM_BLOCKS_ID = createCommonTagId("mushroom_blocks");
+	public static final ResourceLocation NETHER_FUNGI_ID = createCommonTagId("nether_fungi");
+	public static final ResourceLocation NETHER_ROOTS_ID = createCommonTagId("nether_roots");
+	public static final ResourceLocation NETHER_VINES_ID = createCommonTagId("nether_vines");
+	public static final ResourceLocation PUMPKINS_ID = createCommonTagId("pumpkins");
+	public static final ResourceLocation GOURDS_ID = createCommonTagId("gourds");
+	public static final ResourceLocation WEEPING_VINES_ID = createCommonTagId("weeping_vines");
+	public static final ResourceLocation TWISTING_VINES_ID = createCommonTagId("twisting_vines");
 	
-	public static final Identifier MOON_STONE_ID = createCommonTagId("moon_stone");
-	public static final Identifier DARK_MOON_STONE_ID = createCommonTagId("dark_moon_stone");
+	public static final ResourceLocation MOON_STONE_ID = createCommonTagId("moon_stone");
+	public static final ResourceLocation DARK_MOON_STONE_ID = createCommonTagId("dark_moon_stone");
 	
 	public static class BiomeTags {
 		public static final TagKey<Biome> IS_MOON = createBiomeTag(IS_MOON_ID);
@@ -158,16 +158,16 @@ public class AMTagKeys {
 		public static final TagKey<DimensionType> IS_VACUUM = createDimensionTypeTag("is_space");
 	}
 	
-	public static Identifier createCommonTagId(String path) {
-		return new Identifier(COMMON_TAG_NAMESPACE, path);
+	public static ResourceLocation createCommonTagId(String path) {
+		return ResourceLocation.fromNamespaceAndPath(COMMON_TAG_NAMESPACE, path);
 	}
 	
-	public static TagKey<Biome> createBiomeTag(Identifier id) {
-		return TagKey.of(Registry.BIOME_KEY, id);
+	public static TagKey<Biome> createBiomeTag(ResourceLocation id) {
+		return TagKey.create(Registries.BIOME, id);
 	}
 	
-	public static TagKey<Block> createBlockTag(Identifier id) {
-		return TagKey.of(Registry.BLOCK_KEY, id);
+	public static TagKey<Block> createBlockTag(ResourceLocation id) {
+		return TagKey.create(Registries.BLOCK, id);
 	}
 	
 	public static TagKey<Block> createBlockTag(String path) {
@@ -178,8 +178,8 @@ public class AMTagKeys {
 		return createBlockTag(createCommonTagId(path));
 	}
 	
-	public static TagKey<Item> createItemTag(Identifier id) {
-		return TagKey.of(Registry.ITEM_KEY, id);
+	public static TagKey<Item> createItemTag(ResourceLocation id) {
+		return TagKey.create(Registries.ITEM, id);
 	}
 	
 	public static TagKey<Item> createItemTag(String path) {
@@ -190,8 +190,8 @@ public class AMTagKeys {
 		return createItemTag(createCommonTagId(path));
 	}
 	
-	public static TagKey<Fluid> createFluidTag(Identifier id) {
-		return TagKey.of(Registry.FLUID_KEY, id);
+	public static TagKey<Fluid> createFluidTag(ResourceLocation id) {
+		return TagKey.create(Registries.FLUID, id);
 	}
 	
 	public static TagKey<Fluid> createFluidTag(String path) {
@@ -202,8 +202,8 @@ public class AMTagKeys {
 		return createFluidTag(createCommonTagId(path));
 	}
 	
-	public static TagKey<EntityType<?>> createEntityTypeTag(Identifier id) {
-		return TagKey.of(Registry.ENTITY_TYPE_KEY, id);
+	public static TagKey<EntityType<?>> createEntityTypeTag(ResourceLocation id) {
+		return TagKey.create(Registries.ENTITY_TYPE, id);
 	}
 	
 	public static TagKey<EntityType<?>> createEntityTypeTag(String path) {
@@ -214,8 +214,8 @@ public class AMTagKeys {
 		return createEntityTypeTag(createCommonTagId(path));
 	}
 	
-	public static TagKey<DimensionType> createDimensionTypeTag(Identifier id) {
-		return TagKey.of(Registry.DIMENSION_TYPE_KEY, id);
+	public static TagKey<DimensionType> createDimensionTypeTag(ResourceLocation id) {
+		return TagKey.create(Registries.DIMENSION_TYPE, id);
 	}
 	
 	public static TagKey<DimensionType> createDimensionTypeTag(String path) {

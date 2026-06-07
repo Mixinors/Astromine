@@ -1,0 +1,13 @@
+{
+  "type": "astromine:melting",
+  "energy_input": 49280,
+  "input": {
+    "count": 1,
+    "tag": "c:asterite_asteroid_ore_clusters"
+  },
+  "output": {
+    "amount": 180,
+    "fluid": "astromine:molten_asterite"
+  },
+  "time": 6160
+}

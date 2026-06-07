@@ -5,6 +5,7 @@
     "bottom": "astromine:block/primitive_melter_bottom",
     "front": "astromine:block/primitive_melter_front",
     "left": "astromine:block/primitive_melter_left",
+    "particle": "astromine:block/primitive_melter_top",
     "right": "astromine:block/primitive_melter_right",
     "top": "astromine:block/primitive_melter_top"
   }

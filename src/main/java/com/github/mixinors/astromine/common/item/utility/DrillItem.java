@@ -25,38 +25,36 @@
 package com.github.mixinors.astromine.common.item.utility;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.transfer.storage.EnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import team.reborn.energy.api.base.SimpleBatteryItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
+public class DrillItem extends DiggerItem implements EnergyStorageItem {
 	private final long capacity;
 	
-	private final ToolMaterial material;
+	private final Tier material;
 	
-	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, long capacity, Settings settings) {
-		super(attackDamage, attackSpeed, material, AMTagKeys.BlockTags.DRILL_MINEABLE, settings);
+	public DrillItem(Tier material, float attackDamage, float attackSpeed, long capacity, Properties settings) {
+		super(material, AMTagKeys.BlockTags.DRILL_MINEABLE, settings);
 		
 		this.material = material;
 		this.capacity = capacity;
 	}
 	
 	@Override
-	public int getEnchantability() {
-		return material.getEnchantability();
+	public int getEnchantmentValue() {
+		return material.getEnchantmentValue();
 	}
 	
 	@Override
-	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!target.world.isClient) {
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		if (!target.level().isClientSide) {
 			return tryUseEnergy(stack, getEnergyConsumedOnEntityHit());
 		}
 		
@@ -64,8 +62,8 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	}
 	
 	@Override
-	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
+	public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity miner) {
+		if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F) {
 			return tryUseEnergy(stack, getEnergyConsumedOnBlockBreak());
 		}
 		
@@ -73,16 +71,16 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	}
 	
 	@Override
-	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-		return getStoredEnergy(stack) <= getEnergyConsumedOnBlockBreak() ? 0F : super.getMiningSpeedMultiplier(stack, state);
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		return getStoredEnergy(stack) <= getEnergyConsumedOnBlockBreak() ? 0F : super.getDestroySpeed(stack, state);
 	}
 	
 	public long getEnergyConsumedOnBlockBreak() {
-		return (long) (AMConfig.get().items.drillConsumedBlockBreak * material.getMiningSpeedMultiplier());
+		return (long) (AMConfig.get().items.drillConsumedBlockBreak * material.getSpeed());
 	}
 	
 	public long getEnergyConsumedOnEntityHit() {
-		return (long) (AMConfig.get().items.drillConsumedEntityHit * material.getMiningSpeedMultiplier());
+		return (long) (AMConfig.get().items.drillConsumedEntityHit * material.getSpeed());
 	}
 	
 	@Override
@@ -102,34 +100,22 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	
 	/** Override behavior to return our progress. */
 	@Override
-	public int getItemBarStep(ItemStack stack) {
+	public int getBarWidth(ItemStack stack) {
 		if (getEnergyCapacity() == 0) {
 			return 0;
 		}
 		
-		return (int) (13.0F * ((float) SimpleBatteryItem.getStoredEnergyUnchecked(stack) / (float) getEnergyCapacity()));
+		return (int) (13.0F * ((float) getStoredEnergy(stack) / (float) getEnergyCapacity()));
 	}
 	
 	@Override
-	public boolean isItemBarVisible(ItemStack stack) {
+	public boolean isBarVisible(ItemStack stack) {
 		return true;
 	}
 	
 	@Override
-	public int getItemBarColor(ItemStack stack) {
+	public int getBarColor(ItemStack stack) {
 		return 0xACE379;
 	}
 	
-	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		super.appendStacks(group, stacks);
-		
-		if (this.isIn(group)) {
-			var stack = new ItemStack(this);
-			
-			setStoredEnergy(stack, getEnergyCapacity());
-			
-			stacks.add(stack);
-		}
-	}
 }

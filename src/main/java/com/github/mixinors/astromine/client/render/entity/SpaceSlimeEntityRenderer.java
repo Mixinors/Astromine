@@ -26,44 +26,46 @@ package com.github.mixinors.astromine.client.render.entity;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.entity.SpaceSlimeEntityModel;
+import com.github.mixinors.astromine.client.render.entity.layer.SpaceSlimeGlassLayer;
 import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.feature.SlimeOverlayFeatureRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.SlimeOuterLayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
-public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
-	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
+public class SpaceSlimeEntityRenderer extends MobRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
+	private static final ResourceLocation TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
 	
-	public SpaceSlimeEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new SpaceSlimeEntityModel(context.getPart(EntityModelLayers.SLIME)), 0.25F);
+	public SpaceSlimeEntityRenderer(EntityRendererProvider.Context context) {
+		super(context, new SpaceSlimeEntityModel(context.bakeLayer(ModelLayers.SLIME)), 0.25F);
 		
-		this.addFeature(new SlimeOverlayFeatureRenderer(this, context.getModelLoader()));
+		this.addLayer(new SlimeOuterLayer(this, context.getModelSet()));
+		this.addLayer(new SpaceSlimeGlassLayer<>(this, context.getItemRenderer()));
 	}
 	
 	@Override
-	public void render(SpaceSlimeEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int i) {
+	public void render(SpaceSlimeEntity entity, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource provider, int i) {
 		this.shadowRadius = 0.25F * (float) entity.getSize();
 		
 		// if the slime is floating, we rotate it around the x axis for 1 full rotation
 		// todo: random axis rotation
 		if (entity.isFloating()) {
-			var floatingProgress = MathHelper.lerp(tickDelta, entity.prevFloatingProgress, entity.getFloatingProgress());
+			var floatingProgress = Mth.lerp(tickDelta, entity.prevFloatingProgress, entity.getFloatingProgress());
 			entity.prevFloatingProgress = floatingProgress;
 			
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion((floatingProgress / 200.0F) * 360.0F));
+			matrices.mulPose(Axis.XP.rotationDegrees((floatingProgress / 200.0F) * 360.0F));
 		}
 		
-		super.render(entity, tickDelta, tickDelta, matrices, provider, i);
+		super.render(entity, yaw, tickDelta, matrices, provider, i);
 	}
 	
 	@Override
-	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrices, float tickDelta) {
+	public void scale(SpaceSlimeEntity slimeEntity, PoseStack matrices, float tickDelta) {
 		var scale = 0.999F;
 		
 		matrices.scale(scale, scale, scale);
@@ -72,7 +74,7 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 		
 		var slimeSize = (float) slimeEntity.getSize();
 		
-		var stretch = MathHelper.lerp(tickDelta, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
+		var stretch = Mth.lerp(tickDelta, slimeEntity.oSquish, slimeEntity.squish) / (slimeSize * 0.5F + 1.0F);
 		
 		var multiplier = 1.0F / (stretch + 1.0F);
 		
@@ -80,7 +82,7 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 	}
 	
 	@Override
-	public Identifier getTexture(SpaceSlimeEntity slimeEntity) {
+	public ResourceLocation getTextureLocation(SpaceSlimeEntity slimeEntity) {
 		return TEXTURE;
 	}
 }
