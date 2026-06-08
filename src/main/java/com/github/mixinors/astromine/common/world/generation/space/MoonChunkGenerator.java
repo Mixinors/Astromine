@@ -27,12 +27,14 @@ package com.github.mixinors.astromine.common.world.generation.space;
 import com.github.mixinors.astromine.common.util.NoiseUtils;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMProperties;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
@@ -130,13 +132,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
 					var maxY = MAX_Y - (int) ((sampler.sample(x, 0, z)) * 16);
 					
 					var biome = chunk.getNoiseBiome(QuartPos.fromBlock(x), 0, QuartPos.fromBlock(z)).unwrapKey().orElseThrow();
+					var blockState = stoneStateForBiome(biome);
 					
 					for (var y = MIN_Y; y < maxY; ++y) {
-						if (biome.equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-							chunk.setBlockState(mutable.set(x, y, z), AMBlocks.DARK_MOON_STONE.get().defaultBlockState(), false);
-						} else {
-							chunk.setBlockState(mutable.set(x, y, z), AMBlocks.MOON_STONE.get().defaultBlockState(), false);
-						}
+						chunk.setBlockState(mutable.set(x, y, z), blockState, false);
 					}
 				}
 			}
@@ -147,6 +146,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	
 	public long seed() {
 		return seed;
+	}
+
+	public static BlockState stoneStateForBiome(ResourceKey<Biome> biome) {
+		var block = biome.equals(AMBiomes.MOON_DARK_SIDE_KEY) ? AMBlocks.DARK_MOON_STONE.get() : AMBlocks.MOON_STONE.get();
+
+		return block.defaultBlockState().setValue(AMProperties.DYNAMIC, true);
 	}
 	
 	@Override

@@ -67,6 +67,8 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.NetworkUtils;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
+import com.github.mixinors.astromine.common.world.generation.space.MoonBiomeSource;
+import com.github.mixinors.astromine.common.world.generation.space.MoonChunkGenerator;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
@@ -75,6 +77,7 @@ import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItemGroups;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
+import com.github.mixinors.astromine.registry.common.AMProperties;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -205,6 +208,39 @@ public final class AMGameTests {
 		helper.assertTrue(OxygenManager.canBreatheInVacuum(zombie), "charged full space suit should allow vacuum breathing");
 		helper.assertTrue(suit.getStoredFluid(chestplate).getAmount() < fluidBefore, "space suit should consume oxygen while breathing in vacuum");
 		helper.assertTrue(suit.getStoredEnergy(chestplate) < energyBefore, "space suit should consume energy while breathing in vacuum");
+
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void moonBiomesAndGeneratedStoneStatesDiffer(GameTestHelper helper) {
+		var biomes = helper.getLevel().registryAccess().registryOrThrow(Registries.BIOME);
+		var source = new MoonBiomeSource(biomes);
+		var foundLightSide = false;
+		var foundDarkSide = false;
+		var foundCraterField = false;
+
+		for (var x = -4096; x <= 4096; x += 64) {
+			for (var z = -4096; z <= 4096; z += 64) {
+				var biome = source.getNoiseBiome(x, 0, z, null);
+
+				foundLightSide |= biome.is(AMBiomes.MOON_LIGHT_SIDE_KEY);
+				foundDarkSide |= biome.is(AMBiomes.MOON_DARK_SIDE_KEY);
+				foundCraterField |= biome.is(AMBiomes.MOON_CRATER_FIELD_KEY);
+			}
+		}
+
+		helper.assertTrue(foundLightSide, "moon biome source should produce light side regions");
+		helper.assertTrue(foundDarkSide, "moon biome source should produce dark side regions");
+		helper.assertTrue(foundCraterField, "moon biome source should produce crater field regions");
+
+		var lightState = MoonChunkGenerator.stoneStateForBiome(AMBiomes.MOON_LIGHT_SIDE_KEY);
+		var darkState = MoonChunkGenerator.stoneStateForBiome(AMBiomes.MOON_DARK_SIDE_KEY);
+
+		helper.assertTrue(lightState.is(AMBlocks.MOON_STONE.get()), "light side terrain should use moon stone");
+		helper.assertTrue(darkState.is(AMBlocks.DARK_MOON_STONE.get()), "dark side terrain should use dark moon stone");
+		helper.assertTrue(lightState.getValue(AMProperties.DYNAMIC), "generated light side moon stone should use dynamic blending");
+		helper.assertTrue(darkState.getValue(AMProperties.DYNAMIC), "generated dark side moon stone should use dynamic blending");
 
 		helper.succeed();
 	}
