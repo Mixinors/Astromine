@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -40,6 +41,8 @@ import java.util.Map;
 
 public class AMRenderLayers {
 	private static final Map<ResourceLocation, RenderType> CACHE = new HashMap<>();
+	private static final ResourceLocation PUMP_TUBE_TEXTURE = AMCommon.id("textures/block/pump_tube.png");
+	private static final RenderType PUMP_TUBE = RenderType.entityCutoutNoCull(PUMP_TUBE_TEXTURE);
 	private static final RenderType HOLOGRAPHIC_BRIDGE = RenderType.create(
 			"astromine_holographic_bridge",
 			DefaultVertexFormat.POSITION_COLOR,
@@ -87,6 +90,6 @@ public class AMRenderLayers {
 	}
 	
 	public static RenderType getPumpTube() {
-		return RenderType.translucent();
+		return PUMP_TUBE;
 	}
 }

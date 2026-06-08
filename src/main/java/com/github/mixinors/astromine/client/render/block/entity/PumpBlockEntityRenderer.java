@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
 
 public class PumpBlockEntityRenderer implements BlockEntityRenderer<PumpBlockEntity> {
 	public PumpBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -65,5 +66,12 @@ public class PumpBlockEntityRenderer implements BlockEntityRenderer<PumpBlockEnt
 	@Override
 	public boolean shouldRenderOffScreen(PumpBlockEntity blockEntity) {
 		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(PumpBlockEntity blockEntity) {
+		var tubeLength = Math.max(1.0D, blockEntity.depth / 20.0D + 1.0D);
+
+		return new AABB(blockEntity.getBlockPos()).expandTowards(0.0D, -tubeLength, 0.0D).inflate(1.0D);
 	}
 }
