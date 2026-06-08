@@ -82,6 +82,9 @@ public class CraterGenerator extends ScatteredFeaturePiece {
 			var a = bR * 1.1F;
 			var b = bR * nextFloatBetween(random, 0.25F, 0.75F);
 			var c = bR * 1.1F;
+			var invASquared = 1.0D / (a * a);
+			var invBSquared = 1.0D / (b * b);
+			var invCSquared = 1.0D / (c * c);
 			
 			var s = world.getBlockState(cP.below());
 			
@@ -94,7 +97,12 @@ public class CraterGenerator extends ScatteredFeaturePiece {
 			}
 			
 			for (var x = cX - (bD * 1.5F); x < cX + (bD * 1.5F); ++x) {
+				var dx = x - cX;
+				var dxSquared = dx * dx;
+
 				for (var z = cZ - (bD * 1.5F); z < cZ + (bD * 1.5F); ++z) {
+					var dz = z - cZ;
+					var dzSquared = dz * dz;
 					var oTY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, mutable.set(x, 0, z)).getY();
 					
 					var oBS = world.getBlockState(mutable.set(x, oTY - 1, z));
@@ -103,9 +111,9 @@ public class CraterGenerator extends ScatteredFeaturePiece {
 
 					// Place empty blocks when inside the ellipsoid defined by [a, b, c].
 					for (var y = oTY - (bD * 0.5F); y < oTY + (bD * 0.5F); ++y) {
-						if ((Math.pow(x - cX, 2.0D) / Math.pow(a, 2.0D)) +
-							(Math.pow(y - oTY, 2.0D) / Math.pow(b, 2.0D)) +
-							(Math.pow(z - cZ, 2.0D) / Math.pow(c, 2.0D)) < 1.0F) {
+						var dy = y - oTY;
+
+						if ((dxSquared * invASquared) + ((dy * dy) * invBSquared) + (dzSquared * invCSquared) < 1.0F) {
 							world.setBlock(mutable.set(x, y, z), Blocks.AIR.defaultBlockState(), 0);
 							
 							if (y < lowestY) {
@@ -117,7 +125,7 @@ public class CraterGenerator extends ScatteredFeaturePiece {
 					--lowestY;
 					
 					// Get distance from center surface position of the chunk.
-					var dC = (Math.pow(x - cX, 2.0D) + Math.pow(z - cZ, 2.0D));
+					var dC = dxSquared + dzSquared;
 					
 					// Get border height.
 					var bO = nextFloatBetween(random, 1.0F, 4.0F);

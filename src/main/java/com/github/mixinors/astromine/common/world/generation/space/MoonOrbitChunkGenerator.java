@@ -24,16 +24,11 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
-import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.util.NoiseUtils;
-import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
@@ -46,7 +41,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import java.util.Arrays;
@@ -93,39 +87,7 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState noiseConfig, StructureManager structureAccessor, ChunkAccess chunk) {
-		return CompletableFuture.supplyAsync(() -> {
-			var seed = 0L;
-			var sampler = NoiseUtils.getSampler(seed, 3, 200, 1.225F, 1.0F);
-			
-			var mutable = new BlockPos.MutableBlockPos();
-			var x1 = chunk.getPos().getMinBlockX();
-			var z1 = chunk.getPos().getMinBlockZ();
-			var y1 = 0;
-			
-			var x2 = chunk.getPos().getMaxBlockX();
-			var z2 = chunk.getPos().getMaxBlockZ();
-			var y2 = 256;
-			
-			var random = new WorldgenRandom(RandomSource.create(0L));
-			random.setDecorationSeed(0L, x1, z1);
-			
-			for (var x = x1; x <= x2; ++x) {
-				for (var z = z1; z <= z2; ++z) {
-					for (var y = y1; y <= y2; ++y) {
-						var noise = sampler.sample(x, y, z);
-						noise -= computeNoiseFalloff(y);
-						
-						if (noise > AMConfig.get().world.asteroidGenerationThreshold) {
-							if (random.nextInt(64) != 0) {
-								chunk.setBlockState(mutable.set(x, y, z), AMBlocks.ASTEROID_STONE.get().defaultBlockState(), false);
-							}
-						}
-					}
-				}
-			}
-			
-			return Unit.INSTANCE;
-		}).thenApply(unit -> chunk);
+		return AsteroidFieldGenerator.fillFromNoise(chunk, 0L);
 	}
 	
 	@Override
@@ -136,12 +98,6 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	@Override
 	public int getMinY() {
 		return 0;
-	}
-	
-	// Desmos: \frac{10}{x+1}-\frac{10}{x-257}-0.155
-	// It should actually be 10/y - 10/(y - 256) but i don't want to divide by 0 today
-	private double computeNoiseFalloff(int y) {
-		return (10.0 / (y + 1.0)) - (10.0 / (y - 257.0)) - 0.155;
 	}
 	
 	@Override

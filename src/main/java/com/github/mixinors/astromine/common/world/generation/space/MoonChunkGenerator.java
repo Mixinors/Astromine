@@ -31,13 +31,12 @@ import com.github.mixinors.astromine.registry.common.AMProperties;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
@@ -51,7 +50,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import java.util.Arrays;
@@ -112,7 +110,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState noiseConfig, StructureManager structureAccessor, ChunkAccess chunk) {
-		return CompletableFuture.supplyAsync(() -> {
+		return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("astromine_moon", () -> {
 			var sampler = NoiseUtils.getSampler(seed, 3, 200, 1.225F, 1.0F);
 			
 			var mutable = new BlockPos.MutableBlockPos();
@@ -122,9 +120,6 @@ public class MoonChunkGenerator extends ChunkGenerator {
 			
 			var x2 = chunk.getPos().getMaxBlockX();
 			var z2 = chunk.getPos().getMaxBlockZ();
-			
-			var random = new WorldgenRandom(RandomSource.create(0L));
-			random.setDecorationSeed(0L, x1, z1);
 			
 			// Populate with Moon Stone.
 			for (var x = x1; x <= x2; ++x) {
@@ -140,8 +135,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				}
 			}
 			
-			return Unit.INSTANCE;
-		}).thenApply(unit -> chunk);
+			return chunk;
+		}), Util.backgroundExecutor());
 	}
 	
 	public long seed() {

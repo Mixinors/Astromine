@@ -28,9 +28,7 @@ import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMStructures;
 import java.util.ArrayList;
-import java.util.Comparator;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -46,8 +44,6 @@ import net.minecraft.world.level.levelgen.structure.ScatteredFeaturePiece;
 import net.minecraft.world.level.material.Fluids;
 
 public class MeteorGenerator extends ScatteredFeaturePiece {
-	private static OpenSimplexNoise noise;
-	
 	public MeteorGenerator(RandomSource random, int x, int z) {
 		super(AMStructures.METEOR_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
 	}
@@ -56,14 +52,15 @@ public class MeteorGenerator extends ScatteredFeaturePiece {
 		super(AMStructures.METEOR_STRUCTURE_PIECE.get(), nbt);
 	}
 	
-	public static void buildSphere(WorldGenLevel world, BlockPos originPos, int radius, BlockState state) {
+	public static void buildSphere(WorldGenLevel world, BlockPos originPos, int radius, BlockState state, OpenSimplexNoise noise) {
 		for (var x = -radius; x <= radius; x++) {
 			for (var z = -radius; z <= radius; z++) {
 				for (var y = -radius; y <= radius; y++) {
-					var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
+					var distanceSquared = x * x + z * z + y * y;
+					var effectiveRadius = radius - ((radius * 1F / 3F) * noise.sample((originPos.getX() + x) / 10F, (originPos.getY() + y) / 10F, (originPos.getZ() + z) / 10F));
 					
 					// place blocks within spherical radius
-					if (distance <= radius - ((radius * 1f / 3f) * noise.sample((originPos.getX() + x) / 10f, (originPos.getY() + y) / 10f, (originPos.getZ() + z) / 10f))) {
+					if (distanceSquared <= effectiveRadius * effectiveRadius) {
 						world.setBlock(originPos.offset(x, y, z), state, 3);
 					}
 				}
@@ -77,18 +74,18 @@ public class MeteorGenerator extends ScatteredFeaturePiece {
 			return;
 		}
 		
-		noise = new OpenSimplexNoise(world.getSeed());
+		var noise = new OpenSimplexNoise(world.getSeed());
 		
 		var originPos = world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getMinBlockX() + 8, 0, chunkPos.getMinBlockZ() + 8));
 		
-		originPos = emptySphere(world, originPos, 16, state -> {
+		originPos = emptySphere(world, originPos, 16, noise, state -> {
 			if (world.getRandom().nextInt(10) == 0) {
 				return Blocks.FIRE.defaultBlockState();
 			} else {
 				return Blocks.AIR.defaultBlockState();
 			}
 		}, state -> Blocks.COBBLESTONE.defaultBlockState());
-		buildSphere(world, originPos, 8, AMBlocks.METEOR_STONE.get().defaultBlockState());
+		buildSphere(world, originPos, 8, AMBlocks.METEOR_STONE.get().defaultBlockState(), noise);
 		
 		for (var x = -4; x <= 4; ++x) {
 			for (var y = -4; y <= 4; ++y) {
@@ -107,17 +104,19 @@ public class MeteorGenerator extends ScatteredFeaturePiece {
 		}
 	}
 	
-	private BlockPos emptySphere(WorldGenLevel world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
+	private BlockPos emptySphere(WorldGenLevel world, BlockPos originPos, int radius, OpenSimplexNoise noise, GroundManipulator bottom, GroundManipulator underneath) {
 		var hasWater = false;
 		var placedPositions = new ArrayList<BlockPos>();
+		var lowestCenterY = Integer.MAX_VALUE;
 		
 		for (var x = -radius; x <= radius; x++) {
 			for (var z = -radius; z <= radius; z++) {
 				for (var y = -radius; y <= radius; y++) {
-					var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y * 1.3, 2));
+					var distanceSquared = x * x + z * z + (y * 1.3D) * (y * 1.3D);
+					var effectiveRadius = radius + (5 * noise.sample((originPos.getX() + x) / 10F, (originPos.getZ() + z) / 10F));
 					
 					// place blocks within spherical radius
-					if (distance <= radius + (5 * noise.sample((originPos.getX() + x) / 10f, (originPos.getZ() + z) / 10f))) {
+					if (distanceSquared <= effectiveRadius * effectiveRadius) {
 						var offsetPos = originPos.offset(x, y, z);
 						if (!hasWater && world.getFluidState(offsetPos).getType().isSame(Fluids.WATER)) {
 							hasWater = true;
@@ -126,6 +125,10 @@ public class MeteorGenerator extends ScatteredFeaturePiece {
 						world.setBlock(offsetPos, Blocks.AIR.defaultBlockState(), 3);
 						
 						placedPositions.add(offsetPos);
+
+						if (x == 0 && z == 0 && offsetPos.getY() < lowestCenterY) {
+							lowestCenterY = offsetPos.getY();
+						}
 					}
 				}
 			}
@@ -154,7 +157,7 @@ public class MeteorGenerator extends ScatteredFeaturePiece {
 			world.setBlock(pos, underneath.manipulate(world.getBlockState(pos)), 3);
 		}
 		
-		return placedPositions.stream().filter(pos -> pos.getX() == originPos.getX() && pos.getZ() == originPos.getZ()).min(Comparator.comparingInt(Vec3i::getY)).orElse(originPos).below();
+		return lowestCenterY == Integer.MAX_VALUE ? originPos.below() : new BlockPos(originPos.getX(), lowestCenterY - 1, originPos.getZ());
 	}
 	
 	@FunctionalInterface
