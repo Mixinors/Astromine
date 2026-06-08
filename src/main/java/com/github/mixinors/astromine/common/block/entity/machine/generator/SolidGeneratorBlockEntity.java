@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.entity.machine.generator;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.SolidGeneratorConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
@@ -42,10 +42,7 @@ import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 
 import java.util.function.Supplier;
 
-public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
-	private static final double ENERGY_PER_BURN_TICK = 10.0D;
-	private static final double BASE_ENERGY_OUTPUT_PER_TICK = 20.0D;
-	
+public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SolidGeneratorConfig> {
 	public static final String AVAILABLE_KEY = "Available";
 	
 	private double available = 0;
@@ -90,7 +87,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			if (available > 0) {
 				progress = limit - available;
 				
-				var output = Math.max(1L, Math.round(BASE_ENERGY_OUTPUT_PER_TICK * getSpeed()));
+				var output = Math.max(1L, Math.round(getConfig().getBaseEnergyOutputPerTick() * getSpeed()));
 				var headroom = energyStorage.capacity - energyStorage.amount;
 				
 				if (headroom > 0) {
@@ -120,7 +117,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				var isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
 				
 				if (isFuel && energyStorage.amount < energyStorage.capacity) {
-					available = inputBurnTime * ENERGY_PER_BURN_TICK;
+					available = inputBurnTime * getConfig().getEnergyPerBurnTick();
 					limit = available;
 					
 					progress = 0.0D;
@@ -148,7 +145,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	}
 	
 	@Override
-	public SimpleMachineConfig getConfig() {
+	public SolidGeneratorConfig getConfig() {
 		return AMConfig.get().blocks.machines.solidGenerator;
 	}
 	

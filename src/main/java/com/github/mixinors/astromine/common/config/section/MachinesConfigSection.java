@@ -25,20 +25,22 @@
 package com.github.mixinors.astromine.common.config.section;
 
 import com.github.mixinors.astromine.common.config.entry.tiered.AlloySmelterConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.ElectricFurnaceConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.SolidGeneratorConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SpeedyFluidStorageMachineConfig;
 
 public class MachinesConfigSection {
 	public SimpleMachineConfig triturator = new SimpleMachineConfig();
-	public SimpleMachineConfig solidGenerator = new SimpleMachineConfig();
+	public SolidGeneratorConfig solidGenerator = new SolidGeneratorConfig();
 	public SimpleMachineConfig press = new SimpleMachineConfig();
 	public SimpleMachineConfig wireMill = new SimpleMachineConfig();
 	public FluidStorageMachineConfig fluidGenerator = new SpeedyFluidStorageMachineConfig();
 	public FluidStorageMachineConfig fluidMixer = new SpeedyFluidStorageMachineConfig();
 	public FluidStorageMachineConfig electrolyzer = new SpeedyFluidStorageMachineConfig();
 	public FluidStorageMachineConfig refinery = new SpeedyFluidStorageMachineConfig();
-	public SimpleMachineConfig electricFurnace = new SimpleMachineConfig();
+	public ElectricFurnaceConfig electricFurnace = new ElectricFurnaceConfig();
 	public AlloySmelterConfig alloySmelter = new AlloySmelterConfig();
 	public FluidStorageMachineConfig melter = new FluidStorageMachineConfig();
 	public FluidStorageMachineConfig solidifier = new SpeedyFluidStorageMachineConfig();
