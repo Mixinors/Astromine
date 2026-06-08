@@ -1,9 +1,6 @@
 name: Publish
 
 on:
-  push:
-    branches:
-      - development-1.21.1
   workflow_dispatch:
 
 permissions:
