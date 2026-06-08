@@ -1,43 +1,107 @@
-# gradle
-
-\.gradle/
+### Gradle ###
+.gradle/
 build/
 out/
 classes/
 
-# eclipse
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/**/build/
+!**/src/**/out/
+!**/src/**/classes/
 
-*.launch
-
-# idea
-
+### IntelliJ IDEA ###
 .idea/
 */.idea/
-*/build/
-*/out/
-*/classes/
+*.iws
 *.iml
 *.ipr
-*.iws
+.run/
 
-# vscode
-
-.settings/
-.vscode/
-bin/
+### Eclipse ###
+.apt_generated/
 .classpath
+.eclipse/
+.factorypath
 .project
+.settings/
+.springBeans
+.sts4-cache/
+bin/
 
-# fabric
-run/
+!**/src/**/bin/
 
-# where half puts :woman_mage: mods
-tpsgobrr/
+### VS Code / Cursor ###
+.vscode/
+.cursor/
+**/.cursor/
 
-# just in case weird things happen
-logs/
+### OS / local files ###
+.DS_Store
+Thumbs.db
+desktop.ini
 */desktop.ini
+*.log
+logs/
+.cache/
+tmp/
+temp/
 
-\.cache/
+### Minecraft Modding ###
+run/
+repo/
+
+!**/src/**/run/
+!**/src/**/repo/
+**/src/generated/**/.cache/
+
+### Local docs and scratch output ###
+docs/
+
+### AI agents ###
+.codex/
+.claude/
+.continue/
+.aider*
+.windsurf/
+.roo/
+.gemini/
+.mcp/
+
+**/.codex/
+**/.claude/
+**/.continue/
+**/.aider*/
+**/.windsurf/
+**/.roo/
+**/.gemini/
+**/.mcp/
+
+.ai/
+.ai-cache/
+.ai-logs/
+.ai-output/
+.agent/
+.agent-cache/
+.agent-logs/
+.agent-output/
+
+**/ai-cache/
+**/ai-logs/
+**/ai-output/
+**/agent-cache/
+**/agent-logs/
+**/agent-output/
+**/codex-cache/
+**/codex-logs/
+**/codex-output/
+**/claude-cache/
+**/claude-logs/
+**/claude-output/
+**/cursor-cache/
+**/cursor-logs/
+**/cursor-output/
+
+### Project-local leftovers ###
+tpsgobrr/
 gource-captions.txt
 run-gource.bat
