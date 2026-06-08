@@ -128,15 +128,37 @@ publishing {
 		}
 	}
 	
-	repositories {
-		maven {
-			name = 'AstromineMaven'
-			url = uri(System.getenv('MAVEN_URL') ?: 'https://maven.vini2003.dev/releases')
-			credentials {
-				username = System.getenv('MAVEN_USER') ?: 'vini2003'
-				password = System.getenv('MAVEN_PASS') ?: ''
+	if (mavenPublishingConfigured()) {
+		repositories {
+			maven {
+				name = 'AstromineMaven'
+				url = uri(System.getenv('MAVEN_URL'))
+				credentials {
+					username = System.getenv('MAVEN_USER')
+					password = System.getenv('MAVEN_PASS')
+				}
 			}
 		}
+	}
+}
+
+tasks.named('publish').configure {
+	if (!mavenPublishingConfigured()) {
+		var missing = ['MAVEN_URL', 'MAVEN_USER', 'MAVEN_PASS'].findAll { name ->
+			var value = System.getenv(name)
+			value == null || value.isBlank()
+		}
+		
+		doFirst {
+			throw new GradleException("Missing required Maven publishing environment variables: ${missing.join(', ')}")
+		}
+	}
+}
+
+static boolean mavenPublishingConfigured() {
+	return ['MAVEN_URL', 'MAVEN_USER', 'MAVEN_PASS'].every { name ->
+		var value = System.getenv(name)
+		value != null && !value.isBlank()
 	}
 }
 

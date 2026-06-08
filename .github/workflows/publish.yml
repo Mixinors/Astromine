@@ -34,6 +34,6 @@ jobs:
       - name: Build, run GameTests, and publish to Maven
         run: ./gradlew build runGameTestServer publish --stacktrace --no-daemon
         env:
-          MAVEN_URL: ${{ vars.MAVEN_URL || 'https://maven.vini2003.dev/releases' }}
-          MAVEN_USER: ${{ vars.MAVEN_USER || 'vini2003' }}
+          MAVEN_URL: ${{ vars.MAVEN_URL }}
+          MAVEN_USER: ${{ vars.MAVEN_USER }}
           MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
