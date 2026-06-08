@@ -4,7 +4,6 @@ import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -61,21 +59,16 @@ public class RocketDoorBlock extends HorizontalDirectionalBlock {
 			return ItemInteractionResult.sidedSuccess(world.isClientSide);
 		}
 		
-		var x = pos.getX();
-		x = x - (x % 32);
-		var z = pos.getZ();
-		z = z - (z % 32);
-		
-		var chunkPos = new ChunkPos(x, z);
-		
+		var chunkPos = RocketManager.getInteriorBaseChunk(pos);
 		var rocket = RocketManager.get(serverLevel.getServer(), chunkPos);
 		
 		if (rocket == null) {
-			// Recover an interior door if its persisted rocket record is missing.
-			rocket = RocketManager.create(serverLevel.getServer(), player.getUUID(), UUID.randomUUID());
+			return ItemInteractionResult.FAIL;
 		}
 		
-		RocketManager.teleportToPlacer(player, rocket.getUuid());
+		if (!RocketManager.teleportToPlacer(player, rocket.getUuid())) {
+			return ItemInteractionResult.FAIL;
+		}
 		
 		return ItemInteractionResult.sidedSuccess(world.isClientSide);
 	}

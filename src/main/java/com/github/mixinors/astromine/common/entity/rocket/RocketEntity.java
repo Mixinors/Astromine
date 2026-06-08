@@ -101,9 +101,21 @@ public class RocketEntity extends ExtendedEntity {
 			return InteractionResult.CONSUME;
 		}
 		
-		RocketManager.teleportToRocketInterior(player, getUUID());
+		var linkedRocket = getRocket();
 		
-		return super.interactAt(player, hitPos, hand);
+		if (linkedRocket == null) {
+			linkedRocket = RocketManager.get(level(), getUUID());
+			
+			if (linkedRocket != null) {
+				setRocket(linkedRocket);
+			}
+		}
+		
+		if (linkedRocket == null) {
+			return InteractionResult.FAIL;
+		}
+		
+		return RocketManager.teleportToRocketInterior(player, linkedRocket.getUuid()) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 	}
 	
 	@Override

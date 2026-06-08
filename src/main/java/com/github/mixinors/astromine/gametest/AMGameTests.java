@@ -54,6 +54,7 @@ import com.github.mixinors.astromine.common.item.utility.DrillMiningArea;
 import com.github.mixinors.astromine.common.item.utility.DrillMiningHandler;
 import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.network.Network;
+import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.oxygen.OxygenManager;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
@@ -367,6 +368,32 @@ public final class AMGameTests {
 
 		helper.assertTrue(fluid != null, "portable tank should expose NeoForge fluid capability");
 		helper.assertTrue(fluid.fill(new FluidStack(Fluids.WATER, 1), IFluidHandler.FluidAction.EXECUTE) > 0, "portable tank should receive fluid");
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void unknownRocketInteriorTeleportDoesNotAllocateRocket(GameTestHelper helper) {
+		var server = helper.getLevel().getServer();
+		var player = createMockServerPlayer(helper);
+		var unknownRocketUuid = UUID.randomUUID();
+		var rocketCount = RocketManager.getRockets(server).size();
+
+		helper.assertTrue(!RocketManager.teleportToRocketInterior(player, unknownRocketUuid), "unknown rocket should not teleport");
+		helper.assertTrue(RocketManager.get(server, unknownRocketUuid) == null, "unknown rocket should stay unregistered");
+		helper.assertValueEqual(RocketManager.getRockets(server).size(), rocketCount, "unknown rocket teleport should not allocate an interior");
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void rocketInteriorBlocksResolveOwningRocket(GameTestHelper helper) {
+		var server = helper.getLevel().getServer();
+		var rocket = RocketManager.create(server, UUID.randomUUID(), UUID.randomUUID());
+		var interiorPos = rocket.getInteriorPos();
+		var farInteriorBlockPos = new BlockPos(interiorPos.x * 16 + 32 * 16 - 1, 4, interiorPos.z * 16 + 32 * 16 - 1);
+		var baseChunk = RocketManager.getInteriorBaseChunk(farInteriorBlockPos);
+
+		helper.assertTrue(baseChunk.equals(interiorPos), "interior block should resolve to rocket base chunk");
+		helper.assertTrue(RocketManager.get(server, baseChunk) == rocket, "interior base chunk should resolve owning rocket");
 		helper.succeed();
 	}
 

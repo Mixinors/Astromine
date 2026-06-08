@@ -13,7 +13,6 @@ import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RocketControllerBlockEntity extends ExtendedBlockEntity {
@@ -33,7 +32,7 @@ public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 	@Nullable
 	public Rocket getRocket() {
 		var level = getLevel();
-		return level == null ? null : RocketManager.get(level, new ChunkPos(getBlockPos()));
+		return level == null ? null : RocketManager.get(level, RocketManager.getInteriorBaseChunk(getBlockPos()));
 	}
 	
 	@Override

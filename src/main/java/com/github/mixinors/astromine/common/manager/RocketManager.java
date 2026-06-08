@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.MinecraftServer;
@@ -93,6 +94,14 @@ public class RocketManager {
 	public static Collection<Rocket> getRockets() {
 		return CLIENT_ROCKETS.getAll();
 	}
+
+	public static ChunkPos getInteriorBaseChunk(BlockPos pos) {
+		return alignInteriorChunk(new ChunkPos(pos));
+	}
+
+	private static ChunkPos alignInteriorChunk(ChunkPos chunkPos) {
+		return new ChunkPos(Math.floorDiv(chunkPos.x, 32) * 32, Math.floorDiv(chunkPos.z, 32) * 32);
+	}
 	
 	private static ChunkPos findUnoccupiedSpace(MinecraftServer server) {
 		var occupiedPositions = RocketManager
@@ -110,22 +119,28 @@ public class RocketManager {
 			var x = random.nextInt(bound);
 			var y = random.nextInt(bound);
 			
-			chunkPos = new ChunkPos(x - (x % 32), y - (y % 32));
+			chunkPos = alignInteriorChunk(new ChunkPos(x, y));
 		}
 		
 		return chunkPos;
 	}
 	
-	public static void teleportToRocketInterior(Player player, UUID uuid) {
+	public static boolean teleportToRocketInterior(Player player, UUID uuid) {
 		if (!(player instanceof ServerPlayer serverPlayer)) {
-			return;
+			return false;
 		}
 		
 		var server = serverPlayer.getServer();
 		var rocket = get(server, uuid);
-		if (rocket == null) rocket = create(server, player.getUUID(), uuid);
+		if (rocket == null) {
+			AMCommon.LOGGER.warn("Ignoring rocket interior teleport for unknown rocket {}", uuid);
+			return false;
+		}
 		
 		var chunkPos = rocket.getInteriorPos();
+		var world = server.getLevel(AMWorlds.ROCKET_INTERIORS);
+		if (world == null) return false;
+		
 		var placer = rocket.getPlacer(player.getUUID());
 		
 		if (placer == null) {
@@ -134,34 +149,34 @@ public class RocketManager {
 			rocket.setPlacer(player.getUUID(), placer);
 		}
 		
-		var world = server.getLevel(AMWorlds.ROCKET_INTERIORS);
-		if (world == null) return;
-		
 		serverPlayer.teleportTo(world, chunkPos.x * 16.0F + 3.5F, 1.0F, chunkPos.z * 16.0F + 3.5F, 270.0F, 0.0F);
+		return true;
 	}
 	
-	public static void teleportToPlacer(Player player, UUID uuid) {
+	public static boolean teleportToPlacer(Player player, UUID uuid) {
 		if (!(player instanceof ServerPlayer serverPlayer)) {
-			return;
+			return false;
 		}
 		
 		var server = serverPlayer.getServer();
 		var rocket = get(server, uuid);
-		if (rocket == null) return;
+		if (rocket == null) return false;
 		
 		var placer = rocket.getPlacer(player.getUUID());
 		
 		if (placer != null) {
 			var world = server.getLevel(placer.worldKey());
-			if (world == null) return;
+			if (world == null) return false;
 			
 			serverPlayer.teleportTo(world, placer.x(), placer.y(), placer.z(), placer.yaw(), placer.pitch());
 		} else {
 			var world = server.getLevel(Level.OVERWORLD);
-			if (world == null) return;
+			if (world == null) return false;
 			
 			serverPlayer.teleportTo(world.getSharedSpawnPos().getX(), world.getSharedSpawnPos().getY(), world.getSharedSpawnPos().getZ());
 		}
+
+		return true;
 	}
 	
 	public static void onSync(CompoundTag nbt) {
