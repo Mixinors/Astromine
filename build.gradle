@@ -85,6 +85,18 @@ runs {
 	}
 }
 
+tasks.register('cleanGameTestServerWorld', Delete) {
+	group = 'verification'
+	description = 'Deletes the generated GameTest world so server shutdown and chunk unloads stay deterministic.'
+	delete layout.projectDirectory.dir('run/gameTestServer/world')
+}
+
+tasks.configureEach {
+	if (name == 'runGameTestServer') {
+		dependsOn tasks.named('cleanGameTestServerWorld')
+	}
+}
+
 tasks.withType(ProcessResources).configureEach {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
