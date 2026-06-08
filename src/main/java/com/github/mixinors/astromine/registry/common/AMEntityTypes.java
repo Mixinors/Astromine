@@ -48,7 +48,7 @@ public class AMEntityTypes {
 	private static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(Registries.ENTITY_TYPE, AMCommon.MOD_ID);
 	
 	public static final DeferredHolder<EntityType<?>, EntityType<RocketEntity>> ROCKET = registerBuilder("rocket", () -> EntityType.Builder.of(RocketEntity::new, MobCategory.MISC).sized(1.5F, 22.5F).clientTrackingRange(128).updateInterval(4));
-	public static final DeferredHolder<EntityType<?>, EntityType<SpaceSlimeEntity>> SPACE_SLIME = registerBuilder("space_slime", () -> EntityType.Builder.of(SpaceSlimeEntity::new, MobCategory.MONSTER).sized(0.52F, 0.52F).eyeHeight(0.325F).spawnDimensionsScale(4.0F).clientTrackingRange(128).updateInterval(4));
+	public static final DeferredHolder<EntityType<?>, EntityType<SpaceSlimeEntity>> SPACE_SLIME = registerBuilder("space_slime", () -> EntityType.Builder.of(SpaceSlimeEntity::new, MobCategory.MONSTER).sized(0.52F, 0.52F).eyeHeight(0.325F).spawnDimensionsScale(4.0F).clientTrackingRange(128).updateInterval(2));
 	public static final DeferredHolder<EntityType<?>, EntityType<SuperSpaceSlimeEntity>> SUPER_SPACE_SLIME = registerBuilder("super_space_slime", () -> EntityType.Builder.of(SuperSpaceSlimeEntity::new, MobCategory.MONSTER).sized(6.125F, 6.125F).clientTrackingRange(128).updateInterval(4));
 	
 	public static void init() {
