@@ -562,7 +562,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	private void refreshClientModelData() {
 		if (level != null && level.isClientSide) {
 			requestModelDataUpdate();
-			level.setBlocksDirty(worldPosition, getBlockState(), getBlockState());
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
 		}
 	}
 	
