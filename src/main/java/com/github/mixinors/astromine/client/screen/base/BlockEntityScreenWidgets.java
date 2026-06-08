@@ -76,13 +76,13 @@ public final class BlockEntityScreenWidgets {
 			if (handler != null && !handler.getFluidBars().isEmpty()) {
 				for (var bar : handler.getFluidBars()) {
 					var storage = blockEntity.getFluidStorage();
-					tab.add(new FluidBarWidget(bar.x(), bar.y(), () -> bar.tank() < storage.getTanks() ? storage.getFluidInTank(bar.tank()) : FluidStack.EMPTY, () -> bar.tank() < storage.getTanks() ? storage.getTankCapacity(bar.tank()) : 1));
+					tab.add(new FluidBarWidget(bar.x(), bar.y(), () -> bar.tank() < storage.getTanks() ? storage.getFluidInTank(bar.tank()) : FluidStack.EMPTY, () -> bar.tank() < storage.getTanks() ? storage.getStorage(bar.tank()).getCapacity() : 1L));
 				}
 			} else {
 				var storage = blockEntity.getFluidStorage();
 				var tank = handler == null ? 0 : handler.getDefaultFluidSlotForBar();
 				var x = blockEntity.hasEnergyStorage() ? ExtendedBlockEntityMenuLayout.FIRST_FLUID_BAR_X : ExtendedBlockEntityMenuLayout.ENERGY_BAR_X;
-				tab.add(new FluidBarWidget(x, ExtendedBlockEntityMenuLayout.FIRST_FLUID_BAR_Y, () -> tank < storage.getTanks() ? storage.getFluidInTank(tank) : FluidStack.EMPTY, () -> tank < storage.getTanks() ? storage.getTankCapacity(tank) : 1));
+				tab.add(new FluidBarWidget(x, ExtendedBlockEntityMenuLayout.FIRST_FLUID_BAR_Y, () -> tank < storage.getTanks() ? storage.getFluidInTank(tank) : FluidStack.EMPTY, () -> tank < storage.getTanks() ? storage.getStorage(tank).getCapacity() : 1L));
 			}
 		}
 		

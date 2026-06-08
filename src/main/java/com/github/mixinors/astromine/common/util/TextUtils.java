@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -45,38 +47,56 @@ public class TextUtils {
 		return getEnergyAmount(amount).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(getEnergyAmount(capacity));
 	}
 	
+	public static MutableComponent getEnergy(long amount, long capacity, boolean raw) {
+		return getStoredAmount(amount, capacity, ENERGY_UNIT, raw);
+	}
+
+	public static MutableComponent getFluid(long amount, long capacity, boolean raw) {
+		return getStoredAmount(amount, capacity, FLUID_UNIT, raw);
+	}
+
 	public static MutableComponent getRatio(int progress, int limit) {
 		return Component.literal((int) ((float) progress / (float) limit * 100) + "%");
 	}
 	
 	public static MutableComponent getAmount(long amount, char unit) {
-		return Component.literal(formatAmount(amount, unit));
+		return getAmount(amount, unit, false);
 	}
 	
+	public static MutableComponent getAmount(long amount, char unit, boolean raw) {
+		return Component.literal(formatAmount(amount, unit, raw));
+	}
+
 	public static MutableComponent getEnergyAmount(long amount) {
 		return getAmount(amount, ENERGY_UNIT).withStyle(ChatFormatting.GREEN);
 	}
-	
-	private static String formatAmount(long amount, char unit) {
-		var absolute = Math.abs((double) amount);
-		var suffix = "";
-		var value = (double) amount;
-		
-		if (absolute >= 1_000_000_000D) {
-			value /= 1_000_000_000D;
-			suffix = "G";
-		} else if (absolute >= 1_000_000D) {
-			value /= 1_000_000D;
-			suffix = "M";
-		} else if (absolute >= 1_000D) {
-			value /= 1_000D;
-			suffix = "k";
+
+	private static MutableComponent getStoredAmount(long amount, long capacity, char unit, boolean raw) {
+		if (isInfinite(capacity)) {
+			var stored = amount > 0L ? formatInfinite(unit) : formatAmount(0L, unit, raw);
+			return Component.literal(stored).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(formatInfinite(unit));
+		}
+
+		return Component.literal(formatAmount(amount, unit, raw)).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(formatAmount(capacity, unit, raw));
+	}
+
+	private static String formatAmount(long amount, char unit, boolean raw) {
+		if (isInfinite(amount)) {
+			return formatInfinite(unit);
 		}
 		
-		if (suffix.isEmpty()) {
-			return amount + String.valueOf(unit);
-		}
-		
-		return String.format(java.util.Locale.ROOT, "%.1f%s%c", value, suffix, unit);
+		var numberFormat = raw ? NumberFormat.getIntegerInstance(Locale.getDefault(Locale.Category.FORMAT)) : NumberFormat.getCompactNumberInstance(Locale.getDefault(Locale.Category.FORMAT), NumberFormat.Style.SHORT);
+		numberFormat.setMaximumFractionDigits(raw ? 0 : 1);
+		numberFormat.setMinimumFractionDigits(0);
+
+		return numberFormat.format(amount) + unit;
+	}
+
+	public static boolean isInfinite(long amount) {
+		return amount == Long.MAX_VALUE;
+	}
+
+	private static String formatInfinite(char unit) {
+		return "\u221E" + unit;
 	}
 }

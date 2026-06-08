@@ -8,10 +8,11 @@ package com.github.mixinors.astromine.client.gui.widget;
 
 import com.github.mixinors.astromine.client.gui.GuiSprites;
 import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
@@ -47,7 +48,7 @@ public class EnergyBarWidget extends Widget {
 	@Override
 	public void renderTooltip(GuiGraphics graphics, WidgetContext context) {
 		if (!hidden && contains(context, context.mouseX(), context.mouseY())) {
-			graphics.renderComponentTooltip(context.font(), List.of(Component.translatable("text.astromine.tooltip.compound_energy_value", current(), maximum())), context.mouseX(), context.mouseY());
+			graphics.renderComponentTooltip(context.font(), List.of(TextUtils.getEnergy(current(), maximum(), Screen.hasShiftDown())), context.mouseX(), context.mouseY());
 		}
 	}
 	
