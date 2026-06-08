@@ -43,6 +43,7 @@ import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity
 import com.github.mixinors.astromine.common.block.entity.utility.PumpBlockEntity;
 import com.github.mixinors.astromine.common.block.network.CableBlock;
 import com.github.mixinors.astromine.common.component.world.NetworksComponent;
+import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
@@ -61,6 +62,7 @@ import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.NetworkUtils;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
@@ -126,6 +128,22 @@ public final class AMGameTests {
 		var moonOrbitType = dimensionTypes.getHolderOrThrow(AMWorlds.MOON_ORBIT_DIMENSION_TYPE_KEY);
 		helper.assertTrue(AMWorlds.isVacuum(moonOrbitType), "moon orbit should be tagged as a vacuum dimension");
 		
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void upgradeKitTierRulesLoad(GameTestHelper helper) {
+		var item = AMItems.BASIC_MACHINE_UPGRADE_KIT.get();
+
+		helper.assertTrue(item instanceof MachineUpgradeKitItem, "basic upgrade kit should use machine upgrade behavior");
+
+		var kit = (MachineUpgradeKitItem) item;
+
+		helper.assertTrue(kit.isValidFor(Tier.PRIMITIVE), "basic upgrade kit should upgrade primitive machines");
+		helper.assertTrue(kit.isObsoleteFor(Tier.BASIC), "basic upgrade kit should reject basic machines with feedback");
+		helper.assertTrue(kit.isObsoleteFor(Tier.ADVANCED), "basic upgrade kit should reject advanced machines with feedback");
+		helper.assertTrue(kit.isObsoleteFor(Tier.ELITE), "basic upgrade kit should reject elite machines with feedback");
+		helper.assertTrue(kit.isObsoleteFor(Tier.CREATIVE), "basic upgrade kit should reject creative machines with feedback");
 		helper.succeed();
 	}
 	

@@ -27,8 +27,10 @@ package com.github.mixinors.astromine.common.block.base;
 import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -106,7 +108,25 @@ public interface TieredBlock {
 				return InteractionResult.SUCCESS;
 			}
 		}
+
+		if (stack.getItem() instanceof MachineUpgradeKitItem upgradeKitItem && upgradeKitItem.isObsoleteFor(getTier())) {
+			playUpgradeFailureFeedback(world, pos);
+
+			return InteractionResult.SUCCESS;
+		}
 		
 		return InteractionResult.PASS;
+	}
+
+	private static void playUpgradeFailureFeedback(Level world, BlockPos pos) {
+		if (world.isClientSide) {
+			return;
+		}
+
+		world.playSound(null, pos, SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 0.8F, 0.75F);
+
+		if (world instanceof ServerLevel serverLevel) {
+			serverLevel.sendParticles(DustParticleOptions.REDSTONE, pos.getX() + 0.5D, pos.getY() + 0.65D, pos.getZ() + 0.5D, 16, 0.45D, 0.45D, 0.45D, 0.02D);
+		}
 	}
 }

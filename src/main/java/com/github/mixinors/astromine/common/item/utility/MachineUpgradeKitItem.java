@@ -56,6 +56,10 @@ public class MachineUpgradeKitItem extends Item {
 	public boolean isValidFor(Tier tier) {
 		return tier == from;
 	}
+
+	public boolean isObsoleteFor(Tier tier) {
+		return tier.ordinal() >= to.ordinal();
+	}
 	
 	public boolean isValidFor(TieredBlock block) {
 		return isValidFor(block.getTier()) && block.hasTier(to());
