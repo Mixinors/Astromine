@@ -1,6 +1,6 @@
 {
   "condition": {
-    "modid": "appliedenergistics2"
+    "modid": "ae2"
   },
   "recipe": {
     "type": "astromine:triturating",
