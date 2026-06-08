@@ -51,6 +51,7 @@ configurations {
 dependencies {
 	implementation "net.neoforged:neoforge:${neo_version}"
 	implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
+	localRuntime "org.appliedenergistics:appliedenergistics2:${ae2_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
