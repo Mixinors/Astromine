@@ -16,6 +16,7 @@ import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworking;
 import java.util.List;
 import java.util.function.Supplier;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -116,15 +117,15 @@ public class StorageSidingWidget extends Widget {
 	}
 	
 	private static Component directionName(Direction direction) {
-		return Component.translatable("text.astromine.siding." + direction.getName());
+		return Component.translatable("text.astromine.siding." + direction.getName()).withStyle(ChatFormatting.GRAY);
 	}
 	
 	private static Component sidingName(StorageSiding siding) {
 		return switch (siding) {
-			case INSERT -> Component.translatable("text.astromine.siding.insert");
-			case EXTRACT -> Component.translatable("text.astromine.siding.extract");
-			case INSERT_EXTRACT -> Component.translatable("text.astromine.siding.insert_extract");
-			case NONE -> Component.translatable("text.astromine.siding.none");
+			case INSERT -> Component.translatable("text.astromine.siding.insert").withStyle(ChatFormatting.GRAY);
+			case EXTRACT -> Component.translatable("text.astromine.siding.extract").withStyle(ChatFormatting.GRAY);
+			case INSERT_EXTRACT -> Component.translatable("text.astromine.siding.insert_extract").withStyle(ChatFormatting.GRAY);
+			case NONE -> Component.translatable("text.astromine.siding.none").withStyle(ChatFormatting.GRAY);
 		};
 	}
 }
