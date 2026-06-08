@@ -695,18 +695,18 @@ public class AMModelProvider implements DataProvider {
 	}
 
 	private void registerSidingOverlayModels() {
-		createSidingOverlayModel("siding_overlay_insert", "insert", 4.0F, 4.0F, 12.0F, 12.0F);
-		createSidingOverlayModel("siding_overlay_extract", "extract", 4.0F, 4.0F, 12.0F, 12.0F);
-		createSidingOverlayModel("siding_overlay_insert_extract", "insert_extract", 4.0F, 4.0F, 12.0F, 12.0F);
-		createSidingOverlayModel("siding_overlay_item_insert", "insert", 2.0F, 9.0F, 8.0F, 15.0F);
-		createSidingOverlayModel("siding_overlay_item_extract", "extract", 2.0F, 9.0F, 8.0F, 15.0F);
-		createSidingOverlayModel("siding_overlay_item_insert_extract", "insert_extract", 2.0F, 9.0F, 8.0F, 15.0F);
-		createSidingOverlayModel("siding_overlay_fluid_insert", "insert", 8.0F, 1.0F, 14.0F, 7.0F);
-		createSidingOverlayModel("siding_overlay_fluid_extract", "extract", 8.0F, 1.0F, 14.0F, 7.0F);
-		createSidingOverlayModel("siding_overlay_fluid_insert_extract", "insert_extract", 8.0F, 1.0F, 14.0F, 7.0F);
+		createSidingOverlayModel("siding_overlay_insert", "insert");
+		createSidingOverlayModel("siding_overlay_extract", "extract");
+		createSidingOverlayModel("siding_overlay_insert_extract", "insert_extract");
+		createSidingOverlayModel("siding_overlay_item_insert", "insert");
+		createSidingOverlayModel("siding_overlay_item_extract", "extract");
+		createSidingOverlayModel("siding_overlay_item_insert_extract", "insert_extract");
+		createSidingOverlayModel("siding_overlay_fluid_insert", "insert");
+		createSidingOverlayModel("siding_overlay_fluid_extract", "extract");
+		createSidingOverlayModel("siding_overlay_fluid_insert_extract", "insert_extract");
 	}
 
-	private void createSidingOverlayModel(String path, String texture, float minX, float minY, float maxX, float maxY) {
+	private void createSidingOverlayModel(String path, String texture) {
 		this.modelOutput.accept(AMCommon.id("block/" + path), () -> {
 			var json = new JsonObject();
 			json.addProperty("render_type", "minecraft:cutout");
@@ -719,8 +719,8 @@ public class AMModelProvider implements DataProvider {
 
 			var elements = new JsonArray();
 			var element = new JsonObject();
-			element.add("from", vector(minX, minY, -0.02F));
-			element.add("to", vector(maxX, maxY, 0.0F));
+			element.add("from", vector(0.0F, 0.0F, -0.02F));
+			element.add("to", vector(16.0F, 16.0F, 0.0F));
 			element.addProperty("shade", false);
 
 			var faces = new JsonObject();
