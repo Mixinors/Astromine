@@ -22,10 +22,10 @@ import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEnti
 import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityMenuLayout;
 import com.github.mixinors.astromine.common.transfer.StorageType;
-import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworking;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -89,7 +89,7 @@ public final class BlockEntityScreenWidgets {
 		if (handler == null) {
 			return;
 		}
-		
+
 		for (var arrow : handler.getArrows()) {
 			tab.add(new ArrowWidget(arrow.x(), arrow.y(), () -> arrow.progress() ? handler.getProgressRatio() : 1.0D));
 		}
@@ -123,9 +123,10 @@ public final class BlockEntityScreenWidgets {
 		tab.add(new SlotBackgroundsWidget(screen.menu(), screen::shouldRenderSlot));
 		
 		var facing = blockEntityFacing(blockEntity);
-		
+		var viewDirection = playerViewDirection(blockEntity, facing);
+
 		for (var direction : Direction.values()) {
-			var point = sidingPoint(direction, facing);
+			var point = sidingPoint(direction, viewDirection);
 			tab.add(new StorageSidingWidget(point.x(), point.y(), blockEntity, storageType, direction, facing, screen::blockPos));
 		}
 	}
@@ -140,19 +141,49 @@ public final class BlockEntityScreenWidgets {
 		
 		return Direction.NORTH;
 	}
-	
-	private static SidingPoint sidingPoint(Direction direction, Direction rotation) {
-		var offset = MirrorUtils.rotate(direction, rotation);
+
+	private static Direction playerViewDirection(ExtendedBlockEntity blockEntity, Direction fallback) {
+		var player = Minecraft.getInstance().player;
+
+		if (player == null) {
+			return fallback;
+		}
+
+		var pos = blockEntity.getBlockPos();
+		var dx = player.getX() - (pos.getX() + 0.5D);
+		var dz = player.getZ() - (pos.getZ() + 0.5D);
+
+		if (Math.abs(dx) > Math.abs(dz)) {
+			return dx >= 0.0D ? Direction.EAST : Direction.WEST;
+		}
+
+		return dz >= 0.0D ? Direction.SOUTH : Direction.NORTH;
+	}
+
+	private static SidingPoint sidingPoint(Direction direction, Direction viewDirection) {
 		var anchorX = (int) (ExtendedBlockEntityMenuLayout.TABS_WIDTH / 2.0F - ExtendedBlockEntityMenuLayout.PAD_38);
-		
-		return switch (offset) {
-			case NORTH -> new SidingPoint(anchorX + 29, 53);
-			case SOUTH -> new SidingPoint(anchorX + 7, 75);
-			case UP -> new SidingPoint(anchorX + 29, 31);
-			case DOWN -> new SidingPoint(anchorX + 29, 75);
-			case WEST -> new SidingPoint(anchorX + 51, 53);
-			case EAST -> new SidingPoint(anchorX + 7, 53);
-		};
+
+		if (direction == Direction.UP) {
+			return new SidingPoint(anchorX + 29, 31);
+		}
+
+		if (direction == Direction.DOWN) {
+			return new SidingPoint(anchorX + 29, 75);
+		}
+
+		if (direction == viewDirection) {
+			return new SidingPoint(anchorX + 29, 53);
+		}
+
+		if (direction == viewDirection.getOpposite()) {
+			return new SidingPoint(anchorX + 7, 75);
+		}
+
+		if (direction == viewDirection.getClockWise()) {
+			return new SidingPoint(anchorX + 7, 53);
+		}
+
+		return new SidingPoint(anchorX + 51, 53);
 	}
 	
 	private record SidingPoint(int x, int y) {

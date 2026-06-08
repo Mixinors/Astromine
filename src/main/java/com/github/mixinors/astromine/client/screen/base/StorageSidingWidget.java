@@ -49,8 +49,9 @@ public class StorageSidingWidget extends Widget {
 	@Override
 	public void render(GuiGraphics graphics, WidgetContext context) {
 		var siding = siding();
-		
+
 		if (siding != null) {
+			graphics.blit(MachineFaceTextures.texture(blockEntity.getBlockState(), direction, facing), context.left() + x, context.top() + y, 0.0F, 0.0F, width, height, 16, 16);
 			graphics.blit(sidingTexture(siding), context.left() + x, context.top() + y, 0.0F, 0.0F, width, height, width, height);
 		}
 	}
@@ -119,7 +120,7 @@ public class StorageSidingWidget extends Widget {
 	private static Component directionName(Direction direction) {
 		return Component.translatable("text.astromine.siding." + direction.getName()).withStyle(ChatFormatting.GRAY);
 	}
-	
+
 	private static Component sidingName(StorageSiding siding) {
 		return switch (siding) {
 			case INSERT -> Component.translatable("text.astromine.siding.insert").withStyle(ChatFormatting.GRAY);
