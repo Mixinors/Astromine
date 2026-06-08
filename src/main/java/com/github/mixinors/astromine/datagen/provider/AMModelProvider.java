@@ -35,6 +35,7 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMProperties;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.data.CachedOutput;
@@ -354,7 +355,8 @@ public class AMModelProvider implements DataProvider {
 		});
 		
 		CABLE_CENTER_MODELS.forEach(this::registerCable);
-		
+		registerSidingOverlayModels();
+
 		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
 			registerSimpleBlock(fluid.getBlock(), ModelLocationUtils.getModelLocation(Blocks.WATER));
 		});
@@ -660,12 +662,13 @@ public class AMModelProvider implements DataProvider {
 	
 	private ResourceLocation createMachineModel(Block machine, String suffix) {
 		var modelId = ModelLocationUtils.getModelLocation(machine, suffix);
+		var baseModelId = ResourceLocation.fromNamespaceAndPath(modelId.getNamespace(), modelId.getPath() + "_base");
 		var textureSuffix = machine == AMBlocks.ROCKET_CONTROLLER.get() && suffix.equals("_active") ? "" : suffix;
-		
-		this.modelOutput.accept(modelId, () -> {
+
+		this.modelOutput.accept(baseModelId, () -> {
 			var json = new JsonObject();
 			json.addProperty("parent", AMCommon.id("block/machine").toString());
-			
+
 			var textures = new JsonObject();
 			textures.addProperty("top", TextureMapping.getBlockTexture(machine, "_top" + textureSuffix).toString());
 			textures.addProperty("bottom", TextureMapping.getBlockTexture(machine, "_bottom" + textureSuffix).toString());
@@ -679,7 +682,66 @@ public class AMModelProvider implements DataProvider {
 			
 			return json;
 		});
-		
+
+		this.modelOutput.accept(modelId, () -> {
+			var json = new JsonObject();
+			json.addProperty("loader", AMCommon.id("machine").toString());
+			json.addProperty("base", baseModelId.toString());
+
+			return json;
+		});
+
 		return modelId;
+	}
+
+	private void registerSidingOverlayModels() {
+		createSidingOverlayModel("siding_overlay_insert", "insert", 4.0F, 4.0F, 12.0F, 12.0F);
+		createSidingOverlayModel("siding_overlay_extract", "extract", 4.0F, 4.0F, 12.0F, 12.0F);
+		createSidingOverlayModel("siding_overlay_insert_extract", "insert_extract", 4.0F, 4.0F, 12.0F, 12.0F);
+		createSidingOverlayModel("siding_overlay_item_insert", "insert", 2.0F, 9.0F, 8.0F, 15.0F);
+		createSidingOverlayModel("siding_overlay_item_extract", "extract", 2.0F, 9.0F, 8.0F, 15.0F);
+		createSidingOverlayModel("siding_overlay_item_insert_extract", "insert_extract", 2.0F, 9.0F, 8.0F, 15.0F);
+		createSidingOverlayModel("siding_overlay_fluid_insert", "insert", 8.0F, 1.0F, 14.0F, 7.0F);
+		createSidingOverlayModel("siding_overlay_fluid_extract", "extract", 8.0F, 1.0F, 14.0F, 7.0F);
+		createSidingOverlayModel("siding_overlay_fluid_insert_extract", "insert_extract", 8.0F, 1.0F, 14.0F, 7.0F);
+	}
+
+	private void createSidingOverlayModel(String path, String texture, float minX, float minY, float maxX, float maxY) {
+		this.modelOutput.accept(AMCommon.id("block/" + path), () -> {
+			var json = new JsonObject();
+			json.addProperty("render_type", "minecraft:cutout");
+
+			var textures = new JsonObject();
+			textures.addProperty("siding", AMCommon.id("widget/" + texture).toString());
+			textures.addProperty("particle", AMCommon.id("widget/" + texture).toString());
+			json.add("textures", textures);
+
+			var elements = new JsonArray();
+			var element = new JsonObject();
+			element.add("from", vector(minX, minY, -0.02F));
+			element.add("to", vector(maxX, maxY, 0.0F));
+			element.addProperty("shade", false);
+
+			var faces = new JsonObject();
+			var north = new JsonObject();
+			north.add("uv", vector(0.0F, 0.0F, 16.0F, 16.0F));
+			north.addProperty("texture", "#siding");
+			faces.add("north", north);
+			element.add("faces", faces);
+			elements.add(element);
+			json.add("elements", elements);
+
+			return json;
+		});
+	}
+
+	private static JsonArray vector(float... values) {
+		var array = new JsonArray();
+
+		for (var value : values) {
+			array.add(value);
+		}
+
+		return array;
 	}
 }

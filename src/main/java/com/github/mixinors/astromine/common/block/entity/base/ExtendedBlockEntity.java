@@ -49,6 +49,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -61,9 +63,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class ExtendedBlockEntity extends BlockEntity implements Tickable {
+	public static final ModelProperty<SidingModelData> SIDING_MODEL_DATA = new ModelProperty<>();
+
 	public static final String REDSTONE_TYPE_KEY = "RedstoneType";
 	
 	public static final String AMOUNT_KEY = "Amount";
@@ -411,6 +416,12 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		}
 		
 		super.loadAdditional(nbt, registries);
+		refreshClientModelData();
+	}
+
+	@Override
+	public ModelData getModelData() {
+		return ModelData.of(SIDING_MODEL_DATA, SidingModelData.of(itemStorage, fluidStorage));
 	}
 	
 	@Override
@@ -513,8 +524,9 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		if (level == null) {
 			return;
 		}
-		
+
 		setChanged();
+		requestModelDataUpdate();
 		level.invalidateCapabilities(worldPosition);
 		
 		for (var directions : DirectionUtils.VALUES) {
@@ -545,6 +557,13 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		}
 		
 		return changed;
+	}
+
+	private void refreshClientModelData() {
+		if (level != null && level.isClientSide) {
+			requestModelDataUpdate();
+			level.setBlocksDirty(worldPosition, getBlockState(), getBlockState());
+		}
 	}
 	
 	/**
@@ -604,5 +623,35 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	@Nullable
 	public SimpleItemStorage getItemStorage() {
 		return itemStorage;
+	}
+
+	public record SidingModelData(List<StorageSiding> itemSidings, List<StorageSiding> fluidSidings) {
+		public static SidingModelData of(@Nullable SimpleItemStorage itemStorage, @Nullable SimpleFluidStorage fluidStorage) {
+			return new SidingModelData(sidings(itemStorage == null ? null : itemStorage.getSidings()), sidings(fluidStorage == null ? null : fluidStorage.getSidings()));
+		}
+
+		public boolean hasItemSidings() {
+			return itemSidings.size() == DirectionUtils.VALUES.length;
+		}
+
+		public boolean hasFluidSidings() {
+			return fluidSidings.size() == DirectionUtils.VALUES.length;
+		}
+
+		public StorageSiding itemSiding(Direction direction) {
+			return siding(itemSidings, direction);
+		}
+
+		public StorageSiding fluidSiding(Direction direction) {
+			return siding(fluidSidings, direction);
+		}
+
+		private static List<StorageSiding> sidings(@Nullable StorageSiding[] sidings) {
+			return sidings == null ? List.of() : List.copyOf(Arrays.asList(sidings.clone()));
+		}
+
+		private static StorageSiding siding(List<StorageSiding> sidings, Direction direction) {
+			return sidings.size() == DirectionUtils.VALUES.length ? sidings.get(direction.ordinal()) : StorageSiding.NONE;
+		}
 	}
 }

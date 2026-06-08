@@ -1,0 +1,12 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "back": "astromine:block/basic_tank_back_active",
+    "bottom": "astromine:block/basic_tank_bottom_active",
+    "front": "astromine:block/basic_tank_front_active",
+    "left": "astromine:block/basic_tank_left_active",
+    "particle": "astromine:block/basic_tank_top_active",
+    "right": "astromine:block/basic_tank_right_active",
+    "top": "astromine:block/basic_tank_top_active"
+  }
+}

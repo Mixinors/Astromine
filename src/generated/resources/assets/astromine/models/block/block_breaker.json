@@ -1,12 +1,4 @@
 {
-  "parent": "astromine:block/machine",
-  "textures": {
-    "back": "astromine:block/block_breaker_back",
-    "bottom": "astromine:block/block_breaker_bottom",
-    "front": "astromine:block/block_breaker_front",
-    "left": "astromine:block/block_breaker_left",
-    "particle": "astromine:block/block_breaker_top",
-    "right": "astromine:block/block_breaker_right",
-    "top": "astromine:block/block_breaker_top"
-  }
+  "base": "astromine:block/block_breaker_base",
+  "loader": "astromine:machine"
 }

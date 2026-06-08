@@ -1,0 +1,12 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "back": "astromine:block/block_placer_back",
+    "bottom": "astromine:block/block_placer_bottom",
+    "front": "astromine:block/block_placer_front",
+    "left": "astromine:block/block_placer_left",
+    "particle": "astromine:block/block_placer_top",
+    "right": "astromine:block/block_placer_right",
+    "top": "astromine:block/block_placer_top"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#siding",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        8.0,
+        1.0,
+        -0.02
+      ],
+      "shade": false,
+      "to": [
+        14.0,
+        7.0,
+        0.0
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "astromine:widget/extract",
+    "siding": "astromine:widget/extract"
+  }
+}

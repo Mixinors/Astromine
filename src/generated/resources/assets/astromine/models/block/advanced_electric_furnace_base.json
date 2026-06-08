@@ -1,0 +1,12 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "back": "astromine:block/advanced_electric_furnace_back",
+    "bottom": "astromine:block/advanced_electric_furnace_bottom",
+    "front": "astromine:block/advanced_electric_furnace_front",
+    "left": "astromine:block/advanced_electric_furnace_left",
+    "particle": "astromine:block/advanced_electric_furnace_top",
+    "right": "astromine:block/advanced_electric_furnace_right",
+    "top": "astromine:block/advanced_electric_furnace_top"
+  }
+}

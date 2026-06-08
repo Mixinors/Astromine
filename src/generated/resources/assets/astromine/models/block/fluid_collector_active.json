@@ -1,12 +1,4 @@
 {
-  "parent": "astromine:block/machine",
-  "textures": {
-    "back": "astromine:block/fluid_collector_back_active",
-    "bottom": "astromine:block/fluid_collector_bottom_active",
-    "front": "astromine:block/fluid_collector_front_active",
-    "left": "astromine:block/fluid_collector_left_active",
-    "particle": "astromine:block/fluid_collector_top_active",
-    "right": "astromine:block/fluid_collector_right_active",
-    "top": "astromine:block/fluid_collector_top_active"
-  }
+  "base": "astromine:block/fluid_collector_active_base",
+  "loader": "astromine:machine"
 }

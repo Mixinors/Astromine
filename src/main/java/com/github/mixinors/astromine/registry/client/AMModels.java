@@ -26,6 +26,9 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.block.CableModel;
+import com.github.mixinors.astromine.client.model.block.MachineModel;
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import com.github.mixinors.astromine.common.transfer.StorageType;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -33,7 +36,8 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 
 public class AMModels {
 	public static final ResourceLocation CABLE_MODEL_LOADER_ID = AMCommon.id("cable");
-	
+	public static final ResourceLocation MACHINE_MODEL_LOADER_ID = AMCommon.id("machine");
+
 	public static final ResourceLocation PRIMITIVE_ENERGY_CABLE_CENTER_MODEL_ID = AMCommon.id("block/primitive_energy_cable_center");
 	public static final ResourceLocation BASIC_ENERGY_CABLE_CENTER_MODEL_ID = AMCommon.id("block/basic_energy_cable_center");
 	public static final ResourceLocation ADVANCED_ENERGY_CABLE_CENTER_MODEL_ID = AMCommon.id("block/advanced_energy_cable_center");
@@ -46,6 +50,15 @@ public class AMModels {
 	public static final ResourceLocation CABLE_INSERT_CONNECTOR_ID = AMCommon.id("block/cable_connector_insert");
 	public static final ResourceLocation CABLE_EXTRACT_CONNECTOR_ID = AMCommon.id("block/cable_connector_extract");
 	public static final ResourceLocation CABLE_INSERT_EXTRACT_CONNECTOR_ID = AMCommon.id("block/cable_connector_insert_extract");
+	public static final ResourceLocation SIDING_OVERLAY_INSERT_MODEL_ID = AMCommon.id("block/siding_overlay_insert");
+	public static final ResourceLocation SIDING_OVERLAY_EXTRACT_MODEL_ID = AMCommon.id("block/siding_overlay_extract");
+	public static final ResourceLocation SIDING_OVERLAY_INSERT_EXTRACT_MODEL_ID = AMCommon.id("block/siding_overlay_insert_extract");
+	public static final ResourceLocation SIDING_OVERLAY_ITEM_INSERT_MODEL_ID = AMCommon.id("block/siding_overlay_item_insert");
+	public static final ResourceLocation SIDING_OVERLAY_ITEM_EXTRACT_MODEL_ID = AMCommon.id("block/siding_overlay_item_extract");
+	public static final ResourceLocation SIDING_OVERLAY_ITEM_INSERT_EXTRACT_MODEL_ID = AMCommon.id("block/siding_overlay_item_insert_extract");
+	public static final ResourceLocation SIDING_OVERLAY_FLUID_INSERT_MODEL_ID = AMCommon.id("block/siding_overlay_fluid_insert");
+	public static final ResourceLocation SIDING_OVERLAY_FLUID_EXTRACT_MODEL_ID = AMCommon.id("block/siding_overlay_fluid_extract");
+	public static final ResourceLocation SIDING_OVERLAY_FLUID_INSERT_EXTRACT_MODEL_ID = AMCommon.id("block/siding_overlay_fluid_insert_extract");
 	
 	public static final ModelResourceLocation PRIMITIVE_ENERGY_CABLE_BLOCK_MODEL = ModelResourceLocation.standalone(AMCommon.id("block/primitive_energy_cable"));
 	public static final ModelResourceLocation BASIC_ENERGY_CABLE_BLOCK_MODEL = ModelResourceLocation.standalone(AMCommon.id("block/basic_energy_cable"));
@@ -61,6 +74,7 @@ public class AMModels {
 	
 	private static void registerGeometryLoaders(ModelEvent.RegisterGeometryLoaders event) {
 		event.register(CABLE_MODEL_LOADER_ID, CableModel.Loader.INSTANCE);
+		event.register(MACHINE_MODEL_LOADER_ID, MachineModel.Loader.INSTANCE);
 	}
 	
 	private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
@@ -75,9 +89,45 @@ public class AMModels {
 		event.register(ModelResourceLocation.standalone(CABLE_INSERT_CONNECTOR_ID));
 		event.register(ModelResourceLocation.standalone(CABLE_EXTRACT_CONNECTOR_ID));
 		event.register(ModelResourceLocation.standalone(CABLE_INSERT_EXTRACT_CONNECTOR_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_INSERT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_EXTRACT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_INSERT_EXTRACT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_ITEM_INSERT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_ITEM_EXTRACT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_ITEM_INSERT_EXTRACT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_FLUID_INSERT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_FLUID_EXTRACT_MODEL_ID));
+		event.register(ModelResourceLocation.standalone(SIDING_OVERLAY_FLUID_INSERT_EXTRACT_MODEL_ID));
 	}
-	
+
 	private static CableModel cable(ResourceLocation centerModelId) {
 		return new CableModel(centerModelId, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
+	}
+
+	public static ResourceLocation sidingOverlayModel(StorageType storageType, StorageSiding siding, boolean split) {
+		if (!split) {
+			return switch (siding) {
+				case INSERT -> SIDING_OVERLAY_INSERT_MODEL_ID;
+				case EXTRACT -> SIDING_OVERLAY_EXTRACT_MODEL_ID;
+				case INSERT_EXTRACT -> SIDING_OVERLAY_INSERT_EXTRACT_MODEL_ID;
+				case NONE -> SIDING_OVERLAY_INSERT_MODEL_ID;
+			};
+		}
+
+		return switch (storageType) {
+			case ITEM -> switch (siding) {
+				case INSERT -> SIDING_OVERLAY_ITEM_INSERT_MODEL_ID;
+				case EXTRACT -> SIDING_OVERLAY_ITEM_EXTRACT_MODEL_ID;
+				case INSERT_EXTRACT -> SIDING_OVERLAY_ITEM_INSERT_EXTRACT_MODEL_ID;
+				case NONE -> SIDING_OVERLAY_ITEM_INSERT_MODEL_ID;
+			};
+			case FLUID -> switch (siding) {
+				case INSERT -> SIDING_OVERLAY_FLUID_INSERT_MODEL_ID;
+				case EXTRACT -> SIDING_OVERLAY_FLUID_EXTRACT_MODEL_ID;
+				case INSERT_EXTRACT -> SIDING_OVERLAY_FLUID_INSERT_EXTRACT_MODEL_ID;
+				case NONE -> SIDING_OVERLAY_FLUID_INSERT_MODEL_ID;
+			};
+			case ENERGY -> SIDING_OVERLAY_INSERT_MODEL_ID;
+		};
 	}
 }

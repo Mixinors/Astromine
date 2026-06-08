@@ -1,0 +1,12 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "back": "astromine:block/primitive_capacitor_back",
+    "bottom": "astromine:block/primitive_capacitor_bottom",
+    "front": "astromine:block/primitive_capacitor_front",
+    "left": "astromine:block/primitive_capacitor_left",
+    "particle": "astromine:block/primitive_capacitor_top",
+    "right": "astromine:block/primitive_capacitor_right",
+    "top": "astromine:block/primitive_capacitor_top"
+  }
+}
