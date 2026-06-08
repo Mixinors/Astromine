@@ -91,7 +91,7 @@ public final class BlockEntityScreenWidgets {
 		}
 		
 		for (var arrow : handler.getArrows()) {
-			tab.add(new ArrowWidget(arrow.x(), arrow.y(), () -> arrow.progress() && blockEntity.limit > 0.0D ? blockEntity.progress / blockEntity.limit : 1.0D));
+			tab.add(new ArrowWidget(arrow.x(), arrow.y(), () -> arrow.progress() ? handler.getProgressRatio() : 1.0D));
 		}
 		
 		if (blockEntity instanceof TankBlockEntity tank) {

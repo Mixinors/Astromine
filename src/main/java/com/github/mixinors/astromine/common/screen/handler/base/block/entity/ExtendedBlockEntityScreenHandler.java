@@ -13,14 +13,19 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenHandler {
+	private static final int PROGRESS_DATA_SCALE = 10000;
+
 	protected final ExtendedBlockEntity blockEntity;
+	private final ProgressContainerData progressData;
 	protected final List<GuiArrow> arrows = new ArrayList<>();
 	protected final List<GuiFluidBar> fluidBars = new ArrayList<>();
 	protected final List<GuiFluidFilter> fluidFilters = new ArrayList<>();
@@ -32,6 +37,8 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		super(type, syncId, player, position);
 		
 		this.blockEntity = (ExtendedBlockEntity) player.level().getBlockEntity(position);
+		this.progressData = new ProgressContainerData(blockEntity);
+		addDataSlots(progressData);
 		
 		if (!player.level().isClientSide && blockEntity != null) {
 			blockEntity.setSyncItemStorage(true);
@@ -86,6 +93,10 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		return 0;
 	}
 	
+	public double getProgressRatio() {
+		return progressData.getProgressRatio();
+	}
+
 	protected void addBlockEntitySlot(int slot, int x, int y) {
 		addBlockEntitySlot(slot, x, y, ($) -> true);
 	}
@@ -221,5 +232,47 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	}
 	
 	public record GuiItemHint(ItemStack stack, int x, int y, int width, int height, Component tooltip) {
+	}
+
+	private static final class ProgressContainerData implements ContainerData {
+		private final ExtendedBlockEntity blockEntity;
+		private int progress;
+
+		private ProgressContainerData(ExtendedBlockEntity blockEntity) {
+			this.blockEntity = blockEntity;
+		}
+
+		@Override
+		public int get(int index) {
+			if (index != 0) {
+				return 0;
+			}
+
+			if (blockEntity != null && blockEntity.getLevel() != null && !blockEntity.getLevel().isClientSide()) {
+				if (blockEntity.limit <= 0.0D) {
+					return 0;
+				}
+
+				return Mth.clamp((int) Math.round(blockEntity.progress / blockEntity.limit * PROGRESS_DATA_SCALE), 0, PROGRESS_DATA_SCALE);
+			}
+
+			return progress;
+		}
+
+		@Override
+		public void set(int index, int value) {
+			if (index == 0) {
+				progress = Mth.clamp(value, 0, PROGRESS_DATA_SCALE);
+			}
+		}
+
+		@Override
+		public int getCount() {
+			return 1;
+		}
+
+		private double getProgressRatio() {
+			return get(0) / (double) PROGRESS_DATA_SCALE;
+		}
 	}
 }
