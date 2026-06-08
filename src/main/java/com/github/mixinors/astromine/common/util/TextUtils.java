@@ -73,8 +73,7 @@ public class TextUtils {
 
 	private static MutableComponent getStoredAmount(long amount, long capacity, char unit, boolean raw) {
 		if (isInfinite(capacity)) {
-			var stored = amount > 0L ? formatInfinite(unit) : formatAmount(0L, unit, raw);
-			return Component.literal(stored).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(formatInfinite(unit));
+			return Component.literal(formatInfinite(unit)).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(formatInfinite(unit));
 		}
 
 		return Component.literal(formatAmount(amount, unit, raw)).append(Component.literal(" / ").withStyle(ChatFormatting.GRAY)).append(formatAmount(capacity, unit, raw));

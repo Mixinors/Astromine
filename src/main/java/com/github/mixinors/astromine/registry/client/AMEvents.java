@@ -24,16 +24,22 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import java.util.List;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.render.effects.SpaceDimensionEffects;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.transfer.storage.EnergyStorageItem;
+import com.github.mixinors.astromine.common.transfer.storage.FluidStorageItem;
 import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +52,8 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class AMEvents {
 	public static void init(IEventBus modBus) {
@@ -99,11 +107,16 @@ public class AMEvents {
 			var energyStorage = findEnergyStorage(stack);
 			
 			if (energyStorage != null) {
-				tooltips.add(Component.translatable(
-						"text.astromine.tooltip.compound_energy_value",
-						LongEnergyStorage.getAmount(energyStorage),
-						LongEnergyStorage.getCapacity(energyStorage)
-				).withStyle(ChatFormatting.GOLD));
+				var amount = LongEnergyStorage.getAmount(energyStorage);
+				var capacity = LongEnergyStorage.getCapacity(energyStorage);
+
+				tooltips.add(grayLabelValue(TextUtils.getEnergy(), TextUtils.getEnergy(amount, capacity, Screen.hasShiftDown())));
+			}
+
+			var fluidStorage = findFluidStorage(stack);
+
+			if (fluidStorage != null) {
+				appendFluidStorageTooltip(tooltips, fluidStorage);
 			}
 		}
 		
@@ -137,4 +150,54 @@ public class AMEvents {
 		
 		return null;
 	}
+
+	private static FluidTooltipStorage findFluidStorage(ItemStack stack) {
+		var capabilityStorage = stack.getCapability(Capabilities.FluidHandler.ITEM);
+
+		if (capabilityStorage != null) {
+			return new FluidTooltipStorage(capabilityStorage, null);
+		}
+
+		if (stack.getItem() instanceof FluidStorageItem fluidStorageItem) {
+			return new FluidTooltipStorage(fluidStorageItem.createFluidStorage(stack), fluidStorageItem.getFluidCapacity());
+		}
+
+		return null;
+	}
+
+	private static void appendFluidStorageTooltip(List<Component> tooltips, FluidTooltipStorage storage) {
+		var tanks = storage.handler().getTanks();
+		var totalAmount = 0L;
+		var totalCapacity = storage.capacityOverride() != null ? storage.capacityOverride() : 0L;
+		var displayFluid = FluidStack.EMPTY;
+
+		for (var tank = 0; tank < tanks; ++tank) {
+			var fluid = storage.handler().getFluidInTank(tank);
+
+			totalAmount += fluid.getAmount();
+
+			if (storage.capacityOverride() == null) {
+				totalCapacity += storage.handler().getTankCapacity(tank);
+			}
+
+			if (displayFluid.isEmpty() && !fluid.isEmpty()) {
+				displayFluid = fluid;
+			}
+		}
+
+		var fluidName = displayFluid.isEmpty() ? Component.translatable("text.astromine.empty") : displayFluid.getHoverName();
+
+		tooltips.add(grayLabelValue(Component.translatable("text.astromine.fluid"), fluidName));
+		tooltips.add(gray(TextUtils.getFluid(totalAmount, totalCapacity, Screen.hasShiftDown())));
+	}
+
+	private static MutableComponent grayLabelValue(Component label, Component value) {
+		return gray(Component.empty().append(label).append(": ").append(value));
+	}
+
+	private static MutableComponent gray(Component component) {
+		return Component.empty().append(component).withStyle(ChatFormatting.GRAY);
+	}
+
+	private record FluidTooltipStorage(IFluidHandler handler, Long capacityOverride) {}
 }
