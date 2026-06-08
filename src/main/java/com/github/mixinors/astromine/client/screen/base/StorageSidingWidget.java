@@ -51,7 +51,7 @@ public class StorageSidingWidget extends Widget {
 		var siding = siding();
 
 		if (siding != null) {
-			graphics.blit(MachineFaceTextures.texture(blockEntity.getBlockState(), direction, facing), context.left() + x, context.top() + y, 0.0F, 0.0F, width, height, 16, 16);
+			MachineFaceRenderer.render(graphics, blockEntity, direction, context.left() + x, context.top() + y, width, height);
 			graphics.blit(sidingTexture(siding), context.left() + x, context.top() + y, 0.0F, 0.0F, width, height, width, height);
 		}
 	}
