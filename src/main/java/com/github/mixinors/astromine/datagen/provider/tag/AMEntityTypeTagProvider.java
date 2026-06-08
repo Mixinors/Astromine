@@ -73,6 +73,11 @@ public class AMEntityTypeTagProvider extends EntityTypeTagsProvider {
 			canBreatheLavaTag.add(entityType);
 		}
 		
+		var canBreatheInSpaceTag = tag(AMTagKeys.EntityTypeTags.CAN_BREATHE_IN_SPACE);
+		for (var entityType : AMDatagenLists.EntityTypeLists.SPACE_SLIMES) {
+			canBreatheInSpaceTag.add(entityType);
+		}
+
 		var cannotBreatheOxygenTag = tag(AMTagKeys.EntityTypeTags.CANNOT_BREATHE_OXYGEN);
 		for (var tag : AMDatagenLists.EntityTypeTagLists.CANNOT_BREATHE_OXYGEN_TAGS) {
 			cannotBreatheOxygenTag.addTag(tag);

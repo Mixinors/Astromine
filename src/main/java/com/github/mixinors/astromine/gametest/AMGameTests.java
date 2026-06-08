@@ -45,8 +45,10 @@ import com.github.mixinors.astromine.common.block.entity.utility.PumpBlockEntity
 import com.github.mixinors.astromine.common.block.network.CableBlock;
 import com.github.mixinors.astromine.common.component.world.NetworksComponent;
 import com.github.mixinors.astromine.common.gravity.GravityManager;
+import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.network.Network;
+import com.github.mixinors.astromine.common.oxygen.OxygenManager;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
@@ -68,6 +70,7 @@ import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItemGroups;
 import com.github.mixinors.astromine.registry.common.AMItems;
@@ -84,6 +87,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
@@ -169,6 +173,38 @@ public final class AMGameTests {
 		} finally {
 			GravityManager.reset(level.dimension());
 		}
+
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void vacuumBreathingRulesUseTagsAndChargedSpaceSuit(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(level);
+		var zombie = EntityType.ZOMBIE.create(level);
+		var armorStand = EntityType.ARMOR_STAND.create(level);
+
+		helper.assertTrue(spaceSlime != null, "expected tagged space-breathing test entity");
+		helper.assertTrue(zombie != null, "expected armor-capable test entity");
+		helper.assertTrue(armorStand != null, "expected non-mob test entity");
+		helper.assertTrue(OxygenManager.canBreatheInVacuum(spaceSlime), "tagged space entity should breathe in vacuum");
+		helper.assertTrue(!OxygenManager.canBreatheInVacuum(zombie), "armor-capable entity should not breathe in vacuum without a charged full suit");
+		helper.assertTrue(!OxygenManager.canBreatheInVacuum(armorStand), "non-mob entity should not breathe in vacuum by default");
+
+		var chestplate = createChargedSpaceSuitChestplate();
+
+		zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AMItems.SPACE_SUIT_HELMET.get()));
+		zombie.setItemSlot(EquipmentSlot.CHEST, chestplate);
+		zombie.setItemSlot(EquipmentSlot.LEGS, new ItemStack(AMItems.SPACE_SUIT_LEGGINGS.get()));
+		zombie.setItemSlot(EquipmentSlot.FEET, new ItemStack(AMItems.SPACE_SUIT_BOOTS.get()));
+
+		var suit = (SpaceSuitArmorItem.Chestplate) chestplate.getItem();
+		var fluidBefore = suit.getStoredFluid(chestplate).getAmount();
+		var energyBefore = suit.getStoredEnergy(chestplate);
+
+		helper.assertTrue(OxygenManager.canBreatheInVacuum(zombie), "charged full space suit should allow vacuum breathing");
+		helper.assertTrue(suit.getStoredFluid(chestplate).getAmount() < fluidBefore, "space suit should consume oxygen while breathing in vacuum");
+		helper.assertTrue(suit.getStoredEnergy(chestplate) < energyBefore, "space suit should consume energy while breathing in vacuum");
 
 		helper.succeed();
 	}
@@ -1079,6 +1115,16 @@ public final class AMGameTests {
 	private static void assertEnergyReceives(GameTestHelper helper, IEnergyStorage energyStorage) {
 		helper.assertTrue(energyStorage.getMaxEnergyStored() > 0, "energy storage should have capacity");
 		helper.assertTrue(energyStorage.receiveEnergy(1, false) > 0, "energy storage should receive energy");
+	}
+
+	private static ItemStack createChargedSpaceSuitChestplate() {
+		var stack = new ItemStack(AMItems.SPACE_SUIT_CHESTPLATE.get());
+		var suit = (SpaceSuitArmorItem.Chestplate) stack.getItem();
+
+		suit.setStoredFluid(stack, new FluidStack(AMFluids.OXYGEN.getSource(), 1000));
+		suit.setStoredEnergy(stack, 1000);
+
+		return stack;
 	}
 
 	private static void assertDoubleNear(GameTestHelper helper, double actual, double expected, String message) {

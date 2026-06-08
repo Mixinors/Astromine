@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.common.gravity.GravityManager;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.manager.StationManager;
+import com.github.mixinors.astromine.common.oxygen.OxygenManager;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import net.minecraft.server.level.ServerLevel;
@@ -87,6 +88,7 @@ public class AMEvents {
 	private static void onEntityTick(EntityTickEvent.Pre event) {
 		if (event.getEntity() instanceof LivingEntity entity) {
 			GravityManager.apply(entity);
+			OxygenManager.tick(entity);
 		}
 	}
 

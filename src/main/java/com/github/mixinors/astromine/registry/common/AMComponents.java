@@ -28,7 +28,11 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
 import com.github.mixinors.astromine.common.component.world.HoloBridgesComponent;
 import com.github.mixinors.astromine.common.component.world.NetworksComponent;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import net.neoforged.neoforge.attachment.IAttachmentSerializer;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -40,7 +44,25 @@ public class AMComponents {
 	
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<NetworksComponent>> NETWORKS = REGISTRY.register("networks", () -> AttachmentType.builder(holder -> new NetworksComponent((Level) holder)).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<HoloBridgesComponent>> HOLO_BRIDGES = REGISTRY.register("holo_bridges", () -> AttachmentType.builder(holder -> new HoloBridgesComponent((Level) holder)).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<OxygenComponent>> OXYGEN_COMPONENT = REGISTRY.register("oxygen", () -> AttachmentType.builder(holder -> new OxygenComponent((Entity) holder)).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<OxygenComponent>> OXYGEN_COMPONENT = REGISTRY.register("oxygen", () -> AttachmentType.builder(holder -> new OxygenComponent((Entity) holder)).serialize(new IAttachmentSerializer<CompoundTag, OxygenComponent>() {
+		@Override
+		public OxygenComponent read(IAttachmentHolder holder, CompoundTag tag, HolderLookup.Provider provider) {
+			var component = new OxygenComponent((Entity) holder);
+
+			component.readFromNbt(tag);
+
+			return component;
+		}
+
+		@Override
+		public CompoundTag write(OxygenComponent attachment, HolderLookup.Provider provider) {
+			var tag = new CompoundTag();
+
+			attachment.writeToNbt(tag);
+
+			return tag;
+		}
+	}).build());
 	
 	public static void init() {
 		REGISTRY.register(AMCommon.modEventBus());
