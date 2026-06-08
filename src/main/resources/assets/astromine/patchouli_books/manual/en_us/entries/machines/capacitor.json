@@ -1,0 +1,23 @@
+{
+  "name": "Capacitor",
+  "icon": "astromine:primitive_capacitor",
+  "category": "astromine:machines",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_capacitor",
+      "text": "A $(item)Capacitor$() holds electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_capacitor",
+      "recipe2": "astromine:basic_capacitor"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_capacitor",
+      "recipe2": "astromine:elite_capacitor"
+    }
+  ]
+}

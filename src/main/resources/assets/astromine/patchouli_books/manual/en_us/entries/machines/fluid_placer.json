@@ -1,0 +1,17 @@
+{
+  "name": "Fluid Placer",
+  "icon": "astromine:fluid_placer",
+  "category": "astromine:machines",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:fluid_placer",
+      "text": "A $(item)Fluid Placer$() places fluids in front of itself."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:fluid_placer"
+    }
+  ]
+}

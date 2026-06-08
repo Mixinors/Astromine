@@ -1,0 +1,21 @@
+{
+  "name": "Holographic Bridge Projector",
+  "icon": "astromine:holographic_bridge_projector",
+  "category": "astromine:machines",
+  "sortnum": 16,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:holographic_bridge_projector",
+      "text": "A $(item)Holographic Bridge Projector$() is able to project a bridge between itself and another, located within the same X, Y or Z axis.$(br)A connection is made through a $(item)Holographic Connector$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:holographic_bridge_projector"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:holographic_connector"
+    }
+  ]
+}

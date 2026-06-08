@@ -50,6 +50,7 @@ configurations {
 
 dependencies {
 	implementation "net.neoforged:neoforge:${neo_version}"
+	implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
@@ -93,6 +94,8 @@ tasks.withType(ProcessResources).configureEach {
 			neo_version            : neo_version,
 			neo_version_range      : neo_version_range,
 			loader_version_range   : loader_version_range,
+			patchouli_version      : patchouli_version,
+			patchouli_version_range: patchouli_version_range,
 			mod_id                 : mod_id,
 			mod_name               : mod_name,
 			mod_license            : mod_license,

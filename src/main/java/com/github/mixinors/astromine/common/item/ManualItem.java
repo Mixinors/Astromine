@@ -24,12 +24,15 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.github.mixinors.astromine.AMCommon;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class ManualItem extends Item {
 	public ManualItem(Properties settings) {
@@ -38,6 +41,12 @@ public class ManualItem extends Item {
 	
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
-		return InteractionResultHolder.success(user.getItemInHand(hand));
+		var stack = user.getItemInHand(hand);
+
+		if (!world.isClientSide && user instanceof ServerPlayer serverPlayer) {
+			PatchouliAPI.get().openBookGUI(serverPlayer, AMCommon.id("manual"));
+		}
+
+		return InteractionResultHolder.sidedSuccess(stack, world.isClientSide);
 	}
 }

@@ -1,0 +1,13 @@
+{
+  "name": "Plates",
+  "icon": "astromine:iron_plate",
+  "category": "astromine:components",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:iron_plate",
+      "text": "$(item)Plates$() are important components of tools and machines."
+    }
+  ]
+}

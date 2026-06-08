@@ -1,0 +1,23 @@
+{
+  "name": "Buffer",
+  "icon": "astromine:primitive_buffer",
+  "category": "astromine:machines",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_buffer",
+      "text": "A $(item)Buffer$() holds items."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_buffer",
+      "recipe2": "astromine:basic_buffer"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_buffer",
+      "recipe2": "astromine:elite_buffer"
+    }
+  ]
+}

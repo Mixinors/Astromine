@@ -28,3 +28,10 @@ type="required"
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="patchouli"
+type="required"
+versionRange="${patchouli_version_range}"
+ordering="AFTER"
+side="BOTH"

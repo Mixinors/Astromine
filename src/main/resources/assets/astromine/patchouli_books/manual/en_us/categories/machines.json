@@ -1,0 +1,6 @@
+{
+  "name": "text.astromine.patchouli.machinery.title",
+  "description": "text.astromine.patchouli.machinery.description",
+  "icon": "astromine:primitive_solid_generator",
+  "sortnum": 3
+}
