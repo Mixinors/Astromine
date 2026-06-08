@@ -35,7 +35,7 @@ public class RedstoneControlWidget extends Widget {
 	@Override
 	public void render(GuiGraphics graphics, WidgetContext context) {
 		GuiRenderers.panel(graphics, context.left() + x, context.top() + y, width, height);
-		graphics.renderItem(redstoneIcon(blockEntity.getRedstoneType()), context.left() + x + 2, context.top() + y + 2);
+		graphics.renderItem(redstoneIcon(blockEntity.getRedstoneType()), context.left() + x + 2, context.top() + y + 1);
 	}
 	
 	@Override
