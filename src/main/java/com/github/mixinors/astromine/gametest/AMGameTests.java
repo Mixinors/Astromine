@@ -24,6 +24,9 @@
 
 package com.github.mixinors.astromine.gametest;
 
+import java.util.UUID;
+
+import com.mojang.authlib.GameProfile;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
@@ -46,6 +49,9 @@ import com.github.mixinors.astromine.common.block.network.CableBlock;
 import com.github.mixinors.astromine.common.component.world.NetworksComponent;
 import com.github.mixinors.astromine.common.gravity.GravityManager;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
+import com.github.mixinors.astromine.common.item.utility.DrillItem;
+import com.github.mixinors.astromine.common.item.utility.DrillMiningArea;
+import com.github.mixinors.astromine.common.item.utility.DrillMiningHandler;
 import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.oxygen.OxygenManager;
@@ -89,6 +95,9 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -106,6 +115,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -357,6 +367,77 @@ public final class AMGameTests {
 
 		helper.assertTrue(fluid != null, "portable tank should expose NeoForge fluid capability");
 		helper.assertTrue(fluid.fill(new FluidStack(Fluids.WATER, 1), IFluidHandler.FluidAction.EXECUTE) > 0, "portable tank should receive fluid");
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void drillBreaksTierAreaAndConsumesEnergy(GameTestHelper helper) {
+		var origin = new BlockPos(3, 3, 3);
+		var face = Direction.NORTH;
+		var stack = new ItemStack(AMItems.BASIC_DRILL.get());
+		var drill = (DrillItem) stack.getItem();
+		var energyPerBlock = drill.getEnergyConsumedOnBlockBreak();
+		var positions = DrillMiningArea.positions(origin, face, drill.getMiningDiameter());
+
+		for (var pos : positions) {
+			helper.setBlock(pos, Blocks.STONE);
+		}
+
+		drill.setStoredEnergy(stack, energyPerBlock * positions.size());
+
+		var player = createMockServerPlayer(helper);
+		player.setPos(
+				(double) helper.absolutePos(origin).getX() + 0.5,
+				(double) helper.absolutePos(origin).getY() + 0.5,
+				(double) helper.absolutePos(origin).getZ() - 2.0
+		);
+		player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+
+		DrillMiningHandler.onLeftClickBlock(new PlayerInteractEvent.LeftClickBlock(player, helper.absolutePos(origin), face, PlayerInteractEvent.LeftClickBlock.Action.START));
+		player.gameMode.destroyBlock(helper.absolutePos(origin));
+
+		for (var pos : positions) {
+			helper.assertBlockPresent(Blocks.AIR, pos);
+		}
+
+		helper.assertTrue(drill.getStoredEnergy(stack) == 0L, "drill should consume energy for every broken block");
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void drillAreaBreakIgnoresExtraBlockReach(GameTestHelper helper) {
+		var origin = new BlockPos(5, 5, 5);
+		var face = Direction.NORTH;
+		var stack = new ItemStack(AMItems.ELITE_DRILL.get());
+		var drill = (DrillItem) stack.getItem();
+		var energyPerBlock = drill.getEnergyConsumedOnBlockBreak();
+		var positions = DrillMiningArea.positions(origin, face, drill.getMiningDiameter());
+		var outOfReachCorner = origin.offset(3, 3, 0);
+
+		for (var pos : positions) {
+			helper.setBlock(pos, Blocks.STONE);
+		}
+
+		drill.setStoredEnergy(stack, energyPerBlock * positions.size());
+
+		var player = createMockServerPlayer(helper);
+		player.setPos(
+				(double) helper.absolutePos(origin).getX() + 0.5,
+				(double) helper.absolutePos(origin).getY() + 0.5,
+				(double) helper.absolutePos(origin).getZ() - 5.0
+		);
+		player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+
+		helper.assertTrue(player.canInteractWithBlock(helper.absolutePos(origin), 1.0), "player should be able to reach the targeted block");
+		helper.assertTrue(!player.canInteractWithBlock(helper.absolutePos(outOfReachCorner), 1.0), "regression corner should be outside direct player reach");
+
+		DrillMiningHandler.onLeftClickBlock(new PlayerInteractEvent.LeftClickBlock(player, helper.absolutePos(origin), face, PlayerInteractEvent.LeftClickBlock.Action.START));
+		player.gameMode.destroyBlock(helper.absolutePos(origin));
+
+		for (var pos : positions) {
+			helper.assertBlockPresent(Blocks.AIR, pos);
+		}
+
 		helper.succeed();
 	}
 
@@ -1268,6 +1349,12 @@ public final class AMGameTests {
 		helper.assertTrue(storage != null, "expected energy storage at " + pos);
 
 		return storage;
+	}
+
+	private static ServerPlayer createMockServerPlayer(GameTestHelper helper) {
+		var cookie = CommonListenerCookie.createInitial(new GameProfile(UUID.randomUUID(), "test-mock-player"), false);
+
+		return new ServerPlayer(helper.getLevel().getServer(), helper.getLevel(), cookie.gameProfile(), cookie.clientInformation());
 	}
 
 	private static void assertNoPrecipitation(GameTestHelper helper, ResourceKey<Biome> key) {

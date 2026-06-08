@@ -130,6 +130,10 @@ public class AMBlockTagProvider extends BlockTagsProvider {
 				oresTagBuilder.addTag(variant.getTag());
 			}
 		});
+
+		tag(AMTagKeys.BlockTags.DRILL_MINEABLE)
+				.addTag(net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE)
+				.addTag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL);
 		
 		var yellowSandstonesTag = AMTagKeys.BlockTags.YELLOW_SANDSTONES;
 		tag(yellowSandstonesTag)

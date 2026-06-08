@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.component.world.NetworksComponent;
 import com.github.mixinors.astromine.common.gravity.GravityManager;
+import com.github.mixinors.astromine.common.item.utility.DrillMiningHandler;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.manager.StationManager;
@@ -35,9 +36,12 @@ import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedE
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -54,6 +58,8 @@ public class AMEvents {
 		NeoForge.EVENT_BUS.addListener(AMEvents::onServerStarting);
 		NeoForge.EVENT_BUS.addListener(AMEvents::onPlayerJoin);
 		NeoForge.EVENT_BUS.addListener(AMEvents::onEntityTick);
+		NeoForge.EVENT_BUS.addListener(AMEvents::onLeftClickBlock);
+		NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, AMEvents::onBlockBreak);
 	}
 
 	private static void addReloadListeners(AddReloadListenerEvent event) {
@@ -115,5 +121,13 @@ public class AMEvents {
 			StationManager.onPlayerJoin(player.getServer());
 			BodyManager.onPlayerJoin(player.getServer());
 		}
+	}
+
+	private static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+		DrillMiningHandler.onLeftClickBlock(event);
+	}
+
+	private static void onBlockBreak(BlockEvent.BreakEvent event) {
+		DrillMiningHandler.onBlockBreak(event);
 	}
 }

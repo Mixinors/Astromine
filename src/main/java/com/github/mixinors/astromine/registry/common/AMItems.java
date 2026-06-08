@@ -436,10 +436,10 @@ public class AMItems {
 	public static final DeferredHolder<Item, Item> ELITE_BATTERY_PACK = register("elite_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().stacksTo(1), AMConfig.get().items.batteries.batteryPacks.elite));
 	public static final DeferredHolder<Item, Item> CREATIVE_BATTERY_PACK = register("creative_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().stacksTo(1), Long.MAX_VALUE));
 	
-	public static final DeferredHolder<Item, Item> PRIMITIVE_DRILL = register("primitive_drill", () -> new DrillItem(AMToolMaterials.PRIMITIVE_DRILL, 1.0F, -2.8F, AMConfig.get().items.primitiveDrillEnergy, getSettings().stacksTo(1)));
-	public static final DeferredHolder<Item, Item> BASIC_DRILL = register("basic_drill", () -> new DrillItem(AMToolMaterials.BASIC_DRILL, 1.0F, -2.8F, AMConfig.get().items.basicDrillEnergy, getSettings().stacksTo(1)));
-	public static final DeferredHolder<Item, Item> ADVANCED_DRILL = register("advanced_drill", () -> new DrillItem(AMToolMaterials.ADVANCED_DRILL, 1.0F, -2.8F, AMConfig.get().items.advancedDrillEnergy, getSettings().stacksTo(1)));
-	public static final DeferredHolder<Item, Item> ELITE_DRILL = register("elite_drill", () -> new DrillItem(AMToolMaterials.ELITE_DRILL, 1.0F, -2.8F, AMConfig.get().items.eliteDrillEnergy, getSettings().stacksTo(1)));
+	public static final DeferredHolder<Item, Item> PRIMITIVE_DRILL = register("primitive_drill", () -> new DrillItem(AMToolMaterials.PRIMITIVE_DRILL, 1.0F, -2.8F, AMConfig.get().items.primitiveDrillEnergy, 1, getSettings().stacksTo(1)));
+	public static final DeferredHolder<Item, Item> BASIC_DRILL = register("basic_drill", () -> new DrillItem(AMToolMaterials.BASIC_DRILL, 1.0F, -2.8F, AMConfig.get().items.basicDrillEnergy, 3, getSettings().stacksTo(1)));
+	public static final DeferredHolder<Item, Item> ADVANCED_DRILL = register("advanced_drill", () -> new DrillItem(AMToolMaterials.ADVANCED_DRILL, 1.0F, -2.8F, AMConfig.get().items.advancedDrillEnergy, 5, getSettings().stacksTo(1)));
+	public static final DeferredHolder<Item, Item> ELITE_DRILL = register("elite_drill", () -> new DrillItem(AMToolMaterials.ELITE_DRILL, 1.0F, -2.8F, AMConfig.get().items.eliteDrillEnergy, 7, getSettings().stacksTo(1)));
 	
 	public static final DeferredHolder<Item, Item> DRILL_HEAD = register("drill_head", () -> new Item(getSettings()));
 	

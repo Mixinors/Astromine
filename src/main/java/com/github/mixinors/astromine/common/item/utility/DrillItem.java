@@ -39,12 +39,15 @@ public class DrillItem extends DiggerItem implements EnergyStorageItem {
 	private final long capacity;
 	
 	private final Tier material;
+
+	private final int miningDiameter;
 	
-	public DrillItem(Tier material, float attackDamage, float attackSpeed, long capacity, Properties settings) {
+	public DrillItem(Tier material, float attackDamage, float attackSpeed, long capacity, int miningDiameter, Properties settings) {
 		super(material, AMTagKeys.BlockTags.DRILL_MINEABLE, settings);
 		
 		this.material = material;
 		this.capacity = capacity;
+		this.miningDiameter = miningDiameter;
 	}
 	
 	@Override
@@ -81,6 +84,10 @@ public class DrillItem extends DiggerItem implements EnergyStorageItem {
 	
 	public long getEnergyConsumedOnEntityHit() {
 		return (long) (AMConfig.get().items.drillConsumedEntityHit * material.getSpeed());
+	}
+
+	public int getMiningDiameter() {
+		return miningDiameter;
 	}
 	
 	@Override

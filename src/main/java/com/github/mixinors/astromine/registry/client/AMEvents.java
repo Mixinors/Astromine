@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.registry.client;
 import java.util.List;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.client.render.DrillMiningPreviewRenderer;
 import com.github.mixinors.astromine.client.render.effects.SpaceDimensionEffects;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
@@ -47,6 +48,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -61,6 +63,7 @@ public class AMEvents {
 		modBus.addListener(AMEvents::registerClientExtensions);
 		NeoForge.EVENT_BUS.addListener(AMEvents::updateTickDelta);
 		NeoForge.EVENT_BUS.addListener(AMEvents::appendTooltips);
+		NeoForge.EVENT_BUS.addListener(AMEvents::renderDrillMiningPreview);
 	}
 	
 	private static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event) {
@@ -149,6 +152,10 @@ public class AMEvents {
 		}
 		
 		return null;
+	}
+
+	private static void renderDrillMiningPreview(RenderHighlightEvent.Block event) {
+		DrillMiningPreviewRenderer.render(event);
 	}
 
 	private static FluidTooltipStorage findFluidStorage(ItemStack stack) {
