@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "entity",
-      "entity": "astromine:primitive_rocket",
+      "entity": "astromine:rocket",
       "text": "A $(thing)Rocket$() will get you to space, but it won't be coming back, when provided with $(thing)Oxygen$() and $(thing)Kerosene$()."
     }
   ]

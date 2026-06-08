@@ -711,9 +711,10 @@ public class AMModelProvider implements DataProvider {
 			var json = new JsonObject();
 			json.addProperty("render_type", "minecraft:cutout");
 
+			var textureId = AMCommon.id("block/siding/" + texture).toString();
 			var textures = new JsonObject();
-			textures.addProperty("siding", AMCommon.id("widget/" + texture).toString());
-			textures.addProperty("particle", AMCommon.id("widget/" + texture).toString());
+			textures.addProperty("siding", textureId);
+			textures.addProperty("particle", textureId);
 			json.add("textures", textures);
 
 			var elements = new JsonArray();

@@ -235,6 +235,7 @@ tasks.register('verifyClientAssets') {
 				include '**/*.json'
 			}.each { modelFile ->
 				var json = jsonSlurper.parse(modelFile)
+				var relativeModelPath = root.toPath().relativize(modelFile.toPath()).toString().replace(File.separatorChar, '/' as char)
 				var parent = astromineAsset(json.parent, 'model')
 
 				if (parent != null && !assetExists(parent)) {
@@ -247,6 +248,10 @@ tasks.register('verifyClientAssets') {
 
 						if (texture != null && !assetExists(texture)) {
 							missing.add("${modelFile}: missing texture ${key}=${value} -> ${texture}")
+						}
+
+						if (texture != null && relativeModelPath.startsWith('models/block/') && !value.substring('astromine:'.length()).startsWith('block/')) {
+							missing.add("${modelFile}: block model texture ${key}=${value} must live under astromine:textures/block for the block atlas")
 						}
 					}
 				}

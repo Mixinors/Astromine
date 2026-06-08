@@ -27,7 +27,7 @@
   ],
   "render_type": "minecraft:cutout",
   "textures": {
-    "particle": "astromine:widget/insert",
-    "siding": "astromine:widget/insert"
+    "particle": "astromine:block/siding/insert",
+    "siding": "astromine:block/siding/insert"
   }
 }

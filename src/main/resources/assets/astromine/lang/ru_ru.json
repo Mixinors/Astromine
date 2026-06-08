@@ -2,7 +2,7 @@
   "block.minecraft.empty": "Пусто",
   "entity.astromine.super_space_slime": "Jelanium: Космический супер слизень",
   "entity.astromine.space_slime": "Космический слизень",
-  "entity.astromine.primitive_rocket": "Примитивная ракета",
+  "entity.astromine.rocket": "Примитивная ракета",
   "text.astromine.rocket.disassemble_empty_fuel": "Ракета была уничтожена unscheduled disassembly: топливо не заправлено!",
   "text.astromine.rocket.disassemble_collision": "Ракета была уничтожена: траектория заблокирована!",
   "text.astromine.rocket.disassemble_invalid_fuel": "Ракета была уничтожена: заправлено неправильное топливо!",

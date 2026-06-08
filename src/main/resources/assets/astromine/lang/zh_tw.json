@@ -1,7 +1,7 @@
 {
   "entity.astromine.super_space_slime": "啫喱子：超級太空史萊姆",
   "entity.astromine.space_slime": "太空史萊姆",
-  "entity.astromine.primitive_rocket": "原始火箭",
+  "entity.astromine.rocket": "原始火箭",
   "text.astromine.message.holographic_connection_successful": "已成功連線 %s 與 %s 的投影機。",
   "text.astromine.message.holographic_connection_failed": "在 %s 和 %s 的投影機連線失敗。",
   "text.astromine.message.holographic_connection_clear": "已清除選定的投影器 ！",

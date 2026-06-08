@@ -2,7 +2,7 @@
   "block.minecraft.empty": "Empty",
   "entity.astromine.super_space_slime": "Jelanium: Super Space Slime",
   "entity.astromine.space_slime": "Space Slime",
-  "entity.astromine.primitive_rocket": "Primitive Rocket",
+  "entity.astromine.rocket": "Primitive Rocket",
   "text.astromine.message.holographic_connection_successful": "Succeeded in connecting projector at %s with projector at %s.",
   "text.astromine.message.holographic_connection_failed": "Failed to connect projector at %s with projector at %s.",
   "text.astromine.message.holographic_connection_clear": "Cleared selected projectors!",

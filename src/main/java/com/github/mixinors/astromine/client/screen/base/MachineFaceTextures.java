@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.client.screen.base;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.util.MirrorUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -39,8 +40,22 @@ final class MachineFaceTextures {
 		var blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 		var localSide = MirrorUtils.rotate(physicalSide, facing);
 		var activeSuffix = state.hasProperty(BlockWithEntity.ACTIVE) && state.getValue(BlockWithEntity.ACTIVE) && !blockId.getPath().equals("rocket_controller") ? "_active" : "";
+		var texture = texture(blockId, localSide, activeSuffix);
 
+		if (!activeSuffix.isEmpty() && !hasTexture(texture)) {
+			return texture(blockId, localSide, "");
+		}
+
+		return texture;
+	}
+
+	private static ResourceLocation texture(ResourceLocation blockId, Direction localSide, String activeSuffix) {
 		return ResourceLocation.fromNamespaceAndPath(blockId.getNamespace(), "textures/block/" + blockId.getPath() + "_" + suffix(localSide) + activeSuffix + ".png");
+	}
+
+	private static boolean hasTexture(ResourceLocation texture) {
+		var minecraft = Minecraft.getInstance();
+		return minecraft != null && minecraft.getResourceManager().getResource(texture).isPresent();
 	}
 
 	private static String suffix(Direction localSide) {

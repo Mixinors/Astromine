@@ -27,7 +27,7 @@
   ],
   "render_type": "minecraft:cutout",
   "textures": {
-    "particle": "astromine:widget/insert_extract",
-    "siding": "astromine:widget/insert_extract"
+    "particle": "astromine:block/siding/insert_extract",
+    "siding": "astromine:block/siding/insert_extract"
   }
 }

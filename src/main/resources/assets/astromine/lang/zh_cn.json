@@ -2,7 +2,7 @@
   "block.minecraft.empty": "空",
   "entity.astromine.super_space_slime": "啫喱子：超级太空史莱姆",
   "entity.astromine.space_slime": "太空史莱姆",
-  "entity.astromine.primitive_rocket": "原始火箭",
+  "entity.astromine.rocket": "原始火箭",
   "text.astromine.message.holographic_connection_successful": "已成功连接 %s 与 %s 的全息投影仪。",
   "text.astromine.message.holographic_connection_failed": "在 %s 和 %s 的全息投影仪连接失败。",
   "text.astromine.message.holographic_connection_clear": "已清除选定的全息投影仪！",

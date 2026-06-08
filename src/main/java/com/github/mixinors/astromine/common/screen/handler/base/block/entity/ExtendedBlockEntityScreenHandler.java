@@ -278,6 +278,14 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		}
 
 		private double getProgressRatio() {
+			if (blockEntity != null && blockEntity.getLevel() != null && blockEntity.getLevel().isClientSide()) {
+				if (blockEntity.limit <= 0.0D) {
+					return 0.0D;
+				}
+
+				return Mth.clamp(blockEntity.progress / blockEntity.limit, 0.0D, 1.0D);
+			}
+
 			return get(0) / (double) PROGRESS_DATA_SCALE;
 		}
 	}
