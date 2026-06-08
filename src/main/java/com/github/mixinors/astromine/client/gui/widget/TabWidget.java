@@ -55,7 +55,7 @@ public class TabWidget extends Widget {
 			var tabX = context.left() + x + tab * GuiSprites.TAB_WIDTH;
 			var tabY = context.top() + y + (selectedTab ? 0 : 2);
 			var texture = tabTexture(tab, pages.size(), selectedTab);
-			var textureHeight = selectedTab ? 29 : 26;
+			var textureHeight = selectedTab ? (tab == 0 ? 29 : 28) : 26;
 			graphics.blit(texture, tabX, tabY, 0.0F, 0.0F, 25, textureHeight, 25, textureHeight);
 			graphics.renderItem(pages.get(tab).icon().get(), tabX + 5, context.top() + y + 7);
 		}
