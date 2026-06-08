@@ -112,9 +112,9 @@ public class SuperSpaceSlimeEntity extends Mob implements Enemy {
 	
 	@Override
 	public void tick() {
-		this.stretch += (this.targetStretch - this.stretch) * 0.5F;
-		
 		this.prevStretch = this.stretch;
+		this.prevExplodingProgress = this.getExplodingProgress();
+		this.stretch += (this.targetStretch - this.stretch) * 0.5F;
 		
 		super.tick();
 		

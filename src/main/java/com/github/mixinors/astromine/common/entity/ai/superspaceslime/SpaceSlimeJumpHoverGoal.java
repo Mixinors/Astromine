@@ -26,9 +26,7 @@ package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
 import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
 import java.util.EnumSet;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.phys.Vec3;
 
 public class SpaceSlimeJumpHoverGoal extends Goal {
 	private final SpaceSlimeEntity slime;
@@ -77,7 +75,10 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 	@Override
 	public void tick() {
 		if (slime.onGround()) {
-			slime.move(MoverType.SELF, new Vec3(0.0D, 0.1D, 0.0D));
+			var movement = slime.getDeltaMovement();
+			
+			slime.setDeltaMovement(movement.x, 0.1D, movement.z);
+			slime.hasImpulse = true;
 		}
 		
 		this.slime.setFloatingProgress(slime.getFloatingProgress() + 1);

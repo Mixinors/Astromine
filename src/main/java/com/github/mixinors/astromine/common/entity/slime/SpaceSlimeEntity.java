@@ -93,6 +93,8 @@ public class SpaceSlimeEntity extends Slime {
 	
 	@Override
 	public void tick() {
+		this.prevFloatingProgress = this.getFloatingProgress();
+		
 		if (this.floatingCooldown > 0) {
 			this.floatingCooldown--;
 		}

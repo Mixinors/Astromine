@@ -72,7 +72,8 @@ public class SuperSpaceSlimeEntityRenderer extends MobRenderer<SuperSpaceSlimeEn
 		matrices.scale(multiplier * slimeSize, 1.0F / multiplier * slimeSize, multiplier * slimeSize);
 		
 		if (slimeEntity.isExploding()) {
-			var explodingScale = 1.0F + (float) Math.sin(slimeEntity.getExplodingProgress() / 5.0F) / 10.0F;
+			var explodingProgress = Mth.lerp(tickDelta, slimeEntity.prevExplodingProgress, slimeEntity.getExplodingProgress());
+			var explodingScale = 1.0F + (float) Math.sin(explodingProgress / 5.0F) / 10.0F;
 			
 			matrices.scale(explodingScale, explodingScale, explodingScale);
 		}

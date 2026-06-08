@@ -56,7 +56,6 @@ public class SpaceSlimeEntityRenderer extends MobRenderer<SpaceSlimeEntity, Spac
 		// todo: random axis rotation
 		if (entity.isFloating()) {
 			var floatingProgress = Mth.lerp(tickDelta, entity.prevFloatingProgress, entity.getFloatingProgress());
-			entity.prevFloatingProgress = floatingProgress;
 			
 			matrices.mulPose(Axis.XP.rotationDegrees((floatingProgress / 200.0F) * 360.0F));
 		}
