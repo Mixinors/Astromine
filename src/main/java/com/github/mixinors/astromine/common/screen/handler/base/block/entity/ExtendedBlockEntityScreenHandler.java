@@ -7,6 +7,7 @@
 package com.github.mixinors.astromine.common.screen.handler.base.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.screen.handler.base.MenuQuickMove;
 import com.github.mixinors.astromine.common.screen.handler.base.block.BlockStateScreenHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,11 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	
 	public double getProgressRatio() {
 		return progressData.getProgressRatio();
+	}
+
+	@Override
+	public ItemStack quickMoveStack(Player player, int index) {
+		return MenuQuickMove.moveWithPlayerSlotsFirst(this, player, index, this::moveItemStackTo);
 	}
 
 	protected void addBlockEntitySlot(int slot, int x, int y) {

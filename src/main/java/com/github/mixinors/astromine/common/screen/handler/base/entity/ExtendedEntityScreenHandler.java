@@ -7,6 +7,7 @@
 package com.github.mixinors.astromine.common.screen.handler.base.entity;
 
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
+import com.github.mixinors.astromine.common.screen.handler.base.MenuQuickMove;
 import java.util.function.Supplier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -48,7 +49,7 @@ public abstract class ExtendedEntityScreenHandler extends AbstractContainerMenu 
 	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-		return ItemStack.EMPTY;
+		return MenuQuickMove.moveWithPlayerSlotsLast(this, player, index, this::moveItemStackTo);
 	}
 	
 	public ExtendedEntity getEntity() {

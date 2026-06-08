@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screen.handler;
 
+import com.github.mixinors.astromine.common.screen.handler.base.MenuQuickMove;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,7 +63,7 @@ public class RecipeCreatorScreenHandler extends AbstractContainerMenu {
 	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-		return ItemStack.EMPTY;
+		return MenuQuickMove.moveWithPlayerSlotsLast(this, player, index, this::moveItemStackTo);
 	}
 	
 	private void addPlayerInventory(Inventory inventory, int x, int y) {
