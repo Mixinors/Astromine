@@ -75,6 +75,7 @@ public class AMBiomes {
 				.build();
 		
 		return (new Biome.BiomeBuilder())
+				.hasPrecipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.specialEffects((new BiomeSpecialEffects.Builder())
@@ -96,6 +97,7 @@ public class AMBiomes {
 		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
 		return (new Biome.BiomeBuilder())
+				.hasPrecipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.specialEffects((new BiomeSpecialEffects.Builder())
@@ -117,6 +119,7 @@ public class AMBiomes {
 		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
 		return (new Biome.BiomeBuilder())
+				.hasPrecipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.specialEffects((new BiomeSpecialEffects.Builder())
@@ -138,6 +141,7 @@ public class AMBiomes {
 		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
 		return (new Biome.BiomeBuilder())
+				.hasPrecipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.specialEffects((new BiomeSpecialEffects.Builder())
@@ -157,6 +161,7 @@ public class AMBiomes {
 		var generationSettings = BiomeGenerationSettings.EMPTY;
 		
 		return (new Biome.BiomeBuilder())
+				.hasPrecipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.specialEffects((new BiomeSpecialEffects.Builder())

@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.client.render.skybox.SpaceSkyRenderer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
@@ -49,5 +50,15 @@ public class SpaceDimensionEffects extends DimensionSpecialEffects {
 	@Override
 	public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
 		return SpaceSkyRenderer.render(level, camera);
+	}
+
+	@Override
+	public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
+		return true;
+	}
+
+	@Override
+	public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
+		return true;
 	}
 }

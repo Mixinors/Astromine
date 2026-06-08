@@ -65,6 +65,7 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.NetworkUtils;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItemGroups;
@@ -79,6 +80,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -88,6 +90,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
@@ -128,6 +131,12 @@ public final class AMGameTests {
 		var dimensionTypes = server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE);
 		var moonOrbitType = dimensionTypes.getHolderOrThrow(AMWorlds.MOON_ORBIT_DIMENSION_TYPE_KEY);
 		helper.assertTrue(AMWorlds.isVacuum(moonOrbitType), "moon orbit should be tagged as a vacuum dimension");
+
+		assertNoPrecipitation(helper, AMBiomes.ASTEROID_BELT_KEY);
+		assertNoPrecipitation(helper, AMBiomes.MOON_LIGHT_SIDE_KEY);
+		assertNoPrecipitation(helper, AMBiomes.MOON_DARK_SIDE_KEY);
+		assertNoPrecipitation(helper, AMBiomes.MOON_CRATER_FIELD_KEY);
+		assertNoPrecipitation(helper, AMBiomes.ROCKET_KEY);
 		
 		helper.succeed();
 	}
@@ -1141,6 +1150,14 @@ public final class AMGameTests {
 		helper.assertTrue(storage != null, "expected energy storage at " + pos);
 		
 		return storage;
+	}
+
+	private static void assertNoPrecipitation(GameTestHelper helper, ResourceKey<Biome> key) {
+		var biomes = helper.getLevel().registryAccess().registryOrThrow(Registries.BIOME);
+		var biome = biomes.getHolderOrThrow(key).value();
+
+		helper.assertTrue(!biome.hasPrecipitation(), key.location() + " should not allow precipitation");
+		helper.assertTrue(biome.getPrecipitationAt(BlockPos.ZERO) == Biome.Precipitation.NONE, key.location() + " should report no precipitation at block positions");
 	}
 	
 	private static void configureCable(GameTestHelper helper, BlockPos pos, Direction direction, StorageSiding siding) {
