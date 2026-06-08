@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 300,
+  "energy_input": 2400,
   "input": {
     "count": 1,
     "tag": "c:redstone_clusters"
@@ -9,5 +9,5 @@
     "count": 2,
     "item": "minecraft:redstone"
   },
-  "time": 90
+  "time": 120
 }

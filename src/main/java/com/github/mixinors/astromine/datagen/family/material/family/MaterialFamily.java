@@ -46,7 +46,7 @@ import net.minecraft.world.level.block.Block;
 public class MaterialFamily implements Comparable<MaterialFamily> {
 	public static final float DEFAULT_ORE_SMELTING_EXPERIENCE = 0.7F;
 	
-	public static final int DEFAULT_BASE_MELTING_TIME = 200;
+	public static final int DEFAULT_BASE_MELTING_TIME = 80;
 	public static final int DEFAULT_BASE_MELTING_ENERGY = 1600;
 	
 	final Map<ItemVariant, Item> itemVariants = new HashMap<>();

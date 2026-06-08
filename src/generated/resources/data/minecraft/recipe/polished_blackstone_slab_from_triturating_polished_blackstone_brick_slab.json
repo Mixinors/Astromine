@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 300,
+  "energy_input": 800,
   "input": {
     "count": 1,
     "item": "minecraft:polished_blackstone_brick_slab"

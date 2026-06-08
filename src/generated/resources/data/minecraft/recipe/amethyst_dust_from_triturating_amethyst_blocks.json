@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 540,
+  "energy_input": 6400,
   "input": {
     "count": 1,
     "tag": "c:amethyst_blocks"
@@ -9,5 +9,5 @@
     "count": 4,
     "item": "astromine:amethyst_dust"
   },
-  "time": 240
+  "time": 320
 }

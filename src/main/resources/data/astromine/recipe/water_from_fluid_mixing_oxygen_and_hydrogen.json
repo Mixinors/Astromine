@@ -2,16 +2,16 @@
   "type": "astromine:fluid_mixing",
   "first_input": {
     "fluid": "astromine:oxygen",
-    "amount": 750
+    "amount": 1000
   },
   "second_input": {
     "fluid": "astromine:hydrogen",
-    "amount": 1500
+    "amount": 2000
   },
   "output": {
     "fluid": "minecraft:water",
-    "amount": 2250
+    "amount": 3000
   },
-  "energy_input": 24,
-  "time": 5
+  "energy_input": 2000,
+  "time": 100
 }

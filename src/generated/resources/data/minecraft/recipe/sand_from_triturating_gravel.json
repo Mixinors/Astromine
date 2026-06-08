@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 440,
+  "energy_input": 1600,
   "input": {
     "count": 1,
     "item": "minecraft:gravel"
@@ -9,5 +9,5 @@
     "count": 1,
     "item": "minecraft:sand"
   },
-  "time": 240
+  "time": 160
 }

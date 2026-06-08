@@ -2,12 +2,12 @@
   "type": "astromine:refining",
   "input": {
     "tag": "c:oil",
-    "amount": 810
+    "amount": 1000
   },
   "output": {
     "fluid": "astromine:fuel",
-    "amount": 405
+    "amount": 500
   },
-  "energy_input": 32,
-  "time": 5
+  "energy_input": 8000,
+  "time": 200
 }

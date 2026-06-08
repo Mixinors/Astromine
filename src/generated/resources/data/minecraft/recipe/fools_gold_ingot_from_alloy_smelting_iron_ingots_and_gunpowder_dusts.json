@@ -1,6 +1,6 @@
 {
   "type": "astromine:alloy_smelting",
-  "energy_input": 600,
+  "energy_input": 2400,
   "first_input": {
     "count": 1,
     "tag": "c:iron_ingots"
@@ -13,5 +13,5 @@
     "count": 1,
     "tag": "c:gunpowder_dusts"
   },
-  "time": 150
+  "time": 120
 }

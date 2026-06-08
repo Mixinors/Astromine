@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 540,
+  "energy_input": 14400,
   "input": {
     "count": 1,
     "tag": "c:fools_gold_blocks"
@@ -9,5 +9,5 @@
     "count": 9,
     "item": "astromine:fools_gold_dust"
   },
-  "time": 240
+  "time": 720
 }

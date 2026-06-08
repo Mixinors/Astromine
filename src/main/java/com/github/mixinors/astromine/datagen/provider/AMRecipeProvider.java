@@ -71,6 +71,33 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class AMRecipeProvider extends RecipeProvider {
+	private static final int TINY_DUST_TIME = 20;
+	private static final int TINY_DUST_ENERGY = 200;
+	private static final int SALVAGE_TIME = 40;
+	private static final int SALVAGE_ENERGY = 400;
+	private static final int MATERIAL_PROCESSING_TIME = 80;
+	private static final int MATERIAL_PROCESSING_ENERGY = 1600;
+	private static final int CLUSTER_PROCESSING_TIME = 120;
+	private static final int CLUSTER_PROCESSING_ENERGY = 2400;
+	private static final int ORE_PROCESSING_TIME = 200;
+	private static final int ORE_PROCESSING_ENERGY = 4000;
+	private static final int BLOCK_2X2_PROCESSING_TIME = 320;
+	private static final int BLOCK_2X2_PROCESSING_ENERGY = 6400;
+	private static final int BLOCK_3X3_PROCESSING_TIME = 720;
+	private static final int BLOCK_3X3_PROCESSING_ENERGY = 14400;
+	private static final int SIMPLE_GRINDING_TIME = 80;
+	private static final int SIMPLE_GRINDING_ENERGY = 800;
+	private static final int HEAVY_GRINDING_TIME = 160;
+	private static final int HEAVY_GRINDING_ENERGY = 1600;
+	private static final int STONE_GRINDING_TIME = 200;
+	private static final int STONE_GRINDING_ENERGY = 1600;
+	private static final int BIOFUEL_GRINDING_BASE_TIME = 40;
+	private static final int BIOFUEL_GRINDING_TIME_PER_OUTPUT = 20;
+	private static final int BIOFUEL_GRINDING_ENERGY_PER_OUTPUT = 200;
+	private static final int BIOFUEL_TO_BIOMASS_AMOUNT = 100;
+	private static final int BIOFUEL_TO_BIOMASS_TIME = 80;
+	private static final int BIOFUEL_TO_BIOMASS_ENERGY = 800;
+	
 	public static final Map<ItemVariant, TagOfferer> EQUIPMENT_OFFERERS = ImmutableMap.of(
 			ItemVariant.HELMET, AMRecipeProvider::offerHelmetRecipe,
 			ItemVariant.CHESTPLATE, AMRecipeProvider::offerChestplateRecipe,
@@ -609,7 +636,7 @@ public class AMRecipeProvider extends RecipeProvider {
 				if (family.hasVariant(ItemVariant.TINY_DUST)) {
 					AMCommon.LOGGER.info("Offering triturating for salvagables -> tiny dusts");
 				}
-				offerTrituratingRecipe(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.TINY_DUST), 2, 30, 200);
+				offerTrituratingRecipe(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.TINY_DUST), 2, SALVAGE_TIME, SALVAGE_ENERGY);
 			}
 			if (family.usesSmithing()) {
 				AMCommon.LOGGER.info("Offering smithing recipes for equipment");
@@ -637,28 +664,31 @@ public class AMRecipeProvider extends RecipeProvider {
 			if (family.hasVariant(ItemVariant.DUST)) {
 				if (!family.getType().equals(MaterialType.DUST)) {
 					AMCommon.LOGGER.info("Offering triturating for base -> dust");
-					offerTrituratingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.DUST), 1, 60, 270);
+					offerTrituratingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.DUST), 1, MATERIAL_PROCESSING_TIME, MATERIAL_PROCESSING_ENERGY);
 				}
 				if (family.hasVariant(BlockVariant.BLOCK)) {
 					AMCommon.LOGGER.info("Offering triturating for block -> dusts");
+					var outputCount = family.isBlock2x2() ? 4 : 9;
+					var time = family.isBlock2x2() ? BLOCK_2X2_PROCESSING_TIME : BLOCK_3X3_PROCESSING_TIME;
+					var energy = family.isBlock2x2() ? BLOCK_2X2_PROCESSING_ENERGY : BLOCK_3X3_PROCESSING_ENERGY;
 					if (family.shouldGenerateTags()) {
-						offerTrituratingRecipe(exporter, family.getItemTag(BlockVariant.BLOCK), family.getVariant(ItemVariant.DUST), family.isBlock2x2() ? 4 : 9, 240, 540);
+						offerTrituratingRecipe(exporter, family.getItemTag(BlockVariant.BLOCK), family.getVariant(ItemVariant.DUST), outputCount, time, energy);
 					} else {
-						offerTrituratingRecipe(exporter, family.getVariant(BlockVariant.BLOCK), family.getVariant(ItemVariant.DUST), family.isBlock2x2() ? 4 : 9, 240, 540);
+						offerTrituratingRecipe(exporter, family.getVariant(BlockVariant.BLOCK), family.getVariant(ItemVariant.DUST), outputCount, time, energy);
 					}
 				}
 				if (family.hasVariant(ItemVariant.RAW_ORE)) {
 					AMCommon.LOGGER.info("Offering triturating for raw ore -> dusts");
-					offerTrituratingRecipe(exporter, family.getTag(ItemVariant.RAW_ORE), family.getVariant(ItemVariant.DUST), 2, 90, 300);
-					offerTrituratingRecipe(exporter, family.getItemTag(BlockVariant.RAW_ORE_BLOCK), family.getVariant(ItemVariant.DUST), 18, 760, 2550);
+					offerTrituratingRecipe(exporter, family.getTag(ItemVariant.RAW_ORE), family.getVariant(ItemVariant.DUST), 2, CLUSTER_PROCESSING_TIME, CLUSTER_PROCESSING_ENERGY);
+					offerTrituratingRecipe(exporter, family.getItemTag(BlockVariant.RAW_ORE_BLOCK), family.getVariant(ItemVariant.DUST), 18, BLOCK_3X3_PROCESSING_TIME * 2, BLOCK_3X3_PROCESSING_ENERGY * 2);
 				} else {
 					if (family.hasAnyBlockVariants(AMDatagenLists.BlockVariantLists.ORE_VARIANTS)) {
 						AMCommon.LOGGER.info("Offering triturating for ores -> dusts");
-						offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.DUST), 2, 180, 340);
+						offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.DUST), 2, ORE_PROCESSING_TIME, ORE_PROCESSING_ENERGY);
 					}
 					if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
 						AMCommon.LOGGER.info("Offering triturating for clusters -> dusts");
-						offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.DUST), 2, 90, 300);
+						offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.DUST), 2, CLUSTER_PROCESSING_TIME, CLUSTER_PROCESSING_ENERGY);
 					}
 				}
 			}
@@ -666,31 +696,31 @@ public class AMRecipeProvider extends RecipeProvider {
 			if (family.hasVariant(ItemVariant.RAW_ORE)) {
 				if (family.hasAnyBlockVariants(AMDatagenLists.BlockVariantLists.ORE_VARIANTS)) {
 					AMCommon.LOGGER.info("Offering triturating for ores -> raw ores");
-					offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.RAW_ORE), 2, 180, 340);
+					offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.RAW_ORE), 2, ORE_PROCESSING_TIME, ORE_PROCESSING_ENERGY);
 				}
 				if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
 					AMCommon.LOGGER.info("Offering triturating for clusters -> raw ores");
-					offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.RAW_ORE), 2, 90, 300);
+					offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.RAW_ORE), 2, CLUSTER_PROCESSING_TIME, CLUSTER_PROCESSING_ENERGY);
 				}
 			}
 			
 			if (family.shouldGenerateRecipe(ItemVariant.NUGGET, ItemVariant.TINY_DUST)) {
 				AMCommon.LOGGER.info("Offering triturating for nugget -> tiny dust");
-				offerTrituratingRecipe(exporter, family.getTag(ItemVariant.NUGGET), family.getVariant(ItemVariant.TINY_DUST), 1, 30, 200);
+				offerTrituratingRecipe(exporter, family.getTag(ItemVariant.NUGGET), family.getVariant(ItemVariant.TINY_DUST), 1, TINY_DUST_TIME, TINY_DUST_ENERGY);
 			}
 			
 			if (family.shouldGenerateRecipe(ItemVariant.PLATE)) {
 				AMCommon.LOGGER.info("Offering pressing for base -> plate");
-				offerPressingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.PLATE), 1, 80, 340);
+				offerPressingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.PLATE), 1, MATERIAL_PROCESSING_TIME, MATERIAL_PROCESSING_ENERGY);
 				if (family.hasVariant(BlockVariant.BLOCK)) {
 					AMCommon.LOGGER.info("Offering pressing for block -> plates");
-					offerPressingRecipe(exporter, family.getItemTag(BlockVariant.BLOCK), family.getVariant(ItemVariant.PLATE), family.isBlock2x2() ? 4 : 9, family.isBlock2x2() ? 280 : 680, family.isBlock2x2() ? 1200 : 2900);
+					offerPressingRecipe(exporter, family.getItemTag(BlockVariant.BLOCK), family.getVariant(ItemVariant.PLATE), family.isBlock2x2() ? 4 : 9, family.isBlock2x2() ? BLOCK_2X2_PROCESSING_TIME : BLOCK_3X3_PROCESSING_TIME, family.isBlock2x2() ? BLOCK_2X2_PROCESSING_ENERGY : BLOCK_3X3_PROCESSING_ENERGY);
 				}
 			}
 			
 			if (family.shouldGenerateRecipe(ItemVariant.WIRE)) {
 				AMCommon.LOGGER.info("Offering wire milling for base -> wires");
-				offerWireMillingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.WIRE), 3, 80, 340);
+				offerWireMillingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.WIRE), 3, MATERIAL_PROCESSING_TIME, MATERIAL_PROCESSING_ENERGY);
 			}
 			
 			if (family.isAlloy()) {
@@ -728,38 +758,38 @@ public class AMRecipeProvider extends RecipeProvider {
 			AMCommon.LOGGER.info("Finished offering recipes for " + family.getName());
 		});
 		
-		offerTrituratingRecipe(exporter, Items.BLAZE_ROD, Items.BLAZE_POWDER, 4, 60, 270);
-		offerTrituratingRecipe(exporter, Items.BONE, Items.BONE_MEAL, 4, 60, 270);
-		offerTrituratingRecipe(exporter, Items.SUGAR_CANE, Items.SUGAR, 2, 60, 270);
-		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.YELLOW_SANDSTONES, Blocks.SAND, 4, 240, 440);
-		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.RED_SANDSTONES, Blocks.RED_SAND, 4, 240, 440);
-		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.CUT_COPPER, AMItems.COPPER_DUST.get(), 1, 240, 440);
-		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.PURPUR_BLOCKS, Items.POPPED_CHORUS_FRUIT, 4, 80, 300);
-		offerTrituratingRecipe(exporter, net.minecraft.tags.ItemTags.WOOL, Items.STRING, 4, 80, 300);
+		offerTrituratingRecipe(exporter, Items.BLAZE_ROD, Items.BLAZE_POWDER, 4, MATERIAL_PROCESSING_TIME, MATERIAL_PROCESSING_ENERGY);
+		offerTrituratingRecipe(exporter, Items.BONE, Items.BONE_MEAL, 4, MATERIAL_PROCESSING_TIME, MATERIAL_PROCESSING_ENERGY);
+		offerTrituratingRecipe(exporter, Items.SUGAR_CANE, Items.SUGAR, 2, MATERIAL_PROCESSING_TIME, MATERIAL_PROCESSING_ENERGY);
+		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.YELLOW_SANDSTONES, Blocks.SAND, 4, STONE_GRINDING_TIME, STONE_GRINDING_ENERGY);
+		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.RED_SANDSTONES, Blocks.RED_SAND, 4, STONE_GRINDING_TIME, STONE_GRINDING_ENERGY);
+		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.CUT_COPPER, AMItems.COPPER_DUST.get(), 1, STONE_GRINDING_TIME, STONE_GRINDING_ENERGY);
+		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.PURPUR_BLOCKS, Items.POPPED_CHORUS_FRUIT, 4, SIMPLE_GRINDING_TIME, SIMPLE_GRINDING_ENERGY);
+		offerTrituratingRecipe(exporter, net.minecraft.tags.ItemTags.WOOL, Items.STRING, 4, SIMPLE_GRINDING_TIME, SIMPLE_GRINDING_ENERGY);
 		
 		TRITURATED_BLOCK_FAMILIES.forEach((inputFamily, outputFamily) -> {
 			inputFamily.getVariants().forEach((variant, block) -> {
 				if (outputFamily.getVariants().containsKey(variant)) {
-					offerTrituratingRecipe(exporter, block, outputFamily.get(variant), 1, 80, 300);
+					offerTrituratingRecipe(exporter, block, outputFamily.get(variant), 1, SIMPLE_GRINDING_TIME, SIMPLE_GRINDING_ENERGY);
 				}
 			});
 		});
 		
 		TRITURATED_BLOCKS_CHEAP.forEach((map, count) -> {
 			map.forEach((input, output) -> {
-				offerTrituratingRecipe(exporter, input, output, count, 80, 300);
+				offerTrituratingRecipe(exporter, input, output, count, SIMPLE_GRINDING_TIME, SIMPLE_GRINDING_ENERGY);
 			});
 		});
 		
 		TRITURATED_BLOCKS_1_TO_1_EXPENSIVE.forEach((input, output) -> {
-			offerTrituratingRecipe(exporter, input, output, 1, 240, 440);
+			offerTrituratingRecipe(exporter, input, output, 1, HEAVY_GRINDING_TIME, HEAVY_GRINDING_ENERGY);
 		});
 		
 		BIOFUEL_TAGS.forEach((tag, count) -> {
-			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 60 + (40 * count), 50 * count);
+			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, BIOFUEL_GRINDING_BASE_TIME + (BIOFUEL_GRINDING_TIME_PER_OUTPUT * count), BIOFUEL_GRINDING_ENERGY_PER_OUTPUT * count);
 		});
 		
-		offerMeltingRecipe(exporter, AMTagKeys.ItemTags.BIOFUEL, AMFluids.BIOMASS.getSource(), 810, 80, 800);
+		offerMeltingRecipe(exporter, AMTagKeys.ItemTags.BIOFUEL, AMFluids.BIOMASS.getSource(), BIOFUEL_TO_BIOMASS_AMOUNT, BIOFUEL_TO_BIOMASS_TIME, BIOFUEL_TO_BIOMASS_ENERGY);
 	}
 	
 	@FunctionalInterface

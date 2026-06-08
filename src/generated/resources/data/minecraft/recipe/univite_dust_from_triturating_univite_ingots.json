@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 270,
+  "energy_input": 1600,
   "input": {
     "count": 1,
     "tag": "c:univite_ingots"
@@ -9,5 +9,5 @@
     "count": 1,
     "item": "astromine:univite_dust"
   },
-  "time": 60
+  "time": 80
 }

@@ -43,6 +43,9 @@ import com.github.mixinors.astromine.common.transfer.storage.LongEnergyStorage;
 import java.util.function.Supplier;
 
 public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
+	private static final double ENERGY_PER_BURN_TICK = 10.0D;
+	private static final double BASE_ENERGY_OUTPUT_PER_TICK = 20.0D;
+	
 	public static final String AVAILABLE_KEY = "Available";
 	
 	private double available = 0;
@@ -87,29 +90,27 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			if (available > 0) {
 				progress = limit - available;
 				
-				var produced = 5;
+				var output = Math.max(1L, Math.round(BASE_ENERGY_OUTPUT_PER_TICK * getSpeed()));
+				var headroom = energyStorage.capacity - energyStorage.amount;
 				
-				for (var i = 0; i < 3 * getSpeed(); ++i) {
-					if (progress < limit) {
-						if (energyStorage.amount + produced <= energyStorage.capacity) {
-							energyStorage.amount += produced;
-							
-							--available;
-							
-							++produced;
-							
-							active = true;
-						} else {
-							active = false;
-						}
-						
-						if (progress >= limit || available <= 0) {
-							progress = 0.0D;
-							limit = 0;
-							
-							active = false;
-						}
-					}
+				if (headroom > 0) {
+					var generated = Math.min(Math.min(output, headroom), (long) Math.ceil(available));
+					
+					energyStorage.amount += generated;
+					available -= generated;
+					progress = limit - available;
+					
+					active = true;
+				} else {
+					active = false;
+				}
+				
+				if (available <= 0) {
+					available = 0;
+					progress = 0.0D;
+					limit = 0;
+					
+					active = false;
 				}
 			} else {
 				progress = 0.0D;
@@ -118,16 +119,16 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				var inputBurnTime = inputStack.getBurnTime(null);
 				var isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
 				
-				if (isFuel) {
-					available = inputBurnTime;
-					limit = inputBurnTime;
+				if (isFuel && energyStorage.amount < energyStorage.capacity) {
+					available = inputBurnTime * ENERGY_PER_BURN_TICK;
+					limit = available;
 					
 					progress = 0.0D;
 					
 					itemStorage.removeItem(INPUT_SLOT, 1);
 				}
 				
-				active = isFuel || progress != 0;
+				active = available > 0 || progress != 0;
 			}
 		}
 	}

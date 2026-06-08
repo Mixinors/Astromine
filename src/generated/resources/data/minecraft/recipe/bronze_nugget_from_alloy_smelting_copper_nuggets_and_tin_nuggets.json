@@ -1,6 +1,6 @@
 {
   "type": "astromine:alloy_smelting",
-  "energy_input": 100,
+  "energy_input": 400,
   "first_input": {
     "count": 3,
     "tag": "c:copper_nuggets"
@@ -13,5 +13,5 @@
     "count": 1,
     "tag": "c:tin_nuggets"
   },
-  "time": 25
+  "time": 20
 }

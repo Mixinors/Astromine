@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 340,
+  "energy_input": 4000,
   "input": {
     "count": 1,
     "tag": "c:copper_ores"
@@ -9,5 +9,5 @@
     "count": 2,
     "item": "minecraft:raw_copper"
   },
-  "time": 180
+  "time": 200
 }

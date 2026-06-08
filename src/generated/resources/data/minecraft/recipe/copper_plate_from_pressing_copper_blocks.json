@@ -1,6 +1,6 @@
 {
   "type": "astromine:pressing",
-  "energy_input": 2900,
+  "energy_input": 14400,
   "input": {
     "count": 1,
     "tag": "c:copper_blocks"
@@ -9,5 +9,5 @@
     "count": 9,
     "item": "astromine:copper_plate"
   },
-  "time": 680
+  "time": 720
 }

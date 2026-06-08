@@ -2,8 +2,8 @@
   "type": "astromine:fluid_generating",
   "input": {
     "tag": "c:fuel",
-    "amount": 81
+    "amount": 100
   },
-  "energy_output": 400,
-  "time": 2
+  "energy_output": 40000,
+  "time": 400
 }

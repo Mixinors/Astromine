@@ -2,8 +2,8 @@
   "type": "astromine:fluid_generating",
   "input": {
     "fluid": "minecraft:lava",
-    "amount": 81
+    "amount": 100
   },
-  "energy_output": 200,
-  "time": 2
+  "energy_output": 10000,
+  "time": 200
 }

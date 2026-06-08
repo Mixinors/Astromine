@@ -1,6 +1,6 @@
 {
   "type": "astromine:alloy_smelting",
-  "energy_input": 100,
+  "energy_input": 6400,
   "first_input": {
     "count": 4,
     "tag": "c:gold_ingots"
@@ -13,5 +13,5 @@
     "count": 4,
     "tag": "c:raw_netherites"
   },
-  "time": 100
+  "time": 320
 }

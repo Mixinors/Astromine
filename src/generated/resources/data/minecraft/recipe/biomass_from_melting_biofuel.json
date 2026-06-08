@@ -6,7 +6,7 @@
     "tag": "c:biofuel"
   },
   "output": {
-    "amount": 810,
+    "amount": 100,
     "fluid": "astromine:biomass"
   },
   "time": 80

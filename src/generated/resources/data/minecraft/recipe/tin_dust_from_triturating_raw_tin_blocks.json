@@ -1,6 +1,6 @@
 {
   "type": "astromine:triturating",
-  "energy_input": 2550,
+  "energy_input": 28800,
   "input": {
     "count": 1,
     "tag": "c:raw_tin_blocks"
@@ -9,5 +9,5 @@
     "count": 18,
     "item": "astromine:tin_dust"
   },
-  "time": 760
+  "time": 1440
 }

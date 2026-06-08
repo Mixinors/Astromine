@@ -1,6 +1,6 @@
 {
   "type": "astromine:pressing",
-  "energy_input": 340,
+  "energy_input": 1600,
   "input": {
     "count": 1,
     "tag": "c:meteoric_steel_ingots"

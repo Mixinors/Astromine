@@ -1,6 +1,6 @@
 {
   "type": "astromine:alloy_smelting",
-  "energy_input": 900,
+  "energy_input": 4000,
   "first_input": {
     "count": 1,
     "tag": "c:iron_ingots"
@@ -13,5 +13,5 @@
     "count": 2,
     "tag": "c:charcoals"
   },
-  "time": 250
+  "time": 200
 }

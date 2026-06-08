@@ -48,6 +48,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
+	private static final double ENERGY_PER_SMELT = 2000.0D;
+	
 	public static final int INPUT_SLOT = 0;
 	
 	public static final int OUTPUT_SLOT = 1;
@@ -151,7 +153,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 					limit = recipe.getCookingTime();
 					
 					var speed = Math.min(getSpeed() * 2, limit - progress);
-					var consumed = (long) (500.0D * speed / limit);
+					var consumed = (long) (ENERGY_PER_SMELT * speed / limit);
 					
 					if (energyStorage.amount >= consumed) {
 						energyStorage.amount -= consumed;

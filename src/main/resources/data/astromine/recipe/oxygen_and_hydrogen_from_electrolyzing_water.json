@@ -2,16 +2,16 @@
   "type": "astromine:electrolyzing",
   "input": {
     "fluid": "minecraft:water",
-    "amount": 2250
+    "amount": 3000
   },
   "first_output": {
     "fluid": "astromine:oxygen",
-    "amount": 750
+    "amount": 1000
   },
   "second_output": {
     "fluid": "astromine:hydrogen",
-    "amount": 1500
+    "amount": 2000
   },
-  "energy_input": 24,
-  "time": 5
+  "energy_input": 12000,
+  "time": 300
 }
