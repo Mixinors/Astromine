@@ -87,7 +87,7 @@ runs {
 
 tasks.withType(ProcessResources).configureEach {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-	
+
 	var replaceProperties = [
 			minecraft_version      : minecraft_version,
 			minecraft_version_range: minecraft_version_range,
@@ -130,7 +130,7 @@ publishing {
 			from components.java
 		}
 	}
-	
+
 	if (mavenPublishingConfigured()) {
 		repositories {
 			maven {
@@ -151,11 +151,133 @@ tasks.named('publish').configure {
 			var value = System.getenv(name)
 			value == null || value.isBlank()
 		}
-		
+
 		doFirst {
 			throw new GradleException("Missing required Maven publishing environment variables: ${missing.join(', ')}")
 		}
 	}
+}
+
+tasks.register('verifyClientAssets') {
+	group = 'verification'
+	description = 'Verifies Astromine client model, blockstate, and texture references resolve.'
+
+	var javaSources = fileTree('src/main/java') {
+		include '**/*.java'
+	}
+	var assetSources = files(
+			fileTree('src/main/resources/assets/astromine') {
+				include '**/*'
+			},
+			fileTree('src/generated/resources/assets/astromine') {
+				include '**/*'
+			}
+	)
+	inputs.files(javaSources, assetSources)
+
+	doLast {
+		var assetRoots = [
+				file('src/main/resources/assets/astromine'),
+				file('src/generated/resources/assets/astromine')
+		].findAll { it.exists() }
+		var missing = []
+		var jsonSlurper = new groovy.json.JsonSlurper()
+		var assetExists = { String assetPath ->
+			assetRoots.any { root -> new File(root, assetPath).exists() }
+		}
+		var astromineAsset = { Object id, String kind ->
+			if (!(id instanceof String) || !id.startsWith('astromine:') || id.startsWith('#')) {
+				return null
+			}
+
+			var name = id.substring('astromine:'.length())
+			return kind == 'model' ? "models/${name}.json" : "textures/${name}.png"
+		}
+		def collectModelReferences
+		collectModelReferences = { Object node, List<String> references ->
+			if (node instanceof Map) {
+				if (node.model instanceof String) {
+					references.add(node.model)
+				}
+
+				node.values().each { value -> collectModelReferences(value, references) }
+			} else if (node instanceof Iterable) {
+				node.each { value -> collectModelReferences(value, references) }
+			}
+		}
+
+		javaSources.each { source ->
+			def matcher = source.text =~ /AMCommon\.id\("([^"]+)"\)/
+
+			matcher.each { match ->
+				var id = match[1]
+
+				if (id.startsWith('textures/') && !assetExists(id)) {
+					missing.add("${source}: missing texture ${id}")
+				}
+			}
+		}
+
+		assetRoots.each { root ->
+			fileTree(new File(root, 'models')) {
+				include '**/*.json'
+			}.each { modelFile ->
+				var json = jsonSlurper.parse(modelFile)
+				var parent = astromineAsset(json.parent, 'model')
+
+				if (parent != null && !assetExists(parent)) {
+					missing.add("${modelFile}: missing parent ${json.parent} -> ${parent}")
+				}
+
+				if (json.textures instanceof Map) {
+					json.textures.each { key, value ->
+						var texture = astromineAsset(value, 'texture')
+
+						if (texture != null && !assetExists(texture)) {
+							missing.add("${modelFile}: missing texture ${key}=${value} -> ${texture}")
+						}
+					}
+				}
+			}
+
+			fileTree(new File(root, 'blockstates')) {
+				include '**/*.json'
+			}.each { blockstateFile ->
+				var references = []
+				collectModelReferences(jsonSlurper.parse(blockstateFile), references)
+
+				references.each { reference ->
+					var model = astromineAsset(reference, 'model')
+
+					if (model != null && !assetExists(model)) {
+						missing.add("${blockstateFile}: missing model ${reference} -> ${model}")
+					}
+				}
+			}
+		}
+
+		var amModels = file('src/main/java/com/github/mixinors/astromine/registry/client/AMModels.java')
+
+		if (amModels.exists()) {
+			def matcher = amModels.text =~ /AMCommon\.id\("(block\/[^"]+)"\)/
+
+			matcher.each { match ->
+				var model = "models/${match[1]}.json"
+
+				if (!assetExists(model)) {
+					missing.add("${amModels}: missing registered model ${model}")
+				}
+			}
+		}
+
+		if (!missing.isEmpty()) {
+			throw new GradleException("Missing Astromine client assets:\n - ${missing.join('\n - ')}")
+		}
+	}
+}
+
+tasks.named('check') {
+	dependsOn tasks.named('verifyClientAssets')
 }
 
 static boolean mavenPublishingConfigured() {
