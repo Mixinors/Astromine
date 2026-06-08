@@ -53,10 +53,10 @@ public class ConfigConstants {
 	public static final double BASE_SPEED = 1.0D;
 	public static final double TANK_BASE_SPEED = 10.0D;
 	public static final double CAPACITOR_BASE_SPEED = 10.0D;
-	public static final double FLUID_RECIPE_MACHINE_BASE_SPEED = 1000.0D;
+	public static final double FLUID_RECIPE_MACHINE_BASE_SPEED = BASE_SPEED;
 	public static final double ELECTRIC_FURNACE_ENERGY_PER_SMELT = 2000.0D;
-	public static final double SOLID_GENERATOR_ENERGY_PER_BURN_TICK = 10.0D;
-	public static final double SOLID_GENERATOR_BASE_ENERGY_OUTPUT_PER_TICK = 20.0D;
+	public static final double SOLID_GENERATOR_ENERGY_PER_BURN_TICK = 15.0D;
+	public static final double SOLID_GENERATOR_BASE_ENERGY_OUTPUT_PER_TICK = 40.0D;
 	
 	public static final long UTILITY_DELAY = 40L;
 	public static final long UTILITY_ENERGY = PRIMITIVE_BATTERY_PACK_ENERGY;
