@@ -1,19 +1,39 @@
-name: Staging Build
+name: Publish
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - development-1.21.1
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   publish:
+    name: Build, GameTest, and Publish
     runs-on: ubuntu-latest
+    if: github.repository == 'Mixinors/Astromine'
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup Java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 17
-      - name: Grant execute permission for gradlew
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
-      - name: Publish to maven
-        run: ./gradlew publish --stacktrace --parallel --exclude-task test
+
+      - name: Build, run GameTests, and publish to Maven
+        run: ./gradlew build runGameTestServer publish --stacktrace --no-daemon
         env:
+          MAVEN_URL: ${{ vars.MAVEN_URL || 'https://maven.vini2003.dev/releases' }}
+          MAVEN_USER: ${{ vars.MAVEN_USER || 'vini2003' }}
           MAVEN_PASS: ${{ secrets.MAVEN_PASS }}

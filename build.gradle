@@ -127,6 +127,17 @@ publishing {
 			from components.java
 		}
 	}
+	
+	repositories {
+		maven {
+			name = 'AstromineMaven'
+			url = uri(System.getenv('MAVEN_URL') ?: 'https://maven.vini2003.dev/releases')
+			credentials {
+				username = System.getenv('MAVEN_USER') ?: 'vini2003'
+				password = System.getenv('MAVEN_PASS') ?: ''
+			}
+		}
+	}
 }
 
 idea {
