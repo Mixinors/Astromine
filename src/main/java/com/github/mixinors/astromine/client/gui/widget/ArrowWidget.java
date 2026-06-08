@@ -31,7 +31,7 @@ public class ArrowWidget extends Widget {
 		graphics.blit(GuiSprites.ARROW_BACKGROUND, screenX, screenY, 0.0F, 0.0F, width, height, width, height);
 		
 		if (filled > 0) {
-			graphics.blit(GuiSprites.ARROW_FOREGROUND, screenX, screenY, 0, 0, 0.0F, 0.0F, filled, height, width, height);
+			graphics.blit(GuiSprites.ARROW_FOREGROUND, screenX, screenY, 0.0F, 0.0F, filled, height, width, height);
 		}
 	}
 }
