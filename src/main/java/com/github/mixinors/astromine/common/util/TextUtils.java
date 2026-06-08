@@ -35,6 +35,15 @@ public class TextUtils {
 	public static final char ENERGY_UNIT = 'E';
 	public static final char FLUID_UNIT = 'd';
 	
+	private static final UnitPrefix[] UNIT_PREFIXES = new UnitPrefix[] {
+			new UnitPrefix(1_000_000_000_000_000_000D, "E"),
+			new UnitPrefix(1_000_000_000_000_000D, "P"),
+			new UnitPrefix(1_000_000_000_000D, "T"),
+			new UnitPrefix(1_000_000_000D, "G"),
+			new UnitPrefix(1_000_000D, "M"),
+			new UnitPrefix(1_000D, "k")
+	};
+	
 	public static MutableComponent getAstromine() {
 		return Component.literal("Astromine").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC);
 	}
@@ -84,11 +93,35 @@ public class TextUtils {
 			return formatInfinite(unit);
 		}
 		
-		var numberFormat = raw ? NumberFormat.getIntegerInstance(Locale.getDefault(Locale.Category.FORMAT)) : NumberFormat.getCompactNumberInstance(Locale.getDefault(Locale.Category.FORMAT), NumberFormat.Style.SHORT);
-		numberFormat.setMaximumFractionDigits(raw ? 0 : 1);
-		numberFormat.setMinimumFractionDigits(0);
+		if (raw) {
+			return integerFormat().format(amount) + unit;
+		}
 
-		return numberFormat.format(amount) + unit;
+		var absolute = Math.abs((double) amount);
+
+		for (var prefix : UNIT_PREFIXES) {
+			if (absolute >= prefix.factor()) {
+				return decimalFormat().format(amount / prefix.factor()) + prefix.symbol() + unit;
+			}
+		}
+
+		return integerFormat().format(amount) + unit;
+	}
+
+	private static NumberFormat integerFormat() {
+		var numberFormat = NumberFormat.getIntegerInstance(Locale.getDefault(Locale.Category.FORMAT));
+		numberFormat.setMaximumFractionDigits(0);
+		numberFormat.setMinimumFractionDigits(0);
+		
+		return numberFormat;
+	}
+
+	private static NumberFormat decimalFormat() {
+		var numberFormat = NumberFormat.getNumberInstance(Locale.getDefault(Locale.Category.FORMAT));
+		numberFormat.setMaximumFractionDigits(1);
+		numberFormat.setMinimumFractionDigits(0);
+		
+		return numberFormat;
 	}
 
 	public static boolean isInfinite(long amount) {
@@ -97,5 +130,8 @@ public class TextUtils {
 
 	private static String formatInfinite(char unit) {
 		return "\u221E" + unit;
+	}
+	
+	private record UnitPrefix(double factor, String symbol) {
 	}
 }
