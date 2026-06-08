@@ -5,13 +5,12 @@ import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBloc
 import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.phys.AABB;
 
 public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBridgeProjectorBlockEntity> {
 	public HoloBridgeBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -46,32 +45,37 @@ public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBr
 		
 		var pose = matrices.last();
 		var consumer = provider.getBuffer(AMRenderLayers.getHolographicBridge());
-		var xA = end.x() - pos.getX();
-		var xB = start.x() - pos.getX();
-		var yA = end.y() - pos.getY();
-		var yB = start.y() - pos.getY();
-		var zA = end.z() - pos.getZ();
-		var zB = start.z() - pos.getZ();
+		var xA = (float) (end.x - pos.getX());
+		var xB = (float) (start.x - pos.getX());
+		var yA = (float) (end.y - pos.getY());
+		var yB = (float) (start.y - pos.getY());
+		var zA = (float) (end.z - pos.getZ());
+		var zB = (float) (start.z - pos.getZ());
 		
-		addBridgeVertex(pose, consumer, xA, yA, zA, 0.0F, 0.0F, entity);
-		addBridgeVertex(pose, consumer, xB, yB, zB, 0.0F, 1.0F, entity);
-		addBridgeVertex(pose, consumer, xB + offsetX, yB, zB + offsetZ, 1.0F, 1.0F, entity);
-		addBridgeVertex(pose, consumer, xA + offsetX, yA, zA + offsetZ, 1.0F, 0.0F, entity);
+		addBridgeVertex(pose, consumer, xA, yA, zA, entity);
+		addBridgeVertex(pose, consumer, xB, yB, zB, entity);
+		addBridgeVertex(pose, consumer, xB + offsetX, yB, zB + offsetZ, entity);
+		addBridgeVertex(pose, consumer, xA + offsetX, yA, zA + offsetZ, entity);
 		
 		matrices.popPose();
 	}
 	
-	private static void addBridgeVertex(PoseStack.Pose pose, VertexConsumer consumer, float x, float y, float z, float u, float v, HoloBridgeProjectorBlockEntity entity) {
+	private static void addBridgeVertex(PoseStack.Pose pose, VertexConsumer consumer, float x, float y, float z, HoloBridgeProjectorBlockEntity entity) {
 		consumer.addVertex(pose, x, y, z)
-				.setColor(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA())
-				.setUv(u, v)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(LightTexture.FULL_BRIGHT)
-				.setNormal(pose, 0.0F, 1.0F, 0.0F);
+				.setColor(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA());
 	}
 	
 	@Override
 	public boolean shouldRenderOffScreen(HoloBridgeProjectorBlockEntity blockEntity) {
 		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(HoloBridgeProjectorBlockEntity blockEntity) {
+		if (!blockEntity.hasChild()) {
+			return BlockEntityRenderer.super.getRenderBoundingBox(blockEntity);
+		}
+
+		return AABB.encapsulatingFullBlocks(blockEntity.getBlockPos(), blockEntity.getChild().getBlockPos()).inflate(1.0D);
 	}
 }

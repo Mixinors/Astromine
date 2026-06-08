@@ -25,7 +25,10 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +40,20 @@ import java.util.Map;
 
 public class AMRenderLayers {
 	private static final Map<ResourceLocation, RenderType> CACHE = new HashMap<>();
+	private static final RenderType HOLOGRAPHIC_BRIDGE = RenderType.create(
+			"astromine_holographic_bridge",
+			DefaultVertexFormat.POSITION_COLOR,
+			VertexFormat.Mode.QUADS,
+			1536,
+			false,
+			true,
+			RenderType.CompositeState.builder()
+					.setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
+					.setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+					.setCullState(RenderStateShard.NO_CULL)
+					.setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
+					.createCompositeState(false)
+	);
 	
 	public static void init(IEventBus modBus) {
 		modBus.addListener(AMRenderLayers::registerBlockLayers);
@@ -66,7 +83,7 @@ public class AMRenderLayers {
 	}
 	
 	public static RenderType getHolographicBridge() {
-		return RenderType.translucent();
+		return HOLOGRAPHIC_BRIDGE;
 	}
 	
 	public static RenderType getPumpTube() {

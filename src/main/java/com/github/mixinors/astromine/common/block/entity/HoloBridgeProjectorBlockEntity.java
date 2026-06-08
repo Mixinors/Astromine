@@ -26,16 +26,12 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.world.HoloBridgesComponent;
 import com.github.mixinors.astromine.common.tick.Tickable;
-import com.github.mixinors.astromine.common.util.LineUtils;
-import com.github.mixinors.astromine.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.common.util.Color;
-import org.joml.Vector3f;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -49,6 +45,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
 	public static final String CHILD_POSITION_KEY = "ChildPosition";
@@ -73,7 +70,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	private boolean shouldInitialize = false;
 	
-	public List<Vector3f> segments = null;
+	public List<Vec3> segments = null;
 	
 	public Color color = DEFAULT_COLOR;
 	
@@ -90,14 +87,17 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		if (level != null && level.isClientSide) {
 			if (shouldInitialize) {
 				this.destroyBridge();
-				
-				if (this.childPosition != null) {
-					this.child = (HoloBridgeProjectorBlockEntity) this.level.getBlockEntity(this.childPosition);
-				}
-				
-				this.buildBridge();
-				
+				this.child = null;
 				shouldInitialize = false;
+			}
+
+			if (this.child == null && this.childPosition != null) {
+				var childEntity = this.level.getBlockEntity(this.childPosition);
+
+				if (childEntity instanceof HoloBridgeProjectorBlockEntity holoChildEntity) {
+					this.child = holoChildEntity;
+					this.buildBridge();
+				}
 			}
 		}
 		
@@ -152,10 +152,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return false;
 		}
 		
-		var segments = LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.above()), VectorUtils.toVector3f(offsetChildPos.above()), 32);
+		var segments = createBridgeSegments(pos.above(), offsetChildPos.above());
 		
 		for (var segment : segments) {
-			var segmentPos = BlockPos.containing(segment.x(), segment.y(), segment.z());
+			var segmentPos = BlockPos.containing(segment);
 			
 			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
 				if (!this.level.getBlockState(segmentPos).isAir()) {
@@ -191,11 +191,11 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 		}
 		
-		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.above()), VectorUtils.toVector3f(offsetChildPos.above()), 32);
+		this.segments = createBridgeSegments(pos.above(), offsetChildPos.above());
 		var bridgeComponent = HoloBridgesComponent.get(level);
 		
 		for (var segment : this.segments) {
-			var segmentPos = BlockPos.containing(segment.x(), segment.y(), segment.z());
+			var segmentPos = BlockPos.containing(segment);
 			
 			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
 				if (this.level.getBlockState(segmentPos).isAir()) {
@@ -203,8 +203,41 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 				}
 			}
 			
-			bridgeComponent.add(segmentPos, new Vec3i((int) ((segment.x() - (int) segment.x()) * 16.0F), (int) ((segment.y() - (int) segment.y()) * 16.0F), (int) ((segment.z() - (int) segment.z()) * 16.0F)));
+			bridgeComponent.add(segmentPos, toLocalSubBlockVector(segment, segmentPos));
 		}
+	}
+
+	private static List<Vec3> createBridgeSegments(BlockPos start, BlockPos end) {
+		var deltaX = end.getX() - start.getX();
+		var deltaY = end.getY() - start.getY();
+		var deltaZ = end.getZ() - start.getZ();
+		var distance = Math.max(Math.max(Math.abs(deltaX), Math.abs(deltaY)), Math.abs(deltaZ));
+		var steps = Math.max(1, distance * 32);
+		var segments = new java.util.ArrayList<Vec3>(steps + 1);
+
+		for (var step = 0; step <= steps; ++step) {
+			var progress = (double) step / (double) steps;
+
+			segments.add(new Vec3(
+					start.getX() + deltaX * progress,
+					start.getY() + deltaY * progress,
+					start.getZ() + deltaZ * progress
+			));
+		}
+
+		return segments;
+	}
+
+	private static Vec3i toLocalSubBlockVector(Vec3 segment, BlockPos segmentPos) {
+		return new Vec3i(
+				toSubBlockCoordinate(segment.x - segmentPos.getX()),
+				toSubBlockCoordinate(segment.y - segmentPos.getY()),
+				toSubBlockCoordinate(segment.z - segmentPos.getZ())
+		);
+	}
+
+	private static int toSubBlockCoordinate(double value) {
+		return (int) Math.clamp(Math.floor(value * 16.0D), 0.0D, 15.0D);
 	}
 	
 	public HoloBridgeProjectorBlockEntity getChild() {
@@ -264,7 +297,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			var bridgeComponent = HoloBridgesComponent.get(level);
 			
 			for (var vec : this.segments) {
-				var pos = BlockPos.containing(vec.x(), vec.y(), vec.z());
+				var pos = BlockPos.containing(vec);
 				
 				bridgeComponent.remove(pos);
 				

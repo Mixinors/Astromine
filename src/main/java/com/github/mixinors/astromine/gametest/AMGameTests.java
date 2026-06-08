@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.gametest;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
@@ -144,6 +145,37 @@ public final class AMGameTests {
 		helper.assertTrue(kit.isObsoleteFor(Tier.ADVANCED), "basic upgrade kit should reject advanced machines with feedback");
 		helper.assertTrue(kit.isObsoleteFor(Tier.ELITE), "basic upgrade kit should reject elite machines with feedback");
 		helper.assertTrue(kit.isObsoleteFor(Tier.CREATIVE), "basic upgrade kit should reject creative machines with feedback");
+		helper.succeed();
+	}
+
+	@GameTest(template = TEMPLATE)
+	public static void holographicBridgeProjectorsBuildBridge(GameTestHelper helper) {
+		var parentPos = new BlockPos(0, 0, 0);
+		var childPos = new BlockPos(4, 0, 0);
+		var bridgePos = new BlockPos(1, 1, 0);
+
+		helper.setBlock(parentPos, AMBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR.get().defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, Direction.EAST));
+		helper.setBlock(childPos, AMBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR.get().defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, Direction.WEST));
+		helper.setBlock(bridgePos, Blocks.AIR);
+		helper.setBlock(new BlockPos(2, 1, 0), Blocks.AIR);
+		helper.setBlock(new BlockPos(3, 1, 0), Blocks.AIR);
+
+		var parent = helper.getBlockEntity(parentPos);
+		var child = helper.getBlockEntity(childPos);
+
+		helper.assertTrue(parent instanceof HoloBridgeProjectorBlockEntity, "expected parent holographic bridge projector");
+		helper.assertTrue(child instanceof HoloBridgeProjectorBlockEntity, "expected child holographic bridge projector");
+
+		var parentProjector = (HoloBridgeProjectorBlockEntity) parent;
+		var childProjector = (HoloBridgeProjectorBlockEntity) child;
+
+		helper.assertTrue(parentProjector.attemptToBuildBridge(childProjector), "holographic bridge projectors should have a clear path");
+
+		parentProjector.setChild(childProjector);
+		parentProjector.buildBridge();
+
+		helper.assertTrue(parentProjector.segments != null && !parentProjector.segments.isEmpty(), "holographic bridge should build render segments");
+		helper.assertBlockPresent(AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get(), bridgePos);
 		helper.succeed();
 	}
 	
