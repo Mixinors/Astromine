@@ -70,14 +70,18 @@ import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -644,6 +648,37 @@ public final class AMGameTests {
 		helper.assertTrue(furnaceCopy.getItemStorage().getSidings()[Direction.WEST.ordinal()] == StorageSiding.INSERT, "machine item siding should persist");
 		helper.succeed();
 	}
+
+	@GameTest(template = TEMPLATE)
+	public static void droppedMachineStackRestoresSavedContentsOnPlacement(GameTestHelper helper) {
+		var capacitorSourcePos = new BlockPos(0, 0, 0);
+		var capacitorTargetPos = new BlockPos(0, 0, 1);
+		var bufferSourcePos = new BlockPos(1, 0, 0);
+		var bufferTargetPos = new BlockPos(1, 0, 1);
+		var tankSourcePos = new BlockPos(2, 0, 0);
+		var tankTargetPos = new BlockPos(2, 0, 1);
+
+		helper.setBlock(capacitorSourcePos, AMBlocks.PRIMITIVE_CAPACITOR.get());
+		helper.setBlock(bufferSourcePos, AMBlocks.PRIMITIVE_BUFFER.get());
+		helper.setBlock(tankSourcePos, AMBlocks.PRIMITIVE_TANK.get());
+
+		helper.assertTrue(getEnergyStorage(helper, capacitorSourcePos).receiveEnergy(250, false) > 0, "capacitor should accept dropped energy");
+		helper.assertTrue(getItemHandler(helper, bufferSourcePos).insertItem(0, new ItemStack(Items.COBBLESTONE, 17), false).isEmpty(), "buffer should accept dropped items");
+		helper.assertValueEqual(getFluidHandler(helper, tankSourcePos).fill(new FluidStack(Fluids.WATER, 750), IFluidHandler.FluidAction.EXECUTE), 750, "tank should accept dropped water");
+
+		var capacitorStack = createDroppedMachineStack(helper, capacitorSourcePos, AMBlocks.PRIMITIVE_CAPACITOR.get());
+		var bufferStack = createDroppedMachineStack(helper, bufferSourcePos, AMBlocks.PRIMITIVE_BUFFER.get());
+		var tankStack = createDroppedMachineStack(helper, tankSourcePos, AMBlocks.PRIMITIVE_TANK.get());
+
+		placeDroppedMachineStack(helper, capacitorTargetPos, AMBlocks.PRIMITIVE_CAPACITOR.get(), capacitorStack);
+		placeDroppedMachineStack(helper, bufferTargetPos, AMBlocks.PRIMITIVE_BUFFER.get(), bufferStack);
+		placeDroppedMachineStack(helper, tankTargetPos, AMBlocks.PRIMITIVE_TANK.get(), tankStack);
+
+		helper.assertTrue(getEnergyStorage(helper, capacitorTargetPos).getEnergyStored() >= 250, "placed capacitor should restore dropped energy");
+		helper.assertValueEqual(getItemHandler(helper, bufferTargetPos).getStackInSlot(0).getCount(), 17, "placed buffer should restore dropped item count");
+		assertFluid(helper, getFluidHandler(helper, tankTargetPos), 0, Fluids.WATER, 750, "placed tank should restore dropped water");
+		helper.succeed();
+	}
 	
 	@GameTest(template = TEMPLATE)
 	public static void cablePersistenceRoundTripsConnections(GameTestHelper helper) {
@@ -1001,6 +1036,29 @@ public final class AMGameTests {
 		helper.assertTrue(expectedType.isInstance(copy), "expected copied block entity type " + expectedType.getSimpleName());
 		
 		return expectedType.cast(copy);
+	}
+
+	private static ItemStack createDroppedMachineStack(GameTestHelper helper, BlockPos pos, Block block) {
+		var blockEntity = helper.getLevel().getBlockEntity(helper.absolutePos(pos));
+
+		helper.assertTrue(blockEntity != null, "expected dropped block entity at " + pos);
+
+		var customTag = new CompoundTag();
+		customTag.put("BlockEntityTag", blockEntity.saveCustomOnly(helper.getLevel().registryAccess()));
+
+		var stack = new ItemStack(block.asItem());
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(customTag));
+
+		return stack;
+	}
+
+	private static void placeDroppedMachineStack(GameTestHelper helper, BlockPos pos, Block block, ItemStack stack) {
+		helper.setBlock(pos, block);
+
+		var absolutePos = helper.absolutePos(pos);
+		var state = helper.getLevel().getBlockState(absolutePos);
+
+		block.setPlacedBy(helper.getLevel(), absolutePos, state, null, stack);
 	}
 	
 	private static ExtendedBlockEntity getExtendedBlockEntity(GameTestHelper helper, BlockPos pos) {

@@ -24,13 +24,17 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.comparator.ComparatorMode;
 import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
 import com.github.mixinors.astromine.common.item.storage.SimpleFluidStorageItem;
 import com.github.mixinors.astromine.common.tick.Tickable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,6 +46,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -58,6 +63,11 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BlockWithEntity extends Block implements EntityBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+	private static final String BLOCK_ENTITY_TAG_KEY = "BlockEntityTag";
+	private static final String REDSTONE_TYPE_KEY = "RedstoneType";
+	private static final String ENERGY_STORAGE_KEY = "EnergyStorage";
+	private static final String ITEM_STORAGE_KEY = "ItemStorage";
+	private static final String FLUID_STORAGE_KEY = "FluidStorage";
 	
 	public static final SavedData MACHINE = new SavedData(false, false, false, false);
 	public static final SavedData ITEM_MACHINE = new SavedData(true, true, true, false);
@@ -150,6 +160,60 @@ public abstract class BlockWithEntity extends Block implements EntityBlock {
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(world, pos, state, placer, stack);
 		
+		restoreDroppedData(world, pos, state, stack);
+	}
+
+	private void restoreDroppedData(Level world, BlockPos pos, BlockState state, ItemStack stack) {
+		if (world.isClientSide || !saveTagToDroppedItem()) {
+			return;
+		}
+
+		var customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+
+		if (customData.isEmpty()) {
+			return;
+		}
+
+		var customTag = customData.copyTag();
+
+		if (!customTag.contains(BLOCK_ENTITY_TAG_KEY, Tag.TAG_COMPOUND)) {
+			return;
+		}
+
+		var source = customTag.getCompound(BLOCK_ENTITY_TAG_KEY);
+		var restored = new CompoundTag();
+		var savedData = getSavedDataForDroppedItem();
+
+		copySavedData(savedData.redstoneControl(), source, restored, REDSTONE_TYPE_KEY);
+		copySavedData(savedData.energyStorage(), source, restored, ENERGY_STORAGE_KEY);
+		copySavedData(savedData.itemStorage(), source, restored, ITEM_STORAGE_KEY);
+		copySavedData(savedData.fluidStorage(), source, restored, FLUID_STORAGE_KEY);
+
+		if (restored.isEmpty()) {
+			return;
+		}
+
+		var blockEntity = world.getBlockEntity(pos);
+
+		if (blockEntity == null) {
+			return;
+		}
+
+		try {
+			blockEntity.loadCustomOnly(restored, world.registryAccess());
+			blockEntity.setChanged();
+			world.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);
+		} catch (Exception exception) {
+			AMCommon.LOGGER.warn("Failed to restore dropped block entity data for {} at {}", getDescriptionId(), pos, exception);
+		}
+	}
+
+	private static void copySavedData(boolean shouldCopy, CompoundTag source, CompoundTag target, String key) {
+		var tag = source.get(key);
+
+		if (shouldCopy && tag != null) {
+			target.put(key, tag.copy());
+		}
 	}
 	
 	@Nullable
